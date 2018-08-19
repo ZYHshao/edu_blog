@@ -78,8 +78,8 @@ theme: snippet
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type: git
-  repository: git@github.com:ZYHshao/edu_blog.git
-  branch: gh-pages
+ type: git
+ repository: git@github.com:ZYHshao/edu_blog.git
+ branch: gh-pages
   
 
