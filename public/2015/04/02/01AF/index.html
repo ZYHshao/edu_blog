@@ -1,0 +1,318 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>AFNetWorking用法及缓存处理 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="AFNetWorking用法及缓存处理">
+            
+	            AFNetWorking用法及缓存处理
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS编程技巧">
+            iOS编程技巧
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+                    <a href="/tags/网络" title='网络'>
+                        网络
+                    </a>
+                
+                    <a href="/tags/iOS编程" title='iOS编程'>
+                        iOS编程
+                    </a>
+                
+                    <a href="/tags/AFNetWorking" title='AFNetWorking'>
+                        AFNetWorking
+                    </a>
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/02</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>AFNetWorking 在IOS开发中是一个经常会用的第三方开源库，其最好处是维护及时，源码开源。</p>
+<p>常用GET与POST请求方法：</p>
+<p>POST请求：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//初始化一个请求对象 </span><br><span class="line">AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];</span><br><span class="line">  NSString * url = @&quot;你的请求地址&quot;;</span><br><span class="line">  //dic 为参数字典</span><br><span class="line"> [manager POST:url parameters:dic success:^(AFHTTPRequestOperation *operation, id responseObject) &#123;</span><br><span class="line">    //请求成功的回调</span><br><span class="line">    &#125; failure:^(AFHTTPRequestOperation *operation, NSError *error) &#123;</span><br><span class="line">    //请求失败的回调    </span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>GET请求：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];</span><br><span class="line"> NSString * url = @&quot;你的请求地址&quot;;</span><br><span class="line">   [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) &#123;</span><br><span class="line">    //请求成功的回调</span><br><span class="line">    &#125; failure:^(AFHTTPRequestOperation *operation, NSError *error) &#123;</span><br><span class="line">    //请求失败的回调   </span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>这里有一个地方需要注意，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[AFHTTPRequestOperationManager manager]</span><br></pre></td></tr></table></figure>
+<p>这个类方法我们点进源码可以发现：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (instancetype)manager &#123;</span><br><span class="line">    return [[self alloc] initWithBaseURL:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里初始化了一个返回了一个新的对象，并不是单例。</p>
+<p>使用这样的下载方法，下载完成后的数据AFNetWorking会帮我们自动解析，但是有时候服务器给的数据并不标准，这时我们需要加上这个设置：</p>
+<p>manager.responseSerializer = [AFHTTPResponseSerializer  serializer];</p>
+<p>这样我们将得到原始的HTTP返回给我们数据。</p>
+<p>我们再来探究一下，下载成功后，回调方法里的参数到底是什么东西</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">success:^(AFHTTPRequestOperation *operation, id responseObject)</span><br></pre></td></tr></table></figure>
+<p>其中，第二个参数 responseObject 是下载下来的data数据，可直接进行JSON等解析。</p>
+<p>第一个参数，是个AFHTTPRequestOperation对象，来看源文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@interface AFHTTPRequestOperation : AFURLConnectionOperation</span><br><span class="line"></span><br><span class="line">@property (readonly, nonatomic, strong) NSHTTPURLResponse *response;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) AFHTTPResponseSerializer &lt;AFURLResponseSerialization&gt; * responseSerializer;</span><br><span class="line"></span><br><span class="line">@property (readonly, nonatomic, strong) id responseObject;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>可以发现，里面有一个成员便是responseObject，同时，AFHTTPRequestOperation是继承于AFURLConnectionOperation,我们在看看AFURLConnectionOperation这个类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">@interface AFURLConnectionOperation : NSOperation &lt;NSURLConnectionDelegate, NSURLConnectionDataDelegate, NSSecureCoding, NSCopying&gt;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) NSSet *runLoopModes;</span><br><span class="line"></span><br><span class="line">@property (readonly, nonatomic, strong) NSURLRequest *request;</span><br><span class="line"></span><br><span class="line">@property (readonly, nonatomic, strong) NSURLResponse *response;</span><br><span class="line"></span><br><span class="line">@property (readonly, nonatomic, strong) NSError *error;</span><br><span class="line"></span><br><span class="line">@property (readonly, nonatomic, strong) NSData *responseData;</span><br><span class="line"></span><br><span class="line">@property (readonly, nonatomic, copy) NSString *responseString;</span><br><span class="line"></span><br><span class="line">@property (readonly, nonatomic, assign) NSStringEncoding responseStringEncoding;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, assign) BOOL shouldUseCredentialStorage;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) NSURLCredential *credential;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) AFSecurityPolicy *securityPolicy;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) NSInputStream *inputStream;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) NSOutputStream *outputStream;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) dispatch_queue_t completionQueue;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) dispatch_group_t completionGroup;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, strong) NSDictionary *userInfo;</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithRequest:(NSURLRequest *)urlRequest NS_DESIGNATED_INITIALIZER;</span><br><span class="line"></span><br><span class="line">- (void)pause;</span><br><span class="line"></span><br><span class="line">- (BOOL)isPaused;</span><br><span class="line"></span><br><span class="line">- (void)resume;</span><br></pre></td></tr></table></figure>
+<p>看到这里，就离AFNETWorking封装的源头很近了，里面的成员非常多，其中包含了大部分我们需要的信息，可以通过点语法取到，其中有输入输出流，错误信息，请求到的Data数据，以及请求到的字符串数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">responseString</span><br></pre></td></tr></table></figure>
+<p>我们可以通过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSLog ( @&quot;operation: %@&quot; , operation. responseString );</span><br></pre></td></tr></table></figure>
+<p>来打印查看请求到的原始信息。</p>
+<p>几点注意：</p>
+<p>1.关于崩溃url为nil</p>
+<p>大多数这样的原因是url中有特殊字符或者中文字符，AFNETWorking并没有做UTF8的转码，需要：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];</span><br></pre></td></tr></table></figure>
+<p>2.添加HttpHead字段的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> //为这个下载任务HTTP头添加@&quot;User-Agent&quot;字段</span><br><span class="line"> [manager.requestSerializer setValue:_scrData forHTTPHeaderField:@&quot;User-Agent&quot;];</span><br><span class="line"> //打印头信息</span><br><span class="line">    NSLog(@&quot;%@&quot;,manager.requestSerializer.HTTPRequestHeaders);</span><br></pre></td></tr></table></figure>
+<p>在下载请求中，经常会请求一些不长变化的数据，如果每次APP启动都进行请求，会消耗许多资源，并且有时候缓存的处理，可以大大改善用户体验。</p>
+<p>在AFNETWorking中，并没有提供现成的缓存方案，我们可以通过写文件的方式，自行做缓存。</p>
+<p>在下载方法中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) &#123;</span><br><span class="line">        //写缓存</span><br><span class="line">        NSString *cachePath = @&quot;你的缓存路径&quot;;//  /Library/Caches/MyCache</span><br><span class="line">        [data writeToFile:cachePath atomically:YES];</span><br><span class="line">                succsee(data);</span><br><span class="line">    &#125; failure:^(AFHTTPRequestOperation *operation, NSError *error) &#123;</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>然后在每次下载前，进行如下判断：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> NSString * cachePath = @&quot;你的缓存路径&quot;;</span><br><span class="line">        if ([[NSFileManager defaultManager] fileExistsAtPath:cachePath]) &#123;</span><br><span class="line">            //从本地读缓存文件</span><br><span class="line">            NSData *data = [NSData dataWithContentsOfFile:cachePath];</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+<p>有时，我们的下载请求可能是用户的动作触发的，比如一个按钮。我们还应该做一个保护机制的处理，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//初始化一个下载请求数组</span><br><span class="line">NSArray * requestArray=[[NSMutableArray alloc]init];</span><br><span class="line">//每次开始下载任务前做如下判断</span><br><span class="line">for (NSString * request in requestArray) &#123;</span><br><span class="line">        if ([url isEqualToString:request]) &#123;</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> [requestArray addObject:url];</span><br><span class="line"> //下载成功或失败后</span><br><span class="line"> [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) &#123;</span><br><span class="line">        [requestArray removeObject:url]</span><br><span class="line">    &#125; failure:^(AFHTTPRequestOperation *operation, NSError *error) &#123;</span><br><span class="line">        [requestArray removeObject:url]</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>至此，一个比较完成AFNETWorking请求使用流程就完成了。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/03/02MD/" class="pre-post btn btn-default" title='iOS中DES与MD5加密方案'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS中DES与MD5加密方案</span>
+        </a>
+    
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <p>暂无目录</p>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
