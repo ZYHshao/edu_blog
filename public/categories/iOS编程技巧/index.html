@@ -125,19 +125,20 @@
         <div class="post-content">
             <div class="post-head home-post-head">
                 <h1 class="post-title"> 
-                    <a href="/2015/04/10/10iOS NSTimer 定时器用法总结/">iOS NSTimer 定时器用法总结</a>
+                    <a href="/2015/04/11/11iOS 封装静态库(.a文件)/">iOS 封装静态库(.a文件)</a>
                 </h1>
                 <div class="post-meta">  &bull;
                     <time class="post-date" datetime="" title="">
-                        2015年04月10日
+                        2015年04月11日
                     </time>
                 </div>
             </div>
             <p class="brief">
                 
-                    NSTimer在IOS开发中会经常用到，尤其是小型游戏，然而对于初学者时常会注意不到其中的内存释放问题，将其基本用法总结如下：
-一、初始化方法：有五种初始化方法，分别是
-+ (NSTimer )timerWithTimeInterva...
+                    iOS中导入外部文件，一种是将源码导入，一种是导入静态库，有很多第三方库都是以静态库的形式提供给我们使用的，如何制作一个静态库呢？
+一、xCode创建文件时，选择创建静态库文件：cacoaTouchStaticLibrary
+
+创建完...
                 
             </p> 
         </div>
@@ -159,6 +160,29 @@
             <p class="brief">
                 
                     IOS中有一个类型是SEL，它的作用很相似与函数指针，通过performSelector:withObject:函数可以直接调用这个消息。但是perform相关的这些函数，有一个局限性，其参数数量不能超过2个，否则要做很麻烦的处理，与...
+                
+            </p> 
+        </div>
+    </article>
+ 
+    <article class="post">
+        
+        <div class="post-content">
+            <div class="post-head home-post-head">
+                <h1 class="post-title"> 
+                    <a href="/2015/04/10/10iOS NSTimer 定时器用法总结/">iOS NSTimer 定时器用法总结</a>
+                </h1>
+                <div class="post-meta">  &bull;
+                    <time class="post-date" datetime="" title="">
+                        2015年04月10日
+                    </time>
+                </div>
+            </div>
+            <p class="brief">
+                
+                    NSTimer在IOS开发中会经常用到，尤其是小型游戏，然而对于初学者时常会注意不到其中的内存释放问题，将其基本用法总结如下：
+一、初始化方法：有五种初始化方法，分别是
++ (NSTimer )timerWithTimeInterva...
                 
             </p> 
         </div>
@@ -382,7 +406,7 @@ iOS、Android、HTML、JavaScript<br/>
         
     <div class="widget">
         <h3 class="title">分类</h3>
-        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS之UI控件/"><i class="fa" aria-hidden="true">iOS之UI控件</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS编程技巧/"><i class="fa" aria-hidden="true">iOS编程技巧</i></a><span class="category-list-count">8</span></li></ul>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS之UI控件/"><i class="fa" aria-hidden="true">iOS之UI控件</i></a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS编程技巧/"><i class="fa" aria-hidden="true">iOS编程技巧</i></a><span class="category-list-count">9</span></li></ul>
     </div>
 
 
@@ -390,7 +414,7 @@ iOS、Android、HTML、JavaScript<br/>
         
     <div class="widget">
       <h3 class="title">归档</h3>
-        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/"><i class="fa" aria-hidden="true">2015年04月</i></a><span class="archive-list-count">10</span></li></ul>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/"><i class="fa" aria-hidden="true">2015年04月</i></a><span class="archive-list-count">20</span></li></ul>
     </div>
 
 
@@ -399,7 +423,7 @@ iOS、Android、HTML、JavaScript<br/>
   <div class="widget">
     <h3 class="title">标签云</h3>
     <div class="content tag-cloud">
-        <a href="/tags/AFNetWorking/" style="font-size: 10px;">AFNetWorking</a> <a href="/tags/Block/" style="font-size: 10px;">Block</a> <a href="/tags/DES/" style="font-size: 10px;">DES</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/NSAttributedString/" style="font-size: 10px;">NSAttributedString</a> <a href="/tags/NSInvocation/" style="font-size: 10px;">NSInvocation</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/SEL/" style="font-size: 10px;">SEL</a> <a href="/tags/UIFont/" style="font-size: 10px;">UIFont</a> <a href="/tags/UILabel/" style="font-size: 10px;">UILabel</a> <a href="/tags/iOS编程/" style="font-size: 20px;">iOS编程</a> <a href="/tags/事件/" style="font-size: 10px;">事件</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/横屏/" style="font-size: 10px;">横屏</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+        <a href="/tags/AFNetWorking/" style="font-size: 10px;">AFNetWorking</a> <a href="/tags/Block/" style="font-size: 10px;">Block</a> <a href="/tags/DES/" style="font-size: 10px;">DES</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/NSAttributedString/" style="font-size: 10px;">NSAttributedString</a> <a href="/tags/NSInvocation/" style="font-size: 10px;">NSInvocation</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/SEL/" style="font-size: 10px;">SEL</a> <a href="/tags/UIActivityIndicatorView/" style="font-size: 10px;">UIActivityIndicatorView</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIFont/" style="font-size: 10px;">UIFont</a> <a href="/tags/UILabel/" style="font-size: 10px;">UILabel</a> <a href="/tags/UIPageControl/" style="font-size: 10px;">UIPageControl</a> <a href="/tags/UIProgressView/" style="font-size: 10px;">UIProgressView</a> <a href="/tags/UISegmentedControl/" style="font-size: 10px;">UISegmentedControl</a> <a href="/tags/UISlider/" style="font-size: 10px;">UISlider</a> <a href="/tags/UIStepper/" style="font-size: 10px;">UIStepper</a> <a href="/tags/UISwitch/" style="font-size: 10px;">UISwitch</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/iOS编程/" style="font-size: 20px;">iOS编程</a> <a href="/tags/事件/" style="font-size: 10px;">事件</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/横屏/" style="font-size: 10px;">横屏</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a> <a href="/tags/静态库/" style="font-size: 10px;">静态库</a>
     </div>
   </div>
 
