@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS使用Xcode可视化图像编辑功能进行图片拉伸 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS使用Xcode可视化图像编辑功能进行图片拉伸">
+            
+	            iOS使用Xcode可视化图像编辑功能进行图片拉伸
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+                    <a href="/tags/iOS编程" title='iOS编程'>
+                        iOS编程
+                    </a>
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/21</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中可视化拉伸图片技巧"><a href="#iOS中可视化拉伸图片技巧" class="headerlink" title="iOS中可视化拉伸图片技巧"></a>iOS中可视化拉伸图片技巧</h2><h3 id="一、补充"><a href="#一、补充" class="headerlink" title="一、补充"></a>一、补充</h3><p>在我的另一篇博客<a href="http://my.oschina.net/u/2340880/blog/403996" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/403996</a>中探讨了IOS拉伸图像(UIImage)的几种方法和一些小经验，这篇是一个补充，再将xcode中的另一种可视化拉伸图像的方法的使用介绍给大家。</p>
+<h3 id="二、如何使用"><a href="#二、如何使用" class="headerlink" title="二、如何使用"></a>二、如何使用</h3><p>IOS开发文档中的描述：<a href="https://developer.apple.com/library/ios/recipes/xcode_help-image_catalog-1.0/chapters/SlicinganImage.html" target="_blank" rel="noopener">https://developer.apple.com/library/ios/recipes/xcode_help-image_catalog-1.0/chapters/SlicinganImage.html</a></p>
+<h4 id="1、xcode5的新特性"><a href="#1、xcode5的新特性" class="headerlink" title="1、xcode5的新特性"></a>1、xcode5的新特性</h4><p>xcode5之后，IOS为我们提供了一个管理图片的新方法Asset Catalogs，简单说来，它相当于一个目录，专门用来管理我们项目中的图片素材，包括Icon和启动页，这样使项目管理更加方便也更加简洁。</p>
+<p>创建一个AssetCatalogs：在xcode中新建一个文件，选择AssetCatalogs，如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0421/114900_yHuK_2340880.png" alt=""></p>
+<p>然后我们点开这个包，将图片直接拖入工具区即可：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0421/115045_86qu_2340880.png" alt=""></p>
+<h4 id="2、使用AssetCatalogs中的可视化工具进行图片拉伸"><a href="#2、使用AssetCatalogs中的可视化工具进行图片拉伸" class="headerlink" title="2、使用AssetCatalogs中的可视化工具进行图片拉伸"></a>2、使用AssetCatalogs中的可视化工具进行图片拉伸</h4><p>完成了上面的步骤之后，我们可以对管理的图片进行处理，点击右下角的show Slicing按钮，我们就会进入可视化编辑区，如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0421/120521_aPQz_2340880.png" alt=""></p>
+<p>如上图，有三条竖直线，其中边界的两条分别约束了图片两侧不被拉伸的区域范围，中间虚线和左侧虚线围成的部分，将是被复制拉伸的区域。水平方向的线同理。</p>
+<p>很重要的一点：官方文档告诉我们，这个方法只能在iOS 7 或者 OS X v10.10之后使用。效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0421/124916_HYQE_2340880.png" alt=""></p>
+<h4 id="3、在xib文件中UIImage的拉伸"><a href="#3、在xib文件中UIImage的拉伸" class="headerlink" title="3、在xib文件中UIImage的拉伸"></a>3、在xib文件中UIImage的拉伸</h4><p>在xib文件中的UIImageView，在上面加上图片后，可以设置stretching这个属性：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0421/125500_DBmH_2340880.png" alt=""></p>
+<p>这个属性的四个值：X,Y,Width,Height的取值范围是0-1；X，Y，用来确定一个点，比如我们设置为X=0.1，Y=0.1，则这个点就是图片的左上角开始，水平1/10处和竖直1/10处，设置图片的拉伸点为从这个点开始。后两个参数分别设置图片拉伸区域的宽度和高度，比如我们这样设置：Width=0.8，Height=0.8，则图片拉伸时上下左右各1/10的宽度不会被拉伸，中间部分被拉伸，还是刚才的图片，效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0421/130057_NBcG_2340880.png" alt=""></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/21/28iOS中表视图(UITableView)使用详解/" class="pre-post btn btn-default" title='iOS中表视图(UITableView)使用详解'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS中表视图(UITableView)使用详解</span>
+        </a>
+    
+    
+        <a href="/2015/04/20/26iOS中图片(UIImage)拉伸技巧/" class="next-post btn btn-default" title='iOS中图片(UIImage)拉伸技巧'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中图片(UIImage)拉伸技巧</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中可视化拉伸图片技巧"><span class="toc-text">iOS中可视化拉伸图片技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、补充"><span class="toc-text">一、补充</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、如何使用"><span class="toc-text">二、如何使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、xcode5的新特性"><span class="toc-text">1、xcode5的新特性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、使用AssetCatalogs中的可视化工具进行图片拉伸"><span class="toc-text">2、使用AssetCatalogs中的可视化工具进行图片拉伸</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、在xib文件中UIImage的拉伸"><span class="toc-text">3、在xib文件中UIImage的拉伸</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
