@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS 单例设计模式解读 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS 单例设计模式解读">
+            
+	            iOS 单例设计模式解读
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/设计模式">
+            设计模式
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+                    <a href="/tags/iOS编程" title='iOS编程'>
+                        iOS编程
+                    </a>
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/17</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS-中单例设计模式的解读与用法"><a href="#iOS-中单例设计模式的解读与用法" class="headerlink" title="iOS 中单例设计模式的解读与用法"></a>iOS 中单例设计模式的解读与用法</h2><h3 id="一、单例的作用"><a href="#一、单例的作用" class="headerlink" title="一、单例的作用"></a>一、单例的作用</h3><pre><code>顾名思义，单例，即是在整个项目中，这个类的对象只能被初始化一次。它的这种特性，可以广泛应用于某些需要全局共享的资源中，比如管理类，引擎类，也可以通过单例来实现传值。UIApplication、NSUserDefaults等都是IOS中的系统单例。
+</code></pre><h3 id="二、单例的写法"><a href="#二、单例的写法" class="headerlink" title="二、单例的写法"></a>二、单例的写法</h3><pre><code>单例的写法常用的有两种方式：
+</code></pre><h4 id="方式1、不考虑线程"><a href="#方式1、不考虑线程" class="headerlink" title="方式1、不考虑线程"></a>方式1、不考虑线程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">static SingleCase *manager = nil;  </span><br><span class="line">   </span><br><span class="line">+ (SingleCase *)defaultManager &#123;  </span><br><span class="line">    if (!manager)&#123; </span><br><span class="line">        SingleCase = [[self alloc] init];  </span><br><span class="line">        return manager; </span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="方式2、考虑线程安全"><a href="#方式2、考虑线程安全" class="headerlink" title="方式2、考虑线程安全"></a>方式2、考虑线程安全</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+ (SingleCase *)sharedManager  </span><br><span class="line">&#123;  </span><br><span class="line">        static SingleCase *ManagerInstance = nil;  </span><br><span class="line">        static dispatch_once_t predicate;  </span><br><span class="line">        dispatch_once(&amp;predicate, ^&#123;  </span><br><span class="line">                ManagerInstance = [[self alloc] init];   </span><br><span class="line">        &#125;);  </span><br><span class="line">    return ManagerInstance;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、代码的优化"><a href="#三、代码的优化" class="headerlink" title="三、代码的优化"></a>三、代码的优化</h3><pre><code>通过上面的方法，我们已经可以使用类方法来得到这个单例，但很多时候，项目的工程量很大，还有可能会很多开发者同时参与一个项目的开发，为了安全与管理代码的方便，也为了给不是这个单例的创作者但会用到这个单例的开发人员一些提示，我们通常会重写一些方法：
+</code></pre><p>首先我们自己实现一个alloc方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+(instancetype)myAlloc&#123;</span><br><span class="line">    return [super allocWithZone:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将我们的单例实现方法略作修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+(ZYHPayManager *)sharedMamager&#123;</span><br><span class="line">    static ZYHPayManager * manager;</span><br><span class="line">    if (manager==nil) &#123;</span><br><span class="line">        manager=[[ZYHPayManager myAlloc]init];</span><br><span class="line">    &#125;</span><br><span class="line">    return manager;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>将一些视图实例化对象的方法重写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">+(instancetype)alloc&#123;</span><br><span class="line">    NSAssert(0, @&quot;这是一个单例对象，请使用+(ZYHPayManager *)sharedMamager方法&quot;);</span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br><span class="line">+(instancetype)allocWithZone:(struct _NSZone *)zone&#123;</span><br><span class="line">    return [self alloc];</span><br><span class="line">&#125;</span><br><span class="line">-(id)copy&#123;</span><br><span class="line">    NSLog(@&quot;这是一个单例对象，copy将不起任何作用&quot;);</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line">+(instancetype)new&#123;</span><br><span class="line">    return  [self alloc];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：这里的alloc使用了断言，让任何视图通过alloc创建对象的程序段断在此处，给程序员提示。copy方法这里只是简单的返回了原对象，并未做任何处理，打印信息给程序员提示。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/17/23iOS description与debugDescription在调试程序中的应用/" class="pre-post btn btn-default" title='iOS description与debugDescription在调试程序中的应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS description与debugDescription在调试程序中的应用</span>
+        </a>
+    
+    
+        <a href="/2015/04/16/20iOS UIStepper(步进控件)使用总结/" class="next-post btn btn-default" title='iOS UIStepper(步进控件)使用总结'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS UIStepper(步进控件)使用总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS-中单例设计模式的解读与用法"><span class="toc-text">iOS 中单例设计模式的解读与用法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、单例的作用"><span class="toc-text">一、单例的作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、单例的写法"><span class="toc-text">二、单例的写法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#方式1、不考虑线程"><span class="toc-text">方式1、不考虑线程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#方式2、考虑线程安全"><span class="toc-text">方式2、考虑线程安全</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、代码的优化"><span class="toc-text">三、代码的优化</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
