@@ -1,0 +1,322 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS中KVC与KVO的应用解析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中KVC与KVO的应用解析">
+            
+	            iOS中KVC与KVO的应用解析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/05/05</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中KVC与KVO的应用解析"><a href="#iOS中KVC与KVO的应用解析" class="headerlink" title="iOS中KVC与KVO的应用解析"></a>iOS中KVC与KVO的应用解析</h2><h3 id="一、NSKeyValueCoding（KVC）"><a href="#一、NSKeyValueCoding（KVC）" class="headerlink" title="一、NSKeyValueCoding（KVC）"></a>一、NSKeyValueCoding（KVC）</h3><h4 id="1、从一个小例子引入"><a href="#1、从一个小例子引入" class="headerlink" title="1、从一个小例子引入"></a>1、从一个小例子引入</h4><p>KVC键值编码是Object-C为我们提供的一种对成员变量赋值的方法。在探讨其方法之前，我们先来看一个小例子：</p>
+<p>首先，创建一个数据模型model类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//.h文件</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">@interface Model : NSObject</span><br><span class="line">&#123;</span><br><span class="line">    @public//将成员变量设置为公有的 以便其他文件有访问权限</span><br><span class="line">    NSString * str;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>我们在其他文件中有两种方法str进行赋值和取值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    Model * model = [[Model alloc]init];</span><br><span class="line">    model-&gt;str=@&quot;312&quot;;//普通方法赋值</span><br><span class="line">    [model setValue:@&quot;321&quot; forKey:@&quot;str&quot;];//kvc赋值</span><br><span class="line">    NSLog(@&quot;%@&quot;,model-&gt;str);//普通方法取值</span><br><span class="line">    NSLog(@&quot;%@&quot;,[model valueForKey:@&quot;str&quot;]);//kvc取值</span><br></pre></td></tr></table></figure>
+<p>同样的，对于用@property声明的变量，使用kvc的效果和使用点语法，setter，getter方法的效果是一样的。</p>
+<h4 id="2、KVC有关函数方法详解"><a href="#2、KVC有关函数方法详解" class="headerlink" title="2、KVC有关函数方法详解"></a>2、KVC有关函数方法详解</h4><p>通过上面的例子，我们已经可以简单了解KVC是干什么的了，下面是一些常用方法。</p>
+<p>+ (BOOL)accessInstanceVariablesDirectly;</p>
+<p>这个方法类似一个开关，默认返回为YES，表示支持KVC方式赋值，也可以在子类中将其重写，如果返回为NO，则再进行KVC会抛出异常。</p>
+<p>- (id)valueForKey:(NSString *)key;</p>
+<p>通过键取值</p>
+<p>- (void)setValue:(id)value forKey:(NSString *)key;</p>
+<p>通过字符串键给成员变量赋值</p>
+<p>- (BOOL)validateValue:(inout id <em>)ioValue forKey:(NSString </em>)inKey error:(out NSError **)outError;</p>
+<p>系统默认实现的方法，验证一个键值是否有效</p>
+<p>- (NSMutableArray <em>)mutableArrayValueForKey:(NSString </em>)key;</p>
+<p>将取到的值放入一个可变数组中</p>
+<p>- (NSMutableOrderedSet <em>)mutableOrderedSetValueForKey:(NSString </em>)key NS_AVAILABLE(10_7, 5_0);</p>
+<p>将取到的值放入可变的有序集合中</p>
+<p>- (NSMutableSet <em>)mutableSetValueForKey:(NSString </em>)key;</p>
+<p>将取到的值放入可变的集合中</p>
+<p>- (id)valueForKeyPath:(NSString <em>)keyPath;<br>- (void)setValue:(id)value forKeyPath:(NSString </em>)keyPath;</p>
+<p>上面这两个方法分别是通过路径赋值与取值，数据结构类似地图，比如在model类中有一个成员变量model2，在Model2类中有一个字符串，我们可以通过如下的方式赋值取值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">//Model.h</span><br><span class="line">#import &quot;Model2.h&quot;</span><br><span class="line">@interface Model : NSObject</span><br><span class="line">&#123;</span><br><span class="line">    @public</span><br><span class="line">    NSString * str;</span><br><span class="line">    Model2 * model2;</span><br><span class="line">&#125;</span><br><span class="line">//Model2.h</span><br><span class="line">@interface Model2 : NSObject</span><br><span class="line">&#123;</span><br><span class="line">@public</span><br><span class="line">    NSString * str2;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line">//其他文件</span><br><span class="line">    Model * model = [[Model alloc]init];</span><br><span class="line">    Model2 * model2 = [[Model2 alloc]init];</span><br><span class="line">    model-&gt;model2=model2;</span><br><span class="line">    [model setValue:@&quot;123&quot; forKeyPath:@&quot;model2.str2&quot;];</span><br><span class="line">    NSLog(@&quot;%@&quot;,[model valueForKeyPath:@&quot;model2.str2&quot;]);</span><br></pre></td></tr></table></figure>
+<p>- (NSMutableArray <em>)mutableArrayValueForKeyPath:(NSString </em>)keyPath;<br>- (NSMutableOrderedSet <em>)mutableOrderedSetValueForKeyPath:(NSString </em>)keyPath NS_AVAILABLE(10_7, 5_0);<br>- (NSMutableSet <em>)mutableSetValueForKeyPath:(NSString </em>)keyPath;</p>
+<p>上面三个方法与前面类似，只是是从路径取值的。</p>
+<p>- (id)valueForUndefinedKey:(NSString *)key;</p>
+<p>这个方法可以获取没有提前定义的成员变量的值，比如运行时创建的，下面这个方法是给未定义的成员变量赋值</p>
+<p>- (void)setValue:(id)value forUndefinedKey:(NSString *)key;</p>
+<p>注意：这两个方法默认的实现会抛出异常，子类必须重写才能使用。</p>
+<p>- (void)setNilValueForKey:(NSString *)key;</p>
+<p>将成员变量置为nil</p>
+<p>- (NSDictionary <em>)dictionaryWithValuesForKeys:(NSArray </em>)keys;</p>
+<p>根据键值获取键值对字典</p>
+<p>- (void)setValuesForKeysWithDictionary:(NSDictionary *)keyedValues;</p>
+<p>通过字典对成员变量同意赋值，经常使用</p>
+<h3 id="二、NSKeyValueObservingCustomization（KVO）"><a href="#二、NSKeyValueObservingCustomization（KVO）" class="headerlink" title="二、NSKeyValueObservingCustomization（KVO）"></a>二、NSKeyValueObservingCustomization（KVO）</h3><p>KVO是一种消息监听机制，可以在某个量发生变化的时候将消息传送给监听者，因此广泛用于传值，界面低耦合等逻辑中。KVO机制的核心是以下三个方法：</p>
+<p>- (void)addObserver:(NSObject <em>)observer forKeyPath:(NSString </em>)keyPath options:(NSKeyValueObservingOptions)options context:(void *)context;</p>
+<p>使用这个方法注册一个监听者，参数解释如下：</p>
+<p>observer：监听者对象</p>
+<p>keyPath：监听的参数</p>
+<p>options：监听选项</p>
+<p>context：参数传递</p>
+<p>监听的选项枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, NSKeyValueObservingOptions) &#123;</span><br><span class="line">    NSKeyValueObservingOptionNew = 0x01,//回调的字典中存放新值</span><br><span class="line">    NSKeyValueObservingOptionOld = 0x02,//回调的字典中存放旧值</span><br><span class="line">    NSKeyValueObservingOptionInitial ,//值改变前进行回调</span><br><span class="line">    NSKeyValueObservingOptionPrior//改变前后都进行回调</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line">//回调字典后面会解释</span><br></pre></td></tr></table></figure>
+<p>- (void)removeObserver:(NSObject <em>)observer forKeyPath:(NSString </em>)keyPath context:(void <em>)context ;<br>- (void)removeObserver:(NSObject </em>)observer forKeyPath:(NSString *)keyPath;</p>
+<p>这两个方法都是用来移除监听者</p>
+<p>- (void)observeValueForKeyPath:(NSString <em>)keyPath ofObject:(id)object change:(NSDictionary </em>)change context:(void *)context;</p>
+<p>这个方法是监听对象数据改变时回调的方法，change是一个字典，字典中根据监听的选项不同，存放不同的值（新或者旧）。context是传递的参数。</p>
+<p>代码示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">     model = [[Model alloc]init];</span><br><span class="line">    //添加监听者</span><br><span class="line">    [model addObserver:self forKeyPath:@&quot;str&quot; options:NSKeyValueObservingOptionNew context:@&quot;321&quot;];</span><br><span class="line">    [model setValue:@&quot;qw&quot; forKey:@&quot;str&quot;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)didReceiveMemoryWarning &#123;</span><br><span class="line">    [super didReceiveMemoryWarning];</span><br><span class="line">    // Dispose of any resources that can be recreated.</span><br><span class="line">&#125;</span><br><span class="line">-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context&#123;</span><br><span class="line">    if ([keyPath isEqualToString:@&quot;str&quot;]) &#123;</span><br><span class="line">        NSLog(@&quot;%@&quot;,context);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>学习使用 欢迎转载</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/05/06/46iOS通过NSUserDefaults实现简单的应用间数据传递/" class="pre-post btn btn-default" title='iOS通过NSUserDefaults实现简单的应用间数据传递'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS通过NSUserDefaults实现简单的应用间数据传递</span>
+        </a>
+    
+    
+        <a href="/2015/05/04/43Objective-C中编写省略参数的多参函数/" class="next-post btn btn-default" title='Objective-C中编写省略参数的多参函数'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Objective-C中编写省略参数的多参函数</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中KVC与KVO的应用解析"><span class="toc-text">iOS中KVC与KVO的应用解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、NSKeyValueCoding（KVC）"><span class="toc-text">一、NSKeyValueCoding（KVC）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、从一个小例子引入"><span class="toc-text">1、从一个小例子引入</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、KVC有关函数方法详解"><span class="toc-text">2、KVC有关函数方法详解</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、NSKeyValueObservingCustomization（KVO）"><span class="toc-text">二、NSKeyValueObservingCustomization（KVO）</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
