@@ -1,0 +1,347 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>分分钟搞定IOS远程消息推送 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="分分钟搞定IOS远程消息推送">
+            
+	            分分钟搞定IOS远程消息推送
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/05/12</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="分分钟搞定IOS远程消息推送"><a href="#分分钟搞定IOS远程消息推送" class="headerlink" title="分分钟搞定IOS远程消息推送"></a>分分钟搞定IOS远程消息推送</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><p>IOS中消息的推送有两种方式，分别是本地推送和远程推送，本地推送在<a href="http://my.oschina.net/u/2340880/blog/405491" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/405491</a>这篇博客中有详细的介绍，这里主要讨论远程推送的流程与配置过程。</p>
+<h3 id="二、远程推送机制的原理"><a href="#二、远程推送机制的原理" class="headerlink" title="二、远程推送机制的原理"></a>二、远程推送机制的原理</h3><h4 id="1、从一张很火的图说起"><a href="#1、从一张很火的图说起" class="headerlink" title="1、从一张很火的图说起"></a>1、从一张很火的图说起</h4><p>搜索IOS远程推送，你总能看到一张如下的流程示意图，因为这张图确实很火，所以我也将它引用在此：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/125733_182P_2340880.jpg" alt=""></p>
+<p>这张图示意的很清晰，大致意思是这样：你的应用服务端将消息发送到apple的APNS服务器，APNS服务器将消息推送到指定的Iphone，最后由Iphone负责将消息推送至你的APP。在此先不说这个过程是如何实现的，仅仅看这个流程，你可能会觉得，在你们服务端和客户端之间增加了一个apple的APNS，不是增加开发者的负担么？其实结果恰恰相反，因为apple对推送的统一管理，使我们开发者的工作变得异常简单。</p>
+<h4 id="2、服务端如何连接到客户端的"><a href="#2、服务端如何连接到客户端的" class="headerlink" title="2、服务端如何连接到客户端的"></a>2、服务端如何连接到客户端的</h4><p>如果你是做android开发的，你一定非常了解长链接与心跳包。事实上，大部分的android应用的推送也确实是通过长链接来实现的。因为android系统的开放性，APP是很容易做到自启动和后台长链接的，而心跳验证，就是始终保证长链接属于接通状态，然后由服务端直接推送消息。如果IOS开发者也采用这种思路，就十分困难了，在IOS中想要保持一个APP服务始终不被系统杀死，我只能说太难了。通过上面的流程图，对比android的推送思路，我们很容易明白，IOS中其实也始终有一个长链接，那就是系统本身，这个长链接始终与APNS服务器相连，然后统一管理所有应用程序的推送。</p>
+<h4 id="3、这是IOS推送机制的优势？"><a href="#3、这是IOS推送机制的优势？" class="headerlink" title="3、这是IOS推送机制的优势？"></a>3、这是IOS推送机制的优势？</h4><p>下面的这些，只是我个人的一些看法。系统并无优劣，优劣在于个人喜好。</p>
+<p>1、因为推送的服务端是appleID的验证用户，推送可靠性会高。</p>
+<p>2、所有推送消息由APNS统一管理，效率高。</p>
+<p>3、在客户端只需系统维护一个长链接，节省了用户流量消耗和手机的性能消耗，并且提高了安全性，使得有恶意推送和流氓软件的几率降低。</p>
+<h3 id="三、分分钟让你的APP收到远程推送"><a href="#三、分分钟让你的APP收到远程推送" class="headerlink" title="三、分分钟让你的APP收到远程推送"></a>三、分分钟让你的APP收到远程推送</h3><h4 id="1、工欲善其事、必先利其器——创建推送证书"><a href="#1、工欲善其事、必先利其器——创建推送证书" class="headerlink" title="1、工欲善其事、必先利其器——创建推送证书"></a>1、工欲善其事、必先利其器——创建推送证书</h4><p>(1)请求CSR文件</p>
+<p>在MAC应用程序中找到钥匙串访问，打开它。</p>
+<p>点击选项栏中的钥匙串访问中的证书助理：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/132801_6tXU_2340880.png" alt=""></p>
+<p>选择从证书颁发机构申请证书:</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/133114_kdP0_2340880.png" alt=""></p>
+<p>填写电子邮件和名称，选择储存到磁盘，然后继续。</p>
+<p>这时，我们存储的地方有了这样一个文件：CertificateSigningRequest.certSigningRequest。</p>
+<p>(2)导出密钥文件</p>
+<p>打开钥匙串，会发现多了一对密钥，名字就是上面你填写的常用名称。</p>
+<p>我们选择专用密钥进行导出，然后设置一个我们自己的密码：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/142351_iETv_2340880.png" alt=""></p>
+<p>这时候我们又有了一个后缀名为.p12的文件。</p>
+<p>(3)创建AppId</p>
+<p>到<a href="https://developer.apple.com的member" target="_blank" rel="noopener">https://developer.apple.com的member</a> Center：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/133637_9huq_2340880.png" alt=""></p>
+<p>用你付过费的开发者appleID登陆后，选择Certificates:</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/133853_elU8_2340880.png" alt=""></p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/143005_JNx9_2340880.png" alt=""></p>
+<p>如果你的项目已经创建了APP id，则可以不用重新创建，但是你创建的APP id必须要支持远程推送。如果还没有创建，点击加号，创建一个：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/143212_ykpm_2340880.png" alt=""></p>
+<p>之后的界面中APP ID有两种类型：Explicit和Wildcard，分别是特殊的和通配的，我们需要推送功能，这个ID不能是通配的，所以我们选择第一个。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/143428_IMMo_2340880.png" alt=""></p>
+<p>这里需要填的的Bundle ID必须和我们App中的一致：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/144041_bDCu_2340880.png" alt=""></p>
+<p>在APP ID的服务设置中，将Push Notification勾选上，点击continue。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/144446_vOpN_2340880.png" alt=""></p>
+<p>之后点击submit，最后点击Done。这时我们的APP IDs列表中会出现我们刚才创建的APP ID。</p>
+<p>(4)创建证书</p>
+<p>点击我们刚才创建的APP ID，你会看到Push Notification一行为未设定的。我们点击Edit。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/145201_c9sx_2340880.png" alt=""></p>
+<p>在Push Notifications设置里是如下界面，development是开发证书，Production是产品证书，我们现在需要测试，所以用Development证书，上线时要使用Production证书。点击Create Certificate。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/150742_prpH_2340880.png" alt=""></p>
+<p>接着点击continue，如下界面会让我们选择一个CSR文件，我们第一步创建的文件在这里派上用场了，选择那个文件，点击Generate。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/151025_FvPV_2340880.png" alt=""></p>
+<p>将创建好的证书下载到电脑中：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/151826_V0Gx_2340880.png" alt=""></p>
+<p>至此，我们已经有了三个文件了，分别是CSR文件，.p12文件，.cer文件。要将这三个文件放在同一个目录下。.cer文件分为测试和产品两个，需要哪个自行选择。写了这么多，我们的准备工作可算是做完了，不要灰心，其实你的推送工作基本上也就做完了。只是申请过程麻烦了一些，但工程的代码，我们几乎不用怎么配置。</p>
+<h4 id="2、兵马未动、粮草先行——服务端进行信息推送的设置"><a href="#2、兵马未动、粮草先行——服务端进行信息推送的设置" class="headerlink" title="2、兵马未动、粮草先行——服务端进行信息推送的设置"></a>2、兵马未动、粮草先行——服务端进行信息推送的设置</h4><p>(1)处理证书</p>
+<p>打开终端cd到我们上面得到的三个文件所在的目录。</p>
+<p>在终端执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl x509 -in aps_development.cer -inform der -out PushCert.pem</span><br></pre></td></tr></table></figure>
+<p>aps_development.cer是刚才生成的.cer文件的文件名。会在当前文件夹中生成一个pem文件，这是我们服务端对应的证书。</p>
+<p>再执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ openssl pkcs12 -nocerts -out PushKey.pem -in key.p12</span><br></pre></td></tr></table></figure>
+<p>key.p12是上面生成的.p12文件的文件名。这时终端会让输入密码，这里的密码就是上面我们设置的密钥的密码。输入密码后回车，如果密码正确，会让我们输入新密码(一定切记)，输入两次后，终端会提示成功创建PushKey.pem文件。</p>
+<p>最后一步，将我们生成的两个pem文件和成为一个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat PushCert.pem PushKey.pem &gt; ck.pem</span><br></pre></td></tr></table></figure>
+<p>(2)测试证书是否可用</p>
+<p>在终端执行下面的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ telnet gateway.sandbox.push.apple.com 2195</span><br></pre></td></tr></table></figure>
+<p>等一小会，如果终端显示下面的情形，则证书正常。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0511/155534_99ff_2340880.png" alt=""></p>
+<p>然后执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl s_client -connect gateway.sandbox.push.apple.com:2195 -cert PushChatCert.pem -key PushKey.pem</span><br></pre></td></tr></table></figure>
+<p>输入密码后回车显示如下的结果则连接成功：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0512/094740_LjCL_2340880.png" alt=""></p>
+<h4 id="3、天涯海角、一步之遥——应用程序中的配置"><a href="#3、天涯海角、一步之遥——应用程序中的配置" class="headerlink" title="3、天涯海角、一步之遥——应用程序中的配置"></a>3、天涯海角、一步之遥——应用程序中的配置</h4><p>在我们项目的AppDelegate中添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">double version = [[UIDevice currentDevice].systemVersion doubleValue];//判定系统版本。</span><br><span class="line">if(version&gt;=8.0f)&#123;</span><br><span class="line">        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeAlert) categories:nil];</span><br><span class="line">        [[UIApplication sharedApplication] registerUserNotificationSettings:settings];</span><br><span class="line">        </span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        UIRemoteNotificationType myTypes = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound;</span><br><span class="line">        [[UIApplication sharedApplication] registerForRemoteNotificationTypes:myTypes];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo&#123; // 处理推送消息</span><br><span class="line">    NSLog(@&quot;userinfo:%@&quot;,userInfo);</span><br><span class="line">    NSLog(@&quot;收到推送消息:%@&quot;,[[userInfo objectForKey:@&quot;aps&quot;] objectForKey:@&quot;alert&quot;]);</span><br><span class="line">&#125;</span><br><span class="line">- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *) error &#123;</span><br><span class="line">    NSLog(@&quot;Registfail%@&quot;,error);</span><br><span class="line">&#125;</span><br><span class="line">-(void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken&#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,deviceToken);//这里的Token就是我们设备要告诉服务端的Token码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是网上搜的PHP服务端的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//这里填写设备的Token码</span><br><span class="line">$deviceToken = &apos;74314cc9e8f747e2fa96c2c1585c830cdf994de6b453ce9fa1c09ba396b2f9e9&apos;;</span><br><span class="line">//这里是密钥密码</span><br><span class="line">$passphrase = &apos;abcabc&apos;;</span><br><span class="line">//推送的消息</span><br><span class="line">$message = &apos;这是一条推送消息&apos;;</span><br><span class="line"></span><br><span class="line">////////////////////////////////////////////////////////////////////////////////</span><br><span class="line"></span><br><span class="line">$ctx = stream_context_create();</span><br><span class="line">stream_context_set_option($ctx, &apos;ssl&apos;, &apos;local_cert&apos;, &apos;ck.pem&apos;);//ck文件</span><br><span class="line">stream_context_set_option($ctx, &apos;ssl&apos;, &apos;passphrase&apos;, $passphrase);</span><br><span class="line"></span><br><span class="line">// Open a connection to the APNS server</span><br><span class="line">$fp = stream_socket_client(</span><br><span class="line">    &apos;ssl://gateway.sandbox.push.apple.com:2195&apos;, $err,</span><br><span class="line">    $errstr, 60, STREAM_CLIENT_CONNECT|STREAM_CLIENT_PERSISTENT, $ctx);</span><br><span class="line"></span><br><span class="line">if (!$fp)</span><br><span class="line">    exit(&quot;Failed to connect: $err $errstr&quot; . PHP_EOL);</span><br><span class="line"></span><br><span class="line">echo &apos;Connected to APNS&apos; . PHP_EOL;</span><br><span class="line"></span><br><span class="line">// Create the payload body</span><br><span class="line">$body[&apos;aps&apos;] = array(</span><br><span class="line">    &apos;alert&apos; =&gt; $message,</span><br><span class="line">    &apos;sound&apos; =&gt; &apos;default&apos;</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">// Encode the payload as JSON</span><br><span class="line">$payload = json_encode($body);</span><br><span class="line"></span><br><span class="line">// Build the binary notification</span><br><span class="line">$msg = chr(0) . pack(&apos;n&apos;, 32) . pack(&apos;H*&apos;, $deviceToken) . pack(&apos;n&apos;, strlen($payload)) . $payload;</span><br><span class="line"></span><br><span class="line">// Send it to the server</span><br><span class="line">$result = fwrite($fp, $msg, strlen($msg));</span><br><span class="line"></span><br><span class="line">if (!$result)</span><br><span class="line">    echo &apos;Message not delivered&apos; . PHP_EOL;</span><br><span class="line">else</span><br><span class="line">    echo &apos;Message successfully delivered&apos; . PHP_EOL;</span><br><span class="line"></span><br><span class="line">// Close the connection to the server</span><br><span class="line">fclose($fp);</span><br><span class="line">    </span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>把上面的PHP文件和我们的ck文件放在同一目录下。在终端的当前目录下，执行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$php push.php</span><br></pre></td></tr></table></figure>
+<p>如果我们的设备王略正常，就可收到推送的消息了：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0512/095131_WNRR_2340880.png" alt=""></p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0512/095142_Ooai_2340880.png" alt=""></p>
+<h3 id="四、几点注意"><a href="#四、几点注意" class="headerlink" title="四、几点注意"></a>四、几点注意</h3><p>1、如果终端发送信息时提示密钥不可访问之类的错误，请检查是否cd到了当前目录，如果还存在问题，将密钥部分从新生成一次。</p>
+<p>2、注意PHP代码中的字符为英文字符。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/05/13/54标签之美五——网页表格的设计/" class="pre-post btn btn-default" title='标签之美五——网页表格的设计'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">标签之美五——网页表格的设计</span>
+        </a>
+    
+    
+        <a href="/2015/05/11/52标签之美四——为网页添加绚丽多彩的图像/" class="next-post btn btn-default" title='标签之美四——为网页添加绚丽多彩的图像'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">标签之美四——为网页添加绚丽多彩的图像</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#分分钟搞定IOS远程消息推送"><span class="toc-text">分分钟搞定IOS远程消息推送</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、远程推送机制的原理"><span class="toc-text">二、远程推送机制的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、从一张很火的图说起"><span class="toc-text">1、从一张很火的图说起</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、服务端如何连接到客户端的"><span class="toc-text">2、服务端如何连接到客户端的</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、这是IOS推送机制的优势？"><span class="toc-text">3、这是IOS推送机制的优势？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、分分钟让你的APP收到远程推送"><span class="toc-text">三、分分钟让你的APP收到远程推送</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、工欲善其事、必先利其器——创建推送证书"><span class="toc-text">1、工欲善其事、必先利其器——创建推送证书</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、兵马未动、粮草先行——服务端进行信息推送的设置"><span class="toc-text">2、兵马未动、粮草先行——服务端进行信息推送的设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、天涯海角、一步之遥——应用程序中的配置"><span class="toc-text">3、天涯海角、一步之遥——应用程序中的配置</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、几点注意"><span class="toc-text">四、几点注意</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
