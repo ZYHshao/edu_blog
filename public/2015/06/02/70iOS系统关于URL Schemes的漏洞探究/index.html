@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS系统关于URL Schemes的漏洞探究 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS系统关于URL Schemes的漏洞探究">
+            
+	            iOS系统关于URL Schemes的漏洞探究
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/06/02</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS系统关于URL-Schemes的漏洞探究"><a href="#iOS系统关于URL-Schemes的漏洞探究" class="headerlink" title="iOS系统关于URL Schemes的漏洞探究"></a>iOS系统关于URL Schemes的漏洞探究</h2><h3 id="一、何为URL-Schemes"><a href="#一、何为URL-Schemes" class="headerlink" title="一、何为URL Schemes"></a>一、何为URL Schemes</h3><pre><code>我想这个东西的设计的目的是为了方便App之间的相互调用与通讯，你可以在自己的App中使用OpenURL方法来唤起其他的App。比如微信的URL Schemes是wiexin，我们新建一个工程，实现如下代码后运行程序：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@&quot;weixin://]];</span><br></pre></td></tr></table></figure>
+<p>这时你会发现，你的应用启动后很快就调起了微信的客户端。</p>
+<h3 id="二、由URL-Schemes引发的漏洞的根源"><a href="#二、由URL-Schemes引发的漏洞的根源" class="headerlink" title="二、由URL Schemes引发的漏洞的根源"></a>二、由URL Schemes引发的漏洞的根源</h3><h4 id="1、一个小问题引起的漏洞根源"><a href="#1、一个小问题引起的漏洞根源" class="headerlink" title="1、一个小问题引起的漏洞根源"></a>1、一个小问题引起的漏洞根源</h4><pre><code>如上所说，通过URL Schemes可以在应用间相互唤起，而产生漏洞的根源在于这个URL并非是应用唯一的。apple并没有任何限制或者审核这个URL的任何措施，也就是说，如果两个App有着相同的URL Schemes，那么系统唤起的App可能并不是你想唤起的。
+</code></pre><h3 id="2、URL-Schemes的优先级如何确定"><a href="#2、URL-Schemes的优先级如何确定" class="headerlink" title="2、URL Schemes的优先级如何确定"></a>2、URL Schemes的优先级如何确定</h3><pre><code>由于相同的URL Scheme可能同时被多个App使用，再如果这些App都安装在了同一个设备上，那么系统究竟会唤起哪一个呢？这个我也不能十分的确定，只有一点可以肯定：如果有和系统应用的URL Scheme相同，那么系统一定会唤起系统自己的应用，在这里系统的应用有着最高的优先级（苹果这里做的好像很不厚道，将自己的应用保护了起来，而把广大其他开发者的应用放在漏洞前置之不理）。如果没有和系统耦合的，那么系统会唤起哪一个App就看运气了。不过，这也不是无章可循，经过测试，优先级和App的Bundle identifier有关，更准确说和Bundle identifier的字母排序有关，如果精心设计这个id，我们就可以做到截获其他应用的URL。
+</code></pre><h3 id="3、这个漏洞会引发什么问题么？"><a href="#3、这个漏洞会引发什么问题么？" class="headerlink" title="3、这个漏洞会引发什么问题么？"></a>3、这个漏洞会引发什么问题么？</h3><pre><code>仅仅通过上面的叙述，你可能还看不出这个漏洞会引发什么样的后果。可是如果你仔细观察，你会发现，各种iPhone上的第三方调用，例如QQ音乐快捷登录，腾讯的各种游戏，甚至包括调用支付宝钱包的支付功能，都是通过这样的原理实现的。如果这些回调的数据被截获，那么就等于说登录信息，用户信息甚至支付订单信息都会暴漏在他人眼下，对于截获者来说，他可以用你的信息进行登录，可以替你完成支付，也可以盗取你登陆后的用户信息。
+</code></pre><h3 id="三、利用URL-Scheme漏洞进行远程登录"><a href="#三、利用URL-Scheme漏洞进行远程登录" class="headerlink" title="三、利用URL Scheme漏洞进行远程登录"></a>三、利用URL Scheme漏洞进行远程登录</h3><pre><code>下面，就用一个实例来演示一下我如何通过一个伪装App登录天天炫斗账号。
+
+天天炫斗是腾讯的一款十分火爆的格斗游戏，像其他腾讯游戏一样，支持QQ和微信登录，这里我拿微信登录为例。
+
+首先，我们需要做一个伪装的App来截取用户的登录信息，新建一个项目，在plist文件中添加一个和天天炫斗微信登录相同的URL Scheme：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/0602/143732_Wvyl_2340880.png" alt=""></p>
+<p>这里的wx63124814f356e266就是微信登录天天炫斗的URL Scheme，这里将Bundle id设置为A，使它有比天天炫斗更高的优先级。</p>
+<p>在AppDelegate中添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation&#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,url);</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数是在App被通过URL唤起时首先调用的函数，这里传入的URL就是用户的登录验证信息，我们可以在这里将这个信息发送回来。</p>
+<p>将伪装好的程序跑一遍后，运行天天炫斗，然后使用微信登录，会发现在微信验证成功后跳转后并没有跳转回天天炫斗应用，而是跳转到了我们伪装的这个Demo。这时xcode调试区会打印出如下的信息：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0602/144313_cppe_2340880.png" alt=""></p>
+<p>之后，来开始做我们的侵入程序，这个其实更加简单，新建一个工程，只需要添加一行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[[UIApplication sharedApplication]openURL:[NSURL URLWithString:@&quot;wx63124814f356e266://oauth?code=0118aa2f2b99d8a9e0e76a7176b2bd4E&amp;state=weixin&quot;]];</span><br></pre></td></tr></table></figure>
+<p>这里的URL就是我们截获的带参的URL，在另一个装有天天炫斗的手机上跑这个程序（在同一个手机上测试的话要将刚才的伪装App删去，不然它也会将我们的侵入程序一起骗了）。会发现登录天天炫斗成功，角色信息完全一致。</p>
+<pre><code>同样的做法，还可以远程登录QQ音乐，天天飞车等等各种通过微信，QQ，微博快捷登录的应用。
+</code></pre><h3 id="四、要战胜你的敌人，必须要了解你的敌人"><a href="#四、要战胜你的敌人，必须要了解你的敌人" class="headerlink" title="四、要战胜你的敌人，必须要了解你的敌人"></a>四、要战胜你的敌人，必须要了解你的敌人</h3><pre><code>不了解apple为什么一直不对URL Scheme做限制，或许需要或许不需要。但是这一点建议总是好的：在你的App使用快捷登录的时候，最好同时将设备号或者某个本地保存的标志绑定，防止恶意的第三方借此获取用户的信息。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2015/06/01/69iOS界面布局之二——初识autolayout布局模型/" class="next-post btn btn-default" title='iOS界面布局之二——初识autolayout布局模型'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS界面布局之二——初识autolayout布局模型</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS系统关于URL-Schemes的漏洞探究"><span class="toc-text">iOS系统关于URL Schemes的漏洞探究</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、何为URL-Schemes"><span class="toc-text">一、何为URL Schemes</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、由URL-Schemes引发的漏洞的根源"><span class="toc-text">二、由URL Schemes引发的漏洞的根源</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、一个小问题引起的漏洞根源"><span class="toc-text">1、一个小问题引起的漏洞根源</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、URL-Schemes的优先级如何确定"><span class="toc-text">2、URL Schemes的优先级如何确定</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3、这个漏洞会引发什么问题么？"><span class="toc-text">3、这个漏洞会引发什么问题么？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、利用URL-Scheme漏洞进行远程登录"><span class="toc-text">三、利用URL Scheme漏洞进行远程登录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、要战胜你的敌人，必须要了解你的敌人"><span class="toc-text">四、要战胜你的敌人，必须要了解你的敌人</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

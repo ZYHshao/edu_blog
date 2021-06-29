@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS多线程编程之三——GCD的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS多线程编程之三——GCD的应用">
+            
+	            iOS多线程编程之三——GCD的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/05/21</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS多线程编程之三——GCD的应用"><a href="#iOS多线程编程之三——GCD的应用" class="headerlink" title="iOS多线程编程之三——GCD的应用"></a>iOS多线程编程之三——GCD的应用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><p>在软件开发中使用多线程可以大大的提升用户体验度，增加工作效率。iOS系统中提供了多种分线程编程的方法，在前两篇博客都有提及：</p>
+<p>NSThread类进行多线程编程：<a href="http://my.oschina.net/u/2340880/blog/416524" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/416524</a>。</p>
+<p>NSOperation进行多线程操作编程：<a href="http://my.oschina.net/u/2340880/blog/416782" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/416782</a>。</p>
+<p>上两个进行多线程编程的机制都是封装于Object-C的类与方法。这篇博客将讨论的Grand Central Dispatch(GCD)机制，则是基于C语言的，相比上面两种机制，GCD更加高效，并且线程有系统管理，会自动运用多核运算。因为这些优势，GCD是apple推荐我们使用的多线程解决方案。</p>
+<h3 id="二、GCD的调度机制"><a href="#二、GCD的调度机制" class="headerlink" title="二、GCD的调度机制"></a>二、GCD的调度机制</h3><p>GCD机制中一个很重要的概念是调度队列，我们对线程的操作实际上是由调度队列完成的。我们只需要将要执行的任务添加到合适的调度队列中即可。</p>
+<h4 id="1、调度队列的类型"><a href="#1、调度队列的类型" class="headerlink" title="1、调度队列的类型"></a>1、调度队列的类型</h4><p>调度队列有三种类型：</p>
+<p>（1）主队列</p>
+<p>其中的任务在主线程中执行，因为其会阻塞主线程，所以这是一个串行的队列。可以通过dispatch_get_main_queue()方法得到。</p>
+<p>（2）全局并行队列</p>
+<p>队列中任务的执行方式是严格按照先进先出的模式进行了。如果是串行的队列，则当一个任务结束后，才会开启另一个任务，如果是并行队列，则任务的开启顺序是和添加顺序一致的。系统为iOS应用自动创建了四个全局共享的并发队列。使用如下函数获得：</p>
+<p>dispatch_get_global_queue(long identifier, unsigned long flags);</p>
+<p>其中第一个参数是这个队列的id，系统的四个全局队列默认的优先级不同，这个参数可填的定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define DISPATCH_QUEUE_PRIORITY_HIGH 2//优先级最高的全局队列</span><br><span class="line">#define DISPATCH_QUEUE_PRIORITY_DEFAULT 0//优先级中等的全局队列</span><br><span class="line">#define DISPATCH_QUEUE_PRIORITY_LOW (-2)//优先级低的全局队列</span><br><span class="line">#define DISPATCH_QUEUE_PRIORITY_BACKGROUND INT16_MIN//后台的全局队列 优先级最低</span><br></pre></td></tr></table></figure>
+<p>这个函数的第二个参数，按照官方文档的说法是有待未来使用，现在我们都填0即可。</p>
+<p>（3）自定义队列</p>
+<p>上面的两种队列都是系统为我们创建好的，我们只需要获取到他们，将任务添加即可。当然，我们可可以创建我们自己的队列，包括串行的和并行的。使用如下方法创建：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t queue = dispatch_queue_create(&quot;myQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br></pre></td></tr></table></figure>
+<p>其中，第一个参数是这个队列的名字，第二个参数决定创建的是串行的还是并行的队列。填写DISPATCH_QUEUE_SERIAL或者NULL创建串行队列，填写DISPATCH_QUEUE_CONCURRENT创建并行队列。</p>
+<h4 id="2、添加任务到队列中"><a href="#2、添加任务到队列中" class="headerlink" title="2、添加任务到队列中"></a>2、添加任务到队列中</h4><p>使用dispatch_sync(dispatch_queue_t queue, dispatch_block_t block)函数或者dispatch_async(dispatch_queue_t queue, dispatch_block_t block)函数来同步或者异步的执行任务，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    dispatch_queue_t queue = dispatch_queue_create(&quot;myQueue&quot;, DISPATCH_QUEUE_SERIAL);</span><br><span class="line">    dispatch_sync(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;%@:1&quot;,[NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">    dispatch_async(queue, ^&#123;</span><br><span class="line">        NSLog(@&quot;%@:2&quot;,[NSThread currentThread]);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0521/135803_9ro1_2340880.png" alt=""></p>
+<p>可以看出第一个任务在主线程中执行，第二个在分线程中执行。</p>
+<h3 id="三、队列调度机制的更多技巧"><a href="#三、队列调度机制的更多技巧" class="headerlink" title="三、队列调度机制的更多技巧"></a>三、队列调度机制的更多技巧</h3><p>通过上面的演示，我们已经可以运用队列进行多线程的执行任务，但是GCD的强大之处远远不止如此。</p>
+<h4 id="1、使用队列组"><a href="#1、使用队列组" class="headerlink" title="1、使用队列组"></a>1、使用队列组</h4><p>如果有这样三个任务，A与B是没有关系的，他们可以并行执行，C必须在A,B结束之后才能执行，当然，实现这样的逻辑并不困难，使用KVO就可以实现，但是使用队列组处理这样的逻辑，代码会更加清晰简单。</p>
+<p>可以使用dispatch_group_create()创建一个队列组，使用如下函数将队列添加到队列组中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void dispatch_group_async(dispatch_group_t group,</span><br><span class="line">    dispatch_queue_t queue,</span><br><span class="line">    dispatch_block_t block);</span><br></pre></td></tr></table></figure>
+<p>队列组中的队列是异步执行的，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    //创建一个队列组</span><br><span class="line">    dispatch_group_t group=dispatch_group_create();</span><br><span class="line">    创建一个异步队列</span><br><span class="line">    dispatch_queue_t queue=dispatch_queue_create(&quot;myQueue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    dispatch_group_async(group, queue, ^&#123;</span><br><span class="line">        for (int i=0; i&lt;10; i++) &#123;</span><br><span class="line">            NSLog(@&quot;%@:%d&quot;,[NSThread currentThread],i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    dispatch_group_async(group, queue, ^&#123;</span><br><span class="line">        for (int i=0; i&lt;10; i++) &#123;</span><br><span class="line">            NSLog(@&quot;%@:%d&quot;,[NSThread currentThread],i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    //阻塞线程直到队列任务完成</span><br><span class="line">    dispatch_group_wait(group,DISPATCH_TIME_FOREVER);</span><br><span class="line">    for (int i=0; i&lt;10; i++) &#123;</span><br><span class="line">        NSLog(@&quot;over:%d&quot;,i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印出来的信息如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0521/143809_4Hxj_2340880.png" alt=""></p>
+<p>可以看出，队列中的任务是异步执行的，并且等待队列组中队列任务全部执行后才执行后面的任务。这样的做法在实际应用中我们很少使用，通常我们会把后续的任务在放在异步中执行，做法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    //创建一个队列组</span><br><span class="line">    dispatch_group_t group=dispatch_group_create();</span><br><span class="line">    //创建一个队列</span><br><span class="line">    dispatch_queue_t queue=dispatch_queue_create(&quot;myQueue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">    //添加队列任务到队列组</span><br><span class="line">    dispatch_group_async(group, queue, ^&#123;</span><br><span class="line">        for (int i=0; i&lt;10; i++) &#123;</span><br><span class="line">            NSLog(@&quot;%@:%d&quot;,[NSThread currentThread],i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    dispatch_group_async(group, queue, ^&#123;</span><br><span class="line">        for (int i=0; i&lt;10; i++) &#123;</span><br><span class="line">            NSLog(@&quot;%@:%d&quot;,[NSThread currentThread],i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    //队列组任务执行完后执行的任务</span><br><span class="line">    dispatch_group_notify(group, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^&#123;</span><br><span class="line">        for (int i=0; i&lt;10; i++) &#123;</span><br><span class="line">            NSLog(@&quot;over:%d&quot;,i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    for (int i=0; i&lt;10; i++) &#123;</span><br><span class="line">         NSLog(@&quot;Finish:%d&quot;,i);</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>打印信息如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0521/144444_9Vrz_2340880.png" alt=""></p>
+<p>可以看出GCD的强大了吧，复杂的任务逻辑关系因为GCD变得十分清晰简单。</p>
+<h4 id="2、循环机制"><a href="#2、循环机制" class="headerlink" title="2、循环机制"></a>2、循环机制</h4><p>一开始我们就提到，GCD相比NSOperation的优势在于多核心的应用，更深得挖掘出了硬件的性能。GCD在多核方面的一个明显的特点就是循环机制。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> dispatch_apply(10, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(size_t i) &#123;</span><br><span class="line">        NSLog(@&quot;%@:%zu&quot;,[NSThread currentThread],i);</span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0521/145607_C60q_2340880.png" alt=""></p>
+<p>可以看出，程序的运行效率又会高许多。</p>
+<h4 id="3、消息传递机制"><a href="#3、消息传递机制" class="headerlink" title="3、消息传递机制"></a>3、消息传递机制</h4><p>dispatch_source_t类型的对象可以用来传递和接受某个消息，然后执行block方法，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    //创建一个数据对象，DISPATCH_SOURCE_TYPE_DATA_ADD的含义表示数据变化时相加</span><br><span class="line">    dispatch_source_t source = dispatch_source_create(DISPATCH_SOURCE_TYPE_DATA_ADD, 0, 0, dispatch_get_main_queue());</span><br><span class="line">    //创建接收数据变化的句柄</span><br><span class="line">    dispatch_source_set_event_handler(source, ^&#123;</span><br><span class="line">        NSLog(@&quot;%lu&quot;,dispatch_source_get_data(source));</span><br><span class="line">    &#125;);</span><br><span class="line">    //启动</span><br><span class="line">    dispatch_resume(source);</span><br><span class="line">    //设置数据</span><br><span class="line">    dispatch_source_merge_data(source, 1);</span><br><span class="line">    //这步执行完之后会执行打印方法</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4、发送和等待信号"><a href="#4、发送和等待信号" class="headerlink" title="4、发送和等待信号"></a>4、发送和等待信号</h4><p>GCD中还有一个重要的概念是信号量。它的用法法消息的传递有所类似，通过代码来解释：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    //创建一个信号，其中的参数为信号的初始值</span><br><span class="line">    dispatch_semaphore_t singer = dispatch_semaphore_create(0);</span><br><span class="line">    //发送信号，使信号量+1</span><br><span class="line">    dispatch_semaphore_signal(singer);</span><br><span class="line">    //等待信号，当信号量大于0时执行后面的方法，否则等待，第二个参数为等待的超时时长，下面设置的为一直等待</span><br><span class="line">    dispatch_semaphore_wait(singer, DISPATCH_TIME_FOREVER);</span><br><span class="line">    NSLog(@&quot;123&quot;);</span><br></pre></td></tr></table></figure>
+<p>通过发送信号，可以试信号量+1，每次执行过等待信号后，信号量会-1；如此，我们可以很方便的控制不同队列中方法的执行流程。</p>
+<h4 id="5、挂起和开启任务队列"><a href="#5、挂起和开启任务队列" class="headerlink" title="5、挂起和开启任务队列"></a>5、挂起和开启任务队列</h4><p>GCD还提供了暂停与开始任务的方法，使用</p>
+<p>void dispatch_suspend(dispatch_object_t object);</p>
+<p>可以将队列或者队列组进行暂时的挂起，使用</p>
+<p>void dispatch_resume(dispatch_object_t object);</p>
+<p>将队列或者队列组重新开启。</p>
+<p>需要注意的是，暂停队列时，队列中正在执行的任务并不会被中断，会挂起未开启的任务。  </p>
+<h3 id="四、关于内存管理"><a href="#四、关于内存管理" class="headerlink" title="四、关于内存管理"></a>四、关于内存管理</h3><p>GCD虽然是基于C语言封装的框架，使用了面向对象的思想。因此，它的内存管理是需要我们注意的，不论是ARC或者MRC，我们都应该手动去处理这些对象。还好，GCD的内存管理思路和Object—C是兼容的，我们使用dispatch_retain()和dispatch_release()来将引用对象的计数进行加减。这一点十分重要，切记切记。</p>
+<p>疏漏之处 欢迎指正</p>
+<p>学习使用 欢迎转载</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/05/25/65标签之美八——网页框架/" class="pre-post btn btn-default" title='标签之美八——网页框架'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">标签之美八——网页框架</span>
+        </a>
+    
+    
+        <a href="/2015/05/20/63标签之美七——为网页添加音乐/" class="next-post btn btn-default" title='标签之美七——为网页添加音乐'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">标签之美七——为网页添加音乐</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS多线程编程之三——GCD的应用"><span class="toc-text">iOS多线程编程之三——GCD的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、GCD的调度机制"><span class="toc-text">二、GCD的调度机制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、调度队列的类型"><span class="toc-text">1、调度队列的类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、添加任务到队列中"><span class="toc-text">2、添加任务到队列中</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、队列调度机制的更多技巧"><span class="toc-text">三、队列调度机制的更多技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、使用队列组"><span class="toc-text">1、使用队列组</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、循环机制"><span class="toc-text">2、循环机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、消息传递机制"><span class="toc-text">3、消息传递机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、发送和等待信号"><span class="toc-text">4、发送和等待信号</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、挂起和开启任务队列"><span class="toc-text">5、挂起和开启任务队列</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、关于内存管理"><span class="toc-text">四、关于内存管理</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
