@@ -1,0 +1,299 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS8新特性扩展(Extension)应用之二——分享插件 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS8新特性扩展(Extension)应用之二——分享插件">
+            
+	            iOS8新特性扩展(Extension)应用之二——分享插件
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/07/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS8新特性扩展-Extension-应用之二——分享插件"><a href="#iOS8新特性扩展-Extension-应用之二——分享插件" class="headerlink" title="iOS8新特性扩展(Extension)应用之二——分享插件"></a>iOS8新特性扩展(Extension)应用之二——分享插件</h2><pre><code>  在上一篇博客中，介绍了iOS8新特性扩展功能之一的Today功能：[http://my.oschina.net/u/2340880/blog/485533](http://my.oschina.net/u/2340880/blog/485533)，这里我们再介绍一下分享的扩展功能。
+
+在iOS8之前，除了一些主流的社交平台，例如苹果支持内容分享外，其他开发者的应用若要加入分享的功能，将会十分的复杂。在iOS8的新特性中，apple为我们准备了这样的扩展功能。
+</code></pre><p>首先创建工程，在我们的工程中新建一个Target：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/142100_pZm5_2340880.png" alt=""></p>
+<p>之后，模板中会为我们创建一个controller类，这个controller用于控制我们的分享插件，里面内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@implementation ShareViewController</span><br><span class="line">//这个函数用于判断分享内容的可用性，我们在其中获取分享的内容进行检查</span><br><span class="line">- (BOOL)isContentValid &#123;</span><br><span class="line">    // Do validation of contentText and/or NSExtensionContext attachments here</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">//点击post按钮后出发的方法，我们可以在这里将分享的内容进行上传等操作</span><br><span class="line">- (void)didSelectPost &#123;</span><br><span class="line">    // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.</span><br><span class="line">    </span><br><span class="line">    // Inform the host that we&apos;re done, so it un-blocks its UI. Note: Alternatively you could call super&apos;s -didSelectPost, which will similarly complete the extension context.</span><br><span class="line">    [self.extensionContext completeRequestReturningItems:@[] completionHandler:nil];</span><br><span class="line">&#125;</span><br><span class="line">//这里用于设置分享插件的附件按钮</span><br><span class="line">- (NSArray *)configurationItems &#123;</span><br><span class="line">    // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.</span><br><span class="line">    return @[];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>除此之外，还有一些常用的属性：</p>
+<p>- (void)presentationAnimationDidFinish;</p>
+<p>弹出视图动画结束后执行的方法</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (readonly, NS_NONATOMIC_IOSONLY) NSString *contentText;</p>
+<p>分享的内容文字</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (copy, NS_NONATOMIC_IOSONLY) NSString *placeholder;</p>
+<p>默认显示的提示文字</p>
+<p>- (void)didSelectCancel;</p>
+<p>取消按钮执行的方法</p>
+<p>我们在代码中如下添加后运行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@implementation ShareViewController</span><br><span class="line">-(NSString *)placeholder&#123;</span><br><span class="line">    return @&quot;提示文字&quot;;</span><br><span class="line">&#125;</span><br><span class="line">- (NSArray *)configurationItems &#123;</span><br><span class="line">    // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.</span><br><span class="line">    SLComposeSheetConfigurationItem * item =[[SLComposeSheetConfigurationItem alloc]init];</span><br><span class="line">    item.title=@&quot;地点&quot;;</span><br><span class="line">    item.value=@&quot;城门&quot;;</span><br><span class="line">    return @[item];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们用系统的相册做测试，点击相片的分享按钮：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/151324_NCmX_2340880.png" alt=""></p>
+<p>点击MORE，添加我们的扩展插件。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/151443_xqFp_2340880.png" alt=""></p>
+<p>这时分享栏中多了一个我们的插件，点击效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/151645_IsIy_2340880.png" alt=""></p>
+<p>还有一点我们需要了解，在这个扩展的plist文件中，有这样一个键：NSExtensionAttributes，里面有一个NSExtensionActivationRule的字典，其中可以设置一些键值，对分享插件的属性进行控制。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/152047_Y6qT_2340880.png" alt=""></p>
+<p>这些键的写法在官方文档中的介绍如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/152736_1KYh_2340880.png" alt=""></p>
+<p>这些键的意义，文档中介绍的很清楚，我们可以根据需要进行设置。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/07/31/92iOS8新特性扩展(Extension)应用之四——自定义键盘控件/" class="pre-post btn btn-default" title='iOS8新特性扩展(Extension)应用之四——自定义键盘控件'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS8新特性扩展(Extension)应用之四——自定义键盘控件</span>
+        </a>
+    
+    
+        <a href="/2015/07/30/91iOS8新特性扩展(Extension)应用之三——照片编辑插件/" class="next-post btn btn-default" title='iOS8新特性扩展(Extension)应用之三——照片编辑插件'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS8新特性扩展(Extension)应用之三——照片编辑插件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS8新特性扩展-Extension-应用之二——分享插件"><span class="toc-text">iOS8新特性扩展(Extension)应用之二——分享插件</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
