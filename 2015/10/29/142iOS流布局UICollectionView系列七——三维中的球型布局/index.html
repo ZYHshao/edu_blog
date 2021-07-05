@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS流布局UICollectionView系列七——三维中的球型布局 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS流布局UICollectionView系列七——三维中的球型布局">
+            
+	            iOS流布局UICollectionView系列七——三维中的球型布局
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/10/29</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS流布局UICollectionView系列七——三维中的球型布局"><a href="#iOS流布局UICollectionView系列七——三维中的球型布局" class="headerlink" title="iOS流布局UICollectionView系列七——三维中的球型布局"></a>iOS流布局UICollectionView系列七——三维中的球型布局</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>通过6篇的博客，从平面上最简单的规则摆放的布局，到不规则的瀑布流布局，再到平面中的圆环布局，我们突破了线性布局的局限，在后面，我们将布局扩展到了空间，在Z轴上进行了平移，我们实现了一个类似UIPickerView的布局模型，其实我们还可以再进一步，类比于平面布局，picKerView只是线性排列布局在空间上的旋转与平移，这次，我们更加充分了利用一下空间的尺寸，来设计一个圆球的布局模型。以下是前几篇博客地址：
+</code></pre><p>1.初识与简单实用UICollectionView：<a href="http://my.oschina.net/u/2340880/blog/522613" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/522613</a></p>
+<p>2.UICollectionView的代理方法：<a href="http://my.oschina.net/u/2340880/blog/522682" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/522682</a></p>
+<p>3.实用FlowLayout进行更灵活布局：<a href="http://my.oschina.net/u/2340880/blog/522748" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/522748</a></p>
+<p>4.自定义FlowLayout进行瀑布流布局：<a href="http://my.oschina.net/u/2340880/blog/522806" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/522806</a></p>
+<p>5.平面圆环布局的实现：<a href="http://my.oschina.net/u/2340880/blog/523064" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/523064</a></p>
+<p>6.将布局从平面应用到空间：<a href="http://my.oschina.net/u/2340880/blog/523341" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/523341</a></p>
+<h3 id="二、将布局扩展为空间球型"><a href="#二、将布局扩展为空间球型" class="headerlink" title="二、将布局扩展为空间球型"></a>二、将布局扩展为空间球型</h3><pre><code>在viewController中先实现一些准备代码：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    MyLayout * layout = [[MyLayout alloc]init];</span><br><span class="line">     UICollectionView * collect  = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, 320, 400) collectionViewLayout:layout];</span><br><span class="line">    collect.delegate=self;</span><br><span class="line">    collect.dataSource=self;</span><br><span class="line">    //这里设置的偏移量是为了无缝进行循环的滚动，具体在上一篇博客中有解释</span><br><span class="line">    collect.contentOffset = CGPointMake(320, 400);</span><br><span class="line">    [collect registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@&quot;cellid&quot;];</span><br><span class="line">    [self.view addSubview:collect];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView&#123;</span><br><span class="line">    return 1;</span><br><span class="line">&#125;</span><br><span class="line">//我们返回30的标签</span><br><span class="line">-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section&#123;</span><br><span class="line">    return 30;</span><br><span class="line">&#125;</span><br><span class="line">-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath&#123;</span><br><span class="line">    UICollectionViewCell * cell  = [collectionView dequeueReusableCellWithReuseIdentifier:@&quot;cellid&quot; forIndexPath:indexPath];</span><br><span class="line">    cell.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];</span><br><span class="line">    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];</span><br><span class="line">    label.text = [NSString stringWithFormat:@&quot;%ld&quot;,(long)indexPath.row];</span><br><span class="line">    [cell.contentView addSubview:label];</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)didReceiveMemoryWarning &#123;</span><br><span class="line">    [super didReceiveMemoryWarning];</span><br><span class="line">    // Dispose of any resources that can be recreated.</span><br><span class="line">&#125;</span><br><span class="line">//这里对滑动的contentOffset进行监控，实现循环滚动</span><br><span class="line">-(void)scrollViewDidScroll:(UIScrollView *)scrollView&#123;</span><br><span class="line">    if (scrollView.contentOffset.y&lt;200) &#123;</span><br><span class="line">        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y+10*400);</span><br><span class="line">    &#125;else if(scrollView.contentOffset.y&gt;11*400)&#123;</span><br><span class="line">        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, scrollView.contentOffset.y-10*400);</span><br><span class="line">    &#125;</span><br><span class="line">    if (scrollView.contentOffset.x&lt;160) &#123;</span><br><span class="line">        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x+10*320,scrollView.contentOffset.y);</span><br><span class="line">    &#125;else if(scrollView.contentOffset.x&gt;11*320)&#123;</span><br><span class="line">        scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x-10*320,scrollView.contentOffset.y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面的代码比较上一篇博客中的并没有什么大的改动，只是做了横坐标的兼容。</p>
+<p>在我们的layout类中，将代码修改成如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">-(void)prepareLayout&#123;</span><br><span class="line">    [super prepareLayout];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">//返回的滚动范围增加了对x轴的兼容</span><br><span class="line">-(CGSize)collectionViewContentSize&#123;</span><br><span class="line">    return CGSizeMake( self.collectionView.frame.size.width*([self.collectionView numberOfItemsInSection:0]+2), self.collectionView.frame.size.height*([self.collectionView numberOfItemsInSection:0]+2));</span><br><span class="line">&#125;</span><br><span class="line">-(BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds&#123;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath&#123;</span><br><span class="line">    UICollectionViewLayoutAttributes * atti = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];</span><br><span class="line">    //获取item的个数</span><br><span class="line">    int itemCounts = (int)[self.collectionView numberOfItemsInSection:0];</span><br><span class="line">    atti.center = CGPointMake(self.collectionView.frame.size.width/2+self.collectionView.contentOffset.x, self.collectionView.frame.size.height/2+self.collectionView.contentOffset.y);</span><br><span class="line">    atti.size = CGSizeMake(30, 30);</span><br><span class="line">    </span><br><span class="line">    CATransform3D trans3D = CATransform3DIdentity;</span><br><span class="line">    trans3D.m34 = -1/900.0;</span><br><span class="line">    </span><br><span class="line">    CGFloat radius = 15/tanf(M_PI*2/itemCounts/2);</span><br><span class="line">    //根据偏移量 改变角度</span><br><span class="line">    //添加了一个x的偏移量</span><br><span class="line">    float offsety = self.collectionView.contentOffset.y;</span><br><span class="line">    float offsetx = self.collectionView.contentOffset.x;</span><br><span class="line">    //分别计算偏移的角度</span><br><span class="line">    float angleOffsety = offsety/self.collectionView.frame.size.height;</span><br><span class="line">    float angleOffsetx = offsetx/self.collectionView.frame.size.width;</span><br><span class="line">    CGFloat angle1 = (float)(indexPath.row+angleOffsety-1)/itemCounts*M_PI*2;</span><br><span class="line">    //x，y的默认方向相反</span><br><span class="line">    CGFloat angle2 = (float)(indexPath.row-angleOffsetx-1)/itemCounts*M_PI*2;</span><br><span class="line">    //这里我们进行四个方向的排列</span><br><span class="line">   if (indexPath.row%4==1) &#123;</span><br><span class="line">        trans3D = CATransform3DRotate(trans3D, angle1, 1.0,0, 0);</span><br><span class="line">    &#125;else if(indexPath.row%4==2)&#123;</span><br><span class="line">        trans3D = CATransform3DRotate(trans3D, angle2, 0, 1, 0);</span><br><span class="line">    &#125;else if(indexPath.row%4==3)&#123;</span><br><span class="line">        trans3D = CATransform3DRotate(trans3D, angle1, 0.5,0.5, 0);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        trans3D = CATransform3DRotate(trans3D, angle1, 0.5,-0.5,0);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    trans3D = CATransform3DTranslate(trans3D, 0, 0, radius);</span><br><span class="line">    </span><br><span class="line">    atti.transform3D = trans3D;</span><br><span class="line">    return atti;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-(NSArray&lt;UICollectionViewLayoutAttributes *&gt; *)layoutAttributesForElementsInRect:(CGRect)rect&#123;</span><br><span class="line">    NSMutableArray * attributes = [[NSMutableArray alloc]init];</span><br><span class="line">    //遍历设置每个item的布局属性</span><br><span class="line">    for (int i=0; i&lt;[self.collectionView numberOfItemsInSection:0]; i++) &#123;</span><br><span class="line">        [attributes addObject:[self layoutAttributesForItemAtIndexPath:[NSIndexPath indexPathForItem:i inSection:0]]];</span><br><span class="line">    &#125;</span><br><span class="line">    return attributes;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>布局效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1029/132316_lNU0_2340880.png" alt=""></p>
+<p>滑动屏幕，这个圆球是可以进行滚动的。</p>
+<p>TIP：这里我们只平均分配了四个方向上的布局，如果item更加小也更加多，我们可以分配到更多的方向上，使球体更加充实。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/10/30/143iOS界面布局之三——纯代码的autoLayout及布局动画/" class="pre-post btn btn-default" title='iOS界面布局之三——纯代码的autoLayout及布局动画'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS界面布局之三——纯代码的autoLayout及布局动画</span>
+        </a>
+    
+    
+        <a href="/2015/10/28/141iOS流布局UICollectionView系列六——将布局从平面应用到空间/" class="next-post btn btn-default" title='iOS流布局UICollectionView系列六——将布局从平面应用到空间'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS流布局UICollectionView系列六——将布局从平面应用到空间</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS流布局UICollectionView系列七——三维中的球型布局"><span class="toc-text">iOS流布局UICollectionView系列七——三维中的球型布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、将布局扩展为空间球型"><span class="toc-text">二、将布局扩展为空间球型</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

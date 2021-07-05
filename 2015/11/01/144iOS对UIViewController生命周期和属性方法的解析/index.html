@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS对UIViewController生命周期和属性方法的解析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS对UIViewController生命周期和属性方法的解析">
+            
+	            iOS对UIViewController生命周期和属性方法的解析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/11/01</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS对UIViewController生命周期和属性方法的解析"><a href="#iOS对UIViewController生命周期和属性方法的解析" class="headerlink" title="iOS对UIViewController生命周期和属性方法的解析"></a>iOS对UIViewController生命周期和属性方法的解析</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>作为MVC设计模式中的C，Controller一直扮演着项目开发中最重要的角色，它是视图和数据的桥梁，通过它的管理，将数据有条有理的展示在我们的View层上。iOS中的UIViewController是UIKit框架中最基本的一个类。从第一个UI视图到复杂完整项目，都离不开UIViewController作为基础。基于UIViewController的封装和扩展，也能够出色的完成各种复杂界面逻辑。这篇博客，旨在讨论UIViewController的生命周期和属性方法，在最基础的东西上，往往会得到意想不到的惊喜。
+</code></pre><h3 id="二、UIViewController的生命周期"><a href="#二、UIViewController的生命周期" class="headerlink" title="二、UIViewController的生命周期"></a>二、UIViewController的生命周期</h3><pre><code>要了解UIViewController，先要弄清楚其生命周期。在面向对象的语言中，是对象，就一定要有生命周期，UIViewController也不例外，生命周期管理Controller的作用范围和时间，也管理其内对象的作用范围和时间。首先，UIViewController中与其生命周期有关的几个函数如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//类的初始化方法</span><br><span class="line">+ (void)initialize;</span><br><span class="line">//对象初始化方法</span><br><span class="line">- (instancetype)init;</span><br><span class="line">//从归档初始化</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)coder;</span><br><span class="line">//加载视图</span><br><span class="line">-(void)loadView;</span><br><span class="line">//将要加载视图</span><br><span class="line">- (void)viewDidLoad;</span><br><span class="line">//将要布局子视图</span><br><span class="line">-(void)viewWillLayoutSubviews;</span><br><span class="line">//已经布局子视图</span><br><span class="line">-(void)viewDidLayoutSubviews;</span><br><span class="line">//内存警告</span><br><span class="line">- (void)didReceiveMemoryWarning;</span><br><span class="line">//已经展示</span><br><span class="line">-(void)viewDidAppear:(BOOL)animated;</span><br><span class="line">//将要展示</span><br><span class="line">-(void)viewWillAppear:(BOOL)animated;</span><br><span class="line">//将要消失</span><br><span class="line">-(void)viewWillDisappear:(BOOL)animated;</span><br><span class="line">//已经消失</span><br><span class="line">-(void)viewDidDisappear:(BOOL)animated;</span><br><span class="line">//被释放</span><br><span class="line">-(void)dealloc;</span><br></pre></td></tr></table></figure>
+<p>上面这么多的函数，乍一看什么复杂，其实关系什么明朗，除了initialize,init和initWithCoder不是存在所有对象的声明周期中，其他函数都会在UIViewController的声明周期中有序的被调用。那么具体的调用顺序是怎样的呢，最好的办法是实践一下，通过编号打印，结果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1031/230611_fCjT_2340880.png" alt=""></p>
+<p>这是一个ViewController完整的声明周期，其实里面还有好多地方需要我们注意一下：</p>
+<p>1：initialize函数并不会每次创建对象都调用，只有在这个类第一次创建对象时才会调用，做一些类的准备工作，再次创建这个类的对象，initalize方法将不会被调用，对于这个类的子类，如果实现了initialize方法，在这个子类第一次创建对象时会调用自己的initalize方法，之后不会调用，如果没有实现，那么它的父类将替它再次调用一下自己的initialize方法，以后创建也都不会再调用。因此，如果我们有一些和这个相关的全局变量，可以在这里进行初始化。</p>
+<p>2：init方法和initCoder方法相似，只是被调用的环境不一样，如果用代码进行初始化，会调用init，从nib文件或者归档进行初始化，会调用initCoder。</p>
+<p>3：loadView方法是开始加载视图的起始方法，除非手动调用，否则在ViewController的生命周期中没特殊情况只会被调用一次。</p>
+<p>4：viewDidLoad方法是我们最常用的方法的，类中成员对象和变量的初始化我们都会放在这个方法中，在类创建后，无论视图的展现或消失，这个方法也是只会在将要布局时调用一次。</p>
+<p>5：viewWillAppear：视图将要展现时会调用。</p>
+<p>6：viewWillLayoutSubviews：在viewWillAppear后调用，将要对子视图进行布局。</p>
+<p>7：viewDidLayoutSubviews：已经布局完成子视图。</p>
+<p>8：viewDidAppare：视图完成显示时调用。</p>
+<p>9：viewWillDisappear：视图将要消失时调用。</p>
+<p>10：viewDidDisappear：视图已经消失时调用。</p>
+<p>11：dealloc：controller被释放时调用。</p>
+<p>注意：经过测试，从nib文件加载的controller，只要不释放，在每次viewWillAppare时都会调用layoutSubviews方法，有时甚至会在viewDidAppare后在调用一次layoutSubviews，而重点是从代码加载的则只会在开始调用一次，之后都不会，所以注意，在layoutSubviews中写相关的布局代码十分危险。</p>
+<h3 id="三、从storyBoard加载UIViewController实例的传值陷阱"><a href="#三、从storyBoard加载UIViewController实例的传值陷阱" class="headerlink" title="三、从storyBoard加载UIViewController实例的传值陷阱"></a>三、从storyBoard加载UIViewController实例的传值陷阱</h3><pre><code>我们知道，当我们从StoryBoard中加载ViewController时，我们在Controller中拖拽的视图是可以被初始化的，这里面有一点需要我们注意，如果我们需要向controller中视图进行传值设置，通过以下方法得到的Controller中，视图还没有被初始化创建出来：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> ViewController2 * viewController2 = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@&quot;ViewController2&quot;];</span><br></pre></td></tr></table></figure>
+<p>我们可以在ViewController2的storyBoard中拉一个label，然后关联到头文件中，如下打印，会发现我们得到controller时，里面的视图对象并没有进行创建:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ViewController2 * viewController2 = [[UIStoryboard storyboardWithName:@&quot;Main&quot; bundle:[NSBundle mainBundle]] instantiateViewControllerWithIdentifier:@&quot;ViewController2&quot;];</span><br><span class="line">    NSLog(@&quot;%@&quot;,viewController2.label);</span><br><span class="line">    [self presentViewController:viewController2 animated:YES completion:nil];</span><br></pre></td></tr></table></figure>
+<p>打印如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1031/235109_8Fzf_2340880.png" alt=""></p>
+<p>可以想象，如果我们这时候需要对label进行一些属性设置，必然失败。有人提出可以在创建后，手动调以下loadView方法，我们试一下，结果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1031/235311_SUDq_2340880.png" alt=""></p>
+<p>可以看到，手动调用loadView后，label是被创建了出来，但是暴漏了一个更严重的问题，系统不在调用ViewDidLoad方法，这是十分有风险的，因为我们大部分的初始化代码都会放在这个方法里，所以手动调用loadView是一种错误的方法，apple文档声明对于loadView方法，我们从来都不要手动直接调用，那么我们如何实现创建后对成员对象进行传值设置呢，iOS9中增加了这样一个方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)loadViewIfNeeded NS_AVAILABLE_IOS(9_0);</span><br></pre></td></tr></table></figure>
+<p>这个方法十分有用，调用这个方法，会将视图创建出来，并且不会忽略viewDidLoad的调用。</p>
+<p>在iOS9中，UIViewController还增加了下面一个布尔值的属性，可以同来判断controller的view是否已经加载完成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nullable, nonatomic, readonly, strong) UIView *viewIfLoaded NS_AVAILABLE_IOS(9_0);</span><br></pre></td></tr></table></figure>
+<h3 id="四、UIViewController与StroyBoard的相关相互方法"><a href="#四、UIViewController与StroyBoard的相关相互方法" class="headerlink" title="四、UIViewController与StroyBoard的相关相互方法"></a>四、UIViewController与StroyBoard的相关相互方法</h3><pre><code>对于ViewConroller，我们一般有两种方式创建，一种是用纯代码的方式，一种是与StoryBoard关联，在UIViewController中，有许多方法方便我们与StoryBoard进行交互联系。
+</code></pre><h4 id="1、ViewController直接在StoryBoard中进行跳转的传值"><a href="#1、ViewController直接在StoryBoard中进行跳转的传值" class="headerlink" title="1、ViewController直接在StoryBoard中进行跳转的传值"></a>1、ViewController直接在StoryBoard中进行跳转的传值</h4><pre><code>在StoryBoard中进行界面跳转是十分方便的，我们在StoryBoard中拉入两个ViewController，在一个上面添加一个按钮，点住按钮按住control，将鼠标拉到第二个controller上，会出现如下的跳转选项：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/1101/104048_G4Hk_2340880.png" alt=""></p>
+<p>我们选择一个后，就会在两个controller之间建立一个跳转连接。当我们运行点击按钮后，会自动从第一个controller跳转到第二个controller。在UIViewController中有如下方法可以对是否跳转进行控制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(nullable id)sender NS_AVAILABLE_IOS(6_0);</span><br></pre></td></tr></table></figure>
+<p>这个方法如果返回NO，自动跳转将不能进行，会被拒绝，需要注意的是，这个方法只会在自动的跳转时被调用，我们手动使用代码跳转StoryBoard中的连接关系时是不会被调用的，我们后面讨论。</p>
+<pre><code>在执行过上述方法后，如果返回YES，系统还会在执行如下一个方法，作为跳转前的准备，我们可以在这个方法中进行一些传值操作，这个方法无论使我们手动进行跳转还是storyboard中自动跳转，都会被执行：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(nullable id)sender NS_AVAILABLE_IOS(5_0);</span><br></pre></td></tr></table></figure>
+<p>sugur对象中封装了相关的ViewController，可以使用segue.destinationViewController获取。</p>
+<pre><code>segue在StoryBoard中除了用来自动正向跳转外，我们还可以进行反向的跳转，类似pop和dismiss方法，这种segue被称为unwind sugue。例如，我们有一个controller1和一个controllert2，要使用unwind segue从2返回1，我们需要在2中实现如下格式的方法：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (IBAction)unwindSegueToViewController:(UIStoryboardSegue *)segue &#123;</span><br><span class="line">    NSLog(@&quot;unwindSegueToViewController&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个方法中的返回值必须为IBAction，参数必须是UIStoryboardSegue，方法名我们可以自己定义，之后在StoryBoard中的ViewController1中的Exit选项中，我们会发现多了一个这样的方法：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1101/132323_g3LU_2340880.png" alt=""></p>
+<p>我们可以把它连接到viewController2中的一个按钮上：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1101/132400_8n8t_2340880.png" alt=""></p>
+<p>这样，当我们点击viewController2中的按钮时，就会返回到我们第一个ViewController1中了。</p>
+<p>当然，在使用unwind segue方法时，也是会有一些回调帮助我们进行跳转前的设置和传值，UIViewController如下方法会在跳转前调用，返回NO，则不能进行跳转：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-(BOOL)canPerformUnwindSegueAction:(SEL)action fromViewController:(UIViewController *)fromViewController withSender:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;canPerformUnwindSegueAction&quot;);</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后会执行我们自定义的unwindSegue方法，这个方法中我们可以什么都不写，模式是会进行跳转的。</p>
+<h4 id="2、使用代码跳转Storyboard中的controller"><a href="#2、使用代码跳转Storyboard中的controller" class="headerlink" title="2、使用代码跳转Storyboard中的controller"></a>2、使用代码跳转Storyboard中的controller</h4><pre><code>我们除了在Storyboard中拉拉扯扯可以进行控制器的跳转外，我们也可以使用代码来跳转Storyboard中segue连接关系。
+
+在Storyboard中两个控制器间建立一个segue联系，我们可以取一个名字：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/1101/133108_LLnB_2340880.png" alt=""></p>
+<p>在触发跳转的方法中，使用如下方法进行跳转，这里面的参数id就是我们取得segue的id：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)performSegueWithIdentifier:(NSString *)identifier sender:(nullable id)sender NS_AVAILABLE_IOS(5_0);</span><br></pre></td></tr></table></figure>
+<p>下面三个属性我们可以获取controller的nib文件名，其storyBoard和其Bundle:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@property(nullable, nonatomic, readonly, copy) NSString *nibName;  </span><br><span class="line">@property(nullable, nonatomic, readonly, strong) NSBundle *nibBundle; </span><br><span class="line">@property(nullable, nonatomic, readonly, strong) UIStoryboard *storyboard NS_AVAILABLE_IOS(5_0);</span><br></pre></td></tr></table></figure>
+<h3 id="五、UIViewController之间的一些从属关系"><a href="#五、UIViewController之间的一些从属关系" class="headerlink" title="五、UIViewController之间的一些从属关系"></a>五、UIViewController之间的一些从属关系</h3><pre><code>这部分的内容和方法可能我们接触用到的并不多，但是在某些情况下，使用这些方法可以大大的方便某些逻辑。
+</code></pre><h4 id="1、parentViewController"><a href="#1、parentViewController" class="headerlink" title="1、parentViewController"></a>1、parentViewController</h4><pre><code>UIViewController里面封装了一个数组，可以存放其子ViewController，系统中使用的例子就是导航和tabBar这类的控制器，我们使用如下方法可以直接访问这些父的controller：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nullable,nonatomic,weak,readonly) UIViewController *parentViewController;</span><br></pre></td></tr></table></figure>
+<h4 id="2、模态跳转中Controller的从属"><a href="#2、模态跳转中Controller的从属" class="headerlink" title="2、模态跳转中Controller的从属"></a>2、模态跳转中Controller的从属</h4><pre><code>在我们进行控制器的跳转时，只要控制器没有被释放，我们都可以顺藤摸瓜的找到它，使用如下两个方法：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//其所present的contller，比如，A和B两个controller，A跳转到B，那么A的presentedViewController就是B</span><br><span class="line">@property(nullable, nonatomic,readonly) UIViewController *presentedViewController  NS_AVAILABLE_IOS(5_0);</span><br><span class="line">//和上面的方法刚好相反，比如，A和B两个controller，A跳转到B，那么B的presentingViewController就是A</span><br><span class="line">@property(nullable, nonatomic,readonly) UIViewController *presentingViewController NS_AVAILABLE_IOS(5_0);</span><br></pre></td></tr></table></figure>
+<p>了解了上面方法我们可以知道，对于反向传值这样的问题，我们根本不需要代理，block，通知等这样的复杂手段，只需要获取跳转到它的Controller，直接设置即可。举个例子，我们需要在第二个界面消失后，改变第一个界面的颜色，在第二个controller中只需要下面的代码即可实现 ：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">    self.presentingViewController.view.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];</span><br><span class="line">    [self dismissViewControllerAnimated:YES completion:nil];</span><br></pre></td></tr></table></figure>
+<h3 id="六、UIViewController的模态跳转及动画特效"><a href="#六、UIViewController的模态跳转及动画特效" class="headerlink" title="六、UIViewController的模态跳转及动画特效"></a>六、UIViewController的模态跳转及动画特效</h3><pre><code>单纯的UIViewController中，我们使用最多的是如下的两个方法，一个向前跳转，一个向后返回:
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (void)presentViewController:(UIViewController *)viewControllerToPresent animated: (BOOL)flag completion:(void (^ __nullable)(void))completion NS_AVAILABLE_IOS(5_0);</span><br><span class="line">- (void)dismissViewControllerAnimated: (BOOL)flag completion: (void (^ __nullable)(void))completion NS_AVAILABLE_IOS(5_0);</span><br></pre></td></tr></table></figure>
+<p>从方法中，我们可以看到，有animated这个参数，来选择是否有动画特效，默认的动画特效是像抽屉一样从手机屏幕的下方向上弹起，当然，这个效果我们可以进行设置，UIViewController有如下一个属性来设置动画特效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic,assign) UIModalTransitionStyle modalTransitionStyle NS_AVAILABLE_IOS(3_0);</span><br></pre></td></tr></table></figure>
+<p>注意，这个要设置的是将要跳转到的controller，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UIModalTransitionStyle) &#123;</span><br><span class="line">    UIModalTransitionStyleCoverVertical = 0,//默认的，从下向上覆盖</span><br><span class="line">    UIModalTransitionStyleFlipHorizontal ,//水平翻转</span><br><span class="line">    UIModalTransitionStyleCrossDissolve,//溶解</span><br><span class="line">    UIModalTransitionStylePartialCurl ,从下向上翻页</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>除了跳转的效果，还有一个属性可以设置弹出的controler的填充效果，但是这个属性只在pad上有效，在iphone上无效，都是填充到整个屏幕：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic,assign) UIModalPresentationStyle modalPresentationStyle NS_AVAILABLE_IOS(3_2);</span><br><span class="line">//枚举如下</span><br><span class="line">typedef NS_ENUM(NSInteger, UIModalPresentationStyle) &#123;</span><br><span class="line">        UIModalPresentationFullScreen = 0,//填充整个屏幕</span><br><span class="line">        UIModalPresentationPageSheet,//留下状态栏</span><br><span class="line">        UIModalPresentationFormSheet,//四周留下变暗的空白</span><br><span class="line">        UIModalPresentationCurrentContext ,//和跳转到它的控制器保持一致</span><br><span class="line">        UIModalPresentationCustom NS_ENUM_AVAILABLE_IOS(7_0),//自定义</span><br><span class="line">        UIModalPresentationOverFullScreen NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">        UIModalPresentationOverCurrentContext NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">        UIModalPresentationPopover NS_ENUM_AVAILABLE_IOS(8_0) __TVOS_PROHIBITED,</span><br><span class="line">        UIModalPresentationNone NS_ENUM_AVAILABLE_IOS(7_0) = -1,         </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/11/02/145iOS界面布局之四——使用第三方库Masonry进行autolayout布局/" class="pre-post btn btn-default" title='iOS界面布局之四——使用第三方库Masonry进行autolayout布局'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS界面布局之四——使用第三方库Masonry进行autolayout布局</span>
+        </a>
+    
+    
+        <a href="/2015/10/30/143iOS界面布局之三——纯代码的autoLayout及布局动画/" class="next-post btn btn-default" title='iOS界面布局之三——纯代码的autoLayout及布局动画'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS界面布局之三——纯代码的autoLayout及布局动画</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS对UIViewController生命周期和属性方法的解析"><span class="toc-text">iOS对UIViewController生命周期和属性方法的解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、UIViewController的生命周期"><span class="toc-text">二、UIViewController的生命周期</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、从storyBoard加载UIViewController实例的传值陷阱"><span class="toc-text">三、从storyBoard加载UIViewController实例的传值陷阱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、UIViewController与StroyBoard的相关相互方法"><span class="toc-text">四、UIViewController与StroyBoard的相关相互方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、ViewController直接在StoryBoard中进行跳转的传值"><span class="toc-text">1、ViewController直接在StoryBoard中进行跳转的传值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、使用代码跳转Storyboard中的controller"><span class="toc-text">2、使用代码跳转Storyboard中的controller</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、UIViewController之间的一些从属关系"><span class="toc-text">五、UIViewController之间的一些从属关系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、parentViewController"><span class="toc-text">1、parentViewController</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、模态跳转中Controller的从属"><span class="toc-text">2、模态跳转中Controller的从属</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、UIViewController的模态跳转及动画特效"><span class="toc-text">六、UIViewController的模态跳转及动画特效</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
