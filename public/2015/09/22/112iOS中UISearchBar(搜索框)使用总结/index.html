@@ -1,0 +1,368 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS中UISearchBar(搜索框)使用总结 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中UISearchBar(搜索框)使用总结">
+            
+	            iOS中UISearchBar(搜索框)使用总结
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/09/22</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中UISearchBar-搜索框-使用总结"><a href="#iOS中UISearchBar-搜索框-使用总结" class="headerlink" title="iOS中UISearchBar(搜索框)使用总结"></a>iOS中UISearchBar(搜索框)使用总结</h2><p>初始化：UISearchBar继承于UIView，我们可以像创建View那样创建searchBar</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">    UISearchBar * bar = [[UISearchBar alloc]initWithFrame:CGRectMake(20, 100, 250, 40)];</span><br><span class="line">    [self.view addSubview:bar];</span><br></pre></td></tr></table></figure>
+<p>@property(nonatomic)        UIBarStyle              barStyle; </p>
+<p>这个属性可以设置searchBar的搜索框的风格，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UIBarStyle) &#123;</span><br><span class="line">    UIBarStyleDefault          = 0,//默认风格 白色搜索框，多出的背景为灰色</span><br><span class="line">    UIBarStyleBlack            = 1,//黑色风格，黑色的搜索框</span><br><span class="line">    //下面两个枚举已经被禁用，作用和黑色风格一样</span><br><span class="line">    UIBarStyleBlackOpaque      = 1, // Deprecated. Use UIBarStyleBlack</span><br><span class="line">    UIBarStyleBlackTranslucent = 2, // Deprecated. Use UIBarStyleBlack and set the translucent property to YES</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>@property(nonatomic,copy)   NSString               *text; </p>
+<p>设置搜索框中的文字</p>
+<p>@property(nonatomic,copy)   NSString               *prompt; </p>
+<p>这个属性的官方解释是在搜索框顶部显示一行文字，其实就是背景文字，上图说明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">   bar.prompt = @&quot;搜索框&quot;;</span><br><span class="line">   bar.text=@&quot;321111111111111111111111111&quot;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0922/171722_IiCf_2340880.png" alt=""></p>
+<p>@property(nonatomic,copy)   NSString               *placeholder;  </p>
+<p>和其他文本输入控件的placeholder相同，在输入文字时就会消失</p>
+<p>@property(nonatomic)        BOOL                    showsBookmarkButton; </p>
+<p>是否在搜索框右侧显示一个图书的按钮，默认为NO，YES的效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0922/172040_6Imi_2340880.png" alt=""></p>
+<p>@property(nonatomic)        BOOL                    showsCancelButton;</p>
+<p>是否显示取消按钮，默认为NO，YES的效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0922/172206_lasH_2340880.png" alt=""></p>
+<p>@property(nonatomic)        BOOL                    showsSearchResultsButton;</p>
+<p>是否显示搜索结果按钮，默认为NO，YES效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0922/172743_efn5_2340880.png" alt=""></p>
+<p>@property(nonatomic, getter=isSearchResultsButtonSelected) BOOL searchResultsButtonSelected ;</p>
+<p>设置搜索结果按钮的选中状态</p>
+<p>- (void)setShowsCancelButton:(BOOL)showsCancelButton animated:(BOOL)animated;</p>
+<p>设置显示取消按钮</p>
+<p>@property(nonatomic,retain) UIColor *tintColor;</p>
+<p>设置这个颜色值会影响搜索框中的光标的颜色</p>
+<p>@property(nonatomic,retain) UIColor *barTintColor;</p>
+<p>设置这个颜色会影响搜索框的背景颜色</p>
+<p>@property (nonatomic) UISearchBarStyle searchBarStyle;</p>
+<p>设置搜索框整体的风格，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSUInteger, UISearchBarStyle) &#123;</span><br><span class="line">    UISearchBarStyleDefault,    // currently UISearchBarStyleProminent</span><br><span class="line">    UISearchBarStyleProminent,  // 显示背景</span><br><span class="line">    UISearchBarStyleMinimal     // 不显示背景</span><br><span class="line">&#125; NS_ENUM_AVAILABLE_IOS(7_0);</span><br></pre></td></tr></table></figure>
+<p>@property(nonatomic,assign,getter=isTranslucent) BOOL translucent;</p>
+<p>设置是否半透明</p>
+<p>@property(nonatomic)      BOOL       showsScopeBar ;</p>
+<p>是否显示搜索栏的附件选择按钮试图，要想显示这个试图，首先要将这个属性设置为YES，之后给按钮数组中添加按钮，使用下面这个属性：</p>
+<p>@property(nonatomic,copy) NSArray   *scopeButtonTitles ；</p>
+<p>设置选择按钮试图的按钮标题</p>
+<p>@property(nonatomic)      NSInteger  selectedScopeButtonIndex;</p>
+<p>设置一个默认的选中按钮</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    bar = [[UISearchBar alloc]initWithFrame:CGRectMake(20, 100, 250, 200)];</span><br><span class="line">    bar.showsScopeBar=YES;</span><br><span class="line">    bar.scopeButtonTitles = @[@&quot;12&quot;,@&quot;2&quot;,@&quot;3&quot;,@&quot;4&quot;];</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2015/0922/183544_lq37_2340880.png" alt=""></p>
+<p>@property (nonatomic, readwrite, retain) UIView *inputAccessoryView;</p>
+<p>键盘的附属试图</p>
+<p>@property(nonatomic,retain) UIImage *backgroundImage;</p>
+<p>设置搜索框的背景图案</p>
+<p>@property(nonatomic,retain) UIImage *scopeBarBackgroundImage;</p>
+<p>设置附属选择按钮视图的背景图案</p>
+<p>- (void)setBackgroundImage:(UIImage *)backgroundImage forBarPosition:(UIBarPosition)barPosition barMetrics:(UIBarMetrics)barMetrics ;  </p>
+<p>- (UIImage *)backgroundImageForBarPosition:(UIBarPosition)barPosition barMetrics:(UIBarMetrics)barMetrics</p>
+<p>这一对方法可以设置和获取某个状态枚举下的搜索框的背景图案</p>
+<p>- (void)setSearchFieldBackgroundImage:(UIImage *)backgroundImage forState:(UIControlState)state;</p>
+<p>- (UIImage *)searchFieldBackgroundImageForState:(UIControlState)state;</p>
+<p>这一对方法用于设置和获取搜索框中TextField的背景图案</p>
+<p>- (void)setImage:(UIImage *)iconImage forSearchBarIcon:(UISearchBarIcon)icon state:(UIControlState)state ;</p>
+<p>- (UIImage *)imageForSearchBarIcon:(UISearchBarIcon)icon state:(UIControlState)state ;</p>
+<p>这一对方法用于获取和设置搜索栏icon图片的图案</p>
+<p>- (void)setScopeBarButtonBackgroundImage:(UIImage *)backgroundImage forState:(UIControlState)state; </p>
+<p>- (UIImage *)scopeBarButtonBackgroundImageForState:(UIControlState)state;</p>
+<p>这一对方法用于设置和获取搜索框的附加选择按钮视图的背景图案</p>
+<p>- (void)setScopeBarButtonDividerImage:(UIImage *)dividerImage forLeftSegmentState:(UIControlState)leftState rightSegmentState:(UIControlState)rightState;</p>
+<p>- (UIImage *)scopeBarButtonDividerImageForLeftSegmentState:(UIControlState)leftState rightSegmentState:(UIControlState)rightState;</p>
+<p>这一对方法用于获取和设置附加选择按钮视图中切换按钮的图案</p>
+<p>- (void)setScopeBarButtonTitleTextAttributes:(NSDictionary *)attributes forState:(UIControlState)state;</p>
+<p>- (NSDictionary *)scopeBarButtonTitleTextAttributesForState:(UIControlState)state;</p>
+<p>这一对方法用于设置和获取切换按钮标题文字的字体属性字典</p>
+<p>@property(nonatomic) UIOffset searchFieldBackgroundPositionAdjustment;</p>
+<p>搜索文字在搜索框中的位置偏移</p>
+<p>@property(nonatomic) UIOffset searchTextPositionAdjustment;</p>
+<p>textfield在搜索框中的位置偏移</p>
+<p>- (void)setPositionAdjustment:(UIOffset)adjustment forSearchBarIcon:(UISearchBarIcon)icon;</p>
+<p>- (UIOffset)positionAdjustmentForSearchBarIcon:(UISearchBarIcon)icon;</p>
+<p>设置搜索栏中图片的位置偏移，图片的枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UISearchBarIcon) &#123;</span><br><span class="line">    UISearchBarIconSearch, //搜索图标</span><br><span class="line">    UISearchBarIconClear, // 清除图标</span><br><span class="line">    UISearchBarIconBookmark, // 书本图标</span><br><span class="line">    UISearchBarIconResultsList, // 结果列表图标</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>下面是搜索框控件的一些代理方法：</p>
+<p>- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar;           </p>
+<p>将要开始编辑时的回调，返回为NO，则不能编辑</p>
+<p>- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar;                  </p>
+<p>已经开始编辑时的回调</p>
+<p>- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar;                </p>
+<p>将要结束编辑时的回调</p>
+<p>- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar;                   </p>
+<p>已经结束编辑的回调</p>
+<p>- (void)searchBar:(UISearchBar <em>)searchBar textDidChange:(NSString </em>)searchText;   编辑文字改变的回调</p>
+<p>- (BOOL)searchBar:(UISearchBar <em>)searchBar shouldChangeTextInRange:(NSRange)range replacementText:(NSString </em>)text ; </p>
+<p>编辑文字改变前的回调，返回NO则不能加入新的编辑文字</p>
+<p>- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar;       </p>
+<p>搜索按钮点击的回调</p>
+<p>- (void)searchBarBookmarkButtonClicked:(UISearchBar *)searchBar;             </p>
+<p>书本按钮点击的回调</p>
+<p>- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar;               </p>
+<p>取消按钮点击的回调</p>
+<p>- (void)searchBarResultsListButtonClicked:(UISearchBar *)searchBar; </p>
+<p>搜索结果按钮点击的回调</p>
+<p>- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope;</p>
+<p>搜索栏的附加试图中切换按钮触发的回调</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/09/26/113iOS9系列专题一——3D Touch/" class="pre-post btn btn-default" title='iOS9系列专题一——3D Touch'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS9系列专题一——3D Touch</span>
+        </a>
+    
+    
+        <a href="/2015/09/20/111mac端的优秀抓包工具——Charles使用/" class="next-post btn btn-default" title='mac端的优秀抓包工具——Charles使用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">mac端的优秀抓包工具——Charles使用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中UISearchBar-搜索框-使用总结"><span class="toc-text">iOS中UISearchBar(搜索框)使用总结</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

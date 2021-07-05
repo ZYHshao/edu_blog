@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS开发CoreAnimation解读之三——几种常用Layer的使用解析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发CoreAnimation解读之三——几种常用Layer的使用解析">
+            
+	            iOS开发CoreAnimation解读之三——几种常用Layer的使用解析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/12/01</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发CoreAnimation解读之三——几种常用Layer的使用解析"><a href="#iOS开发CoreAnimation解读之三——几种常用Layer的使用解析" class="headerlink" title="iOS开发CoreAnimation解读之三——几种常用Layer的使用解析"></a>iOS开发CoreAnimation解读之三——几种常用Layer的使用解析</h2><h3 id="一、CAEmitterLayer"><a href="#一、CAEmitterLayer" class="headerlink" title="一、CAEmitterLayer"></a>一、CAEmitterLayer</h3><pre><code>CAEmitterLayer是CoreAnimation框架中的粒子发射层，在以前的一片博客中有详细的介绍和范例，这里不再重复，地址如下：
+</code></pre><p>粒子效果的应用和火焰范例：<a href="http://my.oschina.net/u/2340880/blog/485095" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/485095</a></p>
+<h3 id="二、CAGradientLayer"><a href="#二、CAGradientLayer" class="headerlink" title="二、CAGradientLayer"></a>二、CAGradientLayer</h3><pre><code>CAGradientLayer是用于色彩梯度展示的layer图层，通过CAGradientLayer，我们可以很轻松的创建出有过渡效果的色彩图。其中属性如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">颜色数组，设置我们需要过的的颜色，必须是CGColor对象</span><br><span class="line">*/</span><br><span class="line">@property(nullable, copy) NSArray *colors;</span><br><span class="line">/*</span><br><span class="line">颜色开始进行过渡的位置</span><br><span class="line">这个数组中的元素是NSNumber类型，单调递增的，并且在0——1之间</span><br><span class="line">例如，如果我们设置两个颜色进行过渡，这个数组中写入0.5，则第一个颜色会在达到layer一半的时候开始向第二个颜色过渡</span><br><span class="line">*/</span><br><span class="line">@property(nullable, copy) NSArray&lt;NSNumber *&gt; *locations;</span><br><span class="line">/*</span><br><span class="line">下面两个参数用于设置渲染颜色的起点和终点 取值范围均为0——1</span><br><span class="line">默认起点为（0.5 ，0） 终点为（0.5 ，1）,颜色的过渡范围就是沿y轴从上向下</span><br><span class="line">*/</span><br><span class="line">@property CGPoint startPoint;</span><br><span class="line">@property CGPoint endPoint;</span><br><span class="line">/*</span><br><span class="line">渲染风格 iOS中只支持一种默认的kCAGradientLayerAxial，我们无需手动设置</span><br><span class="line">*/</span><br><span class="line">@property(copy) NSString *type;</span><br></pre></td></tr></table></figure>
+<p>用如下代码创建一个度过视图的效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    CAGradientLayer * layer = [CAGradientLayer layer];</span><br><span class="line">    layer.colors = @[(id)[UIColor redColor].CGColor,(id)[UIColor blueColor].CGColor,(id)[UIColor greenColor].CGColor];</span><br><span class="line">    layer.locations = @[@0.1,@0.7,@1];</span><br><span class="line">    layer.bounds = CGRectMake(0, 0, 100, 100);</span><br><span class="line">    layer.position = CGPointMake(100, 100);</span><br><span class="line">    layer.startPoint = CGPointMake(0, 0);</span><br><span class="line">    layer.endPoint = CGPointMake(1, 1);</span><br><span class="line">    [self.view.layer addSublayer:layer];</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1130/161908_1Vyx_2340880.png" alt=""></p>
+<h3 id="三、CAReplicatorLayer"><a href="#三、CAReplicatorLayer" class="headerlink" title="三、CAReplicatorLayer"></a>三、CAReplicatorLayer</h3><pre><code>CAReplocatorLayer是拷贝视图容器，我们可以通过它，将其中的子layer进行拷贝，并进行一些差异处理，其中常用属性方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//拷贝的次数</span><br><span class="line">@property NSInteger instanceCount;</span><br><span class="line">//是否开启景深效果</span><br><span class="line">@property BOOL preservesDepth;</span><br><span class="line">//当CAReplicatorLayer的子Layer层进行动画的时候，拷贝的副本执行动画的延时</span><br><span class="line">@property CFTimeInterval instanceDelay;</span><br><span class="line">//拷贝副本的3D变换</span><br><span class="line">@property CATransform3D instanceTransform;</span><br><span class="line">//拷贝副本的颜色变换</span><br><span class="line">@property(nullable) CGColorRef instanceColor;</span><br><span class="line">//每个拷贝副本的颜色偏移参数</span><br><span class="line">@property float instanceRedOffset;</span><br><span class="line">@property float instanceGreenOffset;</span><br><span class="line">@property float instanceBlueOffset;</span><br><span class="line">//每个拷贝副本的透明度偏移参数</span><br><span class="line">@property float instanceAlphaOffset;</span><br></pre></td></tr></table></figure>
+<p>例如，通过拷贝一个色块，使其产生平移排列：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">    CAReplicatorLayer *reLayer = [CAReplicatorLayer layer];</span><br><span class="line">    reLayer.position = CGPointMake(0, 0);</span><br><span class="line">    CALayer * layer= [CALayer layer];</span><br><span class="line">    [reLayer addSublayer:layer];</span><br><span class="line">    [self.view.layer addSublayer:reLayer];</span><br><span class="line">    layer.bounds = CGRectMake(0, 0, 20, 20);</span><br><span class="line">    layer.position = CGPointMake(30, 100);</span><br><span class="line">    layer.backgroundColor = [UIColor redColor].CGColor;</span><br><span class="line">    //每个副本向右平移25px</span><br><span class="line">    reLayer.instanceTransform=CATransform3DMakeTranslation(25, 0, 0);</span><br><span class="line">    //如果进行动画，副本延时一秒执行</span><br><span class="line">    reLayer.instanceDelay = 1;</span><br><span class="line">    //拷贝十个副本</span><br><span class="line">    reLayer.instanceCount = 10;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1201/152354_mDh8_2340880.png" alt=""></p>
+<h3 id="四、CAShapeLayer"><a href="#四、CAShapeLayer" class="headerlink" title="四、CAShapeLayer"></a>四、CAShapeLayer</h3><pre><code>CAShapeLayer是图形layer层，我们可以自定义这个层的形状。先来看其中我们可以使用的属性和方法：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nullable) CGPathRef path;</span><br></pre></td></tr></table></figure>
+<p>path属性为CAShapeLayer设置一个边界路径，例如我们可以创建一个三角形的路径通过如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">    CAShapeLayer * layer = [CAShapeLayer layer];</span><br><span class="line">    layer.position=CGPointMake(0,0);</span><br><span class="line">    CGMutablePathRef path = CGPathCreateMutable();</span><br><span class="line">    CGPathMoveToPoint(path, 0, 100, 100);</span><br><span class="line">    CGPathAddLineToPoint(path, 0, 300, 100);</span><br><span class="line">    CGPathAddLineToPoint(path, 0, 200, 200);</span><br><span class="line">    CGPathAddLineToPoint(path, 0, 100, 100);</span><br><span class="line">    layer.path=path;</span><br></pre></td></tr></table></figure>
+<p>仅仅有路径，不能将我们想要的形状画出来，下面一些属性可以对图形的一些基础属性进行设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">//设置图形的填充颜色</span><br><span class="line">@property(nullable) CGColorRef fillColor;</span><br><span class="line">/*</span><br><span class="line">设置图形的填充规则 选项如下：</span><br><span class="line">非零填充</span><br><span class="line"> NSString *const kCAFillRuleNonZero;</span><br><span class="line"> 奇偶填充</span><br><span class="line"> NSString *const kCAFillRuleEvenOdd;</span><br><span class="line">*/</span><br><span class="line">@property(copy) NSString *fillRule;</span><br><span class="line">//设置线条颜色</span><br><span class="line">@property(nullable) CGColorRef strokeColor;</span><br><span class="line">//设置线条的起点与终点 0-1之间</span><br><span class="line">@property CGFloat strokeStart;</span><br><span class="line">@property CGFloat strokeEnd;</span><br><span class="line">//设置线条宽度</span><br><span class="line">@property CGFloat lineWidth;</span><br><span class="line">//设置两条线段相交时锐角斜面长度</span><br><span class="line">@property CGFloat miterLimit;</span><br><span class="line">/*</span><br><span class="line">设置线条首尾的外观</span><br><span class="line">可选参数如下</span><br><span class="line">无形状</span><br><span class="line"> NSString *const kCALineCapButt;</span><br><span class="line"> 圆形</span><br><span class="line"> NSString *const kCALineCapRound;</span><br><span class="line"> 方形</span><br><span class="line"> NSString *const kCALineCapSquare;</span><br><span class="line">*/</span><br><span class="line">@property(copy) NSString *lineCap;</span><br><span class="line">/*</span><br><span class="line">设置线段的链接方式</span><br><span class="line">棱角</span><br><span class="line"> NSString *const kCALineJoinMiter;</span><br><span class="line"> 平滑</span><br><span class="line"> NSString *const kCALineJoinRound;</span><br><span class="line"> 折线</span><br><span class="line"> NSString *const kCALineJoinBevel;</span><br><span class="line">*/</span><br><span class="line">@property(copy) NSString *lineJoin;</span><br></pre></td></tr></table></figure>
+<p>修改一下上面的代码，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">CAShapeLayer * layer = [CAShapeLayer layer];</span><br><span class="line">    layer.position=CGPointMake(0,0);</span><br><span class="line">    CGMutablePathRef path = CGPathCreateMutable();</span><br><span class="line">    CGPathMoveToPoint(path, 0, 100, 100);</span><br><span class="line">    CGPathAddLineToPoint(path, 0, 300, 100);</span><br><span class="line">    CGPathAddLineToPoint(path, 0, 200, 200);</span><br><span class="line">    CGPathAddLineToPoint(path, 0, 100, 100);</span><br><span class="line">    layer.path=path;</span><br><span class="line">    layer.fillColor= [UIColor redColor].CGColor;</span><br><span class="line">    layer.fillRule = kCAFillRuleEvenOdd;</span><br><span class="line">    layer.strokeColor = [UIColor blueColor].CGColor;</span><br><span class="line">    layer.strokeStart =0;</span><br><span class="line">    layer.strokeEnd =0.5;</span><br><span class="line">    layer.lineWidth = 5;</span><br><span class="line">    layer.miterLimit = 1;</span><br><span class="line">    layer.lineJoin = kCALineJoinMiter;</span><br><span class="line">    [self.view.layer addSublayer:layer];</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1201/190231_b7yn_2340880.png" alt=""></p>
+<p>除此之外，我们还可以设置边界的线条为虚线，通过下面两个属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    //设置线段的宽度为5px 间距为10px</span><br><span class="line">    /*</span><br><span class="line">    这个数组中还可以继续添加，会循环进行设置 例如 5 2 1 3 则第一条线段5px，间距2px，第二条线段1px 间距3px再开始第一条线段</span><br><span class="line">    */</span><br><span class="line">    layer.lineDashPattern = @[@05,@10];</span><br><span class="line">    //设置从哪个位置开始</span><br><span class="line">    layer.lineDashPhase =5;</span><br></pre></td></tr></table></figure>
+<p>如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1201/190626_kqnL_2340880.png" alt=""></p>
+<h3 id="五、CATextLayer"><a href="#五、CATextLayer" class="headerlink" title="五、CATextLayer"></a>五、CATextLayer</h3><pre><code>CATextLayer可以进行文本的绘制，属性方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">//渲染的文字字符串</span><br><span class="line">@property(nullable, copy) id string;</span><br><span class="line">//设置字体</span><br><span class="line">@property(nullable) CFTypeRef font;</span><br><span class="line">//设置字号</span><br><span class="line">@property CGFloat fontSize;</span><br><span class="line">//设置文字颜色</span><br><span class="line">@property(nullable) CGColorRef foregroundColor;</span><br><span class="line">//是否换行</span><br><span class="line">@property(getter=isWrapped) BOOL wrapped;</span><br><span class="line">/*</span><br><span class="line">设置截断模式</span><br><span class="line"> NSString * const kCATruncationNone;</span><br><span class="line"> 截断前部分</span><br><span class="line"> NSString * const kCATruncationStart;</span><br><span class="line"> 截断后部分</span><br><span class="line"> NSString * const kCATruncationEnd;</span><br><span class="line"> 截断中间</span><br><span class="line"> NSString * const kCATruncationMiddle;</span><br><span class="line">*/</span><br><span class="line">@property(copy) NSString *truncationMode;</span><br><span class="line">/*</span><br><span class="line">设置文字对齐模式</span><br><span class="line"> NSString * const kCAAlignmentNatural;</span><br><span class="line"> NSString * const kCAAlignmentLeft;</span><br><span class="line"> NSString * const kCAAlignmentRight;</span><br><span class="line"> NSString * const kCAAlignmentCenter;</span><br><span class="line"> NSString * const kCAAlignmentJustified;</span><br><span class="line">*/</span><br><span class="line">@property(copy) NSString *alignmentMode;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/12/02/158iOS运用runtime全局修改UILabel的默认字体/" class="pre-post btn btn-default" title='iOS运用runtime全局修改UILabel的默认字体'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS运用runtime全局修改UILabel的默认字体</span>
+        </a>
+    
+    
+        <a href="/2015/11/26/156iOS开发CoreAnimation解读之二——对CALayer的分析/" class="next-post btn btn-default" title='iOS开发CoreAnimation解读之二——对CALayer的分析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发CoreAnimation解读之二——对CALayer的分析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发CoreAnimation解读之三——几种常用Layer的使用解析"><span class="toc-text">iOS开发CoreAnimation解读之三——几种常用Layer的使用解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、CAEmitterLayer"><span class="toc-text">一、CAEmitterLayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、CAGradientLayer"><span class="toc-text">二、CAGradientLayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、CAReplicatorLayer"><span class="toc-text">三、CAReplicatorLayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、CAShapeLayer"><span class="toc-text">四、CAShapeLayer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、CATextLayer"><span class="toc-text">五、CATextLayer</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

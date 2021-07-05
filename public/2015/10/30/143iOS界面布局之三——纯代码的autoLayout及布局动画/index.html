@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS界面布局之三——纯代码的autoLayout及布局动画 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS界面布局之三——纯代码的autoLayout及布局动画">
+            
+	            iOS界面布局之三——纯代码的autoLayout及布局动画
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/10/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS界面布局之三——纯代码的autoLayout及布局动画"><a href="#iOS界面布局之三——纯代码的autoLayout及布局动画" class="headerlink" title="iOS界面布局之三——纯代码的autoLayout及布局动画"></a>iOS界面布局之三——纯代码的autoLayout及布局动画</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>关于界面布局，apple的策略已经趋于成熟，autolayout的优势在开发中也已经展现的淋漓尽致。除了使用storyBoard进行布局约束的拖拽，有时我们也需要在代码中进行autolayout的布局设置，Masonry库可以方便的创建约束属性，实际上，我们也没有必要再使用系统原生的代码来创建和设置约束，这篇博客只作为使用的方法备忘。前几篇布局介绍的链接如下：
+</code></pre><p>使用autoresizing进行界面布局：<a href="http://my.oschina.net/u/2340880/blog/423357" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/423357</a></p>
+<p>初识autolayout布局模型：<a href="http://my.oschina.net/u/2340880/blog/423500" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/423500</a></p>
+<h3 id="二、了解一个类"><a href="#二、了解一个类" class="headerlink" title="二、了解一个类"></a>二、了解一个类</h3><pre><code>用代码来做视图间的相关约束，那么就一定要将“约束”也进行对象化，在iOS6之后，引入了autolayout这个概念，相应的也增加了NSLayoutConstraint这个对象，这个对象就是专门用来进行约束布局的设置对象。通过这个对象，我们可以设置类似视图对象之间的间距，约束的宽高，比例等属性。创建NSLayoutConstraint对象的方法有两种，下面我们分别介绍：
+</code></pre><h4 id="1、使用Objective-C风格的方法创建约束对象"><a href="#1、使用Objective-C风格的方法创建约束对象" class="headerlink" title="1、使用Objective-C风格的方法创建约束对象"></a>1、使用Objective-C风格的方法创建约束对象</h4><pre><code>所谓Objective-C风格的方法，就是通过原生枚举和一些属性设置来创建NSLayoutConstraint对象。使用NSLayoutConstraint类的如下方法：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+(instancetype)constraintWithItem:(id)view1 attribute:(NSLayoutAttribute)attr1 relatedBy:(NSLayoutRelation)relation toItem:(nullable id)view2 attribute:(NSLayoutAttribute)attr2 multiplier:(CGFloat)multiplier constant:(CGFloat)c;</span><br></pre></td></tr></table></figure>
+<p>先来介绍下方法中的参数都是什么意义，我们应该怎么用他们：</p>
+<p>view1：要添加约束的视图对象。</p>
+<p>attr1：要约束的对象属性，这个就是一些枚举，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, NSLayoutAttribute) &#123;</span><br><span class="line">    NSLayoutAttributeLeft = 1,//左</span><br><span class="line">    NSLayoutAttributeRight,//右</span><br><span class="line">    NSLayoutAttributeTop,//上</span><br><span class="line">    NSLayoutAttributeBottom,//下</span><br><span class="line">    NSLayoutAttributeLeading,//起始边，类似左，只在某些从右向左排列的语言中和NSLayoutAttributeLeft有大区别</span><br><span class="line">    NSLayoutAttributeTrailing,//结束边</span><br><span class="line">    NSLayoutAttributeWidth,//宽度</span><br><span class="line">    NSLayoutAttributeHeight,//高度</span><br><span class="line">    NSLayoutAttributeCenterX,//x中心</span><br><span class="line">    NSLayoutAttributeCenterY,//y中心</span><br><span class="line">    NSLayoutAttributeBaseline,//基线</span><br><span class="line">    NSLayoutAttributeLastBaseline = NSLayoutAttributeBaseline,</span><br><span class="line">    NSLayoutAttributeFirstBaseline NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    </span><br><span class="line">    //下面的属性是设置的边距 意义和上面类似 对应左，右等边距</span><br><span class="line">    NSLayoutAttributeLeftMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeRightMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeTopMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeBottomMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeLeadingMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeTrailingMargin NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeCenterXWithinMargins NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    NSLayoutAttributeCenterYWithinMargins NS_ENUM_AVAILABLE_IOS(8_0),</span><br><span class="line">    //无，后面会说应用场景</span><br><span class="line">    NSLayoutAttributeNotAnAttribute = 0</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>relation：约束的选项，对应&lt;=,==,&gt;=这些，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, NSLayoutRelation) &#123;</span><br><span class="line">    NSLayoutRelationLessThanOrEqual = -1,//&lt;=</span><br><span class="line">    NSLayoutRelationEqual = 0,//==</span><br><span class="line">    NSLayoutRelationGreaterThanOrEqual = 1,//&gt;=</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>view2:与之对应添加约束的视图对象，例如，如过我要设置view1的上边距离父视图的上边一定间距，这个view2就是view1的父视图，如果我要设置view1与另一个视图一定距离，这个view2就是另一个视图。</p>
+<p>attr2：view2的要约束的属性，和attr1含义一样。</p>
+<p>multiplie:约束的比例，比如view1的宽是view2的宽的两倍，这个multiplie就是2.</p>
+<p>C：这是具体的约束值</p>
+<p>对于这些属性，文档上有这样的解释：view1.attr1 = view2.attr2 * multiplier + constant</p>
+<p>例如，我们创建一个label，将它的宽高固定为100*100，位置放在屏幕的中央，我们可以使用如下的约束代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">UILabel * label = [[UILabel alloc]init];</span><br><span class="line">    label.numberOfLines = 0;</span><br><span class="line">    //使用代码布局 需要将这个属性设置为NO</span><br><span class="line">    label.translatesAutoresizingMaskIntoConstraints = NO;</span><br><span class="line">    label.backgroundColor = [UIColor redColor];</span><br><span class="line">    //创建x居中的约束</span><br><span class="line">    NSLayoutConstraint * constraintx = [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1 constant:0];</span><br><span class="line">    //创建y居中的约束</span><br><span class="line">    NSLayoutConstraint * constrainty = [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterY multiplier:1 constant:0];</span><br><span class="line">    //创建宽度约束</span><br><span class="line">    NSLayoutConstraint * constraintw = [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];</span><br><span class="line">    //创建高度约束</span><br><span class="line">    NSLayoutConstraint * constrainth = [NSLayoutConstraint constraintWithItem:label attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1 constant:100];</span><br><span class="line">    //添加约束之前，必须将视图加在父视图上</span><br><span class="line">    [self.view addSubview:label];</span><br><span class="line">    [self.view addConstraints:@[constraintx,constrainty,constrainth,constraintw]];</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1030/143646_eUwn_2340880.png" alt=""></p>
+<p>可以发现，一个如此简单的约束方式，我们用这样的代码要写这么一大坨，麻烦而且不直观。于是，apple又提供给我们下面一种方式。</p>
+<h4 id="2-使用ASCLL字符创造艺术般的格式化字符串约束"><a href="#2-使用ASCLL字符创造艺术般的格式化字符串约束" class="headerlink" title="2.使用ASCLL字符创造艺术般的格式化字符串约束"></a>2.使用ASCLL字符创造艺术般的格式化字符串约束</h4><pre><code>看到这个小标题是不是眼前一亮，这个标题不是我凭空想象出来的，apple的文档上就是这么写的。十分可爱，对吧。相对于NSLayoutConstraint中的创建方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (NSArray&lt;__kindof NSLayoutConstraint *&gt; *)constraintsWithVisualFormat:(NSString *)format options:(NSLayoutFormatOptions)opts metrics:(nullable NSDictionary&lt;NSString *,id&gt; *)metrics views:(NSDictionary&lt;NSString *, id&gt; *)views;</span><br></pre></td></tr></table></figure>
+<pre><code>那么我们先来看，什么是格式化的字符串约束。
+
+说到格式化的字符串约束，要先提一个东西VFL：visual format language——格式化约束语言，这又是什么鬼？确实，这个东西写出来第一眼看上去真的不知道是什么鬼，就比如要设置一个label，距离上边100，左边20，宽高都为100，代码如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> label.numberOfLines = 0;</span><br><span class="line">    label.translatesAutoresizingMaskIntoConstraints = NO;</span><br><span class="line">    label.backgroundColor = [UIColor redColor];</span><br><span class="line">    </span><br><span class="line">    //label.text=@&quot;12332322132131233213213&quot;;</span><br><span class="line">      [self.view addSubview:label];</span><br><span class="line">    NSArray * constraintArray = [NSLayoutConstraint constraintsWithVisualFormat:@&quot;H:|-20-[label(100@1000)]&quot; options:0 metrics:nil views:NSDictionaryOfVariableBindings(label)];</span><br><span class="line">    NSArray * constraintArray2 = [NSLayoutConstraint constraintsWithVisualFormat:@&quot;V:|-100-[label(100)]&quot; options:0 metrics:nil views:NSDictionaryOfVariableBindings(label)];</span><br><span class="line">    [self.view addConstraints:constraintArray];</span><br><span class="line">    [self.view addConstraints:constraintArray2];</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1030/151246_vrvi_2340880.png" alt=""></p>
+<p>代码少了很多，对吧，但是中间那部分字符串什么玩意？下面我们来解释一下。</p>
+<pre><code>VFL语言我个人而言，他很类似于古代的象形文字(不知道是否apple的工程师从其中得到灵感)，对布局的约束设置是直观的用符号表达出来的，例如：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">H:|-20-[label(100@1000)]</span><br></pre></td></tr></table></figure>
+<p>前面的H代表是水平的布局还是垂直的布局，H代表水平，V表示垂直，|表示父视图的边沿，-20-表示距离20px，[]内是要布局摆放的视图对象名，()中是约束的尺寸，H下则为宽度，V下则为高度,@后面的数字代表优先级。</p>
+<p>创建方法中的options参数，用来设置对齐模式，不需要可以写0：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, NSLayoutFormatOptions) &#123;</span><br><span class="line">    NSLayoutFormatAlignAllLeft = (1 &lt;&lt; NSLayoutAttributeLeft),</span><br><span class="line">    NSLayoutFormatAlignAllRight = (1 &lt;&lt; NSLayoutAttributeRight),</span><br><span class="line">    NSLayoutFormatAlignAllTop = (1 &lt;&lt; NSLayoutAttributeTop),</span><br><span class="line">    NSLayoutFormatAlignAllBottom = (1 &lt;&lt; NSLayoutAttributeBottom),</span><br><span class="line">    NSLayoutFormatAlignAllLeading = (1 &lt;&lt; NSLayoutAttributeLeading),</span><br><span class="line">    NSLayoutFormatAlignAllTrailing = (1 &lt;&lt; NSLayoutAttributeTrailing),</span><br><span class="line">    NSLayoutFormatAlignAllCenterX = (1 &lt;&lt; NSLayoutAttributeCenterX),</span><br><span class="line">    NSLayoutFormatAlignAllCenterY = (1 &lt;&lt; NSLayoutAttributeCenterY),</span><br><span class="line">    NSLayoutFormatAlignAllBaseline = (1 &lt;&lt; NSLayoutAttributeBaseline),</span><br><span class="line">    NSLayoutFormatAlignAllLastBaseline = NSLayoutFormatAlignAllBaseline,</span><br><span class="line">    NSLayoutFormatAlignAllFirstBaseline NS_ENUM_AVAILABLE_IOS(8_0) = (1 &lt;&lt; NSLayoutAttributeFirstBaseline),</span><br><span class="line">    </span><br><span class="line">    NSLayoutFormatAlignmentMask = 0xFFFF,</span><br><span class="line">    </span><br><span class="line">    /* choose only one of these three</span><br><span class="line">     */</span><br><span class="line">    NSLayoutFormatDirectionLeadingToTrailing = 0 &lt;&lt; 16, // default</span><br><span class="line">    NSLayoutFormatDirectionLeftToRight = 1 &lt;&lt; 16,</span><br><span class="line">    NSLayoutFormatDirectionRightToLeft = 2 &lt;&lt; 16,  </span><br><span class="line">    </span><br><span class="line">    NSLayoutFormatDirectionMask = 0x3 &lt;&lt; 16,  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>metrics参数是属性替换字典，例如我们上边用到的距离左边界20，如果这个20是一个变量width,我们可以将20的地方换成width，然后配置这个字典：@{@”width”:@20}，这样，在布局时，系统会把width换成20。</p>
+<p>views是对象的映射字典，原理也是将字符串中的对象名label映射成真实的对象，NSDictionaryOfVariableBindings会帮我们生成这样的字典，我们只需要想对象传进去即可，如果要手动创建这字典，格式如下：@{@”label”：label}.</p>
+<h3 id="三、使用aotulayout设计一个聊天界面的输入框"><a href="#三、使用aotulayout设计一个聊天界面的输入框" class="headerlink" title="三、使用aotulayout设计一个聊天界面的输入框"></a>三、使用aotulayout设计一个聊天界面的输入框</h3><pre><code>仔细观察QQ或者其他聊天工具的app上的输入框，会发现他非常智能，宽度会随着我们输入文字的行数进行自适应，并且这个宽度不是无限增大的，当我们文字多到一定行数，宽度会保持不变，文本框可以进行内容滑动，如果不用autolayout，这个功能会比较棘手一些，但是使用它，会发现这是如此的容易：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">@interface ViewController ()&lt;UITextViewDelegate&gt;</span><br><span class="line">&#123;</span><br><span class="line">    UITextView * textView ;</span><br><span class="line">    NSArray * array1;</span><br><span class="line">    NSArray * array2;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    textView = [[UITextView alloc]init];</span><br><span class="line">    textView.layer.borderColor = [[UIColor grayColor]CGColor];</span><br><span class="line">    textView.layer.borderWidth = 1;</span><br><span class="line">    textView.translatesAutoresizingMaskIntoConstraints = NO;</span><br><span class="line">    textView.delegate=self;</span><br><span class="line">    [self.view addSubview:textView];</span><br><span class="line">    array1 = [NSLayoutConstraint constraintsWithVisualFormat:@&quot;H:|-100-[textView]-100-|&quot; options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)];</span><br><span class="line">    array2 = [NSLayoutConstraint constraintsWithVisualFormat:@&quot;V:|-150-[textView(30)]&quot; options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)];</span><br><span class="line">    [self.view addConstraints:array1];</span><br><span class="line">    [self.view addConstraints:array2];</span><br><span class="line">  </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text&#123;</span><br><span class="line">    //当文本高度大于textView的高度并且小于100时，更新约束</span><br><span class="line">    if (textView.contentSize.height&gt;textView.frame.size.height&amp;&amp;textView.contentSize.height&lt;100) &#123;</span><br><span class="line">        float hight =textView.contentSize.height;</span><br><span class="line">        //将以前的移除掉</span><br><span class="line">        [self.view removeConstraints:array1];</span><br><span class="line">        [self.view removeConstraints:array2];</span><br><span class="line">        array1 = [NSLayoutConstraint constraintsWithVisualFormat:@&quot;H:|-100-[textView]-100-|&quot; options:0 metrics:nil views:NSDictionaryOfVariableBindings(textView)];</span><br><span class="line">        array2 = [NSLayoutConstraint constraintsWithVisualFormat:@&quot;V:|-150-[textView(hight)]&quot; options:0 metrics:@&#123;@&quot;hight&quot;:[NSNumber numberWithFloat:hight]&#125; views:NSDictionaryOfVariableBindings(textView)];</span><br><span class="line">        [self.view addConstraints:array1];</span><br><span class="line">        [self.view addConstraints:array2];</span><br><span class="line">    &#125;</span><br><span class="line">    //更新约束</span><br><span class="line">    [self.view updateConstraintsIfNeeded];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，当我们进行输入的时候，textView的高度可以自适应文字行数了。</p>
+<h3 id="四、通过动画改善更新约束时的效果"><a href="#四、通过动画改善更新约束时的效果" class="headerlink" title="四、通过动画改善更新约束时的效果"></a>四、通过动画改善更新约束时的效果</h3><pre><code>这一点非常coll，上面我们已经实现了textView随文本的行数高度进行自适应，但是变化的效果十分生硬，还要apple的动画框架支持autolayout，把刚才调用更新约束的地方进行如下修改：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[UIView animateWithDuration:1 animations:^&#123;</span><br><span class="line">        [self.view layoutIfNeeded];</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>试试看，变换的效果已经非常平滑了。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1030/162556_Ocoj_2340880.png" alt=""></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/11/01/144iOS对UIViewController生命周期和属性方法的解析/" class="pre-post btn btn-default" title='iOS对UIViewController生命周期和属性方法的解析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS对UIViewController生命周期和属性方法的解析</span>
+        </a>
+    
+    
+        <a href="/2015/10/29/142iOS流布局UICollectionView系列七——三维中的球型布局/" class="next-post btn btn-default" title='iOS流布局UICollectionView系列七——三维中的球型布局'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS流布局UICollectionView系列七——三维中的球型布局</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS界面布局之三——纯代码的autoLayout及布局动画"><span class="toc-text">iOS界面布局之三——纯代码的autoLayout及布局动画</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、了解一个类"><span class="toc-text">二、了解一个类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、使用Objective-C风格的方法创建约束对象"><span class="toc-text">1、使用Objective-C风格的方法创建约束对象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-使用ASCLL字符创造艺术般的格式化字符串约束"><span class="toc-text">2.使用ASCLL字符创造艺术般的格式化字符串约束</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、使用aotulayout设计一个聊天界面的输入框"><span class="toc-text">三、使用aotulayout设计一个聊天界面的输入框</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、通过动画改善更新约束时的效果"><span class="toc-text">四、通过动画改善更新约束时的效果</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

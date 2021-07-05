@@ -1,0 +1,328 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS9新特性——堆叠视图UIStackView | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS9新特性——堆叠视图UIStackView">
+            
+	            iOS9新特性——堆叠视图UIStackView
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/11/17</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS9新特性——堆叠视图UIStackView"><a href="#iOS9新特性——堆叠视图UIStackView" class="headerlink" title="iOS9新特性——堆叠视图UIStackView"></a>iOS9新特性——堆叠视图UIStackView</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>随着autolayout的推广开来，更多的app开始使用自动布局的方式来构建自己的UI系统，autolayout配合storyBoard和一些第三方的框架，对于创建约束来说，已经十分方便，但是对于一些动态的线性布局的视图，我们需要手动添加的约束不仅非常多，而且如果我们需要插入或者移除其中的一些UI元素的时候，我们又要做大量的修改约束的工作，UIStackView正好可以解决这样的问题。
+</code></pre><h3 id="二、在storyBoard上初识StackView"><a href="#二、在storyBoard上初识StackView" class="headerlink" title="二、在storyBoard上初识StackView"></a>二、在storyBoard上初识StackView</h3><pre><code>UIStackView是一个管理一组堆叠视图的控制器类视图，所谓堆叠视图时一种平铺式的线性布局方式，不可重叠，布局方向也不可交错，如果你做过watchOS的开发，你会发现，其实StackView与watchOS中的group十分能相似。
+</code></pre><p>例如，我们如果需要一个如下效果的布局，在屏幕的中间摆放几个大小一致的色块，无论屏幕朝向如何，其位置都不会变化，并且可以向其中添加和移除色块的数量：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1117/111558_HjYg_2340880.png" alt="">       <img src="http://static.oschina.net/uploads/space/2015/1117/111558_gGUi_2340880.png" alt=""></p>
+<p>首先，我们在ViewController中拉入一个stackView：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1117/111721_LIF0_2340880.png" alt=""></p>
+<p>将一些属性设置如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1117/111830_LQxh_2340880.png" alt=""></p>
+<p>Axis是设置布局的方向，有水平和垂直两种方式，一个StackView只能选择一种布局模式。</p>
+<p>Alignment是选择其管理视图的对齐模式，我们这里选择充满。</p>
+<p>Distribution是设置其管理视图的排列方式，我们选择等宽充满。</p>
+<p>Spacing是设置视图之间的间距，设置为10.</p>
+<p>之后有一点需要注意，stackView用于布局其内部管理的视图，对于它本身，我们还需要添加一些约束，将它约束在屏幕的中间。</p>
+<p>我们向其中拖入任意数量的view，设置不同的颜色，就实现了我们想要的效果，并且可以随意动态删除和添加其中的view数量，不需要改变约束。</p>
+<h3 id="三、从代码学习UIStackView"><a href="#三、从代码学习UIStackView" class="headerlink" title="三、从代码学习UIStackView"></a>三、从代码学习UIStackView</h3><pre><code>通过代码创建一个UIStackView也非常简单，首先，我们先通过代码实现上面的效果：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> NSMutableArray * array = [[NSMutableArray alloc]init];</span><br><span class="line">    for (int i =0 ; i&lt;5; i++) &#123;</span><br><span class="line">        UIView * view = [[UIView alloc]init];</span><br><span class="line">        view.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];</span><br><span class="line">        [array addObject:view];</span><br><span class="line">    &#125;</span><br><span class="line">    UIStackView * stackView = [[UIStackView alloc]initWithArrangedSubviews:array];</span><br><span class="line">    [self.view addSubview:stackView];</span><br><span class="line">    [stackView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.centerX.equalTo(self.view.mas_centerX);</span><br><span class="line">        make.centerY.equalTo(self.view.mas_centerY);</span><br><span class="line">        make.leading.equalTo(self.view.mas_leading).offset(20);</span><br><span class="line">        make.trailing.equalTo(self.view.mas_trailing).offset(-20);</span><br><span class="line">        make.size.height.equalTo(@100);</span><br><span class="line">    &#125;];</span><br><span class="line">    stackView.axis = UILayoutConstraintAxisHorizontal;</span><br><span class="line">    stackView.distribution = UIStackViewDistributionFillEqually;</span><br><span class="line">    stackView.alignment = UIStackViewAlignmentFill;</span><br></pre></td></tr></table></figure>
+<p>效果图如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1117/131959_4APz_2340880.png" alt="">   <img src="http://static.oschina.net/uploads/space/2015/1117/131959_TK5Y_2340880.png" alt=""></p>
+<p>我们的布局没有问题，并且可以动态的改变其中view的个数，使用如下方法添加一个view：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    UIView * newView = [[UIView alloc]init];</span><br><span class="line">    newView.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];</span><br><span class="line">    [stackView addArrangedSubview:newView];</span><br></pre></td></tr></table></figure>
+<p>与之相对，我们可以使用下面的方法移除一个view：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">    UIView * view = [stackView arrangedSubviews].lastObject;</span><br><span class="line">    [stackView removeArrangedSubview:view];</span><br></pre></td></tr></table></figure>
+<p>特别注意：addArrangedSubview和addSubview有很大的区别，使用前者是将试图添加进StackView的布局管理，后者只是简单的加在试图的层级上，并不接受StackView的布局管理。</p>
+<p>技巧：因为StackView继承于UIView，因此在布局改变的时候，我们可以使用UIView层的动画，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">        //在添加view的时候会有动画效果，移除的时候没有</span><br><span class="line">        [stackView addArrangedSubview:newView];</span><br><span class="line">        [UIView animateWithDuration:1 animations:^&#123;</span><br><span class="line">            [stackView layoutIfNeeded];</span><br><span class="line">        &#125;];</span><br></pre></td></tr></table></figure>
+<h3 id="四、再来深入理解下UIStackView"><a href="#四、再来深入理解下UIStackView" class="headerlink" title="四、再来深入理解下UIStackView"></a>四、再来深入理解下UIStackView</h3><pre><code>通过上面的介绍，我们已经基本了解了StackView的使用和特点，下面我们再来仔细介绍一下与其相关的属性和方法的使用，使我们能够更加得心应手。
+</code></pre><p>有关被管理视图的添加与移除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//初始化方法，通过数组传入被管理的视图</span><br><span class="line">- (instancetype)initWithArrangedSubviews:(NSArray&lt;__kindof UIView *&gt; *)views; </span><br><span class="line">//获取被管理的所有视图</span><br><span class="line">@property(nonatomic,readonly,copy) NSArray&lt;__kindof UIView *&gt; *arrangedSubviews;</span><br><span class="line">//添加一个视图进行管理</span><br><span class="line">- (void)addArrangedSubview:(UIView *)view;</span><br><span class="line">//移除一个被管理的视图</span><br><span class="line">- (void)removeArrangedSubview:(UIView *)view;</span><br><span class="line">//在指定位置插入一个被管理的视图</span><br><span class="line">- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)stackIndex;</span><br></pre></td></tr></table></figure>
+<p>与StackView布局设置相关：</p>
+<p>1.布局模式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic) UILayoutConstraintAxis axis;</span><br></pre></td></tr></table></figure>
+<p>上面这个属性用于设置布局的模型，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//stackView只有两种布局模式 水平和竖直</span><br><span class="line">typedef NS_ENUM(NSInteger, UILayoutConstraintAxis) &#123;</span><br><span class="line">    //水平布局</span><br><span class="line">    UILayoutConstraintAxisHorizontal = 0,</span><br><span class="line">    //竖直布局</span><br><span class="line">    UILayoutConstraintAxisVertical = 1</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>2.对齐模式： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic) UIStackViewAlignment alignment;</span><br></pre></td></tr></table></figure>
+<p>这个属性用于设置控件的对其模式，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UIStackViewAlignment) &#123;</span><br><span class="line">   //水平布局时为高度充满，竖直布局时为宽度充满</span><br><span class="line">    UIStackViewAlignmentFill,</span><br><span class="line">    //前边对其</span><br><span class="line">    UIStackViewAlignmentLeading,</span><br><span class="line">    //顶部对其</span><br><span class="line">    UIStackViewAlignmentTop = UIStackViewAlignmentLeading,</span><br><span class="line">    //第一个控件文字的基线对其 水平布局有效</span><br><span class="line">    UIStackViewAlignmentFirstBaseline, </span><br><span class="line">    //中心对其</span><br><span class="line">    UIStackViewAlignmentCenter,</span><br><span class="line">    //后边对其</span><br><span class="line">    UIStackViewAlignmentTrailing,</span><br><span class="line">    //底部对其</span><br><span class="line">    UIStackViewAlignmentBottom = UIStackViewAlignmentTrailing,</span><br><span class="line">    //基线对其，水平布局有效</span><br><span class="line">    UIStackViewAlignmentLastBaseline, </span><br><span class="line">&#125; NS_ENUM_AVAILABLE_IOS(9_0);</span><br></pre></td></tr></table></figure>
+<p>在上面的例子中，我们设置了对其方式为充满，这样的话，我们就不需要再做过多控件尺寸的约束，如果我们被管理的控件高度或者宽度不一，我们可以设置中心对其，这样的话，我们还需要为每个控件添加一个宽度或者高度的约束，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">    NSMutableArray * array = [[NSMutableArray alloc]init];</span><br><span class="line">    for (int i =0 ; i&lt;5; i++) &#123;</span><br><span class="line">        UIView * view = [[UIView alloc]init];</span><br><span class="line">        view.backgroundColor = [UIColor colorWithRed:arc4random()%255/255.0 green:arc4random()%255/255.0 blue:arc4random()%255/255.0 alpha:1];</span><br><span class="line">        float height = arc4random()%90+10;</span><br><span class="line">        [view mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">            make.height.equalTo([NSNumber numberWithFloat:height]);</span><br><span class="line">        &#125;];</span><br><span class="line">        [array addObject:view];</span><br><span class="line">    &#125;</span><br><span class="line">    stackView = [[UIStackView alloc]initWithArrangedSubviews:array];</span><br><span class="line">    [self.view addSubview:stackView];</span><br><span class="line">    [stackView mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.centerX.equalTo(self.view.mas_centerX);</span><br><span class="line">        make.centerY.equalTo(self.view.mas_centerY);</span><br><span class="line">        make.leading.equalTo(self.view.mas_leading).offset(20);</span><br><span class="line">        make.trailing.equalTo(self.view.mas_trailing).offset(-20);</span><br><span class="line">        make.size.height.equalTo(@100);</span><br><span class="line">    &#125;];</span><br><span class="line">    stackView.axis = UILayoutConstraintAxisHorizontal;</span><br><span class="line">    stackView.distribution = UIStackViewDistributionFillEqually;</span><br><span class="line">    stackView.alignment = UIStackViewAlignmentCenter;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1117/134827_ltLN_2340880.png" alt="">  <img src="http://static.oschina.net/uploads/space/2015/1117/134827_sbPw_2340880.png" alt=""></p>
+<p>这样，参差不齐的控件布局我们也可以轻松完成。</p>
+<p>3.排列方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic) UIStackViewDistribution distribution;</span><br></pre></td></tr></table></figure>
+<p>排列方式的枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UIStackViewDistribution) &#123;</span><br><span class="line">    //充满，当只有一个控件时可以使用</span><br><span class="line">    UIStackViewDistributionFill = 0,</span><br><span class="line">    //平分充满，每个控件占据相同尺寸排列充满</span><br><span class="line">    UIStackViewDistributionFillEqually,</span><br><span class="line">    //会优先按照约束的尺寸进行排列，如果没有充满，会拉伸最后一个排列的控件充满</span><br><span class="line">    UIStackViewDistributionFillProportionally,</span><br><span class="line">    //等间距排列</span><br><span class="line">    UIStackViewDistributionEqualSpacing,</span><br><span class="line">    //中心距离相等</span><br><span class="line">    UIStackViewDistributionEqualCentering,</span><br><span class="line">&#125; NS_ENUM_AVAILABLE_IOS(9_0);</span><br></pre></td></tr></table></figure>
+<p>注意，除了我们选择fill属性时不需约束控件视图的尺寸，其他都需要进行约束，例如如果我们选择等间距，我把改成如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">     [view mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">            make.height.equalTo([NSNumber numberWithFloat:height]);</span><br><span class="line">            make.width.equalTo(@50);</span><br><span class="line">            </span><br><span class="line">        &#125;];</span><br><span class="line">     stackView.distribution = UIStackViewDistributionEqualSpacing;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1117/140235_sULx_2340880.png" alt=""><img src="http://static.oschina.net/uploads/space/2015/1117/140235_O0Fr_2340880.png" alt=""></p>
+<p>4.其他</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//设置最小间距</span><br><span class="line">@property(nonatomic) CGFloat spacing;</span><br><span class="line">//设置布局时是否参照基线</span><br><span class="line">@property(nonatomic,getter=isBaselineRelativeArrangement) BOOL baselineRelativeArrangement;</span><br><span class="line">//设置布局时是否以控件的LayoutMargins为标准，默认为NO，是以控件的bounds为标准</span><br><span class="line">@property(nonatomic,getter=isLayoutMarginsRelativeArrangement) BOOL layoutMarginsRelativeArrangement;</span><br></pre></td></tr></table></figure>
+<h3 id="五、UIStackView的嵌套"><a href="#五、UIStackView的嵌套" class="headerlink" title="五、UIStackView的嵌套"></a>五、UIStackView的嵌套</h3><pre><code>一个StackView不允许我们进行水平和竖直的交叉布局，但是我们可以通过嵌套的方式来实现复杂的布局效果，比如我们实现一个类似电影表标签，可以使用水平布局的StackView中嵌套一个竖直布局的StackView：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/1117/151409_XvEZ_2340880.png" alt=""></p>
+<p>十分轻松就可以实现如下的效果：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1117/151437_lsw9_2340880.png" alt="">  <img src="http://static.oschina.net/uploads/space/2015/1117/151501_QWVK_2340880.png" alt=""></p>
+<p>看到了吧，通过StackView，我们没有添加过多的约束，使我们布局起来更加轻松了。如果你常常使用storyBoard进行开发，还有一个小技巧可以方便的将两个控件整合到一个StackView中，按住command，选中两个控件，之后点击右下角的如下图标，系统会自动帮我们生成一个StackView，将选中的两个控件整合进去，很酷吧！</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1117/151838_YJKS_2340880.png" alt=""></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/11/25/155iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程/" class="pre-post btn btn-default" title='iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程</span>
+        </a>
+    
+    
+        <a href="/2015/11/13/153iOS开发中标签控制器的使用——UITabBarController/" class="next-post btn btn-default" title='iOS开发中标签控制器的使用——UITabBarController'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发中标签控制器的使用——UITabBarController</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS9新特性——堆叠视图UIStackView"><span class="toc-text">iOS9新特性——堆叠视图UIStackView</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、在storyBoard上初识StackView"><span class="toc-text">二、在storyBoard上初识StackView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、从代码学习UIStackView"><span class="toc-text">三、从代码学习UIStackView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、再来深入理解下UIStackView"><span class="toc-text">四、再来深入理解下UIStackView</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、UIStackView的嵌套"><span class="toc-text">五、UIStackView的嵌套</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

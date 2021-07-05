@@ -1,0 +1,314 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>标签之美十——用户交互元素 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="标签之美十——用户交互元素">
+            
+	            标签之美十——用户交互元素
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/HTML学习笔记">
+            HTML学习笔记
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/07/02</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="标签之美——用户交互元素"><a href="#标签之美——用户交互元素" class="headerlink" title="标签之美——用户交互元素"></a>标签之美——用户交互元素</h2><p>任何一个网页都会提供用户交互的功能，包括账号密码的提交，留言板等用户信息的的获取。</p>
+<h3 id="一、用户交互表单的属性"><a href="#一、用户交互表单的属性" class="headerlink" title="一、用户交互表单的属性"></a>一、用户交互表单的属性</h3><p>表单使用<form></form>来创建。</p>
+<h3 id="1、跳转链接属性"><a href="#1、跳转链接属性" class="headerlink" title="1、跳转链接属性"></a>1、跳转链接属性</h3><p>表单的跳转是在提交数据后跳转到指定的URL，使用action属性，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=&quot;http://&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="2、传递数据的方式"><a href="#2、传递数据的方式" class="headerlink" title="2、传递数据的方式"></a>2、传递数据的方式</h4><p>表单跳转传递数据时可以设置一个传递方式，使用method可以设置方式为get或者post,delate,put：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;form action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="3、表单名称"><a href="#3、表单名称" class="headerlink" title="3、表单名称"></a>3、表单名称</h4><p>表单可是设置一个名称，通过name属性来设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="二、输入表单"><a href="#二、输入表单" class="headerlink" title="二、输入表单"></a>二、输入表单</h3><p>输入表单使用<input>创建，必须在表单元素中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;input/&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0629/101609_OI3b_2340880.png" alt=""></p>
+<h4 id="1、输入文本框"><a href="#1、输入文本框" class="headerlink" title="1、输入文本框"></a>1、输入文本框</h4><p>输入表单有type属性可以用来设置类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">文本框&lt;input type=&quot;text&quot; name=&quot;文本框&quot;/&gt;&lt;!--name:表单名称--&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0629/102105_BdCd_2340880.png" alt=""></p>
+<h4 id="2、密码输入框"><a href="#2、密码输入框" class="headerlink" title="2、密码输入框"></a>2、密码输入框</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">密码框&lt;input type=&quot;password&quot; name=&quot;密码框&quot;/&gt;&lt;!--name:表单名称--&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0629/102542_t0Xp_2340880.png" alt=""></p>
+<h4 id="3、输入单选框"><a href="#3、输入单选框" class="headerlink" title="3、输入单选框"></a>3、输入单选框</h4><p>设置type=radio可以创建单选框，单选框需要设置几个属性，同一系列的单选框必须有相同的name值，不相同的value值，可以通过添加checked键值来设置默认选中，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; name=&quot;性别&quot; value=&quot;男&quot; checked/&gt;男</span><br><span class="line">&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;radio&quot; name=&quot;性别&quot; value=&quot;女&quot;/&gt;女</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0702/130212_gwhl_2340880.png" alt=""></p>
+<h4 id="4、输入复选框"><a href="#4、输入复选框" class="headerlink" title="4、输入复选框"></a>4、输入复选框</h4><p>和单选框相似，可以使用type=checkbox创建复选框:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;body&gt;</span><br><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;HTML&quot; checked/&gt;HTML</span><br><span class="line">&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;iOS&quot;/&gt;iOS&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;android&quot;/&gt;android</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0702/130842_aceK_2340880.png" alt=""></p>
+<h4 id="5、提交按钮"><a href="#5、提交按钮" class="headerlink" title="5、提交按钮"></a>5、提交按钮</h4><p>使用type=submit来创建提交按钮，value值为按钮显示的文字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;HTML&quot; checked/&gt;HTML</span><br><span class="line">&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;iOS&quot;/&gt;iOS&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;android&quot;/&gt;android&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;submit&quot; value=&quot;提交&quot;/&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0702/131404_8ym6_2340880.png" alt=""></p>
+<h4 id="6、重置按钮"><a href="#6、重置按钮" class="headerlink" title="6、重置按钮"></a>6、重置按钮</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;HTML&quot; checked/&gt;HTML</span><br><span class="line">&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;iOS&quot;/&gt;iOS&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;checkbox&quot; name=&quot;爱好&quot; value=&quot;android&quot;/&gt;android&lt;br/&gt;</span><br><span class="line">&lt;input type=&quot;reset&quot; value=&quot;重置&quot;/&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0702/131716_38bl_2340880.png" alt=""></p>
+<p>点击重置按钮后，输入的内容会被重置。</p>
+<h4 id="7、图像按钮"><a href="#7、图像按钮" class="headerlink" title="7、图像按钮"></a>7、图像按钮</h4><p>图像按钮和普通按钮的用法相似，设置type=image可以创建图像按钮，只是这个按钮多了一个src的属性用来设置图片的路径地址。</p>
+<h3 id="三、下拉列表"><a href="#三、下拉列表" class="headerlink" title="三、下拉列表"></a>三、下拉列表</h3><p>通过<select></select>和<option></option>标签来设置下拉菜单和其中的选项，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;select name=&quot;下拉框&quot;&gt;</span><br><span class="line">&lt;option value=&quot;爱好&quot; selected&gt;HTML&lt;/option&gt;</span><br><span class="line">&lt;option value=&quot;爱好&quot;&gt;iOS&lt;/option&gt;</span><br><span class="line">&lt;option value=&quot;爱好&quot;&gt;android&lt;/option&gt;</span><br><span class="line">&lt;/select&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0702/133151_i6VM_2340880.png" alt=""></p>
+<h3 id="四、文本输入框"><a href="#四、文本输入框" class="headerlink" title="四、文本输入框"></a>四、文本输入框</h3><p>使用<textarea></textarea>来设置文本输入框，属性rows和clos可以分别设置输入框的行数和列数，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;form name=&quot;my&quot; action=&quot;http://&quot; method=&quot;get&quot;&gt;</span><br><span class="line">&lt;textarea name=&quot;文本输入框&quot; rows=&quot;5&quot; cols=&quot;50&quot;&gt;</span><br><span class="line">&lt;/textarea&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0702/133634_F7C2_2340880.png" alt=""></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/07/19/83iOS开发技巧之查看模拟器沙盒文件/" class="pre-post btn btn-default" title='iOS开发技巧之查看模拟器沙盒文件'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发技巧之查看模拟器沙盒文件</span>
+        </a>
+    
+    
+        <a href="/2015/06/28/80Swift学习第二练——Swift项目时光电影/" class="next-post btn btn-default" title='Swift学习第二练——Swift项目时光电影'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift学习第二练——Swift项目时光电影</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#标签之美——用户交互元素"><span class="toc-text">标签之美——用户交互元素</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、用户交互表单的属性"><span class="toc-text">一、用户交互表单的属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、跳转链接属性"><span class="toc-text">1、跳转链接属性</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2、传递数据的方式"><span class="toc-text">2、传递数据的方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、表单名称"><span class="toc-text">3、表单名称</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、输入表单"><span class="toc-text">二、输入表单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、输入文本框"><span class="toc-text">1、输入文本框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、密码输入框"><span class="toc-text">2、密码输入框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、输入单选框"><span class="toc-text">3、输入单选框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、输入复选框"><span class="toc-text">4、输入复选框</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、提交按钮"><span class="toc-text">5、提交按钮</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6、重置按钮"><span class="toc-text">6、重置按钮</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7、图像按钮"><span class="toc-text">7、图像按钮</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、下拉列表"><span class="toc-text">三、下拉列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、文本输入框"><span class="toc-text">四、文本输入框</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
