@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用">
+            
+	            SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/小码工具">
+            小码工具
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/01/11</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用"><a href="#SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用" class="headerlink" title="SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用"></a>SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在移动开发中，通常会用到一些小型的数据库进行数据管理。SQLite是一款十分小巧便捷的数据库，在iOS开发中，原生框架也对其有很好的支持。
+</code></pre><h3 id="二、SQLite常用语句"><a href="#二、SQLite常用语句" class="headerlink" title="二、SQLite常用语句"></a>二、SQLite常用语句</h3><pre><code>数据库存在的意义就在于其对数据的整合和管理，所以数据库的核心操作无非是对数据进行增，删，改，查得操作。
+</code></pre><h4 id="1-建立数据表语句"><a href="#1-建立数据表语句" class="headerlink" title="1.建立数据表语句"></a>1.建立数据表语句</h4><pre><code>一个数据库文件中可以由一些表组成，通过下面的语句在数据库文件中创建一张表：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table class(num integer PRIMARY KEY,name text NOT NULL DEFAULT &quot;1班&quot;,count integer CHECK(count&gt;10))</span><br></pre></td></tr></table></figure>
+<p>上面的语句代码可以简化成如下的格式：</p>
+<p>create table 表名(参数名1 类型 修饰条件，参数名2，类型 修饰参数，···)</p>
+<p>sqlite中支持如下的类型：</p>
+<p>smallint 短整型</p>
+<p>integer 整型</p>
+<p>real 实数型</p>
+<p>float 单精度浮点</p>
+<p>double 双精度浮点</p>
+<p>currency 长整型</p>
+<p>varchar 字符型</p>
+<p>text 字符串</p>
+<p>binary 二进制数据</p>
+<p>blob 二进制大对象</p>
+<p>boolean 布尔类型</p>
+<p>date 日期类型</p>
+<p>time 时间类型</p>
+<p>timestamp 时间戳类型</p>
+<p>关于修饰条件，常用的有如下几种：</p>
+<p>PRIMARY KEY：将本参数这个为主键，主键的值必须唯一，可以作为数据的索引，例如编号。</p>
+<p>NOT NULL ：标记本参数为非空属性。</p>
+<p>UNIQUE：标记本参数的键值唯一，类似主键。</p>
+<p>DEFAULT:设置本参数的默认值</p>
+<p>CHECK：参数检查条件，例如上面代码，写入数据是count必须大于时才有效。</p>
+<h4 id="2-添加数据"><a href="#2-添加数据" class="headerlink" title="2.添加数据"></a>2.添加数据</h4><p>使用下面的语句来进行数据行的添加操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into class(num,name,count) values(2,&quot;三年2班&quot;,58)</span><br></pre></td></tr></table></figure>
+<p>上面的语句代码可以简化成如下格式：</p>
+<p>insert into 表名(键1，键2，···) values(值1，值2，···)</p>
+<p>使用下面的语句进行数据列的添加，即添加一个新的键：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table class add new text</span><br></pre></td></tr></table></figure>
+<p>alter table 表名 add 键名 键类型</p>
+<h4 id="3-修改数据"><a href="#3-修改数据" class="headerlink" title="3.修改数据"></a>3.修改数据</h4><p>使用如下语句来进行改操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update class set num=3,name=&quot;新的班级&quot; where num=1</span><br></pre></td></tr></table></figure>
+<p>update 表名 set 键1=值1，键2=值2 where 条件</p>
+<p>where后面添加修改数据的条件，例如上面代码修改num为1的班级的名字和mun值。</p>
+<h4 id="4-删除数据"><a href="#4-删除数据" class="headerlink" title="4.删除数据"></a>4.删除数据</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from class where num=1</span><br></pre></td></tr></table></figure>
+<p>delete from 表名 where 条件</p>
+<p>上面代码删除num为1的一条数据。</p>
+<p>删除一张表适用下面的语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop table class</span><br></pre></td></tr></table></figure>
+<p>drop table 表名</p>
+<h4 id="5-查询操作"><a href="#5-查询操作" class="headerlink" title="5.查询操作"></a>5.查询操作</h4><p>查询操作是数据库的核心功能，sqlite的许多查询命令可以快捷的完成复杂的查询功能。</p>
+<p>查询表中某些键值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select num from class</span><br></pre></td></tr></table></figure>
+<p>select 键名，键名··· from 表名</p>
+<p>查询全部键值数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from class</span><br></pre></td></tr></table></figure>
+<p>select * from 表名</p>
+<p>*是一个全通配符，代表不限个数任意字符</p>
+<p>查询排序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from class order by count asc</span><br></pre></td></tr></table></figure>
+<p>select 键名，键名，··· from 表名 order by 键名 排序方式</p>
+<p>order by 后面写要进行排序的键名，排序方式有 asc升序 desc降序</p>
+<p>查找数据条数与查找位置限制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from class limit 2 offset 0</span><br></pre></td></tr></table></figure>
+<p>select 键名 from 表名 limit 最大条数 offset 查询起始位置</p>
+<p>条件查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from class where num&gt;2</span><br></pre></td></tr></table></figure>
+<p>select 键名 from 表名 where 条件</p>
+<p>查询数据条数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select count(*) from class</span><br></pre></td></tr></table></figure>
+<p>select count(键名) from 表名</p>
+<p>去重查询：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select distinct num from class</span><br></pre></td></tr></table></figure>
+<p>select distinct 键名 from 表名</p>
+<h3 id="三、MesaSQLite的简单使用"><a href="#三、MesaSQLite的简单使用" class="headerlink" title="三、MesaSQLite的简单使用"></a>三、MesaSQLite的简单使用</h3><pre><code>MesaSQLite是一款可视化的SQLite数据库编辑软件，使用十分方便。如下地址是下载链接：[http://pan.baidu.com/s/1sjW6DC5](http://pan.baidu.com/s/1sjW6DC5)。
+</code></pre><h4 id="1-创建数据库文件"><a href="#1-创建数据库文件" class="headerlink" title="1.创建数据库文件"></a>1.创建数据库文件</h4><p>打开MesaSQLite软件，在导航栏中选择File，选择弹出菜单中的New DataBase创建一个新的数据库文件，也可以选择Open Database打开一个数据库。</p>
+<p>注意：默认创建的数据库文件为rdb格式，手动改成db格式即可。</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0111/163153_fg35_2340880.png" alt=""></p>
+<h4 id="2-创建表"><a href="#2-创建表" class="headerlink" title="2.创建表"></a>2.创建表</h4><p>MesaSQLite有两种方式对数据库进行操作，一种是通过sql语句，一种是通过可视化的界面。在SQL Query工具窗口中，可以通过SQL语句对数据库进行操作，如下图：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0111/163815_GvzN_2340880.png" alt=""></p>
+<p>或者在Structure工具窗口中进行可视化的创建：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0111/164441_w7hj_2340880.png" alt=""></p>
+<h4 id="3-查询操作"><a href="#3-查询操作" class="headerlink" title="3.查询操作"></a>3.查询操作</h4><p>对于数据的查询操作，同样可以通过SQL Query工具通过语句进行查询或者在Content窗口中填写查询条件进行查询，如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0111/165229_9XgH_2340880.png" alt=""></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/01/13/169使用iOS原生sqlite3框架对sqlite数据库进行操作/" class="pre-post btn btn-default" title='使用iOS原生sqlite3框架对sqlite数据库进行操作'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">使用iOS原生sqlite3框架对sqlite数据库进行操作</span>
+        </a>
+    
+    
+        <a href="/2015/12/23/167iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展/" class="next-post btn btn-default" title='iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用"><span class="toc-text">SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、SQLite常用语句"><span class="toc-text">二、SQLite常用语句</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-建立数据表语句"><span class="toc-text">1.建立数据表语句</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-添加数据"><span class="toc-text">2.添加数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-修改数据"><span class="toc-text">3.修改数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-删除数据"><span class="toc-text">4.删除数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-查询操作"><span class="toc-text">5.查询操作</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、MesaSQLite的简单使用"><span class="toc-text">三、MesaSQLite的简单使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-创建数据库文件"><span class="toc-text">1.创建数据库文件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-创建表"><span class="toc-text">2.创建表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-查询操作"><span class="toc-text">3.查询操作</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
