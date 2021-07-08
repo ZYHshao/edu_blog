@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS剪切板UIPasteboard开发应用解析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS剪切板UIPasteboard开发应用解析">
+            
+	            iOS剪切板UIPasteboard开发应用解析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/04/06</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS剪切板UIPasteboard开发应用解析"><a href="#iOS剪切板UIPasteboard开发应用解析" class="headerlink" title="iOS剪切板UIPasteboard开发应用解析"></a>iOS剪切板UIPasteboard开发应用解析</h2><h3 id="一、自带剪切板操作的原生UI控件"><a href="#一、自带剪切板操作的原生UI控件" class="headerlink" title="一、自带剪切板操作的原生UI控件"></a>一、自带剪切板操作的原生UI控件</h3><p>   在iOS的UI系统中，有3个控件自带剪切板操作，分别是UITextField、UITextView与UIWebView。在这些控件的文字交互处进行长按手势可以在屏幕视图上唤出系统的剪切板控件，用户可以进行复制、粘贴，剪切等操作，其效果分别如下图所示。</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0405/232358_t4B1_2340880.png" alt=""></p>
+<p>UITextField的文字操作</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0405/232359_9hKG_2340880.png" alt=""></p>
+<p>UITextView的文字操作</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0405/232359_hsJx_2340880.png" alt=""></p>
+<p>UIWebView的文字操作</p>
+<h3 id="二、系统的剪切板管理类UIPasteboard"><a href="#二、系统的剪切板管理类UIPasteboard" class="headerlink" title="二、系统的剪切板管理类UIPasteboard"></a>二、系统的剪切板管理类UIPasteboard</h3><p>   实际上，当用户通过上面的空间进行复制、剪切等操作时，被选中的内容会被存放到系统的剪切板中，并且这个剪切板并不只能存放字符串数据，其还可以进行图片数据与网址URL数据的存放。这个剪切板就是UIPasteboard类，开发者也可以直接通过它来操作数据进行应用内或应用间传值。</p>
+<p>UIPasteboard类有3个初始化方法，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//获取系统级别的剪切板</span><br><span class="line">+ (UIPasteboard *)generalPasteboard;</span><br><span class="line">//获取一个自定义的剪切板 name参数为此剪切板的名称 create参数用于设置当这个剪切板不存在时 是否进行创建</span><br><span class="line">+ (nullable UIPasteboard *)pasteboardWithName:(NSString *)pasteboardName create:(BOOL)create;</span><br><span class="line">//获取一个应用内可用的剪切板</span><br><span class="line">+ (UIPasteboard *)pasteboardWithUniqueName;</span><br></pre></td></tr></table></figure>
+<p>上面3个初始化方法，分别获取或创建3个级别不同的剪切板，系统级别的剪切板在整个设备中共享，即是应用程序被删掉，其向系统级的剪切板中写入的数据依然在。自定义的剪切板通过一个特定的名称字符串进行创建，它在应用程序内或者同一开发者开发的其他应用程序中可以进行数据共享。第3个方法创建的剪切板等价为使用第2个方法创建的剪切板，只是其名称字符串为nil，它通常用于当前应用内部。</p>
+<p>注意：使用第3个方法创建的剪切板默认是不进行数据持久化的，及当应用程序退出后，剪切板中内容将别抹去。若要实现持久化，需要设置persistent属性为YES。</p>
+<p>UIPasteboard中常用方法及属性如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//剪切板的名称</span><br><span class="line">@property(readonly,nonatomic) NSString *name;</span><br><span class="line">//根据名称删除一个剪切板</span><br><span class="line">+ (void)removePasteboardWithName:(NSString *)pasteboardName;</span><br><span class="line">//是否进行持久化</span><br><span class="line">@property(getter=isPersistent,nonatomic) BOOL persistent;</span><br><span class="line">//此剪切板的改变次数 系统级别的剪切板只有当设备重新启动时 这个值才会清零</span><br><span class="line">@property(readonly,nonatomic) NSInteger changeCount;</span><br></pre></td></tr></table></figure>
+<p>下面这些方法用于设置与获取剪切板中的数据：</p>
+<p>最新一组数据对象的存取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//获取剪切板中最新数据的类型</span><br><span class="line">- (NSArray&lt;NSString *&gt; *)pasteboardTypes;</span><br><span class="line">//获取剪切板中最新数据对象是否包含某一类型的数据</span><br><span class="line">- (BOOL)containsPasteboardTypes:(NSArray&lt;NSString *&gt; *)pasteboardTypes;</span><br><span class="line">//将剪切板中最新数据对象某一类型的数据取出</span><br><span class="line">- (nullable NSData *)dataForPasteboardType:(NSString *)pasteboardType;</span><br><span class="line">//将剪切板中最新数据对象某一类型的值取出</span><br><span class="line">- (nullable id)valueForPasteboardType:(NSString *)pasteboardType;</span><br><span class="line">//为剪切板中最新数据对应的某一数据类型设置值</span><br><span class="line">- (void)setValue:(id)value forPasteboardType:(NSString *)pasteboardType;</span><br><span class="line">//为剪切板中最新数据对应的某一数据类型设置数据</span><br><span class="line">- (void)setData:(NSData *)data forPasteboardType:(NSString *)pasteboardType;</span><br></pre></td></tr></table></figure>
+<p>多组数据对象的存取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//数据组数</span><br><span class="line">@property(readonly,nonatomic) NSInteger numberOfItems;</span><br><span class="line">//获取一组数据对象包含的数据类型</span><br><span class="line">- (nullable NSArray *)pasteboardTypesForItemSet:(nullable NSIndexSet*)itemSet;</span><br><span class="line">//获取一组数据对象中是否包含某些数据类型</span><br><span class="line">- (BOOL)containsPasteboardTypes:(NSArray&lt;NSString *&gt; *)pasteboardTypes inItemSet:(nullable NSIndexSet *)itemSet;</span><br><span class="line">//根据数据类型获取一组数据对象</span><br><span class="line">- (nullable NSIndexSet *)itemSetWithPasteboardTypes:(NSArray *)pasteboardTypes;</span><br><span class="line">//根据数据类型获取一组数据的值</span><br><span class="line">- (nullable NSArray *)valuesForPasteboardType:(NSString *)pasteboardType inItemSet:(nullable NSIndexSet *)itemSet;</span><br><span class="line">//根据数据类型获取一组数据的NSData数据</span><br><span class="line">- (nullable NSArray *)dataForPasteboardType:(NSString *)pasteboardType inItemSet:(nullable NSIndexSet *)itemSet;</span><br><span class="line">//所有数据对象</span><br><span class="line">@property(nonatomic,copy) NSArray *items;</span><br><span class="line">//添加一组数据对象</span><br><span class="line">- (void)addItems:(NSArray&lt;NSDictionary&lt;NSString *, id&gt; *&gt; *)items;</span><br></pre></td></tr></table></figure>
+<p>上面方法中很多需要传入数据类型参数，这些参数是系统定义好的一些字符窜，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//所有字符串类型数据的类型定义字符串数组</span><br><span class="line">UIKIT_EXTERN NSArray&lt;NSString *&gt; *UIPasteboardTypeListString;</span><br><span class="line">//所有URL类型数据的类型定义字符串数组</span><br><span class="line">UIKIT_EXTERN NSArray&lt;NSString *&gt; *UIPasteboardTypeListURL;</span><br><span class="line">//所有图片数据的类型定义字符串数据</span><br><span class="line">UIKIT_EXTERN NSArray&lt;NSString *&gt; *UIPasteboardTypeListImage;</span><br><span class="line">//所有颜色数据的类型定义字符串数组</span><br><span class="line">UIKIT_EXTERN NSArray&lt;NSString *&gt; *UIPasteboardTypeListColor;</span><br></pre></td></tr></table></figure>
+<p>相比于上面两组方法，下面这些方法更加面向对象，在开发中使用更加方便与快捷：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//获取或设置剪切板中的字符串数据</span><br><span class="line">@property(nullable,nonatomic,copy) NSString *string;</span><br><span class="line">//获取或设置剪切板中的字符串数组</span><br><span class="line">@property(nullable,nonatomic,copy) NSArray&lt;NSString *&gt; *strings;</span><br><span class="line">//获取或设置剪切板中的URL数据</span><br><span class="line">@property(nullable,nonatomic,copy) NSURL *URL;</span><br><span class="line">//获取或设置剪切板中的URL数组</span><br><span class="line">@property(nullable,nonatomic,copy) NSArray&lt;NSURL *&gt; *URLs;</span><br><span class="line">//获取或s何止剪切板中的图片数据</span><br><span class="line">@property(nullable,nonatomic,copy) UIImage *image;</span><br><span class="line">//获取或设置剪切板中的图片数组</span><br><span class="line">@property(nullable,nonatomic,copy) NSArray&lt;UIImage *&gt; *images;</span><br><span class="line">//获取或设置剪切板中的颜色数据</span><br><span class="line">@property(nullable,nonatomic,copy) UIColor *color;</span><br><span class="line">//获取或设置剪切板中的颜色数组</span><br><span class="line">@property(nullable,nonatomic,copy) NSArray&lt;UIColor *&gt; *colors;</span><br></pre></td></tr></table></figure>
+<p>对剪切板的某些操作会触发如下通知：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//剪切板内容发生变化时发送的通知</span><br><span class="line">UIKIT_EXTERN NSString *const UIPasteboardChangedNotification;</span><br><span class="line">//剪切板数据类型键值增加时发送的通知</span><br><span class="line">UIKIT_EXTERN NSString *const UIPasteboardChangedTypesAddedKey;</span><br><span class="line">//剪切板数据类型键值移除时发送的通知</span><br><span class="line">UIKIT_EXTERN NSString *const UIPasteboardChangedTypesRemovedKey;</span><br><span class="line">//剪切板被删除时发送的通知</span><br><span class="line">UIKIT_EXTERN NSString *const UIPasteboardRemovedNotification;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/04/06/193iOS系统菜单控制器UIMenuController使用简介/" class="pre-post btn btn-default" title='iOS系统菜单控制器UIMenuController使用简介'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS系统菜单控制器UIMenuController使用简介</span>
+        </a>
+    
+    
+        <a href="/2016/03/30/191iOS中动态更新补丁策略JSPatch运用基础二/" class="next-post btn btn-default" title='iOS中动态更新补丁策略JSPatch运用基础二'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中动态更新补丁策略JSPatch运用基础二</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS剪切板UIPasteboard开发应用解析"><span class="toc-text">iOS剪切板UIPasteboard开发应用解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、自带剪切板操作的原生UI控件"><span class="toc-text">一、自带剪切板操作的原生UI控件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、系统的剪切板管理类UIPasteboard"><span class="toc-text">二、系统的剪切板管理类UIPasteboard</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

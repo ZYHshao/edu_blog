@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS系统菜单控制器UIMenuController使用简介 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS系统菜单控制器UIMenuController使用简介">
+            
+	            iOS系统菜单控制器UIMenuController使用简介
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/04/06</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS系统菜单控制器UIMenuController使用简介"><a href="#iOS系统菜单控制器UIMenuController使用简介" class="headerlink" title="iOS系统菜单控制器UIMenuController使用简介"></a>iOS系统菜单控制器UIMenuController使用简介</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><p>   在许多iOS应用中，当用户进行某文字或图片区域的长按操作时，都会弹出一个系统菜单控件，用户可以通过操作菜单控件上的按钮进行数据的复制、剪切、粘贴等操作。系统原生的某些控件已经支持了对UIMenuController的唤出操作，然而并不是所有控件都支持，开发者可以通过自定义UIMenuController来更加灵活的使用菜单控件，在前面博客中有介绍iOS剪切板相关知识，地址如下：</p>
+<p>iOS剪切板UIPasteboard使用简介：<a href="http://my.oschina.net/u/2340880/blog/653228" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/653228</a>。</p>
+<h3 id="二、UIMenuController的使用"><a href="#二、UIMenuController的使用" class="headerlink" title="二、UIMenuController的使用"></a>二、UIMenuController的使用</h3><p>   UIMenuController的展现需要基于一个View视图，其交互则需要基于其所在View视图的Responder。举例来说，如果一个UIMenuController展现在当前ViewController的View上，则此UIMenuController的交互逻辑交由当前的ViewController进行管理。</p>
+<pre><code>在界面展示出UIMenuController需要3个条件：
+
+1.当前的Responder处于第一响应。
+
+2.UIMenuController对象调用menuVisible方法。
+
+3.当前的Responder实现了如下两个方法：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//是否可以成为第一相应</span><br><span class="line">-(BOOL)canBecomeFirstResponder&#123;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">//是否可以接收某些菜单的某些交互操作</span><br><span class="line">-(BOOL)canPerformAction:(SEL)action withSender:(id)sender&#123;</span><br><span class="line">        return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现了上面的两个方法，使用如下的代码可以唤出UIMenuController控件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    [self becomeFirstResponder];</span><br><span class="line">    //设置菜单显示的位置 frame设置其文职 inView设置其所在的视图</span><br><span class="line">    [[UIMenuController sharedMenuController] setTargetRect:frame inView:self.view];</span><br><span class="line">    //将菜单控件设置为可见</span><br><span class="line">    [UIMenuController sharedMenuController].menuVisible = YES;</span><br></pre></td></tr></table></figure>
+<p>在执行了上面的代码后，系统第一次调用canperformAction:withSender:方法会进行是否显示菜单栏的检测，如果返回为NO，则不能显示菜单栏，如果返回为YES，之后系统会多次调用canPerformAction:withSender:方法，用于检测当前Responder对象是否实现了菜单栏上某个选项的触发方法，如果实现了，菜单栏上面的相应按钮会显示，否则不会显示。开发者可以在这个方法中通过判断action来确定菜单控件中显示的按钮种类。系统默认为开发者提供了一系列的菜单按钮，例如要显示剪切和赋值操作的菜单按钮，示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-(BOOL)canPerformAction:(SEL)action withSender:(id)sender&#123;</span><br><span class="line">    if (action == @selector(cut:)||action == @selector(copy:)) &#123;</span><br><span class="line">        return YES;</span><br><span class="line">   &#125;</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0406/183315_3uWx_2340880.png" alt=""></p>
+<p>系统默认支持提供的按钮触发方法列举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//剪切按钮的方法</span><br><span class="line">- (void)cut:(nullable id)sender NS_AVAILABLE_IOS(3_0);</span><br><span class="line">//复制按钮的方法</span><br><span class="line">- (void)copy:(nullable id)sender NS_AVAILABLE_IOS(3_0);</span><br><span class="line">//粘贴按钮的方法</span><br><span class="line">- (void)paste:(nullable id)sender NS_AVAILABLE_IOS(3_0);</span><br><span class="line">//选择按钮的方法</span><br><span class="line">- (void)select:(nullable id)sender NS_AVAILABLE_IOS(3_0);</span><br><span class="line">//全选按钮的方法</span><br><span class="line">- (void)selectAll:(nullable id)sender NS_AVAILABLE_IOS(3_0);</span><br><span class="line">//删除按钮的方法</span><br><span class="line">- (void)delete:(nullable id)sender NS_AVAILABLE_IOS(3_2);</span><br><span class="line">//改变书写模式为从左向右按钮触发的方法</span><br><span class="line">- (void)makeTextWritingDirectionLeftToRight:(nullable id)sender NS_AVAILABLE_IOS(5_0);</span><br><span class="line">//改变书写模式为从右向左按钮触发的方法</span><br><span class="line">- (void)makeTextWritingDirectionRightToLeft:(nullable id)sender NS_AVAILABLE_IOS(5_0);</span><br></pre></td></tr></table></figure>
+<p>上面所列举的方法声明在UIResponder头文件中，实际上，除了上面的方法，关于UIMenuController上面的按钮，系统中还有许多私有方法，列举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">//替换按钮</span><br><span class="line">- (void)_promptForReplace:(id)arg1&#123;</span><br><span class="line">    NSLog(@&quot;promptForReplace&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//简体繁体转换按钮</span><br><span class="line">-(void)_transliterateChinese:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;transliterateChinese&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//文字风格按钮</span><br><span class="line">-(void)_showTextStyleOptions:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;showTextStyleOptions&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//定义按钮</span><br><span class="line">-(void)_define:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;define&quot;);</span><br><span class="line">&#125;</span><br><span class="line">-(void)_addShortcut:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;addShortcut&quot;);</span><br><span class="line">&#125;</span><br><span class="line">-(void)_accessibilitySpeak:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;accessibilitySpeak&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//语言选择按钮</span><br><span class="line">-(void)_accessibilitySpeakLanguageSelection:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;accessibilitySpeakLanguageSelection&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//暂停发音按钮</span><br><span class="line">-(void)_accessibilityPauseSpeaking:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;accessibilityPauseSpeaking&quot;);</span><br><span class="line">&#125;</span><br><span class="line">//分享按钮</span><br><span class="line">-(void)_share:(id)sender&#123;</span><br><span class="line">    NSLog(@&quot;share&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>   在实际开发中，开发这完全不需要使用这些私有的方法，UIMenuItem类提供给开发者进行自定义菜单按钮与触发方法，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[self becomeFirstResponder];</span><br><span class="line">    UIMenuItem * item = [[UIMenuItem alloc]initWithTitle:@&quot;自定义&quot; action:@selector(newFunc)];</span><br><span class="line">    [[UIMenuController sharedMenuController] setTargetRect:[sender frame] inView:self.view];</span><br><span class="line">    [UIMenuController sharedMenuController].menuItems = @[item];</span><br><span class="line">    [UIMenuController sharedMenuController].menuVisible = YES;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-(BOOL)canBecomeFirstResponder&#123;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">-(BOOL)canPerformAction:(SEL)action withSender:(id)sender&#123;</span><br><span class="line">    if (action == @selector(newFunc)) &#123;</span><br><span class="line">        return YES;</span><br><span class="line">   &#125;</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br><span class="line">-(void)newFunc&#123;</span><br><span class="line">    NSLog(@&quot;自定义方法&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0406/184947_k1fB_2340880.png" alt=""></p>
+<p>UIMenuController还有如下的属性用来设置其显示的位置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//显示的位置</span><br><span class="line">@property(nonatomic) UIMenuControllerArrowDirection arrowDirection;</span><br><span class="line">//枚举如下：</span><br><span class="line">/*</span><br><span class="line">typedef NS_ENUM(NSInteger, UIMenuControllerArrowDirection) &#123;</span><br><span class="line">    //默认 基于当前屏幕状态</span><br><span class="line">    UIMenuControllerArrowDefault, // up or down based on screen location</span><br><span class="line">    //箭头在上的显示模式</span><br><span class="line">    UIMenuControllerArrowUp NS_ENUM_AVAILABLE_IOS(3_2),</span><br><span class="line">    //箭头在下的显示模式</span><br><span class="line">    UIMenuControllerArrowDown NS_ENUM_AVAILABLE_IOS(3_2),</span><br><span class="line">    //箭头在左的显示模式</span><br><span class="line">    UIMenuControllerArrowLeft NS_ENUM_AVAILABLE_IOS(3_2),</span><br><span class="line">    //箭头在右的显示模式</span><br><span class="line">    UIMenuControllerArrowRight NS_ENUM_AVAILABLE_IOS(3_2),</span><br><span class="line">&#125;;</span><br><span class="line">*/</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/04/12/194Xcode关于警告AutomaticPreferredMaxLayoutWidth的消除方法/" class="pre-post btn btn-default" title='Xcode关于警告AutomaticPreferredMaxLayoutWidth的消除方法'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Xcode关于警告AutomaticPreferredMaxLayoutWidth的消除方法</span>
+        </a>
+    
+    
+        <a href="/2016/04/06/192iOS剪切板UIPasteboard开发应用解析/" class="next-post btn btn-default" title='iOS剪切板UIPasteboard开发应用解析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS剪切板UIPasteboard开发应用解析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS系统菜单控制器UIMenuController使用简介"><span class="toc-text">iOS系统菜单控制器UIMenuController使用简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、UIMenuController的使用"><span class="toc-text">二、UIMenuController的使用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
