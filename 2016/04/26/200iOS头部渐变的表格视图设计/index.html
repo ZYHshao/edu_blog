@@ -1,0 +1,277 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS头部渐变的表格视图设计 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS头部渐变的表格视图设计">
+            
+	            iOS头部渐变的表格视图设计
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/04/26</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS头部渐变的表格视图设计"><a href="#iOS头部渐变的表格视图设计" class="headerlink" title="iOS头部渐变的表格视图设计"></a>iOS头部渐变的表格视图设计</h2><pre><code>今天再来给大家带来一个开发中常用到的视图控制器，在很多应用中，可能都会遇到这样的一个需求：表视图控制器最上方有一个头图控件，当表格视图滑动在顶部时，导航栏透明，当表格视图逐渐向下滑动时，导航栏渐渐出现，并且在滑动期间，头图会展示相关的渐变动画效果。以前经常会遇到这样的需求，但从没有整理与封装完善，这次将其封装成完整的控件，无论有无导航，都可以很好的支持，方便以后使用也提供给需要的朋友。
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0426/211619_fHlt_2340880.png" alt=""></p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0426/211619_mky2_2340880.png" alt=""></p>
+<pre><code>在设计控件之前，我们应该先编写控件的头文件，头文件中将控件需要的属性和方法列举，之后再按定义好的接口一步步的来实现控件的编写设计，这样可以结构清晰，并且不会显得无从下手，控件的头文件设计如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  YHBaseHeaderAnimatedViewController.h</span><br><span class="line">//  YHBaseFoundationTest</span><br><span class="line">//</span><br><span class="line">//  Created by vip on 16/4/26.</span><br><span class="line">//  Copyright © 2016年 jaki.zhang. All rights reserved.</span><br><span class="line">/*</span><br><span class="line"> *  这个视图控制器创建出带缩放头图效果的视图控制器</span><br><span class="line"> *  tip：</span><br><span class="line"> *      1.这个视图控制器如果是被导航push出来的 则内部会使用假导航进行渐隐模拟</span><br><span class="line"> *      2.这个视图控制器如果是被present出来的 则不会出现假导航栏</span><br><span class="line"> *      3.这个视图控制器中自带一个TableView 设置TableView的头图不会影响原动画效果</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line"></span><br><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line">/**</span><br><span class="line"> *  这个枚举设置头图动画滑动的速度等级</span><br><span class="line"> */</span><br><span class="line">typedef enum &#123;</span><br><span class="line">    YHBaseHeaderAnimatedLevelSlow,</span><br><span class="line">    YHBaseHeaderAnimatedLevelNormal,</span><br><span class="line">    YHBaseHeaderAnimatedLevelFast</span><br><span class="line">&#125;YHBaseHeaderAnimatedLevel;</span><br><span class="line">@interface YHBaseHeaderAnimatedViewController : UIViewController&lt;UITableViewDataSource,UITableViewDelegate&gt;</span><br><span class="line">@property(nonatomic,strong,readonly)UITableView * tableView;</span><br><span class="line">/**</span><br><span class="line"> *  设置动画头图图片</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIView * animatedHeaderView;</span><br><span class="line">/**</span><br><span class="line"> *  设置TableView的头视图 </span><br><span class="line"> *</span><br><span class="line"> *  注意：设置tableView的头视图不能够在使用tableHeatherView方法 要使用这个属性设置</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIView * tableHeaderView;</span><br><span class="line">/**</span><br><span class="line"> *  设置动画头图高度</span><br><span class="line"> *</span><br><span class="line"> *  这个属性如果不设置或者设置为0 则默认会使用设置的image图片比例</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)CGFloat headerHeight;</span><br><span class="line">/**</span><br><span class="line"> *</span><br><span class="line"> *  设置动画滑动速率</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)YHBaseHeaderAnimatedLevel animatedlevel;</span><br><span class="line">/**</span><br><span class="line"> *</span><br><span class="line"> *  设置头图可方法的最大scrollView偏移量 默认为40</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)CGFloat maxScrollOffset;</span><br><span class="line">/**</span><br><span class="line"> *  设置是否带渐隐效果</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)BOOL alphaAnimated;</span><br><span class="line">/**</span><br><span class="line"> *  设置最小渐变到的alpha渐隐值 &lt;0 &gt;1之间 默认为0.5</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)CGFloat minAlpha;</span><br><span class="line">/**</span><br><span class="line"> *</span><br><span class="line"> *  是否显示毛玻璃模糊效果</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)BOOL bluerAnimated;</span><br><span class="line">/**</span><br><span class="line"> *</span><br><span class="line"> *  设置最大小模糊度 默认为1 </span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)CGFloat maxBluer;</span><br><span class="line">/**</span><br><span class="line"> *  设置导航栏颜色 默认白色</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIColor * naviColor;</span><br><span class="line">/**</span><br><span class="line"> *  设置导航左侧按钮数组 如果不设置 会自动带一个返回按钮</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)NSArray * leftBarButtons;</span><br><span class="line">/**</span><br><span class="line"> *  设置导航左侧按钮数组 如果不设置 会自动带一个返回按钮</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)NSArray * rightBarButtons;</span><br><span class="line">/**</span><br><span class="line"> *  这个方法在修改了头图相关属性后 需要调用刷新</span><br><span class="line"> *</span><br><span class="line"> *  注意：如果重新设置了TableView的tableheaderView属性 也需要调用这个方法刷新</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">-(void)reloadAnimatedView;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<pre><code>  在设计这个控件时，我主要考虑两个需要优化的地方，第一是这个控制器在不同的场景下可能会有不同的结构，例如在导航结构中被push出来或者通过模态跳转被present出来，我在这个控件的实现时做了兼容，实际上无论有无导航，控件内部都没有使用系统的导航栏，而是模拟实现了一个自定义的导航栏来与系统的导航无缝衔接。
+
+.m文件中实现的代码如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;YHBaseHeaderAnimatedViewController.h&quot;</span><br><span class="line"></span><br><span class="line">@interface YHBaseHeaderAnimatedViewController ()</span><br><span class="line">&#123;</span><br><span class="line">    //承载视图</span><br><span class="line">    UIView * _privteBGHeaderView;</span><br><span class="line">    //宽高比例</span><br><span class="line">    CGFloat _privteRate;</span><br><span class="line">    //原始宽高</span><br><span class="line">    CGFloat _privteOriWidth;</span><br><span class="line">    CGFloat _privteOriHeught;</span><br><span class="line">    UIVisualEffectView * _blurView;</span><br><span class="line">    UINavigationBar * _naviBar;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation YHBaseHeaderAnimatedViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    self.view.backgroundColor = [UIColor whiteColor];</span><br><span class="line">    self.edgesForExtendedLayout = UIRectEdgeNone;</span><br><span class="line">    _tableView = [[UITableView alloc]initWithFrame:self.view.frame style:UITableViewStylePlain];</span><br><span class="line">    [self.view addSubview:_tableView];</span><br><span class="line">    _tableView.delegate=self;</span><br><span class="line">    _tableView.dataSource=self;</span><br><span class="line">     [self YHCreatView];</span><br><span class="line">    // Do any additional setup after loading the view.</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)didReceiveMemoryWarning &#123;</span><br><span class="line">    [super didReceiveMemoryWarning];</span><br><span class="line">    // Dispose of any resources that can be recreated.</span><br><span class="line">&#125;</span><br><span class="line">//对导航进行处理</span><br><span class="line">-(void)viewWillAppear:(BOOL)animated&#123;</span><br><span class="line">    [super viewWillAppear:animated];</span><br><span class="line">    if (self.navigationController) &#123;</span><br><span class="line">        [self.navigationController setNavigationBarHidden:YES animated:YES];</span><br><span class="line">        [self showNavigationBar];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">-(void)viewWillDisappear:(BOOL)animated&#123;</span><br><span class="line">    [super viewWillDisappear:animated];</span><br><span class="line">    if (self.navigationController) &#123;</span><br><span class="line">        [self.navigationController setNavigationBarHidden:NO animated:YES];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">-(void)showNavigationBar&#123;</span><br><span class="line">    if (_naviBar==nil) &#123;</span><br><span class="line">        _naviBar = [[UINavigationBar alloc]init];</span><br><span class="line">        [self.view addSubview:_naviBar];</span><br><span class="line">        _naviBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 64);</span><br><span class="line">        [_naviBar setBackgroundImage:[UIImage imageNamed:@&quot;clear&quot;] forBarMetrics:UIBarMetricsDefault];</span><br><span class="line">        [_naviBar setShadowImage:[UIImage imageNamed:@&quot;clear&quot;]];</span><br><span class="line">        _naviBar.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0];</span><br><span class="line">        UINavigationItem * item = [[UINavigationItem alloc]initWithTitle:self.title];</span><br><span class="line">        _naviBar.items = @[item];</span><br><span class="line">        item.leftBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@&quot;返回&quot; style:UIBarButtonItemStyleDone target:self action:@selector(popToLast)];</span><br><span class="line">    &#125;</span><br><span class="line">    if (self.animatedHeaderView==nil) &#123;</span><br><span class="line">        _naviBar.hidden=YES;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        _naviBar.hidden=NO;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">-(void)popToLast&#123;</span><br><span class="line">    [self.navigationController popViewControllerAnimated:YES];</span><br><span class="line">&#125;</span><br><span class="line">-(void)YHCreatView&#123;</span><br><span class="line">    if (self.maxScrollOffset==0) &#123;</span><br><span class="line">        self.maxScrollOffset=40;</span><br><span class="line">    &#125;</span><br><span class="line">    if (self.minAlpha==0) &#123;</span><br><span class="line">        self.minAlpha = 0.5;</span><br><span class="line">    &#125;</span><br><span class="line">    if (self.maxBluer==0) &#123;</span><br><span class="line">        self.maxBluer = 1;</span><br><span class="line">    &#125;</span><br><span class="line">    _privteBGHeaderView = [[UIView alloc]init];</span><br><span class="line">    _privteBGHeaderView.backgroundColor = [UIColor clearColor];</span><br><span class="line">    self.tableView.backgroundColor = [UIColor clearColor];</span><br><span class="line">    _blurView = [[UIVisualEffectView alloc]initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];</span><br><span class="line">    [self reloadAnimatedView];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)reloadAnimatedView&#123;</span><br><span class="line">    CGFloat viewH=0;</span><br><span class="line">    CGFloat aniH=0;</span><br><span class="line">    for (UIView * view in _privteBGHeaderView.subviews) &#123;</span><br><span class="line">        [view removeFromSuperview];</span><br><span class="line">    &#125;</span><br><span class="line">    if (self.tableHeaderView) &#123;</span><br><span class="line">        viewH = viewH+self.tableHeaderView.bounds.size.height;</span><br><span class="line">        [_privteBGHeaderView addSubview:self.tableHeaderView];</span><br><span class="line">    &#125;</span><br><span class="line">    if (self.animatedHeaderView) &#123;</span><br><span class="line">        _privteRate = self.animatedHeaderView.frame.size.width/self.animatedHeaderView.frame.size.height;</span><br><span class="line">        [self.animatedHeaderView addSubview:_blurView];</span><br><span class="line">        _blurView.frame= self.animatedHeaderView.bounds;</span><br><span class="line">        _blurView.alpha=0;</span><br><span class="line">        _privteOriWidth = self.animatedHeaderView.frame.size.width;</span><br><span class="line">        _privteOriHeught = self.animatedHeaderView.frame.size.height;</span><br><span class="line">        if (self.headerHeight!=0) &#123;</span><br><span class="line">            viewH+=self.headerHeight;</span><br><span class="line">            aniH = self.headerHeight;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            viewH+=self.view.frame.size.width/self.animatedHeaderView.bounds.size.width*self.animatedHeaderView.frame.size.height;</span><br><span class="line">            aniH = self.animatedHeaderView.bounds.size.height;</span><br><span class="line">        &#125;</span><br><span class="line">        [self.view insertSubview:self.animatedHeaderView atIndex:0];</span><br><span class="line">    &#125;</span><br><span class="line">    self.tableHeaderView.frame=CGRectMake(0, aniH, self.tableHeaderView.frame.size.width, self.tableHeaderView.frame.size.height);</span><br><span class="line">    _privteBGHeaderView.frame=CGRectMake(0, 0, self.view.frame.size.width, viewH);</span><br><span class="line">    self.tableView.tableHeaderView = _privteBGHeaderView;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setAnimatedHeaderView:(UIView *)animatedHeaderView&#123;</span><br><span class="line">    if (animatedHeaderView==nil) &#123;</span><br><span class="line">        if (_animatedHeaderView) &#123;</span><br><span class="line">            [_animatedHeaderView removeFromSuperview];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    _animatedHeaderView = animatedHeaderView;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">-(void)setMinAlpha:(CGFloat)minAlpha&#123;</span><br><span class="line">    if (minAlpha&lt;=0) &#123;</span><br><span class="line">        minAlpha=0.001;</span><br><span class="line">    &#125;</span><br><span class="line">    if (minAlpha&gt;=1) &#123;</span><br><span class="line">        minAlpha=0.999;</span><br><span class="line">    &#125;</span><br><span class="line">    _minAlpha=minAlpha;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setMaxBluer:(CGFloat)maxBluer&#123;</span><br><span class="line">    if (maxBluer&lt;=0) &#123;</span><br><span class="line">        maxBluer = 0.001;</span><br><span class="line">    &#125;</span><br><span class="line">    if (maxBluer&gt;=1) &#123;</span><br><span class="line">        maxBluer = 0.999;</span><br><span class="line">    &#125;</span><br><span class="line">    _maxBluer = maxBluer;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setNaviColor:(UIColor *)naviColor&#123;</span><br><span class="line">    _naviColor = naviColor;</span><br><span class="line">    _naviBar.backgroundColor = naviColor;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setLeftBarButtons:(NSArray *)leftBarButtons&#123;</span><br><span class="line">    _naviBar.topItem.leftBarButtonItems = leftBarButtons;</span><br><span class="line">    _leftBarButtons = leftBarButtons;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setRightBarButtons:(NSArray *)rightBarButtons&#123;</span><br><span class="line">    _naviBar.topItem.rightBarButtonItems = rightBarButtons;</span><br><span class="line">    _rightBarButtons = rightBarButtons;</span><br><span class="line">&#125;</span><br><span class="line">-(void)scrollViewDidScroll:(UIScrollView *)scrollView&#123;</span><br><span class="line">    if (self.animatedHeaderView==nil) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    if (self.tableView==scrollView) &#123;</span><br><span class="line">        //获取到偏移量 默认两倍</span><br><span class="line">        CGFloat offset = scrollView.contentOffset.y*2;</span><br><span class="line">        //如果小于0 则进行形变拉伸操作</span><br><span class="line">        if (offset&lt;=0) &#123;</span><br><span class="line">            </span><br><span class="line">            if (offset&lt;-self.maxScrollOffset*2) &#123;</span><br><span class="line">               </span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                CGFloat height = _privteOriHeught+abs((int)offset);</span><br><span class="line">                CGFloat width = height*_privteRate;</span><br><span class="line">                self.animatedHeaderView.frame = CGRectMake(self.view.frame.size.width/2-width/2, offset/2, width, height);</span><br><span class="line">            &#125;</span><br><span class="line">            if (_naviBar) &#123;</span><br><span class="line">                if (_naviBar.shadowImage==nil) &#123;</span><br><span class="line">                     [_naviBar setShadowImage:[UIImage imageNamed:@&quot;clear&quot;]];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            //如果大于零 进行推出操作</span><br><span class="line">            if (self.animatedlevel==YHBaseHeaderAnimatedLevelSlow) &#123;</span><br><span class="line">                //慢速</span><br><span class="line">                self.animatedHeaderView.frame = CGRectMake(0, -offset/8, self.animatedHeaderView.frame.size.width, self.animatedHeaderView.frame.size.height);</span><br><span class="line">            &#125;else if(self.animatedlevel==YHBaseHeaderAnimatedLevelFast)&#123;</span><br><span class="line">                //快速</span><br><span class="line">                self.animatedHeaderView.frame = CGRectMake(0, -offset/2, self.animatedHeaderView.frame.size.width, self.animatedHeaderView.frame.size.height);</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                //正常</span><br><span class="line">                self.animatedHeaderView.frame = CGRectMake(0, -offset/4, self.animatedHeaderView.frame.size.width, self.animatedHeaderView.frame.size.height);</span><br><span class="line">            &#125;</span><br><span class="line">            //进行渐隐动画处理</span><br><span class="line">            CGFloat tmp = offset/2/_privteOriHeught;</span><br><span class="line">            if (self.alphaAnimated) &#123;</span><br><span class="line">                self.animatedHeaderView.alpha = 1-(1-self.minAlpha)*tmp;</span><br><span class="line">            &#125;</span><br><span class="line">            //进行模糊动画</span><br><span class="line">            if (self.bluerAnimated) &#123;</span><br><span class="line">                _blurView.alpha = self.maxBluer*tmp;</span><br><span class="line">            &#125;</span><br><span class="line">            //进行导航显示</span><br><span class="line">            if (_naviBar) &#123;</span><br><span class="line">                _naviBar.backgroundColor = [_naviBar.backgroundColor colorWithAlphaComponent:tmp];</span><br><span class="line">                if (_naviBar.shadowImage) &#123;</span><br><span class="line">                    [_naviBar setShadowImage:nil];</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<pre><code>在使用时，创建一个视图控制器继承于它，在其viewDidLoad方法中进行一些简单的设置即可，如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view.</span><br><span class="line">    //设置头图</span><br><span class="line">    UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];</span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;image&quot;];</span><br><span class="line">    self.animatedHeaderView = imageView;</span><br><span class="line">    //设置tableView的头视图</span><br><span class="line">    UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 30)];</span><br><span class="line">    label.backgroundColor = [UIColor purpleColor];</span><br><span class="line">    label.textColor = [UIColor whiteColor];</span><br><span class="line">    label.textAlignment =NSTextAlignmentCenter;</span><br><span class="line">    label.text = @&quot;下面进行功能演示&quot;;</span><br><span class="line">    self.tableHeaderView = label;</span><br><span class="line">    [self reloadAnimatedView];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>我写了一个完整的演示Demo，Demo中有完整的功能演示，需要的朋友可以自行下载：http://pan.baidu.com/s/1c1VKT00。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2016/04/24/199配合LLDB调试器进行iOS代码调试/" class="next-post btn btn-default" title='配合LLDB调试器进行iOS代码调试'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">配合LLDB调试器进行iOS代码调试</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS头部渐变的表格视图设计"><span class="toc-text">iOS头部渐变的表格视图设计</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

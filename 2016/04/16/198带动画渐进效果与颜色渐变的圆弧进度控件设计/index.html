@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>带动画渐进效果与颜色渐变的圆弧进度控件设计 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="带动画渐进效果与颜色渐变的圆弧进度控件设计">
+            
+	            带动画渐进效果与颜色渐变的圆弧进度控件设计
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/04/16</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="带动画渐进效果与颜色渐变的圆弧进度控件设计"><a href="#带动画渐进效果与颜色渐变的圆弧进度控件设计" class="headerlink" title="带动画渐进效果与颜色渐变的圆弧进度控件设计"></a>带动画渐进效果与颜色渐变的圆弧进度控件设计</h2><pre><code>今天帮朋友写了一个小巧的圆弧进度控件，控件十分简单，主要设计思路采用CAShapeLayer来创建控件圆弧形状，使用CAGradientLayer来进行颜色渐变的渲染，两者结合来创建出颜色渐变的圆弧进度条控件，关于进度动画采用CoreAnimation动画处理。控件进行了简洁的封装，提供了面向使用的接口，需要的朋友可以自取，Demo地址如下：
+</code></pre><p><a href="http://pan.baidu.com/s/1gfqDbtp" target="_blank" rel="noopener">http://pan.baidu.com/s/1gfqDbtp</a>。</p>
+<pre><code>控件中主要提供了，改变进度条渐变颜色，圆弧进度条宽度，带动画效果的改变进度，改变进度百分比字体颜色等方法。效果是例如如下：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0416/111106_0F1X_2340880.gif" alt=""></p>
+<p>改变字体颜色</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0416/111106_8WYd_2340880.gif" alt=""></p>
+<p>改变进度</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0416/111107_xhQz_2340880.gif" alt=""></p>
+<p>改变进度条颜色</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0416/111108_SRw4_2340880.gif" alt=""></p>
+<p>改变进度条宽度</p>
+<pre><code>控件接口的设计：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;UIKit/UIKit.h&gt;</span><br><span class="line">@interface YHBaseCircleView : UIView</span><br><span class="line">//==============下面三个渐变色必须全部设置 否则效果可能与预期不同================//</span><br><span class="line">/**</span><br><span class="line"> *设置圆弧渐变色的起始色</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIColor * minLineColor;</span><br><span class="line">/**</span><br><span class="line"> *设置圆弧渐变色的中间色</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIColor * midLineColor;</span><br><span class="line">/**</span><br><span class="line"> *设置圆弧渐变色的终止色</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIColor * maxLineColor;</span><br><span class="line">/**</span><br><span class="line"> *设置圆弧背景色</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIColor * lineTintColor;</span><br><span class="line">/**</span><br><span class="line"> *设置进度</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)CGFloat progress;</span><br><span class="line">/**</span><br><span class="line"> *设置线的宽度 max = 20 min = 0.5</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)CGFloat lineWidth;</span><br><span class="line">/**</span><br><span class="line"> *设置是否显示百分比标签</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)BOOL showTipLabel;</span><br><span class="line">/**</span><br><span class="line"> *设置百分比标签进度颜色</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIColor * textColor;</span><br><span class="line">/**</span><br><span class="line"> *  @brief 设置进度</span><br><span class="line"> *</span><br><span class="line"> *  @param progress 进度 取值0-1</span><br><span class="line"> *</span><br><span class="line"> *  @param animated 是否显示动画</span><br><span class="line"> *</span><br><span class="line"> */</span><br><span class="line">-(void)setProgress:(CGFloat)progress animated:(BOOL)animated;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>实现方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;YHBaseCircleView.h&quot;</span><br><span class="line">@implementation YHBaseCircleView</span><br><span class="line">&#123;</span><br><span class="line">    //进度控件内容尺寸</span><br><span class="line">    float _contentWidth;</span><br><span class="line">    float _contentHeight;</span><br><span class="line">    //形状layer</span><br><span class="line">    CAShapeLayer * _shapeLayer;</span><br><span class="line">    //颜色渐变layer</span><br><span class="line">    CAGradientLayer * _gradLayerR;</span><br><span class="line">    CAGradientLayer * _gradLayerL;</span><br><span class="line">    CALayer * _gradLayer;</span><br><span class="line">    //内容layer</span><br><span class="line">    CAShapeLayer * _contentLayer;</span><br><span class="line">    UILabel * _tipLabel;</span><br><span class="line">    //专门用来更新label</span><br><span class="line">    NSTimer * _timer;</span><br><span class="line">    float _oldProgress;</span><br><span class="line">    //进度新旧进度值</span><br><span class="line">    int old;</span><br><span class="line">    int new;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)awakeFromNib&#123;</span><br><span class="line">    [self reloadView];</span><br><span class="line">&#125;</span><br><span class="line">-(instancetype)initWithFrame:(CGRect)frame&#123;</span><br><span class="line">    self = [super initWithFrame:frame];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        [self reloadView];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)reloadView&#123;</span><br><span class="line">    self.backgroundColor = [UIColor clearColor];</span><br><span class="line">    //取设置的frame的最小长或款作为内容区域</span><br><span class="line">    _contentWidth = _contentHeight = CGRectGetWidth(self.frame)&gt;CGRectGetHeight(self.frame)?CGRectGetHeight(self.frame):CGRectGetWidth(self.frame);</span><br><span class="line">    //创建内容layer</span><br><span class="line">    _contentLayer = [CAShapeLayer layer];</span><br><span class="line">    _contentLayer.bounds = CGRectMake(0, 0, _contentWidth, _contentHeight);</span><br><span class="line">    _contentLayer.position = CGPointMake(_contentWidth/2, _contentHeight/2);</span><br><span class="line">    _contentLayer.backgroundColor = [UIColor clearColor].CGColor;</span><br><span class="line">    //进行边界描绘 默认线宽为4px</span><br><span class="line">    UIBezierPath * pathT = [UIBezierPath bezierPathWithArcCenter:_contentLayer.position radius:_contentWidth/2-2 startAngle:-M_PI_2 endAngle:M_PI_2*3 clockwise:YES];</span><br><span class="line">    _contentLayer.path = pathT.CGPath;</span><br><span class="line">    //默认填充颜色为白色</span><br><span class="line">    _contentLayer.fillColor = [UIColor whiteColor].CGColor;</span><br><span class="line">    _contentLayer.lineWidth = 4;</span><br><span class="line">    _contentLayer.strokeColor = [UIColor grayColor].CGColor;</span><br><span class="line">    [self.layer addSublayer:_contentLayer];</span><br><span class="line">    </span><br><span class="line">    _shapeLayer = [CAShapeLayer layer];</span><br><span class="line">    _shapeLayer.bounds = CGRectMake(0, 0, _contentWidth, _contentHeight);</span><br><span class="line">    _shapeLayer.position = CGPointMake(_contentWidth/2, _contentHeight/2);</span><br><span class="line">    _shapeLayer.backgroundColor = [UIColor clearColor].CGColor;</span><br><span class="line">//    _shapeLayer.lineCap  = kCALineCapRound;</span><br><span class="line">    //进行边界描绘 默认线宽为4px</span><br><span class="line">    UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:_shapeLayer.position radius:_contentWidth/2-2 startAngle:-M_PI_2 endAngle:M_PI_2*3 clockwise:YES];</span><br><span class="line">    _shapeLayer.path = path.CGPath;</span><br><span class="line">    _shapeLayer.fillColor = [UIColor clearColor].CGColor;</span><br><span class="line">    _shapeLayer.lineWidth = 4;</span><br><span class="line">    _shapeLayer.strokeColor = [UIColor redColor].CGColor;</span><br><span class="line">    //默认黄转橙转红的边界线 分别由两个gradLayer进行控制</span><br><span class="line">    _gradLayer = [CALayer layer];</span><br><span class="line">    _gradLayer.bounds = _contentLayer.bounds;</span><br><span class="line">    _gradLayer.position = _contentLayer.position;</span><br><span class="line">    _gradLayer.backgroundColor = [UIColor clearColor].CGColor;</span><br><span class="line">    _gradLayerL = [CAGradientLayer layer];</span><br><span class="line">    _gradLayerL.bounds = CGRectMake(0, 0, _contentWidth/2, _contentHeight);</span><br><span class="line">    _gradLayerL.locations = @[@0.6];</span><br><span class="line">    [_gradLayerL setColors:@[(id)[UIColor redColor].CGColor,(id)[UIColor orangeColor].CGColor]];</span><br><span class="line">    _gradLayerL.position = CGPointMake(_gradLayerL.bounds.size.width/2, _gradLayerL.bounds.size.height/2);</span><br><span class="line">   [_gradLayer addSublayer:_gradLayerL];</span><br><span class="line">    _gradLayerR = [CAGradientLayer layer];</span><br><span class="line">    _gradLayerR.locations = @[@0.6];</span><br><span class="line">    _gradLayerR.bounds = CGRectMake(_contentWidth/2, 0, _contentWidth/2, _contentHeight);</span><br><span class="line">    [_gradLayerR setColors:@[(id)[UIColor yellowColor].CGColor,(id)[UIColor orangeColor].CGColor]];</span><br><span class="line">    _gradLayerR.position = CGPointMake(_gradLayerR.bounds.size.width/2+_contentWidth/2, _gradLayerR.bounds.size.height/2);</span><br><span class="line">    [_gradLayer addSublayer:_gradLayerR];</span><br><span class="line">    [_gradLayer setMask:_shapeLayer];</span><br><span class="line">    [_contentLayer addSublayer:_gradLayer];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    //setter方法初始化</span><br><span class="line">    _minLineColor = [UIColor yellowColor];</span><br><span class="line">    _midLineColor = [UIColor orangeColor];</span><br><span class="line">    _maxLineColor = [UIColor redColor];</span><br><span class="line">    _lineTintColor = [UIColor grayColor];</span><br><span class="line">    _progress = 1;</span><br><span class="line">    _lineWidth = 4;</span><br><span class="line">    _lineTintColor = [UIColor grayColor];</span><br><span class="line">    _textColor = [UIColor orangeColor];</span><br><span class="line">    _oldProgress = 1;</span><br><span class="line">    //创建tiplabel</span><br><span class="line">    [self creatTipLabel];</span><br><span class="line">    _timer = [NSTimer scheduledTimerWithTimeInterval:1/60.0 target:self selector:@selector(updateLabel) userInfo:nil repeats:YES];</span><br><span class="line">    _timer.fireDate = [NSDate distantFuture];</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)removeFromSuperview&#123;</span><br><span class="line">    _timer.fireDate = [NSDate distantFuture];</span><br><span class="line">    [_timer invalidate];</span><br><span class="line">    _timer =nil;</span><br><span class="line">    [super removeFromSuperview];</span><br><span class="line">&#125;</span><br><span class="line">-(void)updateLabel&#123;</span><br><span class="line">    if (old&lt;new) &#123;</span><br><span class="line">        old++;</span><br><span class="line">        NSMutableAttributedString * attri = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@&quot;%d%%&quot;,old]];</span><br><span class="line">        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:22] range:NSMakeRange(0, attri.length-1)];</span><br><span class="line">        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(attri.length-1, 1)];</span><br><span class="line">        [attri addAttribute:NSForegroundColorAttributeName value:_textColor range:NSMakeRange(0, attri.length)];</span><br><span class="line">        _tipLabel.attributedText = attri;</span><br><span class="line">    &#125;else if (old&gt;new)&#123;</span><br><span class="line">        old--;</span><br><span class="line">        NSMutableAttributedString * attri = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@&quot;%d%%&quot;,old]];</span><br><span class="line">        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:22] range:NSMakeRange(0, attri.length-1)];</span><br><span class="line">        [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(attri.length-1, 1)];</span><br><span class="line">        [attri addAttribute:NSForegroundColorAttributeName value:_textColor range:NSMakeRange(0, attri.length)];</span><br><span class="line">        _tipLabel.attributedText = attri;</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        _timer.fireDate = [NSDate distantFuture];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setMinLineColor:(UIColor *)minLineColor&#123;</span><br><span class="line">    _minLineColor = minLineColor;</span><br><span class="line">    [_gradLayerR setColors:@[(id)_minLineColor.CGColor,(id)_midLineColor.CGColor]];</span><br><span class="line">    [_gradLayerL setColors:@[(id)_maxLineColor.CGColor,(id)_midLineColor.CGColor]];</span><br><span class="line">&#125;</span><br><span class="line">-(void)setMidLineColor:(UIColor *)midLineColor&#123;</span><br><span class="line">    _midLineColor = midLineColor;</span><br><span class="line">    [_gradLayerR setColors:@[(id)_minLineColor.CGColor,(id)_midLineColor.CGColor]];</span><br><span class="line">    [_gradLayerL setColors:@[(id)_maxLineColor.CGColor,(id)_midLineColor.CGColor]];</span><br><span class="line">&#125;</span><br><span class="line">-(void)setMaxLineColor:(UIColor *)maxLineColor&#123;</span><br><span class="line">    _maxLineColor = maxLineColor;</span><br><span class="line">    [_gradLayerR setColors:@[(id)_minLineColor.CGColor,(id)_midLineColor.CGColor]];</span><br><span class="line">    [_gradLayerL setColors:@[(id)_maxLineColor.CGColor,(id)_midLineColor.CGColor]];</span><br><span class="line">&#125;</span><br><span class="line">-(void)setTintColor:(UIColor *)tintColor&#123;</span><br><span class="line">    _lineTintColor = tintColor;</span><br><span class="line">    _contentLayer.strokeColor = tintColor.CGColor;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setProgress:(CGFloat)progress&#123;</span><br><span class="line">    _oldProgress = _progress;</span><br><span class="line">    _progress=progress;</span><br><span class="line">    _shapeLayer.strokeStart = 0;</span><br><span class="line">    _shapeLayer.strokeEnd = progress&gt;1?1:progress;</span><br><span class="line">    NSMutableAttributedString * attri ;</span><br><span class="line">    if (progress==1) &#123;</span><br><span class="line">        attri = [[NSMutableAttributedString alloc]initWithString:@&quot;100%&quot;];</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        attri = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@&quot;%2d%%&quot;,(int)(progress*100)]];</span><br><span class="line">    &#125;</span><br><span class="line">    [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:22] range:NSMakeRange(0, attri.length-1)];</span><br><span class="line">    [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(attri.length-1, 1)];</span><br><span class="line">    [attri addAttribute:NSForegroundColorAttributeName value:_textColor range:NSMakeRange(0, attri.length)];</span><br><span class="line">    _tipLabel.attributedText = attri;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)setProgress:(CGFloat)progress animated:(BOOL)animated&#123;</span><br><span class="line">    _oldProgress = _progress;</span><br><span class="line">    _progress = progress;</span><br><span class="line">    old = (int)(_oldProgress*100);</span><br><span class="line">    new = (int)(_progress*100);</span><br><span class="line">    CABasicAnimation * ani = [CABasicAnimation animationWithKeyPath:@&quot;strokeEnd&quot;];</span><br><span class="line">    ani.toValue = progress&gt;1?@1:@(progress);</span><br><span class="line">    ani.duration = 0.3;</span><br><span class="line">    ani.delegate=self;</span><br><span class="line">    ani.fillMode=kCAFillModeForwards;</span><br><span class="line">    ani.removedOnCompletion=NO;</span><br><span class="line">    [_shapeLayer addAnimation:ani forKey:nil];</span><br><span class="line">    _timer.fireDate = [NSDate distantPast];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">- (void)dealloc</span><br><span class="line">&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">-(void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag&#123;</span><br><span class="line">    if (flag) &#123;</span><br><span class="line">        [_shapeLayer removeAllAnimations];</span><br><span class="line">        _shapeLayer.strokeEnd = _progress&gt;1?1:_progress;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setLineWidth:(CGFloat)lineWidth&#123;</span><br><span class="line">    if (lineWidth&lt;0.5) &#123;</span><br><span class="line">        lineWidth=0.5;</span><br><span class="line">    &#125;</span><br><span class="line">    if (lineWidth&gt;20) &#123;</span><br><span class="line">        lineWidth = 20;</span><br><span class="line">    &#125;</span><br><span class="line">    _lineWidth = lineWidth;</span><br><span class="line">    UIBezierPath * path = [UIBezierPath bezierPathWithArcCenter:_shapeLayer.position radius:_contentWidth/2-lineWidth/2 startAngle:-M_PI_2 endAngle:M_PI_2*3 clockwise:YES];</span><br><span class="line">    _shapeLayer.path = path.CGPath;</span><br><span class="line">    _shapeLayer.fillColor = [UIColor clearColor].CGColor;</span><br><span class="line">    _shapeLayer.lineWidth = lineWidth;</span><br><span class="line">    _shapeLayer.strokeColor = [UIColor redColor].CGColor;</span><br><span class="line">    [_gradLayer setMask:_shapeLayer];</span><br><span class="line">    UIBezierPath * pathT = [UIBezierPath bezierPathWithArcCenter:_contentLayer.position radius:_contentWidth/2-lineWidth/2 startAngle:-M_PI_2 endAngle:M_PI_2*3 clockwise:YES];</span><br><span class="line">    _contentLayer.path = pathT.CGPath;</span><br><span class="line">    _contentLayer.lineWidth = lineWidth;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">-(void)setTextColor:(UIColor *)textColor&#123;</span><br><span class="line">    _textColor = textColor;</span><br><span class="line">    NSMutableAttributedString * attr = [[NSMutableAttributedString alloc]initWithAttributedString:_tipLabel.attributedText];</span><br><span class="line">    [attr addAttribute:NSForegroundColorAttributeName value:textColor range:NSMakeRange(0, attr.length)];</span><br><span class="line">    _tipLabel.attributedText = attr;</span><br><span class="line">&#125;</span><br><span class="line">-(void)creatTipLabel&#123;</span><br><span class="line">    _tipLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, sqrt(2)/2*(_contentWidth-_lineWidth*2), sqrt(2)/2*(_contentWidth-_lineWidth*2))];</span><br><span class="line">    _tipLabel.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);</span><br><span class="line">    _tipLabel.backgroundColor = [UIColor clearColor];</span><br><span class="line">    _tipLabel.textAlignment = NSTextAlignmentCenter;</span><br><span class="line">    NSMutableAttributedString * attri = [[NSMutableAttributedString alloc]initWithString:@&quot;100%&quot;];</span><br><span class="line">    [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:22] range:NSMakeRange(0, 3)];</span><br><span class="line">    [attri addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:15] range:NSMakeRange(3, 1)];</span><br><span class="line">    [attri addAttribute:NSForegroundColorAttributeName value:[UIColor orangeColor] range:NSMakeRange(0, 4)];</span><br><span class="line">    _tipLabel.attributedText = attri;</span><br><span class="line">    [self addSubview:_tipLabel];</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/04/24/199配合LLDB调试器进行iOS代码调试/" class="pre-post btn btn-default" title='配合LLDB调试器进行iOS代码调试'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">配合LLDB调试器进行iOS代码调试</span>
+        </a>
+    
+    
+        <a href="/2016/04/15/197Swift中构造方法的解析/" class="next-post btn btn-default" title='Swift中构造方法的解析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift中构造方法的解析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#带动画渐进效果与颜色渐变的圆弧进度控件设计"><span class="toc-text">带动画渐进效果与颜色渐变的圆弧进度控件设计</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
