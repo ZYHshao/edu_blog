@@ -1,0 +1,288 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Swift专题讲解二十一——协议 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift专题讲解二十一——协议">
+            
+	            Swift专题讲解二十一——协议
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/29</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift专题讲解二十一——协议"><a href="#Swift专题讲解二十一——协议" class="headerlink" title="Swift专题讲解二十一——协议"></a>Swift专题讲解二十一——协议</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>协议约定了一些属性与方法，其作用类似Java中的抽象类，Swift中类型通过遵守协议来实现一些约定的属性和方法。Swift中的协议使用protocol关键字来声明。Swift中的协议还有一个十分有意思的特性，协议可以通过扩展来实现一些方法和附加功能。
+</code></pre><h3 id="二、在协议中定义属性和方法"><a href="#二、在协议中定义属性和方法" class="headerlink" title="二、在协议中定义属性和方法"></a>二、在协议中定义属性和方法</h3><pre><code>协议中定义的属性只约定名称和类型，在具体类型的实现中，其可以是存储属性也可以是计算属性，协议中还需要指定属性是可读的还是可读可写的。示例代码如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">protocol MyPortocol &#123;</span><br><span class="line">    <span class="comment">//定义实例属性</span></span><br><span class="line">    <span class="comment">//可读的</span></span><br><span class="line">    <span class="keyword">var</span> name:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="comment">//可读可写的</span></span><br><span class="line">    <span class="keyword">var</span> age:Int&#123;set get&#125;</span><br><span class="line">    <span class="comment">//可读的</span></span><br><span class="line">    <span class="keyword">var</span> nameAndAge:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> className:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">&#125;</span><br><span class="line">class MyClass: MyPortocol &#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="built_in">String</span></span><br><span class="line">    <span class="keyword">var</span> age: Int</span><br><span class="line">    <span class="keyword">var</span> nameAndAge: <span class="built_in">String</span>&#123;</span><br><span class="line">        get&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"\(name)"</span>+<span class="string">"\(age)"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> className: <span class="built_in">String</span>&#123;</span><br><span class="line">        get&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"MyClass"</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    init()&#123;</span><br><span class="line">        name = <span class="string">"HS"</span></span><br><span class="line">        age = <span class="number">24</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有一点需要注意，协议中的可读并不是只读，协议中的属性约定成可读可写，则在实现时，这个属性必须是可读可写的，但是如果协议中约定成可读的，则此属性可以是只读的也可以是可读可写的，看具体的实现。</p>
+<pre><code>协议中约定的方法可以是实例方法也可以是类型方法，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">protocol MyPortocol &#123;</span><br><span class="line">    func logName()</span><br><span class="line">    <span class="keyword">static</span> func logClassName()</span><br><span class="line">&#125;</span><br><span class="line">class MyClass: MyPortocol &#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="built_in">String</span></span><br><span class="line">    <span class="keyword">var</span> age: Int</span><br><span class="line">    init()&#123;</span><br><span class="line">        name = <span class="string">"HS"</span></span><br><span class="line">        age = <span class="number">24</span></span><br><span class="line">    &#125;</span><br><span class="line">    func logName() &#123;</span><br><span class="line">        print(name)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> func logClassName() &#123;</span><br><span class="line">        print(className)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样，协议中也可以对构造方法进行定义约定。</p>
+<h3 id="三、协议的特点"><a href="#三、协议的特点" class="headerlink" title="三、协议的特点"></a>三、协议的特点</h3><pre><code>协议中虽然没有任何属性和方法的实现，但是其仍然可以当做类型来使用，在函数参数、返回值中应用广泛，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">protocol MyPortocol &#123;</span><br><span class="line">    <span class="comment">//定义实例属性</span></span><br><span class="line">    <span class="keyword">var</span> name:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">var</span> age:Int&#123;set get&#125;</span><br><span class="line">    <span class="keyword">var</span> nameAndAge:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> className:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    func logName()</span><br><span class="line">    <span class="keyword">static</span> func logClassName()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//将协议类型作为参数</span></span><br><span class="line">func test(param:MyPortocol)  &#123;</span><br><span class="line">    param.logName()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>协议作为类型这种用法另一个应用点是在集合类型中，协议可以作为所有遵守此协议的集合类型。</p>
+<pre><code>协议可以像其他类型一样进行继承，子协议将自动拥有父协议约定的属性和方法。协议也可以通过class关键字来定义只有类可以进行遵守，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">protocol MyPortocol &#123;</span><br><span class="line">    <span class="comment">//定义实例属性</span></span><br><span class="line">    <span class="keyword">var</span> name:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">var</span> age:Int&#123;set get&#125;</span><br><span class="line">    <span class="keyword">var</span> nameAndAge:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> className:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    func logName()</span><br><span class="line">    <span class="keyword">static</span> func logClassName()</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//只有类可以继承此协议</span></span><br><span class="line">protocol MySubPortocol:<span class="class"><span class="keyword">class</span>,<span class="title">MyPortocol</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>协议既然可以像其他类型一样进行使用，当然它也可以使用is，as?，as!进行检查和转换，关于is，as的更多用法可以查看Swift关于类型转换的内容。
+
+协议也可定义其中的属性或方法为可选的，即遵守此协议的类可以实现也可以不实现可选的属性和方法，然而，声明为可选的需要此协议为@objc类型的，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@objc protocol MyPortocol &#123;</span><br><span class="line">    <span class="comment">//定义实例属性</span></span><br><span class="line">    <span class="keyword">var</span> name:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">var</span> age:Int&#123;set get&#125;</span><br><span class="line">    <span class="keyword">var</span> nameAndAge:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> className:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    func logName()</span><br><span class="line">    <span class="comment">//可选实现</span></span><br><span class="line">    optional <span class="keyword">static</span> func logClassName()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>Swift中的协议还有一个十分重要的特性，其可以通过扩展来进行属性、方法以及下标的实现。这对于一些通用类的方法十分方便，这相当于所有继承此协议的类都默认实现了这样的方法，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">protocol MyPortocol &#123;</span><br><span class="line">    <span class="comment">//定义实例属性</span></span><br><span class="line">    <span class="keyword">var</span> name:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">var</span> age:Int&#123;set get&#125;</span><br><span class="line">    <span class="keyword">var</span> nameAndAge:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> className:<span class="built_in">String</span>&#123;get&#125;</span><br><span class="line">    func logName()</span><br><span class="line">    <span class="keyword">static</span> func logClassName()</span><br><span class="line">&#125;</span><br><span class="line">extension MyPortocol&#123;</span><br><span class="line">    <span class="keyword">var</span> name:<span class="built_in">String</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">"HS"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/29/221Swift专题讲解二十——扩展/" class="pre-post btn btn-default" title='Swift专题讲解二十——扩展'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift专题讲解二十——扩展</span>
+        </a>
+    
+    
+        <a href="/2016/05/27/220Swift专题讲解十九——类型转换/" class="next-post btn btn-default" title='Swift专题讲解十九——类型转换'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift专题讲解十九——类型转换</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift专题讲解二十一——协议"><span class="toc-text">Swift专题讲解二十一——协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、在协议中定义属性和方法"><span class="toc-text">二、在协议中定义属性和方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、协议的特点"><span class="toc-text">三、协议的特点</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

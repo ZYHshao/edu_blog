@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS进度指示器——NSProgress | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS进度指示器——NSProgress">
+            
+	            iOS进度指示器——NSProgress
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/22</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS进度指示器——NSProgress"><a href="#iOS进度指示器——NSProgress" class="headerlink" title="iOS进度指示器——NSProgress"></a>iOS进度指示器——NSProgress</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在iOS7之前，系统一直没有提供一个完整的框架来描述任务进度相关的功能。这使得在开发中进行耗时任务进度的监听将什么麻烦，在iOS7之后，系统提供了NSProgress类来专门报告任务进度。
+</code></pre><h3 id="二、创建单任务进度监听器"><a href="#二、创建单任务进度监听器" class="headerlink" title="二、创建单任务进度监听器"></a>二、创建单任务进度监听器</h3><pre><code>单任务进度的监听是NSProgress最简单的一种运用场景，我们来用定时器模拟一个耗时任务，示例代码如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">@interface ViewController ()</span><br><span class="line">&#123;</span><br><span class="line">    NSProgress * progress;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view, typically from a nib.</span></span><br><span class="line">    <span class="comment">//这个方法将创建任务进度管理对象 UnitCount是一个基于UI上的完整任务的单元数</span></span><br><span class="line">    progress = [NSProgress progressWithTotalUnitCount:<span class="number">10</span>];</span><br><span class="line">    NSTimer * timer = [NSTimer scheduledTimerWithTimeInterval:<span class="number">1</span> target:self selector:@selector(task) userInfo:nil repeats:YES];</span><br><span class="line">    <span class="comment">//对任务进度对象的完成比例进行监听</span></span><br><span class="line">    [progress addObserver:self forKeyPath:@<span class="string">"fractionCompleted"</span> options:NSKeyValueObservingOptionNew context:nil];</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(<span class="keyword">void</span> *)context</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@<span class="string">"进度= %f"</span>,progress.fractionCompleted);</span><br><span class="line">&#125;</span><br><span class="line">-(<span class="keyword">void</span>)task&#123;</span><br><span class="line">   <span class="comment">//完成任务单元数+1</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (progress.completedUnitCount&lt;progress.totalUnitCount) &#123;</span><br><span class="line">        progress.completedUnitCount +=<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的示例代码中，fractionCompleted属性为0-1之间的浮点值，为任务的完成比例。NSProgress对象中还有两个字符串类型的属性，这两个属性将进度信息转化成固定的格式：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//显示完后比例 如：10% completed</span></span><br><span class="line">@property (null_resettable, copy) NSString *localizedDescription;</span><br><span class="line"><span class="comment">//完成数量 如：1 of 10</span></span><br><span class="line">@property (null_resettable, copy) NSString *localizedAdditionalDescription;</span><br></pre></td></tr></table></figure>
+<h3 id="三、创建多任务进度监听器"><a href="#三、创建多任务进度监听器" class="headerlink" title="三、创建多任务进度监听器"></a>三、创建多任务进度监听器</h3><pre><code>上面演示了只有一个任务时的进度监听方法，实际上，在开发中，一个任务中往往又有许多子任务，NSProgress是以树状的结构进行设计的，其支持子任务的嵌套，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view, typically from a nib.</span></span><br><span class="line">    <span class="comment">//这个方法将创建任务进度管理对象 UnitCount是一个基于UI上的完整任务的单元数</span></span><br><span class="line">    progress = [NSProgress progressWithTotalUnitCount:<span class="number">10</span>];</span><br><span class="line">    <span class="comment">//对任务进度对象的完成比例进行监听</span></span><br><span class="line">    [progress addObserver:self forKeyPath:@<span class="string">"fractionCompleted"</span> options:NSKeyValueObservingOptionNew context:nil];</span><br><span class="line">    <span class="comment">//向下分支出一个子任务 子任务进度总数为5个单元 即当子任务完成时 父progerss对象进度走5个单元</span></span><br><span class="line">    [progress becomeCurrentWithPendingUnitCount:<span class="number">5</span>];</span><br><span class="line">    [self subTaskOne];</span><br><span class="line">    [progress resignCurrent];</span><br><span class="line">    <span class="comment">//向下分出第2个子任务</span></span><br><span class="line">    [progress becomeCurrentWithPendingUnitCount:<span class="number">5</span>];</span><br><span class="line">    [self subTaskOne];</span><br><span class="line">    [progress resignCurrent];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>)subTaskOne&#123;</span><br><span class="line">    <span class="comment">//子任务总共有10个单元</span></span><br><span class="line">    NSProgress * sub =[NSProgress progressWithTotalUnitCount:<span class="number">10</span>];</span><br><span class="line">    int i=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (i&lt;<span class="number">10</span>) &#123;</span><br><span class="line">        i++;</span><br><span class="line">        sub.completedUnitCount++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(<span class="keyword">void</span> *)context</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    NSLog(@<span class="string">"= %@"</span>,progress.localizedAdditionalDescription);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>NSProgress的这种树状设计模式乍看起来确实有些令人费解，有一点需要注意，becomeCurrentWithPendingUnitCount:方法的意义是将此NSProgress对象注册为当前线程任务的根进度管理对象，resignCurrent方法为取消注册，这两个方法必须成对出现，当一个NSProgress对象被注册为当前线程的根节点时，后面使用类方法 progressWithTotalUnitCount:创建的NSProgress对象都默认作为子节点添加。</p>
+<h3 id="四、iOS9之后进行多任务进度监听的新设计方法"><a href="#四、iOS9之后进行多任务进度监听的新设计方法" class="headerlink" title="四、iOS9之后进行多任务进度监听的新设计方法"></a>四、iOS9之后进行多任务进度监听的新设计方法</h3><pre><code>正如上面的例子所演示，注册根节点的方式可读性很差，代码结构也不太清晰，可能Apple的工程师们也觉得如此，在iOS9之后，NSProgress类中又添加了一些方法，通过这些方法可以更加清晰的表达进度指示器之间的层级结构，示例代码如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view, typically from a nib.</span></span><br><span class="line">    <span class="comment">//这个方法将创建任务进度管理对象 UnitCount是一个基于UI上的完整任务的单元数</span></span><br><span class="line">    progress = [NSProgress progressWithTotalUnitCount:<span class="number">10</span>];</span><br><span class="line">    <span class="comment">//对任务进度对象的完成比例进行监听</span></span><br><span class="line">    [progress addObserver:self forKeyPath:@<span class="string">"fractionCompleted"</span> options:NSKeyValueObservingOptionNew context:nil];</span><br><span class="line">    <span class="comment">//创建子节点</span></span><br><span class="line">    NSProgress * sub = [NSProgress progressWithTotalUnitCount:<span class="number">10</span> parent:progress pendingUnitCount:<span class="number">5</span>];</span><br><span class="line">    NSProgress * sub2 = [NSProgress progressWithTotalUnitCount:<span class="number">10</span> parent:progress pendingUnitCount:<span class="number">5</span>];</span><br><span class="line">    <span class="keyword">for</span> (int i=<span class="number">0</span>; i&lt;<span class="number">10</span>; i++) &#123;</span><br><span class="line">        sub.completedUnitCount ++;</span><br><span class="line">        sub2.completedUnitCount ++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上面代码所示，代码结构变得更加清晰，可操作性也更强了。</p>
+<h3 id="五、一点小总结"><a href="#五、一点小总结" class="headerlink" title="五、一点小总结"></a>五、一点小总结</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">//获取当前线程的进度管理对象根节点</span><br><span class="line">//注意：当有NSProgress对象调用了becomeCurrentWithPendingUnitCount:方法后，这个方法才能获取到</span><br><span class="line">+ (nullable NSProgress *)currentProgress;</span><br><span class="line">//创建一个NSProgress对象，需要传入进度的单元数量</span><br><span class="line">+ (NSProgress *)progressWithTotalUnitCount:(int64_t)unitCount;</span><br><span class="line">//和上一个方法功能相似 iOS9之后的新方法</span><br><span class="line">+ (NSProgress *)discreteProgressWithTotalUnitCount:(int64_t)unitCount;</span><br><span class="line">//iOS9之后的新方法 创建某个进度指示器节点的子节点</span><br><span class="line">+ (NSProgress *)progressWithTotalUnitCount:(int64_t)unitCount parent:(NSProgress *)parent pendingUnitCount:(int64_t)portionOfParentTotalUnitCount;</span><br><span class="line">//NSProgress实例的初始化方法 自父节点参数可以为nil</span><br><span class="line">- (instancetype)initWithParent:(nullable NSProgress *)parentProgressOrNil userInfo:(nullable NSDictionary *)userInfoOrNil;</span><br><span class="line">//注册为当前线程根节点</span><br><span class="line">- (void)becomeCurrentWithPendingUnitCount:(int64_t)unitCount;</span><br><span class="line">//取消注册 与注册方法必须同步出现</span><br><span class="line">- (void)resignCurrent;</span><br><span class="line">//iOS9新方法 向一个节点中添加一个子节点</span><br><span class="line">- (void)addChild:(NSProgress *)child withPendingUnitCount:(int64_t)inUnitCount;</span><br><span class="line">//进度单元总数</span><br><span class="line">@property int64_t totalUnitCount;</span><br><span class="line">//已完成的进度单元数</span><br><span class="line">@property int64_t completedUnitCount;</span><br><span class="line">//是否可取消</span><br><span class="line">@property (getter=isCancellable) BOOL cancellable;</span><br><span class="line">//是否可暂停</span><br><span class="line">@property (getter=isPausable) BOOL pausable;</span><br><span class="line">//进度比例 0-1之间</span><br><span class="line">@property (readonly) double fractionCompleted;</span><br><span class="line">//取消</span><br><span class="line">- (void)cancel;</span><br><span class="line">//暂停</span><br><span class="line">- (void)pause;</span><br><span class="line">//恢复</span><br><span class="line">- (void)resume</span><br></pre></td></tr></table></figure>
+<h3 id="六、关于NSProgress对象的用户配置字典"><a href="#六、关于NSProgress对象的用户配置字典" class="headerlink" title="六、关于NSProgress对象的用户配置字典"></a>六、关于NSProgress对象的用户配置字典</h3><pre><code>在NSProgress对象的用户字典中可以设置一些特定的键值来进行显示模式的设置，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">//设置剩余时间 会影响localizedAdditionalDescription的值</span><br><span class="line">/*</span><br><span class="line">例如：0 of 10 — About 10 seconds remaining</span><br><span class="line">*/</span><br><span class="line">[progress setUserInfoObject:@10 forKey:NSProgressEstimatedTimeRemainingKey];</span><br><span class="line">//设置完成速度信息 会影响localizedAdditionalDescription的值</span><br><span class="line">/*</span><br><span class="line">例如：Zero KB of 10 bytes (15 bytes/sec)</span><br><span class="line">*/</span><br><span class="line">[progress setUserInfoObject:@15 forKey:NSProgressThroughputKey];</span><br><span class="line">/*</span><br><span class="line">下面这些键值的生效 必须将NSProgress对象的kind属性设置为 NSProgressKindFile</span><br><span class="line">NSProgressFileOperationKindKey键对应的是提示文字类型 会影响localizedDescription的值</span><br><span class="line">NSProgressFileOperationKindKey可选的对应值如下：</span><br><span class="line">NSProgressFileOperationKindDownloading： 显示Downloading files…</span><br><span class="line">NSProgressFileOperationKindDecompressingAfterDownloading： 显示Decompressing files…</span><br><span class="line">NSProgressFileOperationKindReceiving： 显示Receiving files…</span><br><span class="line">NSProgressFileOperationKindCopying： 显示Copying files…</span><br><span class="line">*/</span><br><span class="line"> [progress setUserInfoObject:NSProgressFileOperationKindDownloading forKey:NSProgressFileOperationKindKey];</span><br><span class="line">/*</span><br><span class="line">NSProgressFileTotalCountKey键设置显示的文件总数 </span><br><span class="line">例如：Copying 100 files…</span><br><span class="line">*/</span><br><span class="line"> [progress setUserInfoObject:@100 forKey:NSProgressFileTotalCountKey];</span><br><span class="line">//设置已完成的数量</span><br><span class="line">[progress setUserInfoObject:@1 forKey:NSProgressFileCompletedCountKey];</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/24/218Swift专题讲解十七——Optional链/" class="pre-post btn btn-default" title='Swift专题讲解十七——Optional链'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift专题讲解十七——Optional链</span>
+        </a>
+    
+    
+        <a href="/2016/05/19/216Swift专题讲解十六——ARC在Swift中的应用/" class="next-post btn btn-default" title='Swift专题讲解十六——ARC在Swift中的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift专题讲解十六——ARC在Swift中的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS进度指示器——NSProgress"><span class="toc-text">iOS进度指示器——NSProgress</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、创建单任务进度监听器"><span class="toc-text">二、创建单任务进度监听器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、创建多任务进度监听器"><span class="toc-text">三、创建多任务进度监听器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、iOS9之后进行多任务进度监听的新设计方法"><span class="toc-text">四、iOS9之后进行多任务进度监听的新设计方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、一点小总结"><span class="toc-text">五、一点小总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、关于NSProgress对象的用户配置字典"><span class="toc-text">六、关于NSProgress对象的用户配置字典</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
