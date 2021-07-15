@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>SwiftUI直通车系列（3）—— 使用导航 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SwiftUI直通车系列（3）—— 使用导航">
+            
+	            SwiftUI直通车系列（3）—— 使用导航
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/SwiftUI">
+            SwiftUI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2020/09/27</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="SwiftUI直通车系列三（3）——-使用导航"><a href="#SwiftUI直通车系列三（3）——-使用导航" class="headerlink" title="SwiftUI直通车系列三（3）—— 使用导航"></a>SwiftUI直通车系列三（3）—— 使用导航</h1><pre><code>关于SwiftUI，我们前两篇博客介绍了独立组件的布局与属性设置相关内容，并且介绍了开发中最常用的列表视图的使用。但是一个完整的应用程序不可能是单界面的，如何使用SwiftUI进行界面间的导航跳转，是我们本博客讨论的重点。前两篇博客地址如下：
+</code></pre><p><a href="https://my.oschina.net/u/2340880/blog/4529951" target="_blank" rel="noopener">SwiftUI直通车系列（1）—— 视图的布局与组织</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/4534222" target="_blank" rel="noopener">SwiftUI直通车系列（2）—— 列表视图</a></p>
+<pre><code>在本系列的第二篇博客中，我们能够使用SwiftUI来构建列表视图，通常，列表视图用来展示目录页面，当用户点击列表中的某一项时，需要跳转到详情页。在iOS应用中，页面的跳转常用导航控制器进行管理。在SwiftUI中，创建一个导航也是非常简单的，只需要在组件最外层嵌套NavigationView即可。以我们之前的列表视图Demo为例，改写代码如下：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContactModel</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name:<span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> phone:<span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> modelData = [</span><br><span class="line">    <span class="type">ContactModel</span>(name:<span class="string">"王小丫"</span>, phone:<span class="string">"15137348888"</span>),</span><br><span class="line">    <span class="type">ContactModel</span>(name:<span class="string">"李小二"</span>, phone:<span class="string">"15137348989"</span>)</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span> (alignment: .leading, spacing: <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!啊啊啊"</span>)</span><br><span class="line">                .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">                .underline()</span><br><span class="line">                .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">            <span class="type">Spacer</span>()</span><br><span class="line">            <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!"</span>)</span><br><span class="line">            .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">            .underline()</span><br><span class="line">            .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">        &#125;</span><br><span class="line">        .padding(<span class="type">EdgeInsets</span>(top: <span class="number">30</span>, leading: <span class="number">0</span>, bottom: <span class="number">30</span>, trailing: <span class="number">0</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Label</span>:<span class="title">UIViewRepresentable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">makeUIView</span><span class="params">(context: Context)</span></span> -&gt; <span class="type">UILabel</span> &#123;</span><br><span class="line">        <span class="type">UILabel</span>(frame: .zero)</span><br><span class="line">     &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">updateUIView</span><span class="params">(<span class="number">_</span> uiView: UILabel, context: Context)</span></span> &#123;</span><br><span class="line">        uiView.text = <span class="string">"Hello"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentImage</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Image</span>(<span class="string">"demo"</span>)</span><br><span class="line">        .clipShape(<span class="type">Circle</span>())</span><br><span class="line">        .shadow(radius: <span class="number">30</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">RowContent</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> contactModel:<span class="type">ContactModel</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">HStack</span>(alignment:.top) &#123;</span><br><span class="line">            <span class="type">Image</span>(<span class="string">"demo"</span>).resizable().frame(width: <span class="number">70</span>, height: <span class="number">70</span>)</span><br><span class="line">            <span class="type">VStack</span>(alignment:.leading, spacing: <span class="number">10</span>) &#123;</span><br><span class="line">                <span class="type">Text</span>(<span class="keyword">self</span>.contactModel.name).bold().font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">                <span class="type">Text</span>(<span class="keyword">self</span>.contactModel.phone).font(<span class="type">Font</span>.system(size: <span class="number">20</span>))</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="type">Spacer</span>()</span><br><span class="line">            &#125;.padding(<span class="type">EdgeInsets</span>(top: <span class="number">10</span>, leading: <span class="number">20</span>, bottom: <span class="number">10</span>, trailing: <span class="number">20</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListContent</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">NavigationView</span> &#123;</span><br><span class="line">            <span class="type">List</span>(modelData, id: \.name) &#123; model <span class="keyword">in</span></span><br><span class="line">                <span class="type">RowContent</span>(contactModel: model)</span><br><span class="line">            &#125;</span><br><span class="line">            .navigationBarTitle(<span class="string">"通讯录"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView_Previews</span>: <span class="title">PreviewProvider</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> previews: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">ListContent</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你只需要关注ListContent结构体即可，其中为列表视图设置了导航，并且定义了导航栏上的标题，效果如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7ae66a20edea05be5ac94708d99761c004e.png" alt=""></p>
+<p>要实现页面的跳转，需要为要触发跳转的组件添加NavigationLink包裹，NavigationLink可以指向要跳转的详情页面，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListContent</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">NavigationView</span> &#123;</span><br><span class="line">            <span class="type">List</span>(modelData, id: \.name) &#123; model <span class="keyword">in</span></span><br><span class="line">                <span class="type">NavigationLink</span>(destination: <span class="type">ContentImage</span>()) &#123;</span><br><span class="line">                    <span class="type">RowContent</span>(contactModel: model)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            .navigationBarTitle(<span class="string">"通讯录"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果详情页面是动态的，在跳转时，我们也可以将数据传递过去，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentImage</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name:<span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> phone:<span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span>() &#123;</span><br><span class="line">            <span class="type">Image</span>(<span class="string">"demo"</span>)</span><br><span class="line">                .clipShape(<span class="type">Circle</span>())</span><br><span class="line">                .shadow(radius: <span class="number">30</span>)</span><br><span class="line">                .offset(x: <span class="number">0</span>, y: -<span class="number">70</span>)</span><br><span class="line">            <span class="type">Text</span>(name).offset(x: <span class="number">0</span>, y: -<span class="number">50</span>)</span><br><span class="line">            <span class="type">Text</span>(phone).offset(x: <span class="number">0</span>, y: -<span class="number">30</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListContent</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">NavigationView</span> &#123;</span><br><span class="line">            <span class="type">List</span>(modelData, id: \.name) &#123; model <span class="keyword">in</span></span><br><span class="line">                <span class="type">NavigationLink</span>(destination: <span class="type">ContentImage</span>(name: model.name, phone: model.phone)) &#123;</span><br><span class="line">                    <span class="type">RowContent</span>(contactModel: model)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            .navigationBarTitle(<span class="string">"通讯录"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-5f3c221291140f8332a10a7729da2ed4521.png" alt=""></p>
+<p>默认导航的标题是大文字风格的，若要使用常规风格的，需要配置其displayMode属性，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ListContent</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">NavigationView</span> &#123;</span><br><span class="line">            <span class="type">List</span>(modelData, id: \.name) &#123; model <span class="keyword">in</span></span><br><span class="line">                <span class="type">NavigationLink</span>(destination: <span class="type">ContentImage</span>(name: model.name, phone: model.phone)) &#123;</span><br><span class="line">                    <span class="type">RowContent</span>(contactModel: model)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            .navigationBarTitle(<span class="string">"通讯录"</span>, displayMode: .inline)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-3566cc83b2270ba0869397723bb5d97d66b.png" alt=""></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：805263726</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2020/09/29/406SwiftUI直通车系列（4）—— 处理用户交互/" class="pre-post btn btn-default" title='SwiftUI直通车系列（4）—— 处理用户交互'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SwiftUI直通车系列（4）—— 处理用户交互</span>
+        </a>
+    
+    
+        <a href="/2020/08/28/404 SwiftUI直通车系列（2）—— 列表视图/" class="next-post btn btn-default" title='SwiftUI直通车系列（2）—— 列表视图'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SwiftUI直通车系列（2）—— 列表视图</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SwiftUI直通车系列三（3）——-使用导航"><span class="toc-text">SwiftUI直通车系列三（3）—— 使用导航</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

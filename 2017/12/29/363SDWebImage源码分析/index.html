@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>SDWebImage源码分析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SDWebImage源码分析">
+            
+	            SDWebImage源码分析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS第三方库">
+            iOS第三方库
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/12/29</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="SDWebImage源码分析"><a href="#SDWebImage源码分析" class="headerlink" title="SDWebImage源码分析"></a>SDWebImage源码分析</h2><blockquote>
+<pre><code>每次读优秀的代码都是一次深刻的学习，每一次模仿，都是创造的开始！
+</code></pre><p>——QQ 316045346 欢迎交流</p>
+</blockquote>
+<pre><code>SDWebImage是iOS开发中非常流行的一个网络图片加载库，如果你观察其源码，会发现其中的文件非常多，虽然文件数很多，但是作者的代码结构和条理却是非清晰。SDWebImage的代码结构基本可以分为3块：应用层类别、核心功能类、工具类与类别。其中我们最常使用的是应用层的类别。例如UIImageView的图片加载，UIButton的图片加载等。
+</code></pre><h3 id="一、帮助类与类别的解析"><a href="#一、帮助类与类别的解析" class="headerlink" title="一、帮助类与类别的解析"></a>一、帮助类与类别的解析</h3><h4 id="1-NSData-ImageContentType"><a href="#1-NSData-ImageContentType" class="headerlink" title="1.NSData+ImageContentType"></a>1.NSData+ImageContentType</h4><pre><code>这个类别是一个图片数据的格式帮助类，使用它可以方便的获取图片数据的图片格式，其中枚举了常用的图片格式如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, SDImageFormat) &#123;</span><br><span class="line">    SDImageFormatUndefined = <span class="number">-1</span>, <span class="comment">//未知格式</span></span><br><span class="line">    SDImageFormatJPEG = <span class="number">0</span>,   <span class="comment">//jpeg</span></span><br><span class="line">    SDImageFormatPNG,   <span class="comment">//png</span></span><br><span class="line">    SDImageFormatGIF,   <span class="comment">//gif</span></span><br><span class="line">    SDImageFormatTIFF,  <span class="comment">//tiff</span></span><br><span class="line">    SDImageFormatWebP,  <span class="comment">//webp</span></span><br><span class="line">    SDImageFormatHEIC   <span class="comment">//heic</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其原理是根据图片数据的第1个字节码进行分析，不同格式的图像数据在开头都会有一部分的用来表明图像信息的数据块，通过它可以获取图片的具体格式。这个类别中只提供了两个方法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取图像数据格式</span></span><br><span class="line">+ (SDImageFormat)sd_imageFormatForImageData:(<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)data;</span><br><span class="line"><span class="comment">//将SDImageFormat转换成CFStringRef</span></span><br><span class="line">+ (<span class="keyword">nonnull</span> <span class="built_in">CFStringRef</span>)sd_UTTypeFromSDImageFormat:(SDImageFormat)format;</span><br></pre></td></tr></table></figure>
+<h4 id="2、SDWebImageFrame"><a href="#2、SDWebImageFrame" class="headerlink" title="2、SDWebImageFrame"></a>2、SDWebImageFrame</h4><pre><code>这个类是SDWebImage中封装的图像帧类，主要用来创建动画图像。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当前帧图像</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>, <span class="keyword">readonly</span>, <span class="keyword">nonnull</span>) <span class="built_in">UIImage</span> *image;</span><br><span class="line"><span class="comment">//时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">assign</span>) <span class="built_in">NSTimeInterval</span> duration;</span><br><span class="line"><span class="comment">//初始化方法</span></span><br><span class="line">+ (<span class="keyword">instancetype</span> _Nonnull)frameWithImage:(<span class="built_in">UIImage</span> * _Nonnull)image duration:(<span class="built_in">NSTimeInterval</span>)duration;</span><br></pre></td></tr></table></figure>
+<h4 id="3-UIImage的编码与解码"><a href="#3-UIImage的编码与解码" class="headerlink" title="3.UIImage的编码与解码"></a>3.UIImage的编码与解码</h4><pre><code>SDWebImageCoder中定义了一个协议，其中约定了方法来对图像数据进行解码与编码，实现这个协议的主要有SDWebImageIOCoder和SDWebImageGIFCoder。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//数据是否可以进行解码 除了webp类型的 其他类型的图像都可以解码</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)canDecodeFromData:(<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)data;</span><br><span class="line"><span class="comment">//进行图片数据解码</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)decodedImageWithData:(<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)data;</span><br><span class="line"><span class="comment">//进行增量解码</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)decompressedImageWithImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)image</span><br><span class="line">                                            data:(<span class="built_in">NSData</span> * _Nullable * _Nonnull)data</span><br><span class="line">                                         options:(<span class="keyword">nullable</span> <span class="built_in">NSDictionary</span>&lt;<span class="built_in">NSString</span>*, <span class="built_in">NSObject</span>*&gt;*)optionsDict;</span><br><span class="line"><span class="comment">//获取此类型图像是否可以编码</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)canEncodeToFormat:(SDImageFormat)format;</span><br><span class="line"><span class="comment">//将图片编码为数据</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)encodedDataWithImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)image format:(SDImageFormat)format;</span><br><span class="line"><span class="comment">//获取此图像数据是否可以增量解码</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)canIncrementallyDecodeFromData:(<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)data;</span><br><span class="line"><span class="comment">//进行增量解码</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)incrementallyDecodedImageWithData:(<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)data finished:(<span class="built_in">BOOL</span>)finished;</span><br></pre></td></tr></table></figure>
+<h4 id="4-图像数据预加载"><a href="#4-图像数据预加载" class="headerlink" title="4.图像数据预加载"></a>4.图像数据预加载</h4><pre><code>SDWebImagePrefetcher类提供了图像数据的预加载功能，在进行用户体验优化，需要预加载某些常态图像时，可以用使用这个类。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SDWebImagePrefetcher</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//管理中心</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">nonnull</span>) SDWebImageManager *manager;</span><br><span class="line"><span class="comment">//设置最大的同时下载数</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">NSUInteger</span> maxConcurrentDownloads;</span><br><span class="line"><span class="comment">//配置 枚举 设置优先级等</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) SDWebImageOptions options;</span><br><span class="line"><span class="comment">//单例对象</span></span><br><span class="line">+ (<span class="keyword">nonnull</span> <span class="keyword">instancetype</span>)sharedImagePrefetcher;</span><br><span class="line"><span class="comment">//构造方法</span></span><br><span class="line">- (<span class="keyword">nonnull</span> <span class="keyword">instancetype</span>)initWithImageManager:(<span class="keyword">nonnull</span> SDWebImageManager *)manager <span class="built_in">NS_DESIGNATED_INITIALIZER</span>;</span><br><span class="line"><span class="comment">//进行预下载</span></span><br><span class="line">- (<span class="keyword">void</span>)prefetchURLs:(<span class="keyword">nullable</span> <span class="built_in">NSArray</span>&lt;<span class="built_in">NSURL</span> *&gt; *)urls;</span><br><span class="line">- (<span class="keyword">void</span>)prefetchURLs:(<span class="keyword">nullable</span> <span class="built_in">NSArray</span>&lt;<span class="built_in">NSURL</span> *&gt; *)urls</span><br><span class="line">            progress:(<span class="keyword">nullable</span> SDWebImagePrefetcherProgressBlock)progressBlock</span><br><span class="line">           completed:(<span class="keyword">nullable</span> SDWebImagePrefetcherCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//取消预下载行为</span></span><br><span class="line">- (<span class="keyword">void</span>)cancelPrefetching;</span><br></pre></td></tr></table></figure>
+<p>SDWebImagePrefetcher还提供了代理来对预下载过程进行监听，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当一张图片被下载完后调用</span></span><br><span class="line">- (<span class="keyword">void</span>)imagePrefetcher:(<span class="keyword">nonnull</span> SDWebImagePrefetcher *)imagePrefetcher didPrefetchURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)imageURL finishedCount:(<span class="built_in">NSUInteger</span>)finishedCount totalCount:(<span class="built_in">NSUInteger</span>)totalCount;</span><br><span class="line"><span class="comment">//与下载任务全部结束后调用</span></span><br><span class="line">- (<span class="keyword">void</span>)imagePrefetcher:(<span class="keyword">nonnull</span> SDWebImagePrefetcher *)imagePrefetcher didFinishWithTotalCount:(<span class="built_in">NSUInteger</span>)totalCount skippedCount:(<span class="built_in">NSUInteger</span>)skippedCount;</span><br></pre></td></tr></table></figure>
+<h3 id="二、核心功能"><a href="#二、核心功能" class="headerlink" title="二、核心功能"></a>二、核心功能</h3><pre><code>SDWebImage的核心功能类结构如下图所示：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2017/1229/135005_K3TI_2340880.png" alt=""></p>
+<h4 id="1-缓存管理类SDImageCache"><a href="#1-缓存管理类SDImageCache" class="headerlink" title="1.缓存管理类SDImageCache"></a>1.缓存管理类SDImageCache</h4><pre><code>SDImageCache类负责所有网络图片数据的缓存，其从逻辑上分为两级缓存，内存缓存和硬盘缓存。开发者可以使用单例方法来获取默认的SDImageCache实例，也可以使用特殊的Name值来创建缓存实例，常用函数列举如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//缓存图片到内存和磁盘</span></span><br><span class="line">- (<span class="keyword">void</span>)storeImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)image</span><br><span class="line">            forKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key</span><br><span class="line">        completion:(<span class="keyword">nullable</span> SDWebImageNoParamsBlock)completionBlock;</span><br><span class="line"><span class="comment">//缓存图片到磁盘</span></span><br><span class="line">- (<span class="keyword">void</span>)storeImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)image</span><br><span class="line">            forKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key</span><br><span class="line">            toDisk:(<span class="built_in">BOOL</span>)toDisk</span><br><span class="line">        completion:(<span class="keyword">nullable</span> SDWebImageNoParamsBlock)completionBlock;</span><br><span class="line">- (<span class="keyword">void</span>)storeImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)image</span><br><span class="line">         imageData:(<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)imageData</span><br><span class="line">            forKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key</span><br><span class="line">            toDisk:(<span class="built_in">BOOL</span>)toDisk</span><br><span class="line">        completion:(<span class="keyword">nullable</span> SDWebImageNoParamsBlock)completionBlock;</span><br><span class="line">- (<span class="keyword">void</span>)storeImageDataToDisk:(<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)imageData forKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key;</span><br><span class="line"><span class="comment">//异步检查磁盘缓存是否存在</span></span><br><span class="line">- (<span class="keyword">void</span>)diskImageExistsWithKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key completion:(<span class="keyword">nullable</span> SDWebImageCheckCacheCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//检查内存缓存是否存在</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)imageFromMemoryCacheForKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key;</span><br><span class="line"><span class="comment">//获取磁盘缓存数据</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)imageFromDiskCacheForKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key;</span><br><span class="line"><span class="comment">//获取内存和磁盘缓存数据</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)imageFromCacheForKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key;</span><br><span class="line"><span class="comment">//异步删除缓存</span></span><br><span class="line">- (<span class="keyword">void</span>)removeImageForKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key withCompletion:(<span class="keyword">nullable</span> SDWebImageNoParamsBlock)completion;</span><br><span class="line">- (<span class="keyword">void</span>)removeImageForKey:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)key fromDisk:(<span class="built_in">BOOL</span>)fromDisk withCompletion:(<span class="keyword">nullable</span> SDWebImageNoParamsBlock)completion;</span><br><span class="line"><span class="comment">//清除所有内存缓存</span></span><br><span class="line">- (<span class="keyword">void</span>)clearMemory;</span><br><span class="line"><span class="comment">//删除所有过期数据</span></span><br><span class="line">- (<span class="keyword">void</span>)deleteOldFilesWithCompletionBlock:(<span class="keyword">nullable</span> SDWebImageNoParamsBlock)completionBlock;</span><br><span class="line"><span class="comment">//获取磁盘缓存大小</span></span><br><span class="line">- (<span class="built_in">NSUInteger</span>)getSize;</span><br><span class="line"><span class="comment">//获取磁盘缓存图片数</span></span><br><span class="line">- (<span class="built_in">NSUInteger</span>)getDiskCount;</span><br></pre></td></tr></table></figure>
+<p>SDImageCacheConfig用来对缓存进行配置，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//是否允许缓存到内存</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> shouldCacheImagesInMemory;</span><br><span class="line"><span class="comment">//缓存生命</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSInteger</span> maxCacheAge;</span><br><span class="line"><span class="comment">//最大缓存容量</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSUInteger</span> maxCacheSize;</span><br></pre></td></tr></table></figure>
+<h4 id="2-下载器SDWebImageDownloader"><a href="#2-下载器SDWebImageDownloader" class="headerlink" title="2.下载器SDWebImageDownloader"></a>2.下载器SDWebImageDownloader</h4><pre><code>SDWebImageDownloader提供对图片下载的支持管理，其可以配置同时最大下载数量，下载超时等：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//同时最大下载数量</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSInteger</span> maxConcurrentDownloads;</span><br><span class="line"><span class="comment">//当前正在下载的任务数量</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSUInteger</span> currentDownloadCount;</span><br><span class="line"><span class="comment">//设置超时时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSTimeInterval</span> downloadTimeout;</span><br><span class="line"><span class="comment">//证书</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSURLCredential</span> *urlCredential;</span><br><span class="line"><span class="comment">//用户名</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *username;</span><br><span class="line"><span class="comment">//密码</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *password;</span><br><span class="line"><span class="comment">//设置请求头</span></span><br><span class="line">- (<span class="keyword">void</span>)setValue:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)value forHTTPHeaderField:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)field;</span><br><span class="line"><span class="comment">//获取请求头</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)valueForHTTPHeaderField:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)field;</span><br><span class="line"><span class="comment">//开始下载任务</span></span><br><span class="line">- (<span class="keyword">nullable</span> SDWebImageDownloadToken *)downloadImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                                                   options:(SDWebImageDownloaderOptions)options</span><br><span class="line">                                                  progress:(<span class="keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock</span><br><span class="line">                                                 completed:(<span class="keyword">nullable</span> SDWebImageDownloaderCompletedBlock)completedBlock;</span><br><span class="line"><span class="comment">//取消下载任务</span></span><br><span class="line">- (<span class="keyword">void</span>)cancel:(<span class="keyword">nullable</span> SDWebImageDownloadToken *)token;</span><br><span class="line"><span class="comment">//取消所有下载任务</span></span><br><span class="line">- (<span class="keyword">void</span>)cancelAllDownloads;</span><br></pre></td></tr></table></figure>
+<h3 id="三、应用类别"><a href="#三、应用类别" class="headerlink" title="三、应用类别"></a>三、应用类别</h3><h4 id="1-UIButton-WebCache"><a href="#1-UIButton-WebCache" class="headerlink" title="1.UIButton+WebCache"></a>1.UIButton+WebCache</h4><pre><code>这个类别用来对按钮设置网络图片。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当前状态的图片URL</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)sd_currentImageURL;</span><br><span class="line"><span class="comment">//获取指定状态的图片URL</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)sd_imageURLForState:(<span class="built_in">UIControlState</span>)state;</span><br><span class="line"><span class="comment">//为某个状态设置网络图片</span></span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                  forState:(<span class="built_in">UIControlState</span>)state;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                  forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                  forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                   options:(SDWebImageOptions)options;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                  forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">                 completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                  forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                 completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                  forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                   options:(SDWebImageOptions)options</span><br><span class="line">                 completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line"><span class="comment">//下面这些方法设置按钮的背景图</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)sd_currentBackgroundImageURL;</span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)sd_backgroundImageURLForState:(<span class="built_in">UIControlState</span>)state;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setBackgroundImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                            forState:(<span class="built_in">UIControlState</span>)state;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setBackgroundImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                            forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">                    placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setBackgroundImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                            forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">                    placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                             options:(SDWebImageOptions)options;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setBackgroundImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                            forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">                           completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setBackgroundImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                            forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">                    placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                           completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setBackgroundImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                            forState:(<span class="built_in">UIControlState</span>)state</span><br><span class="line">                    placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                             options:(SDWebImageOptions)options</span><br><span class="line">                           completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line"><span class="comment">//取消图片下载</span></span><br><span class="line">- (<span class="keyword">void</span>)sd_cancelImageLoadForState:(<span class="built_in">UIControlState</span>)state;</span><br><span class="line">- (<span class="keyword">void</span>)sd_cancelBackgroundImageLoadForState:(<span class="built_in">UIControlState</span>)state;</span><br></pre></td></tr></table></figure>
+<h4 id="2-UIImageView-WebCache与UIImageView-HighlightedWebCache"><a href="#2-UIImageView-WebCache与UIImageView-HighlightedWebCache" class="headerlink" title="2.UIImageView+WebCache与UIImageView+HighlightedWebCache"></a>2.UIImageView+WebCache与UIImageView+HighlightedWebCache</h4><pre><code>这两个类别的作用都是对UIImageView实例进行图片设置，分别设置正常状态的图片和高亮状态的图片。只举例UIImageView+WebCache中方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置网络图片</span></span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                   options:(SDWebImageOptions)options;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                 completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                 completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                   options:(SDWebImageOptions)options</span><br><span class="line">                 completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">          placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                   options:(SDWebImageOptions)options</span><br><span class="line">                  progress:(<span class="keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock</span><br><span class="line">                 completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line">- (<span class="keyword">void</span>)sd_setImageWithPreviousCachedImageWithURL:(<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)url</span><br><span class="line">                                 placeholderImage:(<span class="keyword">nullable</span> <span class="built_in">UIImage</span> *)placeholder</span><br><span class="line">                                          options:(SDWebImageOptions)options</span><br><span class="line">                                         progress:(<span class="keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock</span><br><span class="line">                                        completed:(<span class="keyword">nullable</span> SDExternalCompletionBlock)completedBlock;</span><br><span class="line"><span class="comment">//对一组url进行下载并以动画方式显示</span></span><br><span class="line">- (<span class="keyword">void</span>)sd_setAnimationImagesWithURLs:(<span class="keyword">nonnull</span> <span class="built_in">NSArray</span>&lt;<span class="built_in">NSURL</span> *&gt; *)arrayOfURLs;</span><br><span class="line"><span class="comment">//取消当前图片下载</span></span><br><span class="line">- (<span class="keyword">void</span>)sd_cancelCurrentAnimationImagesLoad;</span><br></pre></td></tr></table></figure>
+<p>关于SDWebImageOptions，它是一个配置枚举：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_OPTIONS</span>(<span class="built_in">NSUInteger</span>, SDWebImageOptions) &#123;</span><br><span class="line">    <span class="comment">//配置这个参数下载失败的url将会重试下载</span></span><br><span class="line">    SDWebImageRetryFailed = <span class="number">1</span> &lt;&lt; <span class="number">0</span>,</span><br><span class="line">    <span class="comment">//低优先级</span></span><br><span class="line">    SDWebImageLowPriority = <span class="number">1</span> &lt;&lt; <span class="number">1</span>,</span><br><span class="line">    <span class="comment">//仅仅进行内存缓存</span></span><br><span class="line">    SDWebImageCacheMemoryOnly = <span class="number">1</span> &lt;&lt; <span class="number">2</span>,</span><br><span class="line">    <span class="comment">//进行分步下载</span></span><br><span class="line">    SDWebImageProgressiveDownload = <span class="number">1</span> &lt;&lt; <span class="number">3</span>,</span><br><span class="line">    <span class="comment">//刷新缓存</span></span><br><span class="line">    SDWebImageRefreshCached = <span class="number">1</span> &lt;&lt; <span class="number">4</span>,</span><br><span class="line">    <span class="comment">//支持后台</span></span><br><span class="line">    SDWebImageContinueInBackground = <span class="number">1</span> &lt;&lt; <span class="number">5</span>,</span><br><span class="line">    <span class="comment">//保持cookie</span></span><br><span class="line">    SDWebImageHandleCookies = <span class="number">1</span> &lt;&lt; <span class="number">6</span>,</span><br><span class="line">    <span class="comment">//允许证书</span></span><br><span class="line">    SDWebImageAllowInvalidSSLCertificates = <span class="number">1</span> &lt;&lt; <span class="number">7</span>,</span><br><span class="line">    <span class="comment">//高优先级 </span></span><br><span class="line">    SDWebImageHighPriority = <span class="number">1</span> &lt;&lt; <span class="number">8</span>,</span><br><span class="line">    <span class="comment">//配置此参数 当图片加载结束后才会显示placeholder</span></span><br><span class="line">    SDWebImageDelayPlaceholder = <span class="number">1</span> &lt;&lt; <span class="number">9</span>,</span><br><span class="line">    <span class="comment">//执行图片变换</span></span><br><span class="line">    SDWebImageTransformAnimatedImage = <span class="number">1</span> &lt;&lt; <span class="number">10</span>,</span><br><span class="line">    SDWebImageScaleDownLargeImages = <span class="number">1</span> &lt;&lt; <span class="number">12</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/01/30/364MJRefresh源码分析/" class="pre-post btn btn-default" title='MJRefresh源码分析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">MJRefresh源码分析</span>
+        </a>
+    
+    
+        <a href="/2017/11/24/362从AFNetworking源码分析到应用全解/" class="next-post btn btn-default" title='从AFNetworking源码分析到应用全解'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">从AFNetworking源码分析到应用全解</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SDWebImage源码分析"><span class="toc-text">SDWebImage源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、帮助类与类别的解析"><span class="toc-text">一、帮助类与类别的解析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-NSData-ImageContentType"><span class="toc-text">1.NSData+ImageContentType</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、SDWebImageFrame"><span class="toc-text">2、SDWebImageFrame</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-UIImage的编码与解码"><span class="toc-text">3.UIImage的编码与解码</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-图像数据预加载"><span class="toc-text">4.图像数据预加载</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、核心功能"><span class="toc-text">二、核心功能</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-缓存管理类SDImageCache"><span class="toc-text">1.缓存管理类SDImageCache</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-下载器SDWebImageDownloader"><span class="toc-text">2.下载器SDWebImageDownloader</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、应用类别"><span class="toc-text">三、应用类别</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-UIButton-WebCache"><span class="toc-text">1.UIButton+WebCache</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-UIImageView-WebCache与UIImageView-HighlightedWebCache"><span class="toc-text">2.UIImageView+WebCache与UIImageView+HighlightedWebCache</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

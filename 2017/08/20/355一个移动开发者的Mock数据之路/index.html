@@ -1,0 +1,488 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>一个移动开发者的Mock数据之路 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一个移动开发者的Mock数据之路">
+            
+	            一个移动开发者的Mock数据之路
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/日常技巧">
+            日常技巧
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/08/20</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="一个移动开发者的Mock数据之路"><a href="#一个移动开发者的Mock数据之路" class="headerlink" title="一个移动开发者的Mock数据之路"></a>一个移动开发者的Mock数据之路</h2><h3 id="一、始由"><a href="#一、始由" class="headerlink" title="一、始由"></a>一、始由</h3><pre><code>在前端开发中，很大一部分工作都是将后台数据获取到后展示在前端界面上。如果接口是现成的，这个过程还相对容易一些，但是如果接口的开发和前端开发是同时进行的，在仅仅有接口文档并无测试环境的情况下，前端开发者就要痛苦了，所得非所见的盲写方式不但效率低下，也有很大的遗漏风险。如果我们有办法自己根据接口文档模拟这些数据，那开发过程中的体验就会好很多了。幸运的是，通过node.js，express和mock.js，我们可以非常容易的进行数据Mock。
+</code></pre><h3 id="二、准备工作"><a href="#二、准备工作" class="headerlink" title="二、准备工作"></a>二、准备工作</h3><h4 id="1-node-js"><a href="#1-node-js" class="headerlink" title="1.node.js"></a>1.node.js</h4><pre><code>首先你需要安装node.js，node.js是一个JavaScript运行环境，在其官网可以十分方便的进行下载安装：http://nodejs.cn/。
+</code></pre><h4 id="2-express"><a href="#2-express" class="headerlink" title="2.express"></a>2.express</h4><pre><code>express是一个基于Node平台的Web开发框架，使用它可以十分方便的搭建本地的web服务，用来部署我们的Mock数据，express可以通过npm来进行安装，官网如下：http://www.expressjs.com.cn/。其中的详细的安装方法。
+</code></pre><h4 id="3-mock-js"><a href="#3-mock-js" class="headerlink" title="3.mock.js"></a>3.mock.js</h4><pre><code>mock.js是一个模拟数据结构，生成随机数据的js库。其有一套语法规则用来模拟结构和生成数据。其官网如下，安装过程也十分简单：http://mockjs.com/。
+</code></pre><h3 id="三、Mock-js语法规则及范例"><a href="#三、Mock-js语法规则及范例" class="headerlink" title="三、Mock.js语法规则及范例"></a>三、Mock.js语法规则及范例</h3><pre><code>对于Mock数据，最重要的是掌握和灵活运用Mock.js的语法规则，能够熟练的编写出Mock数据结构必备的技能。在Mock.js中，语法规则主要分为两块：数据模板和数据占位符。
+</code></pre><h4 id="1-数据模板"><a href="#1-数据模板" class="headerlink" title="1.数据模板"></a>1.数据模板</h4><pre><code>数据版本主要的作用是用来生成数据结构。数据模板的组成由如下三部分：属性名，生成规则和属性值。在语法上的结构如下：
+</code></pre><p>属性名|生成规则:属性值</p>
+<pre><code>最简单的数据模板是不使用生成规则，直接用字面量来表示，代码如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">name:<span class="string">'珲少'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的mock数据如下所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0817/163728_QGCR_2340880.png" alt=""></p>
+<p>对于模拟字符串类型的数据，有两种模板可以定义：</p>
+<p>模板1：’属性名|min-max’:属性值 </p>
+<p>通过重复一个字符串min到max次之间来生成数据。示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'name|1-10'</span>:<span class="string">'珲少'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的mock数据如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0817/164653_46jt_2340880.png" alt=""></p>
+<p>模板2：’属性名|count’:属性值</p>
+<p>通过重复一个字符串count次来生成数据。示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line"><span class="string">'moreName|10'</span>:<span class="string">'珲少'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成数据如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0817/164902_phKe_2340880.png" alt=""></p>
+<pre><code>对于模拟数值类型的数据，有3种模板可以定义：
+</code></pre><p>模板1：’属性名|+1’:属性值</p>
+<p>属性值自动自增，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'array|1-10'</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'moreName|10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'id|+1'</span>:<span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成数据如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0817/170516_Adxk_2340880.png" alt=""></p>
+<p>模板2：’属性名|min-max’:属性值</p>
+<p>生成在min到max之间的整数，代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'array|1-5'</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'moreName|10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'id|+1'</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="string">'age|20-25'</span>:<span class="number">20</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0817/170823_GOaI_2340880.png" alt=""></p>
+<p>模板3：’属性名|min-max.dmin-dmax’:属性值</p>
+<p>生成浮点数，整数部分在min到max之间，小数部分保留dmin到dmax位，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'array|1-5'</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'moreName|10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'id|+1'</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="string">'age|20-25'</span>:<span class="number">20</span>,</span><br><span class="line">        <span class="string">'weight|60-70.1-4'</span>:<span class="number">60</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成数据如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0817/171207_uCZ3_2340880.png" alt=""></p>
+<pre><code>对于模拟布尔类型的数据，有两种模板可以定义：
+</code></pre><p>模板1：’属性名|1’:属性值</p>
+<p>随机生成一个布尔值，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'array|1-5'</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'moreName|10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'id|+1'</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="string">'age|20-25'</span>:<span class="number">20</span>,</span><br><span class="line">        <span class="string">'weight|60-70.1-4'</span>:<span class="number">60</span>,</span><br><span class="line">        <span class="string">'isWiner|1'</span>:<span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的数据如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0817/171501_7dQ3_2340880.png" alt=""></p>
+<p>模板2：’属性名|min-max’:属性值</p>
+<p>随机生成一个布尔值，值和属性值相同的概率为min/(min+max)，值与属性值不同的概率为max/(min+max)。</p>
+<pre><code>对于模拟对象类型的数据，有两种模板可以定义：
+</code></pre><p>模板1：’属性名|count’:属性值</p>
+<p>最终生成的对象的属性为从属性值中随机取count个属性，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'array|1-5'</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'moreName|10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'id|+1'</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="string">'age|20-25'</span>:<span class="number">20</span>,</span><br><span class="line">        <span class="string">'weight|60-70.1-4'</span>:<span class="number">60</span>,</span><br><span class="line">        <span class="string">'isWiner|1'</span>:<span class="literal">true</span>,</span><br><span class="line">        <span class="string">'job|3'</span>:&#123;</span><br><span class="line">              num:<span class="number">1234</span>,</span><br><span class="line">              address:<span class="string">'xxxxx'</span>,</span><br><span class="line">              phone:<span class="number">12321</span>,</span><br><span class="line">              name:<span class="string">'cjj'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的数据如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0818/153414_GNVa_2340880.png" alt=""></p>
+<p>模板2：’属性名|min-max’:属性值</p>
+<p>从属性值的属性中随机取min到max个作为最终生成的对象属性。</p>
+<pre><code>对于模拟数组类型的数据，有4种模板可以定义：
+</code></pre><p>模板1：’属性名|1’:属性值</p>
+<p>从属性值数组中随机取1个值作为最终值。</p>
+<p>模板2：’属性名|+1’:属性值</p>
+<p>从属性值数组中依次取1个值作为最终值。</p>
+<p>模板3：’属性名|min-max’:属性值</p>
+<p>通过重复min到max此属性值生成一个数组。</p>
+<p>模板4：’属性名|count’:属性值</p>
+<p>通过重复count此属性值生成数组。</p>
+<pre><code>除了上面列举的创建模板的方式外，还可以使用函数值和正则表达式值作为模板，如果是函数，则生成的值为函数的返回值，如果是正则表达式，则生成的值为可匹配的字符串。
+</code></pre><h4 id="2-数据占位符"><a href="#2-数据占位符" class="headerlink" title="2.数据占位符"></a>2.数据占位符</h4><pre><code>数据占位符实际上就是指定生成的随机数据，它和Mock.Random库中的生成随机数据方法一一对应，其可以模拟邮箱地址，电话号，姓名，行段等各种数据。数据占位符格式如下：
+</code></pre><p>@方法名 或 @方法名(参数)</p>
+<p>模拟布尔类型数据：</p>
+<p>1.无参：boolean随机返回一个布尔值，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'array|1-5'</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'moreName|10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'id|+1'</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="string">'age|20-25'</span>:<span class="number">20</span>,</span><br><span class="line">        <span class="string">'weight|60-70.1-4'</span>:<span class="number">60</span>,</span><br><span class="line">        <span class="string">'isWiner|1'</span>:<span class="string">'@boolean'</span>,</span><br><span class="line">        <span class="string">'job|3'</span>:&#123;</span><br><span class="line">              num:<span class="number">1234</span>,</span><br><span class="line">              address:<span class="string">'xxxxx'</span>,</span><br><span class="line">              phone:<span class="number">12321</span>,</span><br><span class="line">              name:<span class="string">'cjj'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.有参：boolean(min,max,current)，指定current出现的概率。</p>
+<p>模拟随机自然数：</p>
+<p>1.无参：natural随机返回一个大于等于0的整数，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'array|1-5'</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'moreName|10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'id|+1'</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="string">'age|20-25'</span>:<span class="number">20</span>,</span><br><span class="line">        <span class="string">'weight|60-70.1-4'</span>:<span class="number">60</span>,</span><br><span class="line">        <span class="string">'isWiner|1'</span>:<span class="string">'@boolean'</span>,</span><br><span class="line">        <span class="string">'job|3'</span>:&#123;</span><br><span class="line">              num:<span class="string">'@natural'</span>,</span><br><span class="line">              address:<span class="string">'xxxxx'</span>,</span><br><span class="line">              phone:<span class="number">12321</span>,</span><br><span class="line">              name:<span class="string">'cjj'</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成数据如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0818/162135_nKFc_2340880.png" alt=""></p>
+<p>2.有参数：natural(nim,max)，随机生成一个在min与max之间的自然数。</p>
+<p>模拟随机整数：</p>
+<p>1.无参：integer随机生成一个整数。</p>
+<p>2.有参：interger(min,max)，随机生成一个在min到max之间的整数。</p>
+<p>模拟随机浮点数：</p>
+<p>1.无参：float随机生成一个浮点数。</p>
+<p>2.有参：float(min,max,dmin,dmax)，随机生成一个整数部分在min到max之间，小数位数为dmin到dmax之间的浮点数。</p>
+<p>模拟随机字符：</p>
+<p>1.无参：character随机生成一个字符。</p>
+<p>2.有参：character(cs),cs为一个字符串，生成的字符从cs字符串中任取一个，如果传入的cs字符串为一下其中之一，则表示从内置字符集中选：</p>
+<p>lower：小写字母</p>
+<p>upper：大写字符</p>
+<p>number：数值字符</p>
+<p>symbol：系统字符</p>
+<p>模拟随机字符串：</p>
+<p>1.无参：string随机生成一个字符串。</p>
+<p>2.有参：</p>
+<p>格式1：string(length)生成指定长度的字符串。</p>
+<p>格式2：string(cs,length)从cs字符池中生成指定长度字符串。</p>
+<p>格式3：string(min,max)生成长度在min到max之间的字符串。</p>
+<p>格式4：string(cs,min,max)从cs字符集中生成长度在min到max之间的字符串。</p>
+<p>模拟整型数组：</p>
+<p>有参：</p>
+<p>格式1：range(stop)生成一个整型数组，stop为数组中的数值结束边界。</p>
+<p>格式2：range(start,stop)start为数值的起始边界，stop为数组中的数值结束边界。</p>
+<p>格式3：range(start,stop,step)start为数值的起始边界，stop为数值的结束边界，step为步长。</p>
+<p>示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="string">'array|1-5'</span>:[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'name|1-10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'moreName|10'</span>:<span class="string">'珲少'</span>,</span><br><span class="line">        <span class="string">'id|+1'</span>:<span class="number">0</span>,</span><br><span class="line">        <span class="string">'age|20-25'</span>:<span class="number">20</span>,</span><br><span class="line">        <span class="string">'weight|60-70.1-4'</span>:<span class="number">60</span>,</span><br><span class="line">        <span class="string">'isWiner|1'</span>:<span class="string">'@boolean'</span>,</span><br><span class="line">        <span class="string">'job|3'</span>:&#123;</span><br><span class="line">              num:<span class="string">'@natural'</span>,</span><br><span class="line">              address:<span class="string">'xxxxx'</span>,</span><br><span class="line">              phone:<span class="number">12321</span>,</span><br><span class="line">              name:<span class="string">'@string(3)'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        node:<span class="string">'@range(3,5,1)'</span></span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>模拟日期字符串：</p>
+<p>1.无参：date随机生成一个日期字符串。</p>
+<p>2.有参：date(format)format用来设置如期字符串的格式，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">'data|3-5'</span>:[</span><br><span class="line">     &#123;</span><br><span class="line">        time:<span class="string">'@date'</span>,</span><br><span class="line">        ctime:<span class="string">'@date(yyyy-MM-dd HH-mm-ss A)'</span></span><br><span class="line">     &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成数据如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0818/165854_rNDV_2340880.png" alt=""></p>
+<p>模拟时间字符串：</p>
+<p>1.无参：time直接生成一个时间字符串。</p>
+<p>2.有参：time(format)生成格式化的时间字符串。</p>
+<p>模拟日期时间字符串：</p>
+<p>1.无参：detetime生成默认格式的日期时间字符串。</p>
+<p>2.有参：datetime(format)生成指定格式的日期时间字符串。</p>
+<p>模拟当前日期字符串：</p>
+<p>1.无参：now生成当前日期时间字符串。</p>
+<p>2.有参：</p>
+<p>格式1：now(unit,format)，unit设置时间单位，format设置格式化方式。时间单位可选：year，month，week，day，hour，minute，second。</p>
+<p>格式2：now(format)</p>
+<p>格式3：now（unit）</p>
+<p>模拟图片素材：</p>
+<p>1.无参：iamge随机生成一个尺寸的图片地址，此地址可以直接请求到图像。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">'data|3-5'</span>:[</span><br><span class="line">     &#123;</span><br><span class="line">        time:<span class="string">'@date'</span>,</span><br><span class="line">        expriseTime:<span class="string">'@datetime'</span>,</span><br><span class="line">        image:<span class="string">'@image'</span> </span><br><span class="line">    &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成数据如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0820/150239_6U6i_2340880.png" alt=""></p>
+<p>2.有参：</p>
+<p>格式1：image(size,background,foreground,format,text)，size指定图片的尺寸，格式为300x250，background指定图片的背景色，foreground指定图片的前景色，format指定图片的格式，可选png、gif、jpg，text参数指定图片上的文字。</p>
+<p>格式2：image(size)</p>
+<p>格式3：image(size,background)</p>
+<p>格式4：image(size,background,foreground)</p>
+<p>格式5：image(size,background,foreground,text)</p>
+<p>模拟图片二进制素材数据：</p>
+<p>1.无参：dataImage生成随机的base64图像编码。</p>
+<p>2.有参：</p>
+<p>格式1：dataImage(size,text)，size参数这是图片尺寸，text参数设置图片上的文字。</p>
+<p>格式2：dataImage(size)</p>
+<p>模拟颜色字符串的相关占位符：</p>
+<p>1.color：随机生成格式为“#rrggbb”的颜色。</p>
+<p>2.hex：随机生成格式为“#rrggbb”的颜色值。</p>
+<p>3.rgb：随机生成格式为“rgb(r,g,b)”的颜色值。</p>
+<p>4.rgba：随机生成格式为“rgba(r,g,b,a)”的颜色值。</p>
+<p>5.hsl：随机生成格式为“hsl(h,s,l)”的颜色值。</p>
+<p>模拟英文文本段落：</p>
+<p>1.无参：paragraph随机生成一段文本。</p>
+<p>2.有参：</p>
+<p>格式1：paragraph(min,max)随机生成一段文本，句子个数在min于max之间。</p>
+<p>格式2：paragraph(len)随机生成一段文本，len设置句子个数，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">'data|3-5'</span>:[</span><br><span class="line">     &#123;</span><br><span class="line">        time:<span class="string">'@date'</span>,</span><br><span class="line">        expriseTime:<span class="string">'@datetime'</span>,</span><br><span class="line">        image:<span class="string">'@image("300x250","#222312","#f1f2f3","jpg","image")'</span> ,</span><br><span class="line">        content:<span class="string">'@paragraph(1,3)'</span></span><br><span class="line">    &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>生成的随机数据如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0820/152353_6EcF_2340880.png" alt=""></p>
+<p>模拟中文文本段落：</p>
+<p>1.无参：cparagraph随机生成中文段落</p>
+<p>2.有参：</p>
+<p>格式1：cparagraph(min,max)</p>
+<p>格式2：cparagraph(len)</p>
+<p>模拟英文句子：</p>
+<p>1.无参：sentence随机生成一句文本，首字母会大写。</p>
+<p>2.有参：</p>
+<p>格式1：sentence(min,max)，随机生成一句文本，文本中单词个数为min到max之间。</p>
+<p>格式2：sentence(len)，随机生成一句文本，文本中单词个数为len。</p>
+<p>模拟中文句子：</p>
+<p>1.无参：csentence随机生成一句中文文本。</p>
+<p>2.有参：</p>
+<p>格式1：csentence(min,max)</p>
+<p>格式2：csentence(len)</p>
+<p>模拟英文单词：</p>
+<p>1.无参：word随机生成一个单词。</p>
+<p>2.有参：</p>
+<p>格式1：word(min,max)，生成单词中字符个数为min到max之间。</p>
+<p>格式2：word(len)，生成单词中字符个数为len。</p>
+<p>模拟中文词：</p>
+<p>1.无参：cword随机生成一个汉字。</p>
+<p>2.有参：</p>
+<p>格式1：cword(pool)，pool为汉字字符串，从pool字符池中选取一个汉字。</p>
+<p>格式2：cword(length)，随机生成一个词，汉字个数为length。</p>
+<p>格式3：cword(min,max)，随机生成一个词，汉字个数为min到max之间。</p>
+<p>格式4：cword(pool,length)</p>
+<p>格式5：cword(pool,min,max)</p>
+<p>模拟标题：</p>
+<p>1.无参：title随机生成标题。</p>
+<p>2.有参：</p>
+<p>格式1：title(len)生成单词个数为len的标题。</p>
+<p>格式2：title(min,max)生成单词个数为min到max之间的标题。</p>
+<p>模拟中文标题：</p>
+<p>1.无参：ctitle</p>
+<p>2.有参：</p>
+<p>格式1：ctitle(len)</p>
+<p>格式2：ctitle(min,max)</p>
+<p>模拟姓名相关的占位符：</p>
+<p>1.first随机生成常见的英文名。</p>
+<p>2.last随机生成常见的英文姓。</p>
+<p>3.name(middle)，随机生成一个英文姓名，middle为布尔参数，设置是否生成中间名。</p>
+<p>4.cfirst随机生成一个中文姓。</p>
+<p>5.clast随机生成一个中文名。</p>
+<p>6.cname随机生成一个中文姓名。</p>
+<p>模拟网址相关占位符：</p>
+<p>1.url(protocol,host)随机生成一个url，protocol指定协议，host指定主机，也可以无参。</p>
+<p>2.protocol随机生成一个url协议，例如http。</p>
+<p>3.domain随机生成一个域名。</p>
+<p>4.tld随机生成一个顶级域名。</p>
+<p>5.email(domain)随机生成一个email地址，domain指定域名，也可以无参。</p>
+<p>6.ip随机生成一个ip地址。</p>
+<p>模拟地址相关占位符：</p>
+<p>1.region随机生成一个中国区域，例如华北。</p>
+<p>2.province随机生成一个中国省份。</p>
+<p>3.city(pro)随机生成一个中国城市，pro为布尔值，指定是否生成其所在的省份，也可以无参。</p>
+<p>4.county(all)随机生成一个中国县，all为布尔值，指定是否生成其所在的省市。也可以无参。</p>
+<p>5.zip随机生成一个邮编。</p>
+<p>模拟id相关占位符：</p>
+<p>1.guid随机生成一个GUID。</p>
+<p>2.id随机生成一个18位身份证号。</p>
+<h3 id="四、一个用express搭建Mock服务的示例"><a href="#四、一个用express搭建Mock服务的示例" class="headerlink" title="四、一个用express搭建Mock服务的示例"></a>四、一个用express搭建Mock服务的示例</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>);</span><br><span class="line"><span class="keyword">var</span> app = express();</span><br><span class="line"><span class="keyword">var</span> Mock = <span class="built_in">require</span>(<span class="string">'mockjs'</span>);</span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/mock'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> data = Mock.mock(&#123;</span><br><span class="line">        <span class="string">"name"</span>:<span class="string">'@cname'</span>, </span><br><span class="line">        <span class="string">"content"</span>:<span class="string">'@string(0, 5)'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    response = &#123;</span><br><span class="line">        <span class="string">"data"</span>:data</span><br><span class="line">    &#125;</span><br><span class="line">    res.end(<span class="built_in">JSON</span>.stringify(response));</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> server = app.listen(<span class="number">8082</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> host = server.address().address</span><br><span class="line">    <span class="keyword">var</span> port = server.address().port</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>上面代码开启了一个get请求，如果正确安装了node，express，mock.js，使用node运行此文件后直接在浏览器通过127.0.0.1:8082/mock地址进行访问即可看到生成的mock数据。</p>
+<pre><code>Mock数据的初衷是在前端开发中进行接口的模拟使用，在接口结构和访问url都已经确定，只是没开发完成是，可以使用Charles结合Mock数据来仿真接口返回。Charles工具可以将某个请求映射到另外一个地址上，在Charles抓到的请求上邮件，弹出的菜单中选择Map Remote选项。
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2017/0820/164126_1mXd_2340880.png" alt=""></p>
+<p>在弹出的窗口中将映射到的主机设置为127.0.0.1，端口设置为8082，地址设置为mock即可访问上面文件生成的模拟数据。</p>
+<h3 id="五、一个方便易用的Java模拟数据客户端"><a href="#五、一个方便易用的Java模拟数据客户端" class="headerlink" title="五、一个方便易用的Java模拟数据客户端"></a>五、一个方便易用的Java模拟数据客户端</h3><pre><code>有时候我们需要mock的接口有很多，如果能够方便的对这些mock文件进行管理不用每次都通过终端来操作就更方便了。这里有我写的一个JAR小工具，可以在Mac或Windows上扩平台进行使用。下载地址如下：
+</code></pre><p><a href="http://zyhshao.github.io/EasyMock/welcome.html" target="_blank" rel="noopener">http://zyhshao.github.io/EasyMock/welcome.html</a>。</p>
+<p>这个工具就是一个简单的JAR包，在其中封装了操作终端的命名，只需要在左右列表中创建相应的请求路径，在右侧直接编写Mock.js模拟数据对象后，开启服务即可，开启服务后会将左右列表中所有的接口都开启。如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0820/165259_s8O7_2340880.png" alt=""></p>
+<p>还需要注意，这个工具不十分完善，如果有产生错误会被捕获但并没有任何提示，如果你没正确安装node或者express或者mock.js，再或者你的mock.js代码有问题，服务都不能正确启动。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/08/21/356iOS应用内评价与购买三方APP组件/" class="pre-post btn btn-default" title='iOS应用内评价与购买三方APP组件'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS应用内评价与购买三方APP组件</span>
+        </a>
+    
+    
+        <a href="/2017/07/26/354将iOS项目进行子工程化/" class="next-post btn btn-default" title='将iOS项目进行子工程化'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">将iOS项目进行子工程化</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一个移动开发者的Mock数据之路"><span class="toc-text">一个移动开发者的Mock数据之路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、始由"><span class="toc-text">一、始由</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、准备工作"><span class="toc-text">二、准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-node-js"><span class="toc-text">1.node.js</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-express"><span class="toc-text">2.express</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-mock-js"><span class="toc-text">3.mock.js</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、Mock-js语法规则及范例"><span class="toc-text">三、Mock.js语法规则及范例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-数据模板"><span class="toc-text">1.数据模板</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-数据占位符"><span class="toc-text">2.数据占位符</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、一个用express搭建Mock服务的示例"><span class="toc-text">四、一个用express搭建Mock服务的示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、一个方便易用的Java模拟数据客户端"><span class="toc-text">五、一个方便易用的Java模拟数据客户端</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

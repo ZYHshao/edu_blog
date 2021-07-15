@@ -1,0 +1,294 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS开发之AddressBook框架详解 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发之AddressBook框架详解">
+            
+	            iOS开发之AddressBook框架详解
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/19</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发之AddressBook框架详解"><a href="#iOS开发之AddressBook框架详解" class="headerlink" title="iOS开发之AddressBook框架详解"></a>iOS开发之AddressBook框架详解</h2><h3 id="一、写在前面"><a href="#一、写在前面" class="headerlink" title="一、写在前面"></a>一、写在前面</h3><pre><code>首先，AddressBook框架是一个已经过时的框架，iOS9之后官方提供了Contacts框架来进行用户通讯录相关操作。尽管如此，AddressBook框架依然是一个非常优雅并且使用方便的通讯录帮助库。本篇博客只要总结AddressBook框架的相关使用方法。
+
+在AddressBook框架中，两个最重要的数据模型为ABAddressbookRef与ABRecordRef。前者我们可以理解为通讯录的抽象对象，用它来具体操作通讯录的行为，后者可以理解为通讯录中记录的抽象对象，其中封装了联系人的相关信息。如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/c034a0f13bd8724a8dec6b42cc3e80abc5f.jpg" alt=""></p>
+<h3 id="二、关于用户权限申请"><a href="#二、关于用户权限申请" class="headerlink" title="二、关于用户权限申请"></a>二、关于用户权限申请</h3><pre><code>在应用程序内，若需要使用用户的通讯录权限需要征得用户的同意(毕竟通讯录属于用户隐私)。因此，在使用之前，开发者首先需要进行权限的申请，首先，需要在info.plist文件中添加如下键：
+</code></pre><p>Privacy - Contacts Usage Description</p>
+<p>使用如下代码进行使用权限的申请：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取用户授权状态</span></span><br><span class="line">ABAuthorizationStatus status = ABAddressBookGetAuthorizationStatus();</span><br><span class="line"><span class="comment">//如果尚未获取过授权 进行授权申请</span></span><br><span class="line"><span class="keyword">if</span> (status==kABAuthorizationStatusNotDetermined) &#123;</span><br><span class="line">    <span class="comment">//创建通讯录对象 这个方法中第1个参数为预留参数 传NULL 即可 第2个参数可以传一个CFErrorRef的指针</span></span><br><span class="line">    ABAddressBookRef addressBookRef = ABAddressBookCreateWithOptions(<span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">    <span class="comment">//请求授权</span></span><br><span class="line">    ABAddressBookRequestAccessWithCompletion(addressBookRef, ^(<span class="keyword">bool</span> granted, <span class="built_in">CFErrorRef</span> error) &#123;</span><br><span class="line">        <span class="keyword">if</span> (granted) &#123;<span class="comment">//请求授权页面用户同意授权</span></span><br><span class="line">            <span class="comment">//可以进行使用</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//释放内存</span></span><br><span class="line">        <span class="built_in">CFRelease</span>(addressBookRef);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>ABAuthorizationStatus是授权状态的枚举，意义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">CF_ENUM</span>(<span class="built_in">CFIndex</span>, ABAuthorizationStatus) &#123;</span><br><span class="line">    kABAuthorizationStatusNotDetermined = <span class="number">0</span>,    <span class="comment">// 尚未申请过授权</span></span><br><span class="line">    kABAuthorizationStatusRestricted,           <span class="comment">// 授权被限制 无法使用</span></span><br><span class="line">    kABAuthorizationStatusDenied,               <span class="comment">// 用户拒绝授权</span></span><br><span class="line">    kABAuthorizationStatusAuthorized            <span class="comment">// 已经授权</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、获取基础的通讯录信息"><a href="#三、获取基础的通讯录信息" class="headerlink" title="三、获取基础的通讯录信息"></a>三、获取基础的通讯录信息</h3><pre><code>下面代码演示了如何获取基础的通讯录联系人信息：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取通讯录</span></span><br><span class="line">ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(<span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"><span class="comment">//获取联系人数量</span></span><br><span class="line"><span class="built_in">CFIndex</span> personCount = ABAddressBookGetPersonCount(addressBook);</span><br><span class="line"><span class="comment">//拿到所有联系人</span></span><br><span class="line"><span class="built_in">CFArrayRef</span> peopleArray = ABAddressBookCopyArrayOfAllPeople(addressBook);</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; personCount; i++) &#123;</span><br><span class="line">    <span class="comment">//获取记录</span></span><br><span class="line">    ABRecordRef person = <span class="built_in">CFArrayGetValueAtIndex</span>(peopleArray, i);</span><br><span class="line">    <span class="comment">//拿到姓名</span></span><br><span class="line">    <span class="comment">//姓 需要转换成NSString类型</span></span><br><span class="line">    <span class="built_in">NSString</span> *lastNameValue = (__bridge_transfer <span class="built_in">NSString</span> *)ABRecordCopyValue(person, kABPersonLastNameProperty);</span><br><span class="line">    <span class="comment">//名</span></span><br><span class="line">    <span class="built_in">NSString</span> *firstNameValue = (__bridge_transfer <span class="built_in">NSString</span> *)ABRecordCopyValue(person, kABPersonFirstNameProperty);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@:%@"</span>,lastNameValue,firstNameValue);</span><br><span class="line">    <span class="comment">//拿到电话 电话可能有多个</span></span><br><span class="line">    ABMultiValueRef phones = ABRecordCopyValue(person, kABPersonPhoneProperty);</span><br><span class="line">    <span class="comment">//解析电话数据</span></span><br><span class="line">    <span class="built_in">CFIndex</span> phoneCount = ABMultiValueGetCount(phones);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; phoneCount ; j++) &#123;</span><br><span class="line">        <span class="comment">//电话标签本地化(例如是住宅,工作等)</span></span><br><span class="line">        <span class="built_in">NSString</span> *phoneLabel = (__bridge_transfer <span class="built_in">NSString</span> *)ABAddressBookCopyLocalizedLabel(ABMultiValueCopyLabelAtIndex(phones, j));</span><br><span class="line">        <span class="comment">//拿到标签下对应的电话号码</span></span><br><span class="line">        <span class="built_in">NSString</span> *phoneValue = (__bridge_transfer <span class="built_in">NSString</span> *)ABMultiValueCopyValueAtIndex(phones, j);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@:%@"</span>,phoneLabel,phoneValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">CFRelease</span>(phones);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//邮箱 可能多个</span></span><br><span class="line">    ABMultiValueRef emails = ABRecordCopyValue(person, kABPersonEmailProperty);</span><br><span class="line">    <span class="built_in">CFIndex</span> emailCount = ABMultiValueGetCount(emails);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; emailCount; k++) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *emailLabel = (__bridge_transfer <span class="built_in">NSString</span> *)ABAddressBookCopyLocalizedLabel(ABMultiValueCopyLabelAtIndex(emails, k));</span><br><span class="line">        <span class="built_in">NSString</span> *emailValue = (__bridge_transfer <span class="built_in">NSString</span> *)ABMultiValueCopyValueAtIndex(emails, k);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@:%@"</span>,emailLabel,emailValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"=============="</span>);</span><br><span class="line">    <span class="built_in">CFRelease</span>(emails);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">CFRelease</span>(addressBook);</span><br><span class="line"><span class="built_in">CFRelease</span>(peopleArray);</span><br></pre></td></tr></table></figure>
+<p>打印信息如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/071948438daf8eaff82d4b774e2900e90de.jpg" alt=""></p>
+<p>关于可获取到的联系人属性，键值列举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//名</span></span><br><span class="line">kABPersonFirstNameProperty</span><br><span class="line"><span class="comment">//姓</span></span><br><span class="line">kABPersonLastNameProperty</span><br><span class="line"><span class="comment">//中间名</span></span><br><span class="line">kABPersonMiddleNameProperty</span><br><span class="line"><span class="comment">//前缀 用户在存储联系人时 可以添加自定义的前缀 例如 女士 男士等等</span></span><br><span class="line">kABPersonPrefixProperty</span><br><span class="line"><span class="comment">//后缀</span></span><br><span class="line">kABPersonSuffixProperty</span><br><span class="line"><span class="comment">//昵称</span></span><br><span class="line">kABPersonNicknameProperty</span><br><span class="line"><span class="comment">//姓发音说明字段 用户自定义的</span></span><br><span class="line">kABPersonFirstNamePhoneticProperty</span><br><span class="line"><span class="comment">//名发音说明字段 用户自定义的</span></span><br><span class="line">kABPersonLastNamePhoneticProperty</span><br><span class="line"><span class="comment">//中间名发音说明字段 用户自定义的</span></span><br><span class="line">kABPersonMiddleNamePhoneticProperty</span><br><span class="line"><span class="comment">//公司名</span></span><br><span class="line">kABPersonOrganizationProperty</span><br><span class="line"><span class="comment">//部门名</span></span><br><span class="line">kABPersonDepartmentProperty</span><br><span class="line"><span class="comment">//头衔</span></span><br><span class="line">kABPersonJobTitleProperty</span><br><span class="line"><span class="comment">//电子邮件信息 返回一组 需要手动解析</span></span><br><span class="line">kABPersonEmailProperty</span><br><span class="line"><span class="comment">//返回生日信息 日期对象</span></span><br><span class="line">kABPersonBirthdayProperty</span><br><span class="line"><span class="comment">//笔记信息</span></span><br><span class="line">kABPersonNoteProperty</span><br><span class="line"><span class="comment">//记录的创建日期</span></span><br><span class="line">kABPersonCreationDateProperty</span><br><span class="line"><span class="comment">//记录的最后修改日期</span></span><br><span class="line">kABPersonModificationDateProperty</span><br><span class="line"><span class="comment">//地址信息 返回 一组</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">例如：</span></span><br><span class="line"><span class="comment">ABMultiValueRef address = ABRecordCopyValue(person, kABPersonAddressProperty);</span></span><br><span class="line"><span class="comment">     for (int j=0; j&lt;ABMultiValueGetCount(address); j++) &#123;</span></span><br><span class="line"><span class="comment">         //地址类型</span></span><br><span class="line"><span class="comment">         NSString *type = (__bridge NSString *)(ABMultiValueCopyLabelAtIndex(address, j));</span></span><br><span class="line"><span class="comment">         NSDictionary * temDic = (__bridge NSDictionary *)(ABMultiValueCopyValueAtIndex(address, j));</span></span><br><span class="line"><span class="comment">        //地址字符串，可以按需求格式化</span></span><br><span class="line"><span class="comment">        NSString * adress = [NSString stringWithFormat:@"国家:%@\n省:%@\n市:%@\n街道:%@\n邮编:%@",[temDic valueForKey:(NSString*)kABPersonAddressCountryKey],[temDic valueForKey:(NSString*)kABPersonAddressStateKey],[temDic valueForKey:(NSString*)kABPersonAddressCityKey],[temDic valueForKey:(NSString*)kABPersonAddressStreetKey],[temDic valueForKey:(NSString*)kABPersonAddressZIPKey]];</span></span><br><span class="line"><span class="comment">     &#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">kABPersonAddressProperty</span><br><span class="line"><span class="comment">//地址字典中的街道信息键</span></span><br><span class="line">kABPersonAddressStreetKey</span><br><span class="line"><span class="comment">//地址字典中的城市信息键</span></span><br><span class="line">kABPersonAddressCityKey</span><br><span class="line"><span class="comment">//地址字典中的地区信息键</span></span><br><span class="line">kABPersonAddressStateKey</span><br><span class="line"><span class="comment">//地址字典中的压缩码信息键</span></span><br><span class="line">kABPersonAddressZIPKey</span><br><span class="line"><span class="comment">//地址字典中的国家信息键</span></span><br><span class="line">kABPersonAddressCountryKey</span><br><span class="line"><span class="comment">//地址字典中的国家编码信息键</span></span><br><span class="line">kABPersonAddressCountryCodeKey</span><br><span class="line"><span class="comment">//获取 一组 纪念日日期 </span></span><br><span class="line">kABPersonDateProperty</span><br><span class="line"><span class="comment">//从具体的日期实体中获取纪念日 标签</span></span><br><span class="line">kABPersonAnniversaryLabel</span><br><span class="line"><span class="comment">//获取一组电话号码</span></span><br><span class="line">kABPersonPhoneProperty</span><br><span class="line"><span class="comment">//下面这些对应电话类型</span></span><br><span class="line">kABPersonPhoneMobileLabel</span><br><span class="line">kABPersonPhoneIPhoneLabel</span><br><span class="line">kABPersonPhoneMainLabel</span><br><span class="line">kABPersonPhoneHomeFAXLabel</span><br><span class="line">kABPersonPhoneWorkFAXLabel</span><br><span class="line">kABPersonPhoneOtherFAXLabel</span><br><span class="line">kABPersonPhonePagerLabel</span><br><span class="line"><span class="comment">//获取社交相关信息</span></span><br><span class="line">kABPersonInstantMessageProperty</span><br><span class="line"><span class="comment">//下面这些对应社交平台</span></span><br><span class="line">kABPersonInstantMessageServiceKey         </span><br><span class="line">kABPersonInstantMessageServiceYahoo</span><br><span class="line">kABPersonInstantMessageServiceJabber</span><br><span class="line">kABPersonInstantMessageServiceMSN</span><br><span class="line">kABPersonInstantMessageServiceICQ</span><br><span class="line">kABPersonInstantMessageServiceAIM</span><br><span class="line">kABPersonInstantMessageServiceQQ </span><br><span class="line">kABPersonInstantMessageServiceGoogleTalk</span><br><span class="line">kABPersonInstantMessageServiceSkype</span><br><span class="line">kABPersonInstantMessageServiceFacebook</span><br><span class="line">kABPersonInstantMessageServiceGaduGadu</span><br><span class="line"><span class="comment">//社交用户名</span></span><br><span class="line">kABPersonInstantMessageUsernameKey</span><br><span class="line"><span class="comment">//获取一组url</span></span><br><span class="line">kABPersonURLProperty</span><br><span class="line"><span class="comment">//url相关标签</span></span><br><span class="line">kABPersonHomePageLabel</span><br><span class="line"><span class="comment">//关联信息</span></span><br><span class="line">kABPersonRelatedNamesProperty</span><br><span class="line"><span class="comment">//关联信息相关的标签</span></span><br><span class="line">kABPersonFatherLabel                           </span><br><span class="line">kABPersonMotherLabel                           </span><br><span class="line">kABPersonParentLabel</span><br><span class="line">kABPersonBrotherLabel                       </span><br><span class="line">kABPersonSisterLabel                     </span><br><span class="line">kABPersonChildLabel</span><br><span class="line">kABPersonFriendLabel</span><br><span class="line">kABPersonSpouseLabel </span><br><span class="line">kABPersonPartnerLabel </span><br><span class="line">kABPersonAssistantLabel</span><br><span class="line">kABPersonManagerLabel</span><br><span class="line"><span class="comment">//获取社交账户相关</span></span><br><span class="line">kABPersonSocialProfileProperty</span><br><span class="line"><span class="comment">//社交账户相关key</span></span><br><span class="line">kABPersonSocialProfileURLKey</span><br><span class="line">kABPersonSocialProfileServiceKey</span><br><span class="line">kABPersonSocialProfileUsernameKey</span><br><span class="line">kABPersonSocialProfileUserIdentifierKey</span><br><span class="line">kABPersonSocialProfileServiceTwitter</span><br><span class="line">kABPersonSocialProfileServiceSinaWeibo</span><br><span class="line">kABPersonSocialProfileServiceGameCenter</span><br><span class="line">kABPersonSocialProfileServiceFacebook</span><br><span class="line">kABPersonSocialProfileServiceMyspace</span><br><span class="line">kABPersonSocialProfileServiceLinkedIn</span><br><span class="line">kABPersonSocialProfileServiceFlickr</span><br><span class="line"><span class="comment">//周期性日期信息</span></span><br><span class="line">kABPersonAlternateBirthdayProperty</span><br><span class="line"><span class="comment">//周期性日期相关键</span></span><br><span class="line">kABPersonAlternateBirthdayCalendarIdentifierKey</span><br><span class="line">kABPersonAlternateBirthdayEraKey</span><br><span class="line">kABPersonAlternateBirthdayYearKey</span><br><span class="line">kABPersonAlternateBirthdayMonthKey</span><br><span class="line">kABPersonAlternateBirthdayIsLeapMonthKey</span><br><span class="line">kABPersonAlternateBirthdayDayKey</span><br></pre></td></tr></table></figure>
+<h3 id="四、关于ABMultiValueRef"><a href="#四、关于ABMultiValueRef" class="headerlink" title="四、关于ABMultiValueRef"></a>四、关于ABMultiValueRef</h3><pre><code>如上所述，我们在获取联系人相关信息时，很多场景都会获取一组，例如对于电话号码，地址，邮箱这类的数据。在AddressBook框架中，这一组数据被封装为ABMultiValueRef对象。对于ABMultiValueRef对象，有如下方法可以对其进行处理：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取内部封装值的类型</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">enum &#123;</span></span><br><span class="line"><span class="comment">    kABInvalidPropertyType         = 0x0,                                           // 无效</span></span><br><span class="line"><span class="comment">    kABStringPropertyType          = 0x1,                                           // 字符串</span></span><br><span class="line"><span class="comment">    kABIntegerPropertyType         = 0x2,                                           // 整数</span></span><br><span class="line"><span class="comment">    kABRealPropertyType            = 0x3,                                           // 属性</span></span><br><span class="line"><span class="comment">    kABDateTimePropertyType        = 0x4,                                           // 时间</span></span><br><span class="line"><span class="comment">    kABDictionaryPropertyType      = 0x5,                                           // 字典</span></span><br><span class="line"><span class="comment">    kABMultiStringPropertyType     = kABMultiValueMask | kABStringPropertyType,     // 聚合字符串</span></span><br><span class="line"><span class="comment">    kABMultiIntegerPropertyType    = kABMultiValueMask | kABIntegerPropertyType,    // 聚合整型</span></span><br><span class="line"><span class="comment">    kABMultiRealPropertyType       = kABMultiValueMask | kABRealPropertyType,       // 聚合属性</span></span><br><span class="line"><span class="comment">    kABMultiDateTimePropertyType   = kABMultiValueMask | kABDateTimePropertyType,   // 聚合时间</span></span><br><span class="line"><span class="comment">    kABMultiDictionaryPropertyType = kABMultiValueMask | kABDictionaryPropertyType, // 聚合字典</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">ABPropertyType ABMultiValueGetPropertyType(ABMultiValueRef multiValue)</span><br><span class="line"><span class="comment">//获取其中封装的值的个数</span></span><br><span class="line"><span class="built_in">CFIndex</span> ABMultiValueGetCount(ABMultiValueRef multiValue)</span><br><span class="line"><span class="comment">//根据索引获取值</span></span><br><span class="line">ABMultiValueCopyValueAtIndex(ABMultiValueRef multiValue, <span class="built_in">CFIndex</span> index)</span><br><span class="line"><span class="comment">//获取所有的值 组成数组</span></span><br><span class="line"><span class="built_in">CFArrayRef</span> ABMultiValueCopyArrayOfAllValues(ABMultiValueRef multiValue)</span><br><span class="line"><span class="comment">//根据索引获取标签</span></span><br><span class="line"><span class="built_in">CFStringRef</span> ABMultiValueCopyLabelAtIndex(ABMultiValueRef multiValue, <span class="built_in">CFIndex</span> index)</span><br><span class="line"><span class="comment">//根据ID获取值</span></span><br><span class="line">ABMultiValueIdentifier ABMultiValueGetIdentifierAtIndex(ABMultiValueRef multiValue, <span class="built_in">CFIndex</span> index)</span><br><span class="line"><span class="comment">//根据ID 获取索引</span></span><br><span class="line"><span class="built_in">CFIndex</span> ABMultiValueGetIndexForIdentifier(ABMultiValueRef multiValue, ABMultiValueIdentifier identifier)</span><br><span class="line"><span class="comment">//获取第一个值</span></span><br><span class="line"><span class="built_in">CFIndex</span> ABMultiValueGetFirstIndexOfValue(ABMultiValueRef multiValue, <span class="built_in">CFTypeRef</span> value)</span><br><span class="line"><span class="comment">//下面这些与写联系人信息相关</span></span><br><span class="line"><span class="comment">//创建一个可变的数据对象 </span></span><br><span class="line">ABMutableMultiValueRef ABMultiValueCreateMutable(ABPropertyType type)</span><br><span class="line"><span class="comment">//为某个标签添加值</span></span><br><span class="line"><span class="keyword">bool</span> ABMultiValueAddValueAndLabel(ABMutableMultiValueRef multiValue, <span class="built_in">CFTypeRef</span> value, <span class="built_in">CFStringRef</span> label, ABMultiValueIdentifier *outIdentifier)</span><br><span class="line"><span class="comment">//在某个索引处插入 标签和值</span></span><br><span class="line"><span class="keyword">bool</span> ABMultiValueInsertValueAndLabelAtIndex(ABMutableMultiValueRef multiValue, <span class="built_in">CFTypeRef</span> value, <span class="built_in">CFStringRef</span> label, <span class="built_in">CFIndex</span> index, ABMultiValueIdentifier *outIdentifier)</span><br><span class="line"><span class="comment">//删除某个索引处的标签和值</span></span><br><span class="line"><span class="keyword">bool</span> ABMultiValueRemoveValueAndLabelAtIndex(ABMutableMultiValueRef multiValue, <span class="built_in">CFIndex</span> index)</span><br><span class="line"><span class="comment">//替换某个索引处的值</span></span><br><span class="line"><span class="keyword">bool</span> ABMultiValueReplaceValueAtIndex(ABMutableMultiValueRef multiValue, <span class="built_in">CFTypeRef</span> value, <span class="built_in">CFIndex</span> index)</span><br><span class="line"><span class="comment">//替换某个索引处的标签</span></span><br><span class="line"><span class="keyword">bool</span> ABMultiValueReplaceLabelAtIndex(ABMutableMultiValueRef multiValue, <span class="built_in">CFStringRef</span> label, <span class="built_in">CFIndex</span> index)</span><br></pre></td></tr></table></figure>
+<h3 id="五、ABRecordRef对象"><a href="#五、ABRecordRef对象" class="headerlink" title="五、ABRecordRef对象"></a>五、ABRecordRef对象</h3><pre><code>ABRecordRef虽然很多时候，我们可以把它理解为联系人对象，但是其实并不正确，实际上它是一个抽象的记录对象，在AddressBook框架中有3种类型的ABRecordRef：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> &#123;</span><br><span class="line">    kABPersonType = <span class="number">0</span>, <span class="comment">//联系人类型</span></span><br><span class="line">    kABGroupType  = <span class="number">1</span>, <span class="comment">//组类型</span></span><br><span class="line">    kABSourceType = <span class="number">2</span>  <span class="comment">//资源类型</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>可以操作ABRecordRef的方法非常简单，无非读与写，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取记录类型</span></span><br><span class="line">ABRecordType ABRecordGetRecordType(ABRecordRef record);</span><br><span class="line"><span class="comment">//获取记录中的数据</span></span><br><span class="line"><span class="built_in">CFTypeRef</span> ABRecordCopyValue(ABRecordRef record, ABPropertyID property);</span><br><span class="line"><span class="comment">//设置记录中的数据</span></span><br><span class="line"><span class="keyword">bool</span> ABRecordSetValue(ABRecordRef record, ABPropertyID property, <span class="built_in">CFTypeRef</span> value, <span class="built_in">CFErrorRef</span>* error);</span><br><span class="line"><span class="comment">//删除记录中的数据</span></span><br><span class="line"><span class="keyword">bool</span> ABRecordRemoveValue(ABRecordRef record, ABPropertyID property, <span class="built_in">CFErrorRef</span>* error);</span><br></pre></td></tr></table></figure>
+<h3 id="六、联系人组"><a href="#六、联系人组" class="headerlink" title="六、联系人组"></a>六、联系人组</h3><pre><code>在iOS系统的联系人应用中，我们可以对联系人进行分组，如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/b2410a93c1ff384b007f91c725de5cb289f.jpg" alt=""></p>
+<p>AddressBook框架中的如下方法与联系人组操作相关：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个联系人组记录</span></span><br><span class="line">ABRecordRef ABGroupCreate(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//在指定的资源中创建</span></span><br><span class="line">ABRecordRef ABGroupCreateInSource(ABRecordRef source);</span><br><span class="line"><span class="comment">//获取资源</span></span><br><span class="line">ABRecordRef ABGroupCopySource(ABRecordRef group);</span><br><span class="line"><span class="comment">//获取组中的所有成员</span></span><br><span class="line"><span class="built_in">CFArrayRef</span> ABGroupCopyArrayOfAllMembers(ABRecordRef group);</span><br><span class="line"><span class="comment">//根据指定的排序方法获取组中所有成员</span></span><br><span class="line"><span class="built_in">CFArrayRef</span> ABGroupCopyArrayOfAllMembersWithSortOrdering(ABRecordRef group, ABPersonSortOrdering sortOrdering);</span><br><span class="line"><span class="comment">//向组中添加成员</span></span><br><span class="line"><span class="keyword">bool</span> ABGroupAddMember(ABRecordRef group, ABRecordRef person, <span class="built_in">CFErrorRef</span>* error);</span><br><span class="line"><span class="comment">//删除组中的成员</span></span><br><span class="line"><span class="keyword">bool</span> ABGroupRemoveMember(ABRecordRef group, ABRecordRef member, <span class="built_in">CFErrorRef</span>* error);</span><br><span class="line"><span class="comment">//根据某条记录获取组</span></span><br><span class="line">ABRecordRef ABAddressBookGetGroupWithRecordID(ABAddressBookRef addressBook, ABRecordID recordID);</span><br><span class="line"><span class="comment">//获取通讯录中所有组的个数</span></span><br><span class="line"><span class="built_in">CFIndex</span> ABAddressBookGetGroupCount(ABAddressBookRef addressBook);</span><br><span class="line"><span class="comment">//获取通讯录中所有组</span></span><br><span class="line"><span class="built_in">CFArrayRef</span> ABAddressBookCopyArrayOfAllGroups(ABAddressBookRef addressBook);</span><br><span class="line"><span class="built_in">CFArrayRef</span> ABAddressBookCopyArrayOfAllGroupsInSource(ABAddressBookRef addressBook, ABRecordRef source);</span><br></pre></td></tr></table></figure>
+<h3 id="七、重中之重——ABAddressBookRef对象"><a href="#七、重中之重——ABAddressBookRef对象" class="headerlink" title="七、重中之重——ABAddressBookRef对象"></a>七、重中之重——ABAddressBookRef对象</h3><pre><code>前面介绍了许多操作联系人，操作组的方法，所有这些操作的基础都是基于一个通讯录对象ABAddressBookRef的。除了最前面演示的申请权限的相关方法，如下列举了与ABAddressBookRef相关的其他常用函数：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//存储通讯录</span></span><br><span class="line"><span class="keyword">bool</span> ABAddressBookSave(ABAddressBookRef addressBook, <span class="built_in">CFErrorRef</span>* error);</span><br><span class="line"><span class="comment">//获取通讯录是否有未保存的更改</span></span><br><span class="line"><span class="keyword">bool</span> ABAddressBookHasUnsavedChanges(ABAddressBookRef addressBook);</span><br><span class="line"><span class="comment">//向通讯录中添加一条记录</span></span><br><span class="line"><span class="keyword">bool</span> ABAddressBookAddRecord(ABAddressBookRef addressBook, ABRecordRef record, <span class="built_in">CFErrorRef</span>* error);</span><br><span class="line"><span class="comment">//移除通讯录中的一条记录</span></span><br><span class="line"><span class="keyword">bool</span> ABAddressBookRemoveRecord(ABAddressBookRef addressBook, ABRecordRef record, <span class="built_in">CFErrorRef</span>* error);</span><br><span class="line"><span class="comment">//注册通讯录发生变化时的外部监听</span></span><br><span class="line"><span class="keyword">void</span> ABAddressBookRegisterExternalChangeCallback(ABAddressBookRef addressBook, ABExternalChangeCallback callback, <span class="keyword">void</span> *context);</span><br><span class="line"><span class="comment">//移除通讯录发生变化时的外部监听</span></span><br><span class="line"><span class="keyword">void</span> ABAddressBookUnregisterExternalChangeCallback(ABAddressBookRef addressBook, ABExternalChangeCallback callback, <span class="keyword">void</span> *context);</span><br><span class="line"><span class="comment">//将未保存的更改重置</span></span><br><span class="line"><span class="keyword">void</span> ABAddressBookRevert(ABAddressBookRef addressBook);</span><br><span class="line"><span class="comment">//工具方法，进行标签的本地化转换</span></span><br><span class="line"><span class="built_in">CFStringRef</span> ABAddressBookCopyLocalizedLabel(<span class="built_in">CFStringRef</span> label);</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/23/379iOS开发之AddressBookUI框架详解/" class="pre-post btn btn-default" title='iOS开发之AddressBookUI框架详解'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发之AddressBookUI框架详解</span>
+        </a>
+    
+    
+        <a href="/2018/08/06/377iOS开发之Accounts框架详解/" class="next-post btn btn-default" title='iOS开发之Accounts框架详解'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发之Accounts框架详解</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发之AddressBook框架详解"><span class="toc-text">iOS开发之AddressBook框架详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、写在前面"><span class="toc-text">一、写在前面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、关于用户权限申请"><span class="toc-text">二、关于用户权限申请</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、获取基础的通讯录信息"><span class="toc-text">三、获取基础的通讯录信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、关于ABMultiValueRef"><span class="toc-text">四、关于ABMultiValueRef</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、ABRecordRef对象"><span class="toc-text">五、ABRecordRef对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、联系人组"><span class="toc-text">六、联系人组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#七、重中之重——ABAddressBookRef对象"><span class="toc-text">七、重中之重——ABAddressBookRef对象</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

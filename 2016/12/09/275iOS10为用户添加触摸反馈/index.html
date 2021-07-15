@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS10为用户添加触摸反馈 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS10为用户添加触摸反馈">
+            
+	            iOS10为用户添加触摸反馈
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS10专题">
+            iOS10专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/12/09</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS10为用户添加触摸反馈"><a href="#iOS10为用户添加触摸反馈" class="headerlink" title="iOS10为用户添加触摸反馈"></a>iOS10为用户添加触摸反馈</h2><pre><code>在iOS10中，UIKit框架中新增加了3个类，UIImpactFeedbackGenerator类、UINotificationFeedbackGenerator类与UISelectionFeedbackGenerator类。开发者使用这3个类可以进一步为用户的某些交互操作增强反馈。举例而言，当用户点击了某个按钮，开发者可以为其提供一个适当的震动效果作为触觉上的反馈。示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个方法通过传入参数来确定触发什么样的用户触觉反馈</span></span><br><span class="line">-(<span class="keyword">void</span>)feedbackStart:(<span class="keyword">int</span>)style&#123;</span><br><span class="line">    <span class="keyword">switch</span> (style) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">UIImpactFeedbackGenerator</span> * imp = [[<span class="built_in">UIImpactFeedbackGenerator</span> alloc]initWithStyle:<span class="built_in">UIImpactFeedbackStyleHeavy</span>];</span><br><span class="line">            [imp impactOccurred];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">UIImpactFeedbackGenerator</span> * imp = [[<span class="built_in">UIImpactFeedbackGenerator</span> alloc]initWithStyle:<span class="built_in">UIImpactFeedbackStyleMedium</span>];</span><br><span class="line">            [imp impactOccurred];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">UIImpactFeedbackGenerator</span> * imp = [[<span class="built_in">UIImpactFeedbackGenerator</span> alloc]initWithStyle:<span class="built_in">UIImpactFeedbackStyleLight</span>];</span><br><span class="line">            [imp impactOccurred];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">UINotificationFeedbackGenerator</span> * imp = [[<span class="built_in">UINotificationFeedbackGenerator</span> alloc]init];</span><br><span class="line">            [imp notificationOccurred:<span class="built_in">UINotificationFeedbackTypeError</span>];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">UINotificationFeedbackGenerator</span> * imp = [[<span class="built_in">UINotificationFeedbackGenerator</span> alloc]init];</span><br><span class="line">            [imp notificationOccurred:<span class="built_in">UINotificationFeedbackTypeSuccess</span>];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">UINotificationFeedbackGenerator</span> * imp = [[<span class="built_in">UINotificationFeedbackGenerator</span> alloc]init];</span><br><span class="line">            [imp notificationOccurred:<span class="built_in">UINotificationFeedbackTypeWarning</span>];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">UISelectionFeedbackGenerator</span> * imp = [[<span class="built_in">UISelectionFeedbackGenerator</span> alloc]init];</span><br><span class="line">            [imp selectionChanged];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UIImpactFeedbackGenerator类是标准的触觉反馈类，其调用impactOccurred方法来触发反馈，其实例在创建时，可以通过枚举来创建强度不同的反馈：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, <span class="built_in">UIImpactFeedbackStyle</span>) &#123;</span><br><span class="line">    <span class="comment">//轻度的反馈</span></span><br><span class="line">    <span class="built_in">UIImpactFeedbackStyleLight</span>,</span><br><span class="line">    <span class="comment">//中等强度的反馈</span></span><br><span class="line">    <span class="built_in">UIImpactFeedbackStyleMedium</span>,</span><br><span class="line">    <span class="comment">//高强度的反馈</span></span><br><span class="line">    <span class="built_in">UIImpactFeedbackStyleHeavy</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>UINotificationFeedbackGenerator类是专用于通知类交互的触觉反馈，其在进行反馈时也有3中枚举类型可选，解析如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UINotificationFeedbackType) &#123;</span><br><span class="line">    //成功类通知的反馈</span><br><span class="line">    UINotificationFeedbackTypeSuccess,</span><br><span class="line">    //警告类通知的反馈</span><br><span class="line">    UINotificationFeedbackTypeWarning,</span><br><span class="line">    //错误类通知的反馈</span><br><span class="line">    UINotificationFeedbackTypeError</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>UISelectionFeedbackGenerator类创建的反馈应用与某些选择器控件，例如用户在一个单选列表中切换选项、切换按钮的开关状态时，可以使用其来进行触觉反馈。</p>
+<pre><code>需要注意：不是所有的场景都需要反馈，频繁的触觉反馈会给用户代码困扰，开发者在使用这些类时要适当。
+
+有时候，频繁的触觉反馈可能会引起反馈延时，这将大大降低用户的体验，官方建议开发者在合适的时机创建反馈，然后调用prepare方法来使反馈准备完成，之后在需要的时机再进行反馈的触发。需要注意，UIImpactFeedbackGenerator类、UINotificationFeedbackGenerator类与UISelectionFeedbackGenerator类都有一个相同的父类UIFeedbackGenerator类，这个类中定义了prepare方法，当调用这个方法时，系统会调起相关服务来进行触觉触觉反馈的准备工作。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/12/10/277Bootstrap响应式前端框架笔记八——按钮组/" class="pre-post btn btn-default" title='Bootstrap响应式前端框架笔记八——按钮组'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Bootstrap响应式前端框架笔记八——按钮组</span>
+        </a>
+    
+    
+        <a href="/2016/12/09/276Bootstrap响应式前端框架笔记七——下拉菜单/" class="next-post btn btn-default" title='Bootstrap响应式前端框架笔记七——下拉菜单'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Bootstrap响应式前端框架笔记七——下拉菜单</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS10为用户添加触摸反馈"><span class="toc-text">iOS10为用户添加触摸反馈</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

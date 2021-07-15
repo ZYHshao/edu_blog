@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS录屏框架ReplayKit的应用总结 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS录屏框架ReplayKit的应用总结">
+            
+	            iOS录屏框架ReplayKit的应用总结
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2020/05/12</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS录屏框架ReplayKit的应用总结"><a href="#iOS录屏框架ReplayKit的应用总结" class="headerlink" title="iOS录屏框架ReplayKit的应用总结"></a>iOS录屏框架ReplayKit的应用总结</h2><pre><code>ReplayKit是iOS自带的一个屏幕录制的框架，其支持应用程序对当前应用内页面进行录屏，并将最终的视频保存到系统相册中。ReplayKit在iOS 9之后引入，其接口简介，可以非常方便的为应用添加录屏功能。需要注意，在某些iOS 12系统上，开启录屏可能会失败(通常需要重启设备解决)。
+
+在ReplayKit框架中，有两个非常重要的类，分别是RPScreenRecorder类与RPPreviewViewController类。RPScreenRecorder是录屏核心功能类，RPPreviewViewController是录屏结束后的预览控制器类。
+
+下面，列举了一个简单的录屏示例代码：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> () &lt;<span class="title">RPScreenRecorderDelegate</span>, <span class="title">RPPreviewViewControllerDelegate</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    <span class="keyword">self</span>.view.backgroundColor = [<span class="built_in">UIColor</span> whiteColor];</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// 获取录屏功能是否可用</span></span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%d"</span>, [RPScreenRecorder sharedRecorder].available);</span><br><span class="line">    <span class="comment">// 设置录屏代理</span></span><br><span class="line">    [RPScreenRecorder sharedRecorder].delegate = <span class="keyword">self</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">UIButton</span> *btn = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    [btn setTitle:<span class="string">@"Start"</span> forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">    [btn addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(start) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line">    btn.frame = <span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">30</span>);</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:btn];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">UIButton</span> *btn2 = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    [btn2 setTitle:<span class="string">@"End"</span> forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">    [btn2 addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(stop) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line">    btn2.frame = <span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">150</span>, <span class="number">100</span>, <span class="number">30</span>);</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:btn2];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)stop &#123;</span><br><span class="line">    <span class="comment">// 结束录屏 </span></span><br><span class="line">    [[RPScreenRecorder sharedRecorder] stopRecordingWithHandler:^(RPPreviewViewController * _Nullable previewViewController, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"stopRecordingWithHandler"</span>);</span><br><span class="line">        <span class="keyword">if</span> (!error) &#123;</span><br><span class="line">            previewViewController.previewControllerDelegate = <span class="keyword">self</span>;</span><br><span class="line">            <span class="comment">// 到视频预览控制器</span></span><br><span class="line">            [<span class="keyword">self</span> presentViewController:previewViewController animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 开始录屏</span></span><br><span class="line">- (<span class="keyword">void</span>)start &#123;</span><br><span class="line">    [[RPScreenRecorder sharedRecorder] startRecordingWithHandler:^(<span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"startRecordingWithHandlerError:%@"</span>, error);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)touchesBegan:(<span class="built_in">NSSet</span>&lt;<span class="built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</span><br><span class="line">    <span class="keyword">self</span>.view.backgroundColor = [<span class="built_in">UIColor</span> colorWithRed:arc4random()%<span class="number">255</span>/<span class="number">255.0</span> green:arc4random()%<span class="number">255</span>/<span class="number">255.0</span> blue:arc4random()%<span class="number">255</span>/<span class="number">255.0</span> alpha:<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 录屏结束的回调</span></span><br><span class="line">- (<span class="keyword">void</span>)screenRecorder:(RPScreenRecorder *)screenRecorder didStopRecordingWithPreviewViewController:(<span class="keyword">nullable</span> RPPreviewViewController *)previewViewController error:(<span class="keyword">nullable</span> <span class="built_in">NSError</span> *)error &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"didStopRecordingWithPreviewViewControllerError:%@"</span>, error);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 录屏可用性改变的回调</span></span><br><span class="line">- (<span class="keyword">void</span>)screenRecorderDidChangeAvailability:(RPScreenRecorder *)screenRecorder &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"screenRecorderDidChangeAvailability:%d"</span>, screenRecorder.available);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 录屏预览控制器的代理回调</span></span><br><span class="line">- (<span class="keyword">void</span>)previewControllerDidFinish:(RPPreviewViewController *)previewController &#123;</span><br><span class="line">    [previewController dismissViewControllerAnimated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)previewController:(RPPreviewViewController *)previewController didFinishWithActivityTypes:(<span class="built_in">NSSet</span> &lt;<span class="built_in">NSString</span> *&gt; *)activityTypes &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"didFinishWithActivityTypes %@"</span>, activityTypes);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>其中，RPScreenRecorder类中提供了丰富的接口可以使用，列举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">RPScreenRecorder</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">// 获取单例</span></span><br><span class="line">+ (RPScreenRecorder *)sharedRecorder;</span><br><span class="line"><span class="comment">// iOS 10 之前使用，可以通知是否开启麦克风</span></span><br><span class="line">- (<span class="keyword">void</span>)startRecordingWithMicrophoneEnabled:(<span class="built_in">BOOL</span>)microphoneEnabled handler:(<span class="keyword">nullable</span> <span class="keyword">void</span>(^)(<span class="built_in">NSError</span> * _Nullable error))handler;</span><br><span class="line"><span class="comment">// iOS 10 之后使用 开启录屏</span></span><br><span class="line">- (<span class="keyword">void</span>)startRecordingWithHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span>(^)(<span class="built_in">NSError</span> * _Nullable error))handler;</span><br><span class="line"><span class="comment">// 结束录屏</span></span><br><span class="line">- (<span class="keyword">void</span>)stopRecordingWithHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span>(^)(RPPreviewViewController * _Nullable previewViewController, <span class="built_in">NSError</span> * _Nullable error))handler;</span><br><span class="line"><span class="comment">// 放弃录屏</span></span><br><span class="line">- (<span class="keyword">void</span>)discardRecordingWithHandler:(<span class="keyword">void</span>(^)(<span class="keyword">void</span>))handler;</span><br><span class="line"><span class="comment">// 开启录屏，可以获取到视频流数据 iOS 11后可用</span></span><br><span class="line">- (<span class="keyword">void</span>)startCaptureWithHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span>(^)(<span class="built_in">CMSampleBufferRef</span> sampleBuffer, RPSampleBufferType bufferType, <span class="built_in">NSError</span> * _Nullable error))captureHandler completionHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span>(^)(<span class="built_in">NSError</span> * _Nullable error))completionHandler;</span><br><span class="line"><span class="comment">// 结束视频流捕获</span></span><br><span class="line">- (<span class="keyword">void</span>)stopCaptureWithHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span>(^)(<span class="built_in">NSError</span> * _Nullable error))handler;</span><br><span class="line"><span class="comment">// 设置代理对象</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>, <span class="keyword">nullable</span>) <span class="keyword">id</span>&lt;RPScreenRecorderDelegate&gt; delegate;</span><br><span class="line"><span class="comment">// 录屏功能是否可用</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isAvailable) <span class="built_in">BOOL</span> available;</span><br><span class="line"><span class="comment">// 是否正在录制中</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isRecording) <span class="built_in">BOOL</span> recording;</span><br><span class="line"><span class="comment">// 是否使用麦克风</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isMicrophoneEnabled) <span class="built_in">BOOL</span> microphoneEnabled;</span><br><span class="line"><span class="comment">// 是否可以使用相机</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isCameraEnabled) <span class="built_in">BOOL</span> cameraEnabled;</span><br><span class="line"><span class="comment">// 设置摄像头模式  前置/后置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) RPCameraPosition cameraPosition;</span><br><span class="line"><span class="comment">// 相机预览视图</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">nullable</span>) <span class="built_in">UIView</span> *cameraPreviewView;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>在录屏的时候，也支持调用系统的麦克风和摄像头共同完成录制。RPScreenRecorderDelegate协议中定义了一些回调方法，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 停止录屏后的回调 iOS 10 之前使用</span></span><br><span class="line">- (<span class="keyword">void</span>)screenRecorder:(RPScreenRecorder *)screenRecorder didStopRecordingWithError:(<span class="built_in">NSError</span> *)error previewViewController:(<span class="keyword">nullable</span> RPPreviewViewController *)previewViewController;</span><br><span class="line"><span class="comment">// 停止录屏后的回调 iOS 10 之后使用</span></span><br><span class="line">- (<span class="keyword">void</span>)screenRecorder:(RPScreenRecorder *)screenRecorder didStopRecordingWithPreviewViewController:(<span class="keyword">nullable</span> RPPreviewViewController *)previewViewController error:(<span class="keyword">nullable</span> <span class="built_in">NSError</span> *)error;</span><br><span class="line"><span class="comment">// 录屏权限更改的回调</span></span><br><span class="line">- (<span class="keyword">void</span>)screenRecorderDidChangeAvailability:(RPScreenRecorder *)screenRecorder;</span><br></pre></td></tr></table></figure>
+<p>RPPreviewViewController类是视频预览控制器类，这个控制器没有暴露太多的属性给开发者使用，其中预览模式可以选择分享模式或编辑模式，除此之外，其中还提供了一个代理协议给开发者进行使用，用来对用户的操作进行处理，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">RPPreviewViewControllerDelegate</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"><span class="keyword">@optional</span></span><br><span class="line"><span class="comment">// 预览结束</span></span><br><span class="line">- (<span class="keyword">void</span>)previewControllerDidFinish:(RPPreviewViewController *)previewController;</span><br><span class="line"><span class="comment">// 用户行为回调</span></span><br><span class="line">- (<span class="keyword">void</span>)previewController:(RPPreviewViewController *)previewController didFinishWithActivityTypes:(<span class="built_in">NSSet</span> &lt;<span class="built_in">NSString</span> *&gt; *)activityTypes;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2020/07/02/401iOS14新特性探索之一：App Clips轻应用/" class="pre-post btn btn-default" title='iOS14新特性探索之一：App Clips轻应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS14新特性探索之一：App Clips轻应用</span>
+        </a>
+    
+    
+        <a href="/2020/04/30/399使用Python编写iOS原生应用的框架设计思考(首篇)/" class="next-post btn btn-default" title='使用Python编写iOS原生应用的框架设计思考(首篇)'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">使用Python编写iOS原生应用的框架设计思考(首篇)</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS录屏框架ReplayKit的应用总结"><span class="toc-text">iOS录屏框架ReplayKit的应用总结</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
