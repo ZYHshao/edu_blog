@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>ReactNative开发环境的搭建与开发前准备 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="ReactNative开发环境的搭建与开发前准备">
+            
+	            ReactNative开发环境的搭建与开发前准备
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/ReactNative">
+            ReactNative
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/12/23</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="ReactNative开发环境的搭建与开发前准备"><a href="#ReactNative开发环境的搭建与开发前准备" class="headerlink" title="ReactNative开发环境的搭建与开发前准备"></a>ReactNative开发环境的搭建与开发前准备</h2><h3 id="一、准备工作"><a href="#一、准备工作" class="headerlink" title="一、准备工作"></a>一、准备工作</h3><pre><code>在ReactNative中文网上有详细的开发文档与教程，首先，想要系统了解ReactNative的朋友可以在如下网站中获取详细信息：
+</code></pre><p><a href="http://reactnative.cn/" target="_blank" rel="noopener">http://reactnative.cn/</a>。</p>
+<p>本篇博客记录搭建ReactNative开发环境中的一些问题与注意点，也介绍在MacOS系统上搭建ReactNative开发环境的全过程与一些小经验技巧。</p>
+<pre><code>ReactNative最大的魅力在于其编写的代码可以跨平台应用，因此我极力推荐在MacOS上进行ReactNative应用的开发，由于Xcode开发工具只能运行与MacOS系统，在Windows或Linux系统上将无法进行iOS平台的调试，因此本篇博客也将基于MacOS系统进行演示。    
+
+在ReactNative环境之前，开发者需要先安装一些小工具，首先需要安卓Homebrew工具，Homebrew工具是Mac系统的包管理器，在终端运行如下命令进行安装：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ruby -e &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
+<p>安装完成后，可以使用brew -v命令检查Homebrew版本，正常输出版本号说明安装成功：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/173800_dW98_2340880.png" alt=""></p>
+<p>在安装过程中，如果遇到权限问题，需要使用如下命令进行修复：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chown -R `whoami` /usr/local</span><br></pre></td></tr></table></figure>
+<pre><code>安装完成Homebrew后，需要使用其来进行Node环境的安装，使用如下命令：
+</code></pre><p>安装完成后，同样可以使用node -v命令来检查是否安装成功：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/174507_5sLk_2340880.png" alt=""></p>
+<p>虽然Yarn是facebook提供的代替npm的包管理工具，但我个人更倾向使用npm来进行ReactNative包的安装，在使用之前，可以通过替换源镜像的方式来进行npm的加速(在无法科学上网的前提下):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config set registry https://registry.npm.taobao.org --global</span><br><span class="line">npm config set disturl https://npm.taobao.org/dist --global</span><br></pre></td></tr></table></figure>
+<p>之后使用npm config get registry来检查源镜像的替换是否成功：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/175056_I4nM_2340880.png" alt=""></p>
+<p>之后我们需要安装ReactNative的命令行工具react-natice-cli。这个工具用来初始化ReactNative项目，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g react-native-cli</span><br></pre></td></tr></table></figure>
+<p>使用react-native -v命令来检查是否安装成功：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/175805_OAC8_2340880.png" alt=""></p>
+<p>到此，ReactNative的基础环境已经搭建完成了，下面需要配置iOS与Android开发工具。</p>
+<h3 id="二、Xcode与Android-Studio配置"><a href="#二、Xcode与Android-Studio配置" class="headerlink" title="二、Xcode与Android Studio配置"></a>二、Xcode与Android Studio配置</h3><pre><code>Xcode基本无需进行额外的配置，你只需要从AppStore上下载下来最新版本的Xcode开发工具安装完成即可，Xcode会打包安装命令行工具，git工具和所需要的模拟器。
+
+对于Android开发环境，首先你需要保证你的Android Studio工具版本在2.0以上并且Java版本要在1.8以上，javac -version命令可以查看当前的JDK版本，如果低于1.8，可以到官网下载：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/1223/193831_PkVy_2340880.png" alt=""></p>
+<p>官网：<a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html</a>。</p>
+<p>下载安装完成Android Studio后，首先需要对SDK进行相应配置，打开Android Studio，打开欢迎界面的SDK Manager，如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/194348_ydYM_2340880.png" alt=""></p>
+<p>选中其中的SDK Platforms，勾选Show Package Details。我选择Android6.0相关的SDK进行安装，Android SDK Platform 23,Intel x86 Atom_64 System Image为必选， 如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/194821_D56v_2340880.png" alt=""></p>
+<p>除此之外，还需要安装SDK Tools，必须安装其中的23.0.1版本，切记，这是必须！如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/195929_sBey_2340880.png" alt=""></p>
+<p>之后随便使用Android Studio创建一个项目，打开其中的AVD Manager，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/200348_qGF1_2340880.png" alt=""></p>
+<p>AVD Manager用来管理Android模拟器，如果以后模拟器，可以点击运行按钮开运行模拟器，如果没有，可以创建一个模拟器，如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/200603_Ak4E_2340880.png" alt=""></p>
+<p>做完上述步骤后，切记要配置Android SDK的环境变量，在终端使用如下命令进行环境变量文件的编辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi ~/.bash_profile</span><br></pre></td></tr></table></figure>
+<p>在文件中添加如下路径：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export ANDROID_HOME=~/Library/Android/sdk</span><br></pre></td></tr></table></figure>
+<p>之后在终端执行如下命令来使设置生效：    </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bash_profile</span><br></pre></td></tr></table></figure>
+<p>可以使用echo $ANDROID_HOME命令来检查环境变量的配置是否正确，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/201747_IcXF_2340880.png" alt=""></p>
+<h3 id="三、运行第一个项目HelloWorld"><a href="#三、运行第一个项目HelloWorld" class="headerlink" title="三、运行第一个项目HelloWorld"></a>三、运行第一个项目HelloWorld</h3><pre><code>如果上面的环境配置和开发工具的配置都已顺利完成，那么你离第一个ReactNative项目已经不远了，下面我们来通过ReactNative创建HelloWorld项目。
+
+在终端运行react-native init HelloWorld命令来创建ReactNative项目，这个命令是一个一站式集成命令，其会创建项目并且将所有依赖包都安装完成。命令成功执行后，进入到项目根目录中，如下：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/1223/202836_dlGy_2340880.png" alt=""></p>
+<p>使用react-native run-ios或者react-native run-android来进行iOS项目或者Android项目的运行，如果你看到如下图所示的界面，恭喜你，你的ReactNative项目已经可以跑起来了(需要注意：运行安卓项目的时候，安卓模拟器必须先启动)：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/203514_yEIc_2340880.png" alt=""></p>
+<p>需要注意，运行iOS项目时，会默认启动Xcode的默认模拟器，如果要启动特定的模拟器，可以使用如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">react-native run-ios --simulator &quot;iPhone SE&quot;</span><br></pre></td></tr></table></figure>
+<p>xcrun simctl list devices命令可以打印出所有可用的iOS模拟器，示例如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/203927_BZuo_2340880.png" alt=""></p>
+<p>观察HelloWorld项目结构，其目录如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/203621_emnu_2340880.png" alt=""></p>
+<p>其中node_modules为node依赖包的目录，andorid文件夹为安卓项目目录，ios文件夹为iOS项目目录。index.android.js与index.ios.js两个文件是最为重要的两个文件，这两个文件是iOS项目与Android项目的入口文件，打开index.ios.js文件，将其中的代码修改如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  AppRegistry,</span><br><span class="line">  StyleSheet,</span><br><span class="line">  Text,</span><br><span class="line">  View</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;Text style=&#123;&#123;</span><br><span class="line">        flex:<span class="number">1</span>,</span><br><span class="line">        top:<span class="number">100</span>,</span><br><span class="line">        left:<span class="number">100</span>,</span><br><span class="line">        fontSize:<span class="number">30</span></span><br><span class="line">      &#125;&#125;&gt;HelloWorld&lt;<span class="regexp">/Text&gt;  </span></span><br><span class="line"><span class="regexp">    );</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">AppRegistry.registerComponent('HelloWorld', () =&gt; HelloWorld);</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码就是一个最简单的项目HelloWorld，在iOS模拟器中使用command+R来进行界面的刷新，效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/204637_riIu_2340880.png" alt=""></p>
+<p>在安卓模拟器中双击R键来进行界面的刷新。</p>
+<p>提示：如果在iOS模拟器中使用command+R无效，需要将模拟器的Connect Hardware Keyboard进行勾选，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/204906_CwDU_2340880.png" alt=""></p>
+<h3 id="四、ReactNative开发工具的选择"><a href="#四、ReactNative开发工具的选择" class="headerlink" title="四、ReactNative开发工具的选择"></a>四、ReactNative开发工具的选择</h3><pre><code>facebook提供了一个叫做Nuclide的工具专门开发ReactNative应用，其实一个基于atom的集成开发环境，但是我个人更喜欢使用SublimeText来进行ReactNative应用的开发。通过安装相应的插件，SublimeText来编写ReactNative应用将十分畅快。
+
+首先下载SublineText编辑工具，可以在官网进行下载：
+</code></pre><p><a href="http://www.sublimetext.com/" target="_blank" rel="noopener">http://www.sublimetext.com/</a>。</p>
+<p>在对SublimeText进行插件安装前，需要先为其安装包管理工具PackageControl。在SublimeText工具的导航中选择View下的Show Console来打开命令行，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/210147_sMfW_2340880.png" alt=""></p>
+<p>在命令行中输入如下代码进行，敲击回车进行安装：</p>
+<p>SublimeText2：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib2,os; pf=<span class="string">'Package Control.sublime-package'</span>; ipp = sublime.installed_packages_path(); os.makedirs( ipp ) <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(ipp) <span class="keyword">else</span> <span class="keyword">None</span>; urllib2.install_opener( urllib2.build_opener( urllib2.ProxyHandler( ))); open( os.path.join( ipp, pf), <span class="string">'wb'</span> ).write( urllib2.urlopen( <span class="string">'http://sublime.wbond.net/'</span> +pf.replace( <span class="string">' '</span>,<span class="string">'%20'</span> )).read()); print( <span class="string">'Please restart Sublime Text to finish installation'</span>)</span><br></pre></td></tr></table></figure>
+<p>SublimeText3:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib.request,os; pf = <span class="string">'Package Control.sublime-package'</span>; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); open(os.path.join(ipp, pf), <span class="string">'wb'</span>).write(urllib.request.urlopen( <span class="string">'http://sublime.wbond.net/'</span> + pf.replace(<span class="string">' '</span>,<span class="string">'%20'</span>)).read())</span><br></pre></td></tr></table></figure>
+<p>由于网络等多种原因，上面使用代码安装PackageControl的方法很大可能会失败，我们也可以从官网下载安装包，将其放在SublimeText的包安装目录中，重启SublimeText来进行安装，点击SublimeText的Preferences-&gt;Browse Packages选项可以浏览SublimeText的包目录：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/212040_NKVY_2340880.png" alt=""></p>
+<p>将下载好的PackageControl安装包放入Installed Package目录中重启即可，如果没有这个目录，可以手动创建：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/212244_HUxq_2340880.png" alt=""></p>
+<p>PackageControl的官方下载地址为：<a href="http://sublime.wbond.net/Package%20Control.sublime-package" target="_blank" rel="noopener">http://sublime.wbond.net/Package%20Control.sublime-package</a>。</p>
+<p>温馨提示：PackageControl的官方下载地址访问起来也有一定难度，我将这个安装包放在了我的github上一份，如果需要，可以从下面的地址下载：</p>
+<p><a href="http://zyhshao.github.io/file/Package%20Control.sublime-package" target="_blank" rel="noopener">http://zyhshao.github.io/file/Package%20Control.sublime-package</a>。</p>
+<pre><code>安装完成PackageControl工具后，即可使用其来进行SublimeText插件的安装。
+</code></pre><p>在SublimeText中选择Preferences-&gt;PackageControl即可调出PackageControl命令面板，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/215615_ilOh_2340880.png" alt=""></p>
+<p>PackageControl中提供了许多实用的方法，例如install Package用来安装插件，List Packages用来查看已经安装过的插件，Remove Package用来删除一个已经安装的插件等，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/215752_xDBF_2340880.png" alt=""></p>
+<p>点击Install Package进入SublimeText插件的搜索界面，搜索到所需要安装的插件安装即可，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/220342_WuDF_2340880.png" alt=""></p>
+<p>温馨提示：在使用PackageContrl的Install Package命令时，很有可能会出现超时问题，原因是PackageControl需要拉取一个channels文件列表，而这个文件在国内往往难以访问到，我也在我的github上存放了一份备份，需要将PackageControl的channels拉取路径做下修改，选择SublimeText的Preferences-&gt;PackageSettings-&gt;PackageControl-&gt;Settings-Default选项，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/220952_HcfD_2340880.png" alt=""></p>
+<p>将其中的channels参数修改如下即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&quot;channels&quot;: [</span><br><span class="line">    &quot;http://zyhshao.github.io/file/channel_v3.json&quot;</span><br><span class="line">],</span><br></pre></td></tr></table></figure>
+<h3 id="五、推荐几个编写ReactNative好用的SublimeText插件"><a href="#五、推荐几个编写ReactNative好用的SublimeText插件" class="headerlink" title="五、推荐几个编写ReactNative好用的SublimeText插件"></a>五、推荐几个编写ReactNative好用的SublimeText插件</h3><h4 id="插件一：Emmet"><a href="#插件一：Emmet" class="headerlink" title="插件一：Emmet"></a>插件一：Emmet</h4><pre><code>Emmet插件是前端神器，其提供了js的自动补全功能，使用PackageControl搜索安装emmet插件后，打开SublimeText中的Preferences-&gt;Package Settings-&gt;Emmet-&gt;Key Bindings-User，将其文件修改为如下：
+</code></pre><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">[&#123;</span><br><span class="line">    <span class="attr">"keys"</span>: [<span class="string">"tab"</span>],</span><br><span class="line">    <span class="attr">"command"</span>: <span class="string">"expand_abbreviation_by_tab"</span>,</span><br><span class="line"></span><br><span class="line">    // put comma-separated syntax selectors for which </span><br><span class="line">    // you want to expandEmmet abbreviations into "operand" key </span><br><span class="line">    // instead of SCOPE_SELECTOR.</span><br><span class="line">    // Examples: source.js, text.html - source</span><br><span class="line">    "context": [&#123;</span><br><span class="line">            "operand": "source.js",</span><br><span class="line">            "operator": "equal",</span><br><span class="line">            "match_all": true,</span><br><span class="line">            "key": "selector"</span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        // run only if there's no selected text</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"match_all"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"key"</span>: <span class="string">"selection_empty"</span></span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        // don't work if there are active tabstops</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"operator"</span>: <span class="string">"equal"</span>,</span><br><span class="line">            <span class="attr">"operand"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"match_all"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"key"</span>: <span class="string">"has_next_field"</span></span><br><span class="line">        &#125;,</span><br><span class="line"></span><br><span class="line">        // don't work if completion popup is visible and you</span><br><span class="line">        // want to insert completion with Tab. If you want to</span><br><span class="line">        // expand Emmet with Tab even if popup is visible -- </span><br><span class="line">        // remove this section</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="attr">"operand"</span>: <span class="literal">false</span>,</span><br><span class="line">            <span class="attr">"operator"</span>: <span class="string">"equal"</span>,</span><br><span class="line">            <span class="attr">"match_all"</span>: <span class="literal">true</span>,</span><br><span class="line">            <span class="attr">"key"</span>: <span class="string">"auto_complete_visible"</span></span><br><span class="line">        &#125;, &#123;</span><br><span class="line">            "match_all": true,</span><br><span class="line">            "key": "is_abbreviation"</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+<h4 id="插件二：jsformat"><a href="#插件二：jsformat" class="headerlink" title="插件二：jsformat"></a>插件二：jsformat</h4><pre><code>jsformat插件可以进行js代码的格式化，使用PackageControl安装完成后，选中js代码，使用control+option+f即可进行代码的格式化操作。
+</code></pre><h4 id="插件三：ReactJS"><a href="#插件三：ReactJS" class="headerlink" title="插件三：ReactJS"></a>插件三：ReactJS</h4><pre><code>ReactJS插件支持对React代码进行高亮，并且支持快捷创建函数，原型等操作，熟练使用可以大大提高开发效率，其用法github如下：
+</code></pre><p><a href="https://github.com/facebookarchive/sublime-react" target="_blank" rel="noopener">https://github.com/facebookarchive/sublime-react</a>。</p>
+<h4 id="插件四：Terminal"><a href="#插件四：Terminal" class="headerlink" title="插件四：Terminal"></a>插件四：Terminal</h4><pre><code>Terminal也是SublimeText开发ReactNative应用神器，安装好后，使用command+shift+T可以直接在当前目录打开终端。
+</code></pre><h4 id="插件五：react-native-snippets"><a href="#插件五：react-native-snippets" class="headerlink" title="插件五：react-native-snippets"></a>插件五：react-native-snippets</h4><pre><code>react-native-snippets可以快速的创建ReactNative类等代码块，用法github如下：
+</code></pre><p><a href="https://github.com/Shrugs/react-native-snippets" target="_blank" rel="noopener">https://github.com/Shrugs/react-native-snippets</a>。</p>
+<p>最后，再推荐一款SublimeText皮肤Hero，我个人非常喜欢这款皮肤，其安装与配置方法在如下github上有详细介绍：</p>
+<p><a href="https://github.com/nickbalestra/hero" target="_blank" rel="noopener">https://github.com/nickbalestra/hero</a>。</p>
+<p>效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1223/225913_Jz7P_2340880.png" alt=""></p>
+<p>有了上面的这些工具，我们的SublimeText就编程了一款强大ReactNative开发IDE，尽情享受畅快编码的感觉吧！</p>
+<pre><code>到此为止，本篇博客将所有开发ReactNative应用的准备工作已经介绍完毕，后面的博客将记录手把手开发一款ReactNative应用程序的学习过程：ReactNative简易汇率换算器！期待与您的共同交流与进步！
+</code></pre><blockquote>
+<p>ReactNative兴趣群：605794212，欢迎交流学习。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/12/26/290 Bootstrap响应式前端框架笔记十六——模态框交互/" class="pre-post btn btn-default" title='Bootstrap响应式前端框架笔记十六——模态框交互'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Bootstrap响应式前端框架笔记十六——模态框交互</span>
+        </a>
+    
+    
+        <a href="/2016/12/22/287Bootstrap响应式前端框架笔记十五——面板与井/" class="next-post btn btn-default" title='Bootstrap响应式前端框架笔记十五——面板与井'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Bootstrap响应式前端框架笔记十五——面板与井</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ReactNative开发环境的搭建与开发前准备"><span class="toc-text">ReactNative开发环境的搭建与开发前准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、准备工作"><span class="toc-text">一、准备工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、Xcode与Android-Studio配置"><span class="toc-text">二、Xcode与Android Studio配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、运行第一个项目HelloWorld"><span class="toc-text">三、运行第一个项目HelloWorld</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、ReactNative开发工具的选择"><span class="toc-text">四、ReactNative开发工具的选择</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、推荐几个编写ReactNative好用的SublimeText插件"><span class="toc-text">五、推荐几个编写ReactNative好用的SublimeText插件</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#插件一：Emmet"><span class="toc-text">插件一：Emmet</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#插件二：jsformat"><span class="toc-text">插件二：jsformat</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#插件三：ReactJS"><span class="toc-text">插件三：ReactJS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#插件四：Terminal"><span class="toc-text">插件四：Terminal</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#插件五：react-native-snippets"><span class="toc-text">插件五：react-native-snippets</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS应用内评价与购买三方APP组件 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS应用内评价与购买三方APP组件">
+            
+	            iOS应用内评价与购买三方APP组件
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/08/21</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS应用内评价与购买三方APP组件"><a href="#iOS应用内评价与购买三方APP组件" class="headerlink" title="iOS应用内评价与购买三方APP组件"></a>iOS应用内评价与购买三方APP组件</h2><pre><code>首先来说应用内评价组件，应用内评价组件是iOS10.3中新引入的功能。其封装在StoreKit框架中。用户可以直接在APP内唤起评价组件对应用程序进行评星，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">SKStoreReviewController</span> requestReview];</span><br></pre></td></tr></table></figure>
+<p>效果如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0821/222356_b5SD_2340880.png" alt=""></p>
+<p>在模拟器上，这个Submit按钮是不可点击的，如果在真机上，并且应用程序已经上线，可以直接进行评价。这个方便的评价组件可以避免让用户跳出APP进行评价的不好体验。</p>
+<pre><code>SKStoreReviewController中只有requestReview这一个类方法，需要注意，只有在iOS10.3后才可以使用。但是StoreKit这个框架很早就有了。里面还有一个类可以让用户直接在应用内打开一个第三方应用的AppStore购买页。示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">SKStoreProductViewController</span> * controller = [[<span class="built_in">SKStoreProductViewController</span> alloc]init];</span><br><span class="line">[<span class="keyword">self</span> presentViewController:controller animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">[controller loadProductWithParameters:@&#123;<span class="built_in">SKStoreProductParameterITunesItemIdentifier</span>:@(<span class="number">321231</span>)&#125; completionBlock:^(<span class="built_in">BOOL</span> result, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>上面代码SKStoreProuctViewController是应用程序购买页视图控制器，其调用loadProductWithParameters方法进行页面的加载，这个方法有两个参数，第1个参数用来设置配置字典，第2个参数回调Block来告诉开发者页面的加载是否成功。关于配置字典，有如下键值对可用：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置要加载的APPID NSNumber类型</span></span><br><span class="line"><span class="built_in">SKStoreProductParameterITunesItemIdentifier</span></span><br><span class="line"><span class="comment">//广告token</span></span><br><span class="line"><span class="built_in">SKStoreProductParameterAdvertisingPartnerToken</span></span><br><span class="line"><span class="comment">//affiliate token</span></span><br><span class="line"><span class="built_in">SKStoreProductParameterAffiliateToken</span></span><br><span class="line"><span class="comment">//CampaignToken</span></span><br><span class="line"><span class="built_in">SKStoreProductParameterCampaignToken</span></span><br><span class="line"><span class="comment">//ProviderToken</span></span><br><span class="line"><span class="built_in">SKStoreProductParameterProviderToken</span></span><br></pre></td></tr></table></figure>
+<p>再多说一点，关于appid的获取，可以直接在<a href="https://linkmaker.itunes.apple.com/。网站进行搜索，之后可以获取到应用的下载url地址，这个url地址是被编码过的，解码后其中的参数即有appid值。" target="_blank" rel="noopener">https://linkmaker.itunes.apple.com/。网站进行搜索，之后可以获取到应用的下载url地址，这个url地址是被编码过的，解码后其中的参数即有appid值。</a></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/08/23/357挖一挖贝塞尔曲线那些事/" class="pre-post btn btn-default" title='挖一挖贝塞尔曲线那些事'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">挖一挖贝塞尔曲线那些事</span>
+        </a>
+    
+    
+        <a href="/2017/08/20/355一个移动开发者的Mock数据之路/" class="next-post btn btn-default" title='一个移动开发者的Mock数据之路'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一个移动开发者的Mock数据之路</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS应用内评价与购买三方APP组件"><span class="toc-text">iOS应用内评价与购买三方APP组件</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

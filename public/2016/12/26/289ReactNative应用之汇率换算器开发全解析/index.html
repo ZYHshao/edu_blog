@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>ReactNative应用之汇率换算器开发全解析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="ReactNative应用之汇率换算器开发全解析">
+            
+	            ReactNative应用之汇率换算器开发全解析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/ReactNative">
+            ReactNative
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/12/26</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="ReactNative应用之汇率换算器开发全解析"><a href="#ReactNative应用之汇率换算器开发全解析" class="headerlink" title="ReactNative应用之汇率换算器开发全解析"></a>ReactNative应用之汇率换算器开发全解析</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>本篇博客将介绍如何开发一款简易的ReactNative小应用汇率换算器。本应用仅作为学习使用，其支持在人民币与美元间进行汇率计算。汇率计算器应用主要分为两部分：键盘与显示屏。键盘提供给与用户进行输入，在显示屏上进行汇率换算结果的显示。复杂的界面无非是简单组件的组合使用，因此，在进行开发之前，我们可以思考可能需要使用到的独立组件的开发，例如键盘按钮的开发，有键盘按钮组成的键盘的开发，显示屏开发等。首先创建一个初始的ReactNative工程，将index.ios.js与index.android.js文件中的内容全部删掉。在项目根目录中新建4个目录，分别为const、controller、image和view。这4个目录用于存放后面我们需要新建的静态文件，控制器文件，图片素材和视图文件。
+</code></pre><h3 id="二、用户键盘的封装"><a href="#二、用户键盘的封装" class="headerlink" title="二、用户键盘的封装"></a>二、用户键盘的封装</h3><pre><code>在view文件夹下新建一个KeyButton.js文件，其用来创建键盘上的独立按钮，将其实现如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component,PropTypes &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; </span><br><span class="line">    TouchableHighlight,</span><br><span class="line">    Text,</span><br><span class="line">    StyleSheet,</span><br><span class="line">    Image</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">KeyButton</span> <span class="keyword">extends</span> <span class="title">Component</span></span>&#123;</span><br><span class="line">    render()&#123;</span><br><span class="line">        <span class="comment">//根据number属性来做判断</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="keyword">this</span>.props.number == <span class="string">'删'</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>(</span><br><span class="line">            &lt;TouchableHighlight </span><br><span class="line">            underlayColor=<span class="string">'#f06d30'</span> </span><br><span class="line">            style=&#123;[keyButtonStyles.buttonStyleNormal,&#123;<span class="attr">alignItems</span>:<span class="string">'center'</span>&#125;]&#125;</span><br><span class="line">            onPress=&#123;<span class="keyword">this</span>.props.buttonPress.bind(<span class="keyword">this</span>,<span class="keyword">this</span>.props.number)&#125;&gt;</span><br><span class="line">                &lt;Image source=&#123;<span class="built_in">require</span>(<span class="string">'../image/delete.png'</span>)&#125;/&gt;</span><br><span class="line">            &lt;<span class="regexp">/TouchableHighlight&gt;</span></span><br><span class="line"><span class="regexp">            );</span></span><br><span class="line"><span class="regexp">        &#125;;</span></span><br><span class="line"><span class="regexp">        /</span><span class="regexp">/特殊按钮需要状态来判断</span></span><br><span class="line"><span class="regexp">        var buttonStyle;</span></span><br><span class="line"><span class="regexp">        if(this.props.number == 'C' || this.props.number == '=')&#123;</span></span><br><span class="line"><span class="regexp">            buttonStyle = keyButtonStyles.buttonStyleSpecial;</span></span><br><span class="line"><span class="regexp">        &#125;else&#123;</span></span><br><span class="line"><span class="regexp">            buttonStyle =  keyButtonStyles.buttonStyleNormal;</span></span><br><span class="line"><span class="regexp">        &#125;</span></span><br><span class="line"><span class="regexp">        return(</span></span><br><span class="line"><span class="regexp">            &lt;TouchableHighlight </span></span><br><span class="line"><span class="regexp">            underlayColor='#f06d30' </span></span><br><span class="line"><span class="regexp">            style=&#123;buttonStyle&#125;</span></span><br><span class="line"><span class="regexp">            onPress=&#123;this.props.buttonPress.bind(this,this.props.number)&#125;&gt;</span></span><br><span class="line"><span class="regexp">                &lt;Text style=&#123;keyButtonStyles.textStyle&#125;&gt;&#123;this.props.number&#125;&lt;/</span>Text&gt;</span><br><span class="line">            &lt;<span class="regexp">/TouchableHighlight&gt;</span></span><br><span class="line"><span class="regexp">        );</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;</span></span><br><span class="line"><span class="regexp">/</span><span class="regexp">/配置样式列表</span></span><br><span class="line"><span class="regexp">const keyButtonStyles = StyleSheet.create(&#123;</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/正常按钮样式</span></span><br><span class="line"><span class="regexp">    buttonStyleNormal:&#123;</span></span><br><span class="line"><span class="regexp">        flex:1,</span></span><br><span class="line"><span class="regexp">        backgroundColor:'#323637',</span></span><br><span class="line"><span class="regexp">        justifyContent: 'center',</span></span><br><span class="line"><span class="regexp">    &#125;,</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/特殊按钮样式</span></span><br><span class="line"><span class="regexp">    buttonStyleSpecial:&#123;</span></span><br><span class="line"><span class="regexp">        flex:1,</span></span><br><span class="line"><span class="regexp">        backgroundColor:'#f06d30',</span></span><br><span class="line"><span class="regexp">        justifyContent: 'center',</span></span><br><span class="line"><span class="regexp">    &#125;,</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/文本样式</span></span><br><span class="line"><span class="regexp">    textStyle:&#123;</span></span><br><span class="line"><span class="regexp">        color:'white',</span></span><br><span class="line"><span class="regexp">        textAlign:'center',</span></span><br><span class="line"><span class="regexp">        fontSize:30</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">&#125;);</span></span><br></pre></td></tr></table></figure>
+<p>上面代码中预留number属性作为按钮的标题，不同的按钮可能带有不同的样式，同样通过这个属性来做区分。按钮的触发事件绑定给了buttonPress属性，并且在按钮触发执行时，将按钮的number属性传递出去。</p>
+<pre><code>在const文件夹下创建一个Const,js文件，这个文件中用来定义全局的一些样式，实现如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; </span><br><span class="line">    StyleSheet</span><br><span class="line">     &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mainViewStyles = StyleSheet.create(&#123;</span><br><span class="line">    <span class="comment">//主界面容器的样式</span></span><br><span class="line">    container:&#123;</span><br><span class="line">        flex:<span class="number">1</span>,</span><br><span class="line">        flexDirection:<span class="string">'column'</span>,</span><br><span class="line">        backgroundColor:<span class="string">'black'</span></span><br><span class="line">    &#125;, </span><br><span class="line">    <span class="comment">//显示屏的样式</span></span><br><span class="line">    screenView:&#123;</span><br><span class="line">        flex:<span class="number">3</span>,</span><br><span class="line">        backgroundColor:<span class="string">'#f06d30'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//键盘的样式</span></span><br><span class="line">    keyboardView:&#123;</span><br><span class="line">        flex:<span class="number">7</span>,</span><br><span class="line">        backgroundColor:<span class="string">'#323637'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre><code>在View文件夹下新建一个KeyboardView.js文件，将其作为键盘视图类，将其实现如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; </span><br><span class="line">    View, </span><br><span class="line">    Text,</span><br><span class="line">    StyleSheet</span><br><span class="line">     &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">import</span> KeyButton <span class="keyword">from</span> <span class="string">'./KeyButton'</span>;</span><br><span class="line"><span class="keyword">import</span> mainViewStyles <span class="keyword">from</span> <span class="string">'../const/Const'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">KeyboardView</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    render()&#123;</span><br><span class="line">        <span class="keyword">return</span>(</span><br><span class="line">            &lt;View style=&#123;mainViewStyles.keyboardView&#125;&gt;</span><br><span class="line">                &lt;View style=&#123;keyboardViewStyles.keyboardRow&#125;&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'1'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'2'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'3'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'删'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">                &lt;View style=&#123;keyboardViewStyles.keyboardRow&#125;&gt;</span></span><br><span class="line"><span class="regexp">                    &lt;KeyButton number='4' buttonPress=&#123;this.props.buttonPress&#125;/</span>&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'5'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'6'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'0'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">                &lt;View style=&#123;keyboardViewStyles.keyboardRow&#125;&gt;</span></span><br><span class="line"><span class="regexp">                    &lt;KeyButton number='7' buttonPress=&#123;this.props.buttonPress&#125;/</span>&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'8'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'9'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'.'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">                &lt;View style=&#123;keyboardViewStyles.keyboardRow&#125;&gt;</span></span><br><span class="line"><span class="regexp">                    &lt;KeyButton number='C' buttonPress=&#123;this.props.buttonPress&#125;/</span>&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'-'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'+'</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                    &lt;KeyButton number=<span class="string">'='</span> buttonPress=&#123;<span class="keyword">this</span>.props.buttonPress&#125;/&gt;</span><br><span class="line">                &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">            &lt;/</span>View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">const</span> keyboardViewStyles = StyleSheet.create(&#123;</span><br><span class="line">    keyboardRow:&#123;</span><br><span class="line">        flex:<span class="number">1</span>,</span><br><span class="line">        backgroundColor:<span class="string">'black'</span>,</span><br><span class="line">        flexDirection:<span class="string">'row'</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面以九宫格的布局模式创建了16个功能按钮，并且将按钮的点击事件属性绑定给键盘的buttonPress属性，由上层视图来做处理，这里使用了flex权重的布局模式。</p>
+<pre><code>至此，键盘部分先告一段落，我们需要对显示屏进行开发，在View文件夹下新建一个ScreenView.js文件，将其作为显示屏视图类，显示屏类和键盘比起来要复杂许多，因为其要实现各种屏幕操作功能，例如回退，删除，清空，计算等，实现如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; </span><br><span class="line">    View, </span><br><span class="line">    Text,</span><br><span class="line">    StyleSheet,</span><br><span class="line">    TouchableHighlight,</span><br><span class="line">    Image</span><br><span class="line">     &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">import</span> mainViewStyles <span class="keyword">from</span> <span class="string">'../const/Const'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">ScreenView</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">      <span class="keyword">super</span>(props);</span><br><span class="line">      <span class="comment">//这三个状态分别用来标记是美元转人民币或者人民币转美元，美元数，人民币数</span></span><br><span class="line">      <span class="keyword">this</span>.state = &#123;</span><br><span class="line">          transUS:<span class="literal">true</span>,</span><br><span class="line">          USMoney:<span class="string">'0'</span>,</span><br><span class="line">        CHMoney:<span class="string">'0'</span></span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="keyword">let</span> __this = <span class="keyword">this</span>;</span><br><span class="line">      <span class="comment">//进行美元转人民币或者人民币转美元转换时调用</span></span><br><span class="line">      <span class="keyword">this</span>.change = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        __this.setState(&#123;<span class="attr">transUS</span>:!__this.state.transUS&#125;);</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="comment">//数字类按钮被点击触发的方法</span></span><br><span class="line">      <span class="keyword">this</span>.buttonClick = <span class="function"><span class="keyword">function</span>(<span class="params">count</span>)</span>&#123;</span><br><span class="line">          <span class="keyword">var</span> us=__this.state.USMoney,ch=__this.state.CHMoney;</span><br><span class="line">          <span class="keyword">if</span> (__this.state.transUS) &#123;</span><br><span class="line">                  <span class="keyword">if</span> (us==<span class="string">'0'</span>) &#123;us=count;&#125;<span class="keyword">else</span>&#123;us=__this.state.USMoney+count;&#125;;</span><br><span class="line">              &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                  <span class="keyword">if</span> (ch==<span class="string">'0'</span>) &#123;ch=count;&#125;<span class="keyword">else</span>&#123;ch=__this.state.CHMoney+count;&#125;;</span><br><span class="line">              &#125;;</span><br><span class="line">          __this.setState(&#123;</span><br><span class="line">              USMoney:us,</span><br><span class="line">              CHMoney:ch</span><br><span class="line">          &#125;);</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="comment">//清除按钮被点击触发的方法</span></span><br><span class="line">      <span class="keyword">this</span>.clear = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          __this.setState(&#123;</span><br><span class="line">              USMoney:<span class="string">'0'</span>,</span><br><span class="line">              CHMoney:<span class="string">'0'</span></span><br><span class="line">          &#125;);</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="comment">//回退按钮被点击触发的方法</span></span><br><span class="line">      <span class="keyword">this</span>.delete = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (__this.state.transUS) &#123;</span><br><span class="line">            <span class="keyword">if</span> (__this.state.USMoney.length&gt;<span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">let</span> newUS = __this.state.USMoney.substring(<span class="number">0</span>,__this.state.USMoney.length<span class="number">-1</span>);</span><br><span class="line">                __this.setState(&#123;<span class="attr">USMoney</span>:newUS&#125;);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(__this.state.USMoney&gt;<span class="string">'0'</span>)&#123;</span><br><span class="line">                __this.setState(&#123;<span class="attr">USMoney</span>:<span class="string">'0'</span>&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span> (__this.state.CHMoney.length&gt;<span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">let</span> newCH = __this.state.CHMoney.substring(<span class="number">0</span>,__this.state.CHMoney.length<span class="number">-1</span>);</span><br><span class="line">                __this.setState(&#123;<span class="attr">CHMoney</span>:newCH&#125;);</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(__this.state.CHMoney&gt;<span class="string">'0'</span>)&#123;</span><br><span class="line">                __this.setState(&#123;<span class="attr">CHMoney</span>:<span class="string">'0'</span>&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="comment">//减号触发的方法</span></span><br><span class="line">      <span class="keyword">this</span>.sub = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (__this.state.transUS) &#123;</span><br><span class="line">           <span class="keyword">if</span>(__this.state.USMoney&gt;<span class="string">'0'</span>)&#123;</span><br><span class="line">                   <span class="keyword">let</span> newUS = (<span class="built_in">parseInt</span>(__this.state.USMoney)<span class="number">-1</span>).toString();</span><br><span class="line">                __this.setState(&#123;<span class="attr">USMoney</span>:newUS&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(__this.state.CHMoney&gt;<span class="string">'0'</span>)&#123;</span><br><span class="line">                <span class="keyword">let</span> newCH = (<span class="built_in">parseInt</span>(__this.state.CHMoney)<span class="number">-1</span>).toString();</span><br><span class="line">                __this.setState(&#123;<span class="attr">CHMoney</span>:newCH&#125;);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="comment">//加号触发的方法</span></span><br><span class="line">      <span class="keyword">this</span>.add = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (__this.state.transUS) &#123;</span><br><span class="line">           <span class="keyword">let</span> newUS = (<span class="built_in">parseFloat</span>(__this.state.USMoney)+<span class="number">1</span>).toString();</span><br><span class="line">            __this.setState(&#123;<span class="attr">USMoney</span>:newUS&#125;);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">let</span> newCH = (<span class="built_in">parseFloat</span>(__this.state.CHMoney)+<span class="number">1</span>).toString();</span><br><span class="line">            __this.setState(&#123;<span class="attr">CHMoney</span>:newCH&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;;</span><br><span class="line">      <span class="comment">//进行汇率转换</span></span><br><span class="line">      <span class="keyword">this</span>.trans = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (__this.state.transUS) &#123;</span><br><span class="line">           <span class="keyword">let</span> us = <span class="built_in">parseFloat</span>(__this.state.USMoney);</span><br><span class="line">           __this.setState(&#123;<span class="attr">CHMoney</span>:(us*<span class="number">6.7</span>).toFixed(<span class="number">2</span>).toString()&#125;);</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">let</span> ch = <span class="built_in">parseFloat</span>(__this.state.CHMoney);</span><br><span class="line">           __this.setState(&#123;<span class="attr">USMoney</span>:(ch/<span class="number">6.7</span>).toFixed(<span class="number">2</span>).toString()&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    render()&#123;</span><br><span class="line">        <span class="keyword">let</span> transText = <span class="keyword">this</span>.state.transUS?<span class="string">"从美元"</span>:<span class="string">"从人民币"</span>;</span><br><span class="line">        <span class="keyword">let</span> transToText = <span class="keyword">this</span>.state.transUS?<span class="string">"到人民币"</span>:<span class="string">"到美元"</span>;</span><br><span class="line">        <span class="keyword">let</span> topText = <span class="keyword">this</span>.state.transUS?<span class="keyword">this</span>.state.USMoney+<span class="string">'$'</span>:<span class="keyword">this</span>.state.CHMoney+<span class="string">'￥'</span>;</span><br><span class="line">        <span class="keyword">let</span> bottomText = <span class="keyword">this</span>.state.transUS?<span class="keyword">this</span>.state.CHMoney+<span class="string">'￥'</span>:<span class="keyword">this</span>.state.USMoney+<span class="string">'$'</span>;</span><br><span class="line">        <span class="keyword">return</span>(</span><br><span class="line">            &lt;View style=&#123;mainViewStyles.screenView&#125;&gt;</span><br><span class="line">                &lt;Text style=&#123;&#123;</span><br><span class="line">                    color:<span class="string">'white'</span>,</span><br><span class="line">                    textAlign:<span class="string">'right'</span>,</span><br><span class="line">                    marginRight:<span class="number">20</span>,</span><br><span class="line">                    marginTop:<span class="number">20</span>,</span><br><span class="line">                    fontSize:<span class="number">17</span></span><br><span class="line">                &#125;&#125;&gt;&#123;transText&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">                &lt;Text style=&#123;&#123;</span></span><br><span class="line"><span class="regexp">                    color:'white',</span></span><br><span class="line"><span class="regexp">                    textAlign:'right',</span></span><br><span class="line"><span class="regexp">                    fontSize:37,</span></span><br><span class="line"><span class="regexp">                    marginRight:20,</span></span><br><span class="line"><span class="regexp">                &#125;&#125;&gt;&#123;topText&#125;&lt;/</span>Text&gt;</span><br><span class="line">                &lt;View style=&#123;&#123;</span><br><span class="line">                    flexDirection:<span class="string">'row'</span>,</span><br><span class="line">                    zIndex:<span class="number">100</span>,</span><br><span class="line">                    marginTop:<span class="number">-7.5</span></span><br><span class="line">                &#125;&#125;&gt;</span><br><span class="line">                &lt;TouchableHighlight </span><br><span class="line">                 underlayColor=<span class="string">'#f06d30'</span></span><br><span class="line">                 style=&#123;&#123;</span><br><span class="line">                    left:<span class="number">50</span>,</span><br><span class="line">                    marginTop:<span class="number">0</span>,</span><br><span class="line">                &#125;&#125; onPress=&#123;<span class="keyword">this</span>.change&#125;&gt;</span><br><span class="line">                    &lt;Image source=&#123;<span class="built_in">require</span>(<span class="string">'../image/exchange.png'</span>)&#125;/&gt;</span><br><span class="line">                &lt;<span class="regexp">/TouchableHighlight&gt;</span></span><br><span class="line"><span class="regexp">                &lt;View style=&#123;&#123;</span></span><br><span class="line"><span class="regexp">                    marginLeft:70,</span></span><br><span class="line"><span class="regexp">                    height:1,</span></span><br><span class="line"><span class="regexp">                    backgroundColor:'white',</span></span><br><span class="line"><span class="regexp">                    marginTop:10,</span></span><br><span class="line"><span class="regexp">                    flex:1</span></span><br><span class="line"><span class="regexp">                &#125;&#125;&gt;&lt;/</span>View&gt;</span><br><span class="line">                &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">                &lt;Text style=&#123;&#123;</span></span><br><span class="line"><span class="regexp">                    marginTop:10,</span></span><br><span class="line"><span class="regexp">                    color:'white',</span></span><br><span class="line"><span class="regexp">                    textAlign:'right',</span></span><br><span class="line"><span class="regexp">                    fontSize:17,</span></span><br><span class="line"><span class="regexp">                    marginRight:20,</span></span><br><span class="line"><span class="regexp">                    marginTop:-3,</span></span><br><span class="line"><span class="regexp">                    zIndex:99</span></span><br><span class="line"><span class="regexp">                &#125;&#125;&gt;&#123;transToText&#125;&lt;/</span>Text&gt;</span><br><span class="line">                &lt;Text style=&#123;&#123;</span><br><span class="line">                    color:<span class="string">'white'</span>,</span><br><span class="line">                    textAlign:<span class="string">'right'</span>,</span><br><span class="line">                    fontSize:<span class="number">37</span>,</span><br><span class="line">                    marginRight:<span class="number">20</span></span><br><span class="line">                &#125;&#125;&gt;&#123;bottomText&#125;&lt;<span class="regexp">/Text&gt;</span></span><br><span class="line"><span class="regexp">            &lt;/</span>View&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>封装好了键盘与显示屏，我们需要将其联动结合起来，在View文件夹下再创建一个MainView.js文件，实现如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; </span><br><span class="line">    View, </span><br><span class="line">    Text,</span><br><span class="line">    StyleSheet</span><br><span class="line">     &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">import</span> KeyboardView <span class="keyword">from</span> <span class="string">'./KeyboardView'</span>;</span><br><span class="line"><span class="keyword">import</span> mainViewStyles <span class="keyword">from</span> <span class="string">'../const/Const'</span>;</span><br><span class="line"><span class="keyword">import</span> ScreenView <span class="keyword">from</span> <span class="string">'./ScreenView'</span>;</span><br><span class="line"><span class="comment">// 汇率换算器主界面视图</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> <span class="title">MainView</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(props) &#123;</span><br><span class="line">    <span class="keyword">super</span>(props);</span><br><span class="line">    <span class="keyword">this</span>.state = &#123;&#125;;</span><br><span class="line">  &#125;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">let</span> __this = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      &lt;View style=&#123;mainViewStyles.container&#125;&gt;</span><br><span class="line">        &lt;ScreenView ref=<span class="string">"screenView"</span>/&gt;</span><br><span class="line">        &lt;KeyboardView buttonPress=&#123;<span class="function"><span class="keyword">function</span>(<span class="params">title</span>)</span>&#123;</span><br><span class="line">          __this.buttonPress(title);</span><br><span class="line">        &#125;&#125;/&gt;</span><br><span class="line">      &lt;<span class="regexp">/View&gt;</span></span><br><span class="line"><span class="regexp">    )</span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp">  buttonPress(title)&#123;</span></span><br><span class="line"><span class="regexp">    /</span><span class="regexp">/根据按键类型进行相关功能调用</span></span><br><span class="line"><span class="regexp">    if (title=='删') &#123;</span></span><br><span class="line"><span class="regexp">      this.refs.screenView.delete();</span></span><br><span class="line"><span class="regexp">    &#125;else if(title=='C')&#123;</span></span><br><span class="line"><span class="regexp">      this.refs.screenView.clear();</span></span><br><span class="line"><span class="regexp">    &#125;else if(title=='-')&#123;</span></span><br><span class="line"><span class="regexp">      this.refs.screenView.sub();</span></span><br><span class="line"><span class="regexp">    &#125;else if(title=='+')&#123;</span></span><br><span class="line"><span class="regexp">      this.refs.screenView.add();</span></span><br><span class="line"><span class="regexp">    &#125;else if(title=='=')&#123;</span></span><br><span class="line"><span class="regexp">      this.refs.screenView.trans();</span></span><br><span class="line"><span class="regexp">    &#125;else&#123;</span></span><br><span class="line"><span class="regexp">      this.refs.screenView.buttonClick(title);</span></span><br><span class="line"><span class="regexp">    &#125;</span></span><br><span class="line"><span class="regexp">    </span></span><br><span class="line"><span class="regexp">  &#125;</span></span><br><span class="line"><span class="regexp"></span></span><br><span class="line"><span class="regexp">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>到此，ReactNative应用汇率转换器的核心功能已经全部完成了，此应用只有一个界面，其实我们已经可以直接将MainView组建注册为项目的根组建，但是如果是多界面的应用，我们最好再使用Controller将其进行封装，在Controller文件夹下创建一个MainViewController.js文件，为其提供一个view()方法，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; AppRegistry, Text &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">import</span> MainView <span class="keyword">from</span> <span class="string">'../View/MainView'</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">MainViewController</span></span>&#123;</span><br><span class="line">    view()&#123;</span><br><span class="line">        <span class="keyword">return</span>(</span><br><span class="line">            &lt;MainView /&gt;</span><br><span class="line">        );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改index.ios.js与index.android.js文件如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> React, &#123; Component &#125; <span class="keyword">from</span> <span class="string">'react'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  AppRegistry,</span><br><span class="line">  Text</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">import</span> &#123;</span><br><span class="line">  MainViewController</span><br><span class="line">&#125; <span class="keyword">from</span> <span class="string">'./Controller/MainViewController'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">News</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</span><br><span class="line">  render() &#123;</span><br><span class="line">    <span class="keyword">let</span> controller = <span class="keyword">new</span> MainViewController();</span><br><span class="line">    <span class="keyword">return</span> controller.view();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">AppRegistry.registerComponent(<span class="string">'News'</span>, () =&gt; News);</span><br></pre></td></tr></table></figure>
+<p>运行项目，效果如下图：</p>
+<p>iOS：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1226/101258_UGjY_2340880.png" alt=""></p>
+<p>android：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1226/101317_INBP_2340880.png" alt=""></p>
+<p>本项目的完整代码github地址如下：</p>
+<p><a href="https://github.com/ZYHshao/ReactNative-ExchangeRate" target="_blank" rel="noopener">https://github.com/ZYHshao/ReactNative-ExchangeRate</a>。</p>
+<blockquote>
+<p>ReactNative兴趣群：605794212，欢迎交流学习。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/12/27/291Bootstrap响应式前端框架笔记十七——下拉列表交互/" class="pre-post btn btn-default" title='Bootstrap响应式前端框架笔记十七——下拉列表交互'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Bootstrap响应式前端框架笔记十七——下拉列表交互</span>
+        </a>
+    
+    
+        <a href="/2016/12/26/290 Bootstrap响应式前端框架笔记十六——模态框交互/" class="next-post btn btn-default" title='Bootstrap响应式前端框架笔记十六——模态框交互'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Bootstrap响应式前端框架笔记十六——模态框交互</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ReactNative应用之汇率换算器开发全解析"><span class="toc-text">ReactNative应用之汇率换算器开发全解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、用户键盘的封装"><span class="toc-text">二、用户键盘的封装</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

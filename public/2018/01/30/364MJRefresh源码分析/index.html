@@ -1,0 +1,294 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>MJRefresh源码分析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="MJRefresh源码分析">
+            
+	            MJRefresh源码分析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS第三方库">
+            iOS第三方库
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/01/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="MJRefresh源码分析"><a href="#MJRefresh源码分析" class="headerlink" title="MJRefresh源码分析"></a>MJRefresh源码分析</h2><blockquote>
+<p>  每次读优秀的代码都是一次深刻的学习，每一次模仿，都是创造的开始！</p>
+<p>——QQ 316045346 欢迎交流</p>
+</blockquote>
+<h3 id="一、MJRefresh源码结构分析"><a href="#一、MJRefresh源码结构分析" class="headerlink" title="一、MJRefresh源码结构分析"></a>一、MJRefresh源码结构分析</h3><pre><code>MJRefresh主要为UIScrollView，UITableView和UICollectionView添加头部和尾部刷新控件。其主要由3大块组成，类别工具，核心UIScrollView类别和头部尾部刷新组件。如下图：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2018/0130/180314_SYvo_2340880.png" alt=""></p>
+<h3 id="二、工具类别"><a href="#二、工具类别" class="headerlink" title="二、工具类别"></a>二、工具类别</h3><pre><code>上面示意图中列出的几个工具类别主要提供方便属性访问的功能。其主要是为了方便MJRefresh库自己的调用，当然你也可以对它进行使用。
+</code></pre><p>UIView+MJExtension类别提供了对UIView组件位置和尺寸的快速访问方法，并且都支持快速获取和设置：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_x;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_y;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_w;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_h;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGSize</span> mj_size;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGPoint</span> mj_origin;</span><br></pre></td></tr></table></figure>
+<p>UIScrollView+MJExtension提供了对UIScrollView的内容尺寸，偏移量等属性的快速访问：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">UIEdgeInsets</span> mj_inset;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_insetT;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_insetB;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_insetL;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_insetR;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_offsetX;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_offsetY;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_contentW;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> mj_contentH;</span><br></pre></td></tr></table></figure>
+<p>NSBundle+MJRefresh这个类别提供对库中资源的访问方法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="keyword">instancetype</span>)mj_refreshBundle;</span><br><span class="line"><span class="comment">//获取箭头图片</span></span><br><span class="line">+ (<span class="built_in">UIImage</span> *)mj_arrowImage;</span><br><span class="line"><span class="comment">//获取国际化字符串</span></span><br><span class="line">+ (<span class="built_in">NSString</span> *)mj_localizedStringForKey:(<span class="built_in">NSString</span> *)key value:(<span class="built_in">NSString</span> *)value;</span><br><span class="line">+ (<span class="built_in">NSString</span> *)mj_localizedStringForKey:(<span class="built_in">NSString</span> *)key;</span><br></pre></td></tr></table></figure>
+<h3 id="三、关于UIScrollView-MJRefresh"><a href="#三、关于UIScrollView-MJRefresh" class="headerlink" title="三、关于UIScrollView+MJRefresh"></a>三、关于UIScrollView+MJRefresh</h3><pre><code>这个类别是MJRefresh库的核心，其中提供的mj\_header和mj\_footer两个属性用来添加头部和尾部刷新组件。这两个组件是作为子视图添加在UIScrollView上的，因此和UIScrollView的原生头尾视图都不影响。在以前版本的MJRefresh中，使用的是header和footer属性，容易产生疑惑，因此后面版本框架中都添加了mj前缀。
+
+UIScrollView+MJRefresh类别在开发者设置mj\_header和mj\_footer属性时，将这两个组件添加为当前滚动视图的最下层子视图，为了满足某些自动加载的需求，这里面有用runtime将UITableView和UICollectionView的reload函数进行替换，这样做的目的是为了在数据加载时统计界面的元素个数。
+</code></pre><h3 id="四、刷新组件"><a href="#四、刷新组件" class="headerlink" title="四、刷新组件"></a>四、刷新组件</h3><pre><code>MJRefreshComponent是刷新组件的基类，其中定了一些通用方法。首先，MJRefresh库的刷新组件核心思想是基于状态的，即通过状态来触发某些组件行为，例如正常的常态，下拉的pulling态，释放的refreshing态等等。开发者除了可以手动设置状态外，主要通过监听UIScrollView的偏移量等属性来改变状态。当UIScrollView有偏移量或内容尺寸的变化时，MJRefreshComponent会调用scrollViewContentOffsetDidChange函数，这个函数主要交给其子类实现。
+
+MJRefreshHeader类是头部刷新组件的基类，其将刷新组件布局在UIScrollView组件的顶部，并且封装了记录上次刷新时间的功能。MJRefreshStateHeader提供了接口供开发者设置不同状态下刷新组件所显示的文字，MJRefreshNormalHeader是一个更加上层的头部刷新组件，其状态文字是默认定义好的，并且支持国际化。MJRefreshGifHeader可以支持显示自定义刷新动画，其可以为某个状态设置一组图片。
+
+尾部刷新组件的编写逻辑和头部刷新组件的编写逻辑基本一致，MJRefresh中的尾部刷新组件分为了两类，一类是刷新完成后自动消失的，一类是自动刷新，刷新完成后不会自动消失，只是改变状态。MFRefreshFooter与MJRefreshHeader的实现基本一致，MJRefreshBackFooter有刷新完成后自动还原的功能，MJRefreshBackNormalFooter是比较上层的封装，其显示默认的状态文案，并且支持国际化。MJRefreshBackStateFooter则可以手动设置不同状态下刷新组件显示的文字。MJRefreshBackGifFooter用来显示自定义动画的尾部刷新组件。MJRefreshAutoFooter是自动尾部刷新组件的基类，其可以设置当尾部刷新组件出现多少比例时进行刷新(默认是完全出现后进行刷新)。MJRefreshAutoStateFooter可以自定义其各个状态的文案。同样，也有比较上层的MJRefreshAotuNormalFooter组件，这个组件封装好了国际化的文案可以直接使用，MJRefreshAutoGifFooter组件可以显示自定动画的尾部刷新。
+</code></pre><h3 id="五、MJRefresh中的编程风格技巧与小亮点"><a href="#五、MJRefresh中的编程风格技巧与小亮点" class="headerlink" title="五、MJRefresh中的编程风格技巧与小亮点"></a>五、MJRefresh中的编程风格技巧与小亮点</h3><h4 id="1-复用，复用，再复用"><a href="#1-复用，复用，再复用" class="headerlink" title="1.复用，复用，再复用"></a>1.复用，复用，再复用</h4><pre><code>之所以看MJRefresh库的代码非常舒服，很大一部分源自其深入的复用。首先MJRefreshComponent类抽象出了回调与刷新函数，并且提取出了需要子类复写的通用的布局、监听等函数，让子类的结构非常统一。MJRefreshHeader和MJRefreshFooter作为头部与尾部刷新组件的基类，抽象出了构造函数，并且实现了大部分组件与外部的布局，逻辑动作等函数。再子类则专注与实现子类自身的UI与功能。还有一个小细节，也可以看出MJRefresh对复用的追求，在setState函数的实现中，如果新的状态与旧的状态一致，则不需要做任何逻辑，所有的setState函数都需要这个逻辑，MJRefresh中采用的宏的方式进行替换，使代码变得十分简洁，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define MJRefreshCheckState \</span></span><br><span class="line">MJRefreshState oldState = <span class="keyword">self</span>.state; \</span><br><span class="line"><span class="keyword">if</span> (state == oldState) <span class="keyword">return</span>; \</span><br><span class="line">[<span class="keyword">super</span> setState:state];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">///////////</span></span><br><span class="line">- (<span class="keyword">void</span>)setState:(MJRefreshState)state</span><br><span class="line">&#123;</span><br><span class="line">    MJRefreshCheckState</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置状态文字</span></span><br><span class="line">    <span class="keyword">self</span>.stateLabel.text = <span class="keyword">self</span>.stateTitles[@(state)];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-另一种安全执行block的方式"><a href="#2-另一种安全执行block的方式" class="headerlink" title="2.另一种安全执行block的方式"></a>2.另一种安全执行block的方式</h4><pre><code>很多时候，我们在执行block的时候都会先检查下这个block是否为nil，下面是我们常用的代码：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (block) &#123;</span><br><span class="line">     block();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在MJRefresh中有使用问号冒号的方式来代替if语句，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)executeReloadDataBlock</span><br><span class="line">&#123;</span><br><span class="line">    ! <span class="keyword">self</span>.mj_reloadDataBlock ? : <span class="keyword">self</span>.mj_reloadDataBlock(<span class="keyword">self</span>.mj_totalDataCount);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个表达式初看会有一些疑惑，其实?:的作用是返回一个值，如果?:前的表达式为nil的话，则会返回?:后面的值，同样，如果?:前面的表达式不为nil的话，则直接返回，不会执行到后面的表达式，上面的写法其实和第一种if语句的作用完全一致。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/02/11/365iOS高质量的动画实现解决方案——Lottie/" class="pre-post btn btn-default" title='iOS高质量的动画实现解决方案——Lottie'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS高质量的动画实现解决方案——Lottie</span>
+        </a>
+    
+    
+        <a href="/2017/12/29/363SDWebImage源码分析/" class="next-post btn btn-default" title='SDWebImage源码分析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SDWebImage源码分析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MJRefresh源码分析"><span class="toc-text">MJRefresh源码分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、MJRefresh源码结构分析"><span class="toc-text">一、MJRefresh源码结构分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、工具类别"><span class="toc-text">二、工具类别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、关于UIScrollView-MJRefresh"><span class="toc-text">三、关于UIScrollView+MJRefresh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、刷新组件"><span class="toc-text">四、刷新组件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、MJRefresh中的编程风格技巧与小亮点"><span class="toc-text">五、MJRefresh中的编程风格技巧与小亮点</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-复用，复用，再复用"><span class="toc-text">1.复用，复用，再复用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-另一种安全执行block的方式"><span class="toc-text">2.另一种安全执行block的方式</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

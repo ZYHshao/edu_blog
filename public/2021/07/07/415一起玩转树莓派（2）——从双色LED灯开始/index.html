@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>一起玩转树莓派（2）——从双色LED灯开始 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（2）——从双色LED灯开始">
+            
+	            一起玩转树莓派（2）——从双色LED灯开始
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/07/07</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（2）——从双色LED灯开始"><a href="#一起玩转树莓派（2）——从双色LED灯开始" class="headerlink" title="一起玩转树莓派（2）——从双色LED灯开始"></a>一起玩转树莓派（2）——从双色LED灯开始</h1><p>双色LED灯实验是入门树莓派GPIO外设编程的最简单的实验项目，我们也以其投石问路，来进入树莓派的编程世界。</p>
+<h2 id="一、从了解GPIO开始"><a href="#一、从了解GPIO开始" class="headerlink" title="一、从了解GPIO开始"></a>一、从了解GPIO开始</h2><p>GPIO全称General-purpose input/output，即通用型输入输出，其引脚能够供使用者自由的进行使用，可以对其进行输入，也可以读取其数据进行数据输出，这些引脚的输入或输出都会关联到某个寄存器，寄存器的值控制引脚的电平高低。</p>
+<p>以笔者使用树莓派3B+为例，其有40个GPIO引脚，在开始编程之前，我们首先要搞清楚每个引脚的功能意义，从树莓派官网的文档中可以找到GPIO引脚的功能介绍，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0ba9bc866bb3eb05c12dab40379e91d6006.png" alt=""></p>
+<p>我们并不需要对树莓派的GPIO引脚做深入的记忆，只需要记住当正面摆放树莓派时，其最左上角的一个引脚对应的是5V电压的功能，之后对照此图即可确定每一个引脚的功能。后面我们会通过GPIO扩展板加面包板的方式来使用这些引脚，扩展板上默认会标注一些引脚功能，我们使用起来会更加方便。</p>
+<p>笔者使用的扩展板引脚标注示如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-21acf96e0882c81e78bb260f5688f86c4b4.JPEG" alt=""></p>
+<p>使用排线将其与树莓派正向连接，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e477023c879484e60c72c586e0843e5d77a.JPEG" alt=""></p>
+<p>可以看到扩展板上的引脚标注与树莓派本身的引脚排布并不一致，下面我会给大家介绍如何定位到要使用的引脚。</p>
+<h2 id="二、关于GPIO引脚编码"><a href="#二、关于GPIO引脚编码" class="headerlink" title="二、关于GPIO引脚编码"></a>二、关于GPIO引脚编码</h2><p>常用的GPIO引脚编码有3种。</p>
+<p>我们也可以在树莓派的终端输入如下指令查看GPIO引脚功能：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pinout</span><br></pre></td></tr></table></figure>
+<p>输出效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-aca757d639753ab5f8e0c7730758fb1bde9.png" alt=""></p>
+<p>需要注意，上图中的GPIO使用的是逻辑编码，从1开始，实际上BCM编码并不是从1开始的。</p>
+<h3 id="第1种：BOARD物理编码"><a href="#第1种：BOARD物理编码" class="headerlink" title="第1种：BOARD物理编码"></a>第1种：BOARD物理编码</h3><p>物理编码比较好理解，也很直观，其就是根据树莓派上40个引脚的位置进行排序编码，如博客中第一张图所示，正向放置树莓派时，第2排的第1个引脚编号为1，第1排第1个引脚编号为2，依次类推。后面在编写代码时，我们使用的编码方式也是这种。</p>
+<h3 id="第2种：BCM编码"><a href="#第2种：BCM编码" class="headerlink" title="第2种：BCM编码"></a>第2种：BCM编码</h3><p>BCM编码是一种更底层的编码方式，与系统中信道编号相对应。在使用一个引脚时，如果使用BCM编码，首先需要查找信道号和物理引脚编号之间的对应规则。对于不同的树莓派版本，可能无法兼容。下图很好的描述了几种编码的信息：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-1adcc24444ffa488c9c9fb45528f8531d05.png" alt=""></p>
+<p>上面我们扩展板上GPIO引脚的标注，实际上使用的就是BCM编码，这也就是说，如果我们要使用树莓派GPIO2和GPIO3两个功能引脚，指定的是物理引脚需要是13和15。直接将线连接到扩展板的G22和G27一行即可，非常直观。</p>
+<h3 id="第3种：WiringPi编码"><a href="#第3种：WiringPi编码" class="headerlink" title="第3种：WiringPi编码"></a>第3种：WiringPi编码</h3><p>WiringPi编码对应的引脚号是在wiringPI库中所使用的，网上很容易找到其编码的相关资料，本系列博客我们不会使用到这个编码，这里不再赘述。</p>
+<p>现在，我们总结一下如何使用GPIO引脚。</p>
+<ul>
+<li>首先在上图中找到自己要使用的功能引脚，如GOIP.2和GPIO.3两个功能引脚。</li>
+<li>之后找到其对应的物理引脚，即13和15。</li>
+<li>如果不使用扩展板，则直接接线物理引脚，如果要使用，则找到其对应的BCM编码，27和22。</li>
+<li>使用扩展板上的G27和G22引脚插槽。</li>
+</ul>
+<h2 id="三、了解双色LED灯并接线"><a href="#三、了解双色LED灯并接线" class="headerlink" title="三、了解双色LED灯并接线"></a>三、了解双色LED灯并接线</h2><p>双色LED灯构造非常简单，顾名思义，其可以发出两种颜色的光，其内部封装了两个发光二极管。双色LED分为共阴型和共阳型，两个发光二极管共有3个引脚，因此其中一个引脚是共用的。对于共阴型的，两个发光二极管的阴极连在一起。对于共阳型的，两个二极管的阳极连在一起。我们这次使用的将是共阴极的双色LED灯，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-4f277c4e02799581b0d10cadcc61a7f1e6f.png" alt=""></p>
+<p>其内部工作原理电路图如下，也非常好理解：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-4198a3a34f788568f9bdb9d6c418fabd833.png" alt=""></p>
+<p>如上图所示，可以看到两个二极管的阴极是共用，我们将其公共引脚接地即可，两个阳极是由两个开关控制，即LED等芯片上的另外两个引脚，我们只需要通过GPIO控制将对应的引脚加高电平，即可将二极管点亮。</p>
+<p><strong>开始接线</strong></p>
+<p>我们已经了解了双色LED等的工作原理，其有3个引脚，我们将引脚“-”接地，S端的引脚接扩展板G22用来控制红灯，中间的引脚接G27用来控制绿灯。接线情况如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-877b455c265ca124f961170f9824d4cdfc0.JPEG" alt=""></p>
+<p>现在，准备工作大功告成，开始我们的编码工作吧。</p>
+<h2 id="四、编写红绿灯控制程序"><a href="#四、编写红绿灯控制程序" class="headerlink" title="四、编写红绿灯控制程序"></a>四、编写红绿灯控制程序</h2><p>目前为止，我们已经做了足够多的准备工作，你一定已经迫不及待的想要开始编码了，我们先把完整的代码奉上：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入UI模块</span></span><br><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> Tkinter</span><br><span class="line"><span class="comment"># 导入GPIO控制薄块</span></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="comment"># 定时器模块</span></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"><span class="comment"># 主页面设置</span></span><br><span class="line">top = Tkinter.Tk()</span><br><span class="line">top.geometry(<span class="string">'500x300'</span>)</span><br><span class="line">top.title(<span class="string">"双色LED灯控制器"</span>)</span><br><span class="line">l = Tkinter.Label(top, text=<span class="string">'欢迎使用双色LED灯控制器'</span>, bg=<span class="string">'green'</span>, font=(<span class="string">'Arial'</span>, <span class="number">18</span>), width=<span class="number">30</span>, height=<span class="number">2</span>)</span><br><span class="line">l.pack()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义引脚</span></span><br><span class="line">pins = &#123;<span class="number">0</span>:<span class="number">13</span>,<span class="number">1</span>:<span class="number">15</span>&#125;</span><br><span class="line"><span class="comment"># 设置使用的引脚编码模式</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line"><span class="comment"># 设置隐藏警告</span></span><br><span class="line">GPIO.setwarnings(<span class="keyword">False</span>)</span><br><span class="line"><span class="comment"># 初始化物理引脚 13 和 15</span></span><br><span class="line">GPIO.setup(pins[<span class="number">0</span>],GPIO.OUT)</span><br><span class="line">GPIO.setup(pins[<span class="number">1</span>],GPIO.OUT)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义全局字段 用来处理闪烁功能</span></span><br><span class="line"><span class="comment"># f:是否闪烁  l:下次点亮红灯或绿灯</span></span><br><span class="line">f = <span class="keyword">False</span></span><br><span class="line">l = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 控制红灯亮</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">redClick</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> f</span><br><span class="line">    f = <span class="keyword">False</span></span><br><span class="line">    GPIO.output(pins[<span class="number">0</span>],GPIO.HIGH)</span><br><span class="line">    GPIO.output(pins[<span class="number">1</span>],GPIO.LOW)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 控制绿灯亮</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">greenClick</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> f</span><br><span class="line">    f = <span class="keyword">False</span></span><br><span class="line">    GPIO.output(pins[<span class="number">0</span>],GPIO.LOW)</span><br><span class="line">    GPIO.output(pins[<span class="number">1</span>],GPIO.HIGH)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 退出程序</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">stopClick</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> f</span><br><span class="line">    f = <span class="keyword">False</span></span><br><span class="line">    GPIO.output(pins[<span class="number">0</span>],GPIO.LOW)</span><br><span class="line">    GPIO.output(pins[<span class="number">1</span>],GPIO.LOW)</span><br><span class="line">    GPIO.cleanup()</span><br><span class="line">    exit()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环闪烁</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">loop</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> f</span><br><span class="line">    <span class="keyword">global</span> timer</span><br><span class="line">    <span class="keyword">global</span> l</span><br><span class="line">    <span class="keyword">if</span> f == <span class="keyword">False</span>:</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    timer = threading.Timer(<span class="number">2</span>,loop)</span><br><span class="line">    timer.start()</span><br><span class="line">    <span class="keyword">if</span> l:</span><br><span class="line">        GPIO.output(pins[<span class="number">0</span>],GPIO.HIGH)</span><br><span class="line">        GPIO.output(pins[<span class="number">1</span>],GPIO.LOW)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        GPIO.output(pins[<span class="number">0</span>],GPIO.LOW)</span><br><span class="line">        GPIO.output(pins[<span class="number">1</span>],GPIO.HIGH)</span><br><span class="line">    <span class="comment"># 转换下次闪烁的颜色</span></span><br><span class="line">    l = <span class="keyword">not</span> l</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义全局定时器</span></span><br><span class="line">timer = threading.Timer(<span class="number">2</span>, loop)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始进行闪烁</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">flckerClick</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> f</span><br><span class="line">    <span class="keyword">global</span> timer</span><br><span class="line">    f = <span class="keyword">True</span></span><br><span class="line">    timer = threading.Timer(<span class="number">2</span>,loop)</span><br><span class="line">    timer.start()</span><br><span class="line"></span><br><span class="line"><span class="comment"># UI上的按钮布局</span></span><br><span class="line">redButton = Tkinter.Button(top, text=<span class="string">"红灯停"</span>, height=<span class="string">'3'</span>, command=redClick)</span><br><span class="line">redButton.pack()</span><br><span class="line"></span><br><span class="line">greenButton = Tkinter.Button(top, text=<span class="string">"绿灯行"</span>, height=<span class="string">'3'</span>, command=greenClick)</span><br><span class="line">greenButton.pack()</span><br><span class="line"></span><br><span class="line">flckerButton = Tkinter.Button(top, text=<span class="string">"闪烁请注意"</span>, height=<span class="string">'3'</span>, command=flckerClick)</span><br><span class="line">flckerButton.pack()</span><br><span class="line"></span><br><span class="line">stopButton = Tkinter.Button(top, text=<span class="string">"关闭"</span>, height=<span class="string">'3'</span>, command=stopClick)</span><br><span class="line">stopButton.pack()</span><br><span class="line"><span class="comment"># 进入消息循环</span></span><br><span class="line">top.mainloop()</span><br></pre></td></tr></table></figure>
+<p>在树莓派上运行上面的代码，你现在应该已经可以灵活的控制双色LED灯的开关和闪烁了，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-ee55222f5d0b53e2e9c03e14e5a96ba5d9c.JPEG" alt=""></p>
+<p>温馨提示：如果你使用的是Python3.x版本，可能需要用如下的方式引入tkinter：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Tkinter <span class="keyword">as</span> Tkinter</span><br></pre></td></tr></table></figure>
+<p>Tkinter是Python内置的一个UI框架，我们这里不做过多介绍，我们将重点放在RPi.GPIO模块的使用。</p>
+<p>RPi.GPIO能够帮助我们方便的控制树莓派的GPIO引脚。在进行树莓派编程时，如果使用GPIO库，首先需要设置要使用的编码方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GPIO.setmode(GPIO.BOARD)</span><br></pre></td></tr></table></figure>
+<p>GPIO.BOARD将设置使用物理编码模式，GPIO.BCM将设置使用BCM编码模式。</p>
+<p>在使用某个引脚之前，我们需要对其进行初始化，初始化时，可以将引脚设置成GPIO.OUT也可以设置为GPIO.IN，OUT表示我们要将其作为输出引脚使用，IN表示我们要将其作为输入引脚使用。</p>
+<p>最后，当我们停止使用时，要记得调用如下方法进行资源清理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GPIO.cleanup(channel)</span><br></pre></td></tr></table></figure>
+<h2 id="五、休息一下"><a href="#五、休息一下" class="headerlink" title="五、休息一下"></a>五、休息一下</h2><p>好了，第一个简单的树莓派实践到此要告一段落了，我相信你一定有些收获，发挥你的创新与动手能力，尝试用树莓派做更多有趣的事情吧。</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/07/10/416一起玩转树莓派（3）——点亮RGB炫彩LED灯/" class="pre-post btn btn-default" title='一起玩转树莓派（3）——点亮RGB炫彩LED灯'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（3）——点亮RGB炫彩LED灯</span>
+        </a>
+    
+    
+        <a href="/2021/07/03/414一起玩转树莓派（1）——简介与环境搭建/" class="next-post btn btn-default" title='一起玩转树莓派（1）——简介与环境搭建'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（1）——简介与环境搭建</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（2）——从双色LED灯开始"><span class="toc-text">一起玩转树莓派（2）——从双色LED灯开始</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、从了解GPIO开始"><span class="toc-text">一、从了解GPIO开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、关于GPIO引脚编码"><span class="toc-text">二、关于GPIO引脚编码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第1种：BOARD物理编码"><span class="toc-text">第1种：BOARD物理编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第2种：BCM编码"><span class="toc-text">第2种：BCM编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第3种：WiringPi编码"><span class="toc-text">第3种：WiringPi编码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、了解双色LED灯并接线"><span class="toc-text">三、了解双色LED灯并接线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、编写红绿灯控制程序"><span class="toc-text">四、编写红绿灯控制程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、休息一下"><span class="toc-text">五、休息一下</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

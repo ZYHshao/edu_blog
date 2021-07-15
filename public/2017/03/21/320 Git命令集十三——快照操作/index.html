@@ -1,0 +1,274 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Git命令集十三——快照操作 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Git命令集十三——快照操作">
+            
+	            Git命令集十三——快照操作
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/GIT">
+            GIT
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/03/21</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Git命令集十三——快照操作"><a href="#Git命令集十三——快照操作" class="headerlink" title="Git命令集十三——快照操作"></a>Git命令集十三——快照操作</h2><pre><code>Git工具中提供了一个stash命令，这个命令的作用是创建快照。快照主要的用途是将当前未更新到缓存区的修改进行入栈保存，创建快照后，Git的状态会变回上一次提交时的状态，这时候我们可以做其他的操作。创建的快照会被保存在栈中，在需要的时候，我们可以恢复快照。举一个小例子，实际开发中，很多情况我们都会从主分支拉出一个新的分支进行新功能的开发，如果我们在开发过程中，有一个紧急的bug需要到主分支中修改，这时候我们常常会将目前为完善的代码先提交到新的分支，然后切回主分支修改bug，之后再回来继续开发。但是如果这个新的分支并不只是你一个人开发，你的不完善的提交很有可能造成别人无法工作，其实你可以使用Git的快照命令，先将自己的修改存成快照入栈保存，回到主分支修改完bug后，在将快照出栈即可。
+</code></pre><h3 id="1-git-stash"><a href="#1-git-stash" class="headerlink" title="1.git stash"></a>1.git stash</h3><pre><code>将当前未更新到缓存区的修改创建成快照。需要注意，快照是采用栈的方式管理。我们可以入栈多个快照，例如先做一部分修改，创建为快照，之后又进行了修改，再次创建快照。第2次快照并不会覆盖以前的快照，我们可以指定恢复到的快照。
+</code></pre><h3 id="2-git-stash-list"><a href="#2-git-stash-list" class="headerlink" title="2.git stash list"></a>2.git stash list</h3><pre><code>打印当前栈中的所有快照。
+</code></pre><h3 id="3-git-stash-show"><a href="#3-git-stash-show" class="headerlink" title="3.git stash show "></a>3.git stash show <stash></stash></h3><pre><code>打印某个快照的修改信息，后面的stash参数指定快照在栈中的位置，命令格式如下：stash@{num}，最后入栈的为stash@{0}，向前依次为stash@{1}、stash@{2}...。如果不限stash参数，则默认将打印栈顶快照的信息。
+</code></pre><h3 id="4-git-stash-pop"><a href="#4-git-stash-pop" class="headerlink" title="4.git stash pop "></a>4.git stash pop <stash></stash></h3><pre><code>恢复到某个快照版本，如果不加stash参数，则默认会恢复到栈顶的快照版本。这个命令会将恢复的快照从栈中删除掉。
+</code></pre><h3 id="5-git-stash-apply"><a href="#5-git-stash-apply" class="headerlink" title="5.git stash apply "></a>5.git stash apply <stash></stash></h3><pre><code>恢复到某个快照的版本，如果不加stash参数，则默认会恢复到栈顶的快照版本。这个命令和pop的不同之处在于恢复的快照并不会从栈中删除。
+</code></pre><h3 id="6-git-stash-clear"><a href="#6-git-stash-clear" class="headerlink" title="6.git stash clear"></a>6.git stash clear</h3><pre><code>清空栈中的所有快照。
+</code></pre><h3 id="7-git-stash-drop"><a href="#7-git-stash-drop" class="headerlink" title="7.git stash drop "></a>7.git stash drop <stash></stash></h3><pre><code>清除栈中的某个快照，如果不设置stash参数，则会默认清除栈顶的快照。
+</code></pre>
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/03/24/321经典排序算法解析/" class="pre-post btn btn-default" title='经典排序算法解析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">经典排序算法解析</span>
+        </a>
+    
+    
+        <a href="/2017/03/15/319Git命令集十二——分支合并/" class="next-post btn btn-default" title='Git命令集十二——分支合并'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Git命令集十二——分支合并</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Git命令集十三——快照操作"><span class="toc-text">Git命令集十三——快照操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-git-stash"><span class="toc-text">1.git stash</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-git-stash-list"><span class="toc-text">2.git stash list</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-git-stash-show"><span class="toc-text">3.git stash show </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-git-stash-pop"><span class="toc-text">4.git stash pop </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-git-stash-apply"><span class="toc-text">5.git stash apply </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-git-stash-clear"><span class="toc-text">6.git stash clear</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-git-stash-drop"><span class="toc-text">7.git stash drop </span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

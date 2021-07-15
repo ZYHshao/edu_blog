@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>NSAlert组件应用总结 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="NSAlert组件应用总结">
+            
+	            NSAlert组件应用总结
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/macOS开发">
+            macOS开发
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/07/13</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="NSAlert组件应用总结"><a href="#NSAlert组件应用总结" class="headerlink" title="NSAlert组件应用总结"></a>NSAlert组件应用总结</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在桌面软件开发中，当用户进行非法的操作或有风险的操作时，时长需要弹出警告框来提示用户。在OS X系统上，NSAlert是专门的警告框组件。其提供了简洁的接口供开发者进行使用。
+</code></pre><h3 id="二、NSAlert的简单使用"><a href="#二、NSAlert的简单使用" class="headerlink" title="二、NSAlert的简单使用"></a>二、NSAlert的简单使用</h3><pre><code>使用警告框最简单的使用方式是提示错误信息，错误信息警告只起到提示用户的作用，其只有一个OK按钮，点击后警告框会关闭。示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">IBAction</span>)alert:(<span class="keyword">id</span>)sender &#123;</span><br><span class="line">    <span class="built_in">NSError</span> * error = [<span class="built_in">NSError</span> errorWithDomain:<span class="string">@"testError"</span> code:<span class="number">1001</span> userInfo:@&#123;<span class="string">@"userid"</span>:<span class="string">@"1000"</span>&#125;];</span><br><span class="line">    <span class="built_in">NSAlert</span> * alert = [<span class="built_in">NSAlert</span> alertWithError:error];</span><br><span class="line">    [alert runModal];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果图如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0713/113916_zbny_2340880.png" alt=""></p>
+<p>警告框的展现有两种方式，分别为模态窗与弹出抽屉。弹出抽屉会显示在当前绑定的窗口上，模态窗则会自成窗口，弹出在屏幕中央。</p>
+<pre><code>你也可以对警告框进行自定义设置，例如文本，标题，图标等，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">IBAction</span>)alert:(<span class="keyword">id</span>)sender &#123;</span><br><span class="line">    <span class="built_in">NSAlert</span> * alert = [[<span class="built_in">NSAlert</span> alloc]init];</span><br><span class="line">    alert.icon = [<span class="built_in">NSImage</span> imageNamed:<span class="string">@"icon"</span>];</span><br><span class="line">    alert.messageText = <span class="string">@"警告信息"</span>;</span><br><span class="line">    alert.informativeText = <span class="string">@"额外提供的内容"</span>;</span><br><span class="line">    alert.showsHelp = <span class="literal">YES</span>;</span><br><span class="line">    alert.helpAnchor = <span class="string">@"mac"</span>;</span><br><span class="line">    alert.alertStyle = <span class="built_in">NSAlertStyleInformational</span>;</span><br><span class="line">    alert.showsSuppressionButton = <span class="literal">YES</span>;</span><br><span class="line">    [alert.suppressionButton setTarget:<span class="keyword">self</span>];</span><br><span class="line">    [alert.suppressionButton setAction:<span class="keyword">@selector</span>(click)];</span><br><span class="line">    [alert addButtonWithTitle:<span class="string">@"1"</span>];</span><br><span class="line">    [alert addButtonWithTitle:<span class="string">@"2"</span>];</span><br><span class="line">    [alert addButtonWithTitle:<span class="string">@"3"</span>];</span><br><span class="line">    [alert addButtonWithTitle:<span class="string">@"4"</span>];</span><br><span class="line">    <span class="keyword">long</span> res =  [alert runModal];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%ld"</span>,res);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0713/153817_EVm5_2340880.png" alt=""></p>
+<h3 id="三、NSAlert属性与方法解析"><a href="#三、NSAlert属性与方法解析" class="headerlink" title="三、NSAlert属性与方法解析"></a>三、NSAlert属性与方法解析</h3><p>NSAlert类中的属性和方法解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//直接使用错误信息创建警告框</span></span><br><span class="line">+ (<span class="built_in">NSAlert</span> *)alertWithError:(<span class="built_in">NSError</span> *)error;</span><br><span class="line"><span class="comment">//设置警告框信息</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>) <span class="built_in">NSString</span> *messageText;</span><br><span class="line"><span class="comment">//设置额外信息内容</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>) <span class="built_in">NSString</span> *informativeText;</span><br><span class="line"><span class="comment">//设置警告框图标</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">null_resettable</span>, <span class="keyword">strong</span>) <span class="built_in">NSImage</span> *icon;</span><br><span class="line"><span class="comment">//向警告框中添加按钮</span></span><br><span class="line">- (<span class="built_in">NSButton</span> *)addButtonWithTitle:(<span class="built_in">NSString</span> *)title;</span><br><span class="line"><span class="comment">//按钮数组</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSButton</span> *&gt; *buttons;</span><br><span class="line"><span class="comment">//是否显示帮助按钮</span></span><br><span class="line"><span class="keyword">@property</span> <span class="built_in">BOOL</span> showsHelp;</span><br><span class="line"><span class="comment">//设置帮助手册锚点 用于定于</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *helpAnchor;</span><br><span class="line"><span class="comment">//设置警告框风格</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSUInteger, NSAlertStyle) &#123;</span></span><br><span class="line"><span class="comment">    NSAlertStyleWarning = 0,     //警告风格</span></span><br><span class="line"><span class="comment">    NSAlertStyleInformational = 1,//提示信息风格</span></span><br><span class="line"><span class="comment">    NSAlertStyleCritical = 2    //验证风格</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span> <span class="built_in">NSAlertStyle</span> alertStyle;</span><br><span class="line"><span class="comment">//是否显示不再提示按钮</span></span><br><span class="line"><span class="keyword">@property</span> <span class="built_in">BOOL</span> showsSuppressionButton <span class="built_in">NS_AVAILABLE_MAC</span>(<span class="number">10</span>_5);</span><br><span class="line"><span class="comment">//获取不再提示按钮</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">readonly</span>, <span class="keyword">strong</span>) <span class="built_in">NSButton</span> *suppressionButton <span class="built_in">NS_AVAILABLE_MAC</span>(<span class="number">10</span>_5);</span><br><span class="line"><span class="comment">//代理对象</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">weak</span>) <span class="keyword">id</span>&lt;<span class="built_in">NSAlertDelegate</span>&gt; delegate;</span><br><span class="line"><span class="comment">//以模态窗口的方式弹出警告框，这个方法是同步的，当用户点击警告框中按钮后会返回，返回的NSModalResponse实际上是</span></span><br><span class="line"><span class="comment">//整型数据，第1个按钮为1000，后面一次递增，如1001，1002...</span></span><br><span class="line">- (<span class="built_in">NSModalResponse</span>)runModal;</span><br><span class="line"><span class="comment">//以窗口抽屉的方式弹出警告框，这个方法是异步的，当用户点击警告框中的按钮后会回调block</span></span><br><span class="line">- (<span class="keyword">void</span>)beginSheetModalForWindow:(<span class="built_in">NSWindow</span> *)sheetWindow completionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">NSModalResponse</span> returnCode))handler <span class="built_in">NS_AVAILABLE_MAC</span>(<span class="number">10</span>_9);</span><br></pre></td></tr></table></figure>
+<p>NSAlertDelegate协议中只定义了一个方法，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">NSAlertDelegate</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"><span class="keyword">@optional</span></span><br><span class="line"><span class="comment">//当用户点击帮助按钮后回调的方法 返回值决定是否弹出帮助窗口</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)alertShowHelp:(<span class="built_in">NSAlert</span> *)alert;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>除了上面列出的方法外，NSAlert中还有两个已经弃用的便捷构造和弹出方法，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建警告框</span></span><br><span class="line">+ (<span class="built_in">NSAlert</span> *)alertWithMessageText:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)message defaultButton:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)defaultButton alternateButton:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)alternateButton otherButton:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)otherButton informativeTextWithFormat:(<span class="built_in">NSString</span> *)format, ...;</span><br><span class="line"><span class="comment">//弹出警告框</span></span><br><span class="line">- (<span class="keyword">void</span>)beginSheetModalForWindow:(<span class="built_in">NSWindow</span> *)window modalDelegate:(<span class="keyword">nullable</span> <span class="keyword">id</span>)delegate didEndSelector:(<span class="keyword">nullable</span> SEL)didEndSelector contextInfo:(<span class="keyword">nullable</span> <span class="keyword">void</span> *)contextInfo;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/07/14/347OS X开发NSMenu应用详解/" class="pre-post btn btn-default" title='OS X开发NSMenu应用详解'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">OS X开发NSMenu应用详解</span>
+        </a>
+    
+    
+        <a href="/2017/06/22/345Java开发GUI之图形绘制/" class="next-post btn btn-default" title='Java开发GUI之图形绘制'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Java开发GUI之图形绘制</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#NSAlert组件应用总结"><span class="toc-text">NSAlert组件应用总结</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、NSAlert的简单使用"><span class="toc-text">二、NSAlert的简单使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、NSAlert属性与方法解析"><span class="toc-text">三、NSAlert属性与方法解析</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

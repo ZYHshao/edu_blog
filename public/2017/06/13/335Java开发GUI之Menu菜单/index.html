@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Java开发GUI之Menu菜单 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Java开发GUI之Menu菜单">
+            
+	            Java开发GUI之Menu菜单
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Java">
+            Java
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/06/13</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Java开发GUI之Menu菜单"><a href="#Java开发GUI之Menu菜单" class="headerlink" title="Java开发GUI之Menu菜单"></a>Java开发GUI之Menu菜单</h2><pre><code>在MacOS上的软件都有一个菜单栏，会浮现在屏幕顶部，Java的awt包中也提供了构建菜单功能的相关组件，示例代码如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> MenuTest()&#123;</span><br><span class="line">    Frame frame = <span class="keyword">new</span> Frame(<span class="string">"Menu"</span>);</span><br><span class="line">    <span class="comment">//创建菜单栏</span></span><br><span class="line">    MenuBar menuBar = <span class="keyword">new</span> MenuBar();</span><br><span class="line">    <span class="comment">//设置菜单栏</span></span><br><span class="line">    frame.setMenuBar(menuBar);</span><br><span class="line">    <span class="comment">//创建菜单</span></span><br><span class="line">    Menu m1 = <span class="keyword">new</span> Menu(<span class="string">"文件"</span>, <span class="literal">true</span>);</span><br><span class="line">    <span class="comment">//向菜单栏中添加菜单</span></span><br><span class="line">    menuBar.add(m1);</span><br><span class="line">    <span class="comment">//创建选项</span></span><br><span class="line">    MenuItem menuItem1 = <span class="keyword">new</span> MenuItem(<span class="string">"新建"</span>);</span><br><span class="line">    MenuItem menuItem2 = <span class="keyword">new</span> MenuItem(<span class="string">"打开"</span>);</span><br><span class="line">    <span class="comment">//向菜单中添加选项</span></span><br><span class="line">    m1.add(menuItem1);</span><br><span class="line">    m1.add(menuItem2);</span><br><span class="line">    </span><br><span class="line">    Menu m2 = <span class="keyword">new</span> Menu(<span class="string">"编辑"</span>, <span class="literal">true</span>);</span><br><span class="line">    menuBar.add(m2);</span><br><span class="line">    MenuItem menuItem3 = <span class="keyword">new</span> MenuItem(<span class="string">"复制"</span>);</span><br><span class="line">    MenuItem menuItem4 = <span class="keyword">new</span> MenuItem(<span class="string">"粘贴"</span>);</span><br><span class="line">    m2.add(menuItem3);</span><br><span class="line">    m2.add(menuItem4);</span><br><span class="line">    </span><br><span class="line">    Menu m3 = <span class="keyword">new</span> Menu(<span class="string">"帮助"</span>, <span class="literal">true</span>);</span><br><span class="line">    menuBar.setHelpMenu(m3);</span><br><span class="line">    MenuItem menuItem5 = <span class="keyword">new</span> MenuItem(<span class="string">"问询"</span>);</span><br><span class="line">    MenuItem menuItem6 = <span class="keyword">new</span> MenuItem(<span class="string">"联系我们"</span>);</span><br><span class="line">    m3.add(menuItem5);</span><br><span class="line">    m3.add(menuItem6);</span><br><span class="line">    </span><br><span class="line">    frame.pack();</span><br><span class="line">    frame.show();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0613/133830_mVEP_2340880.png" alt=""></p>
+<p>MenuBar用来创建菜单栏，其中常用方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MenuBar</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取帮助菜单</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Menu <span class="title">getHelpMenu</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置帮助菜单</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setHelpMenu</span><span class="params">(Menu m)</span></span>;</span><br><span class="line"><span class="comment">//添加菜单</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Menu <span class="title">add</span><span class="params">(Menu m)</span></span>;</span><br><span class="line"><span class="comment">//根据下标移除菜单</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span></span>;</span><br><span class="line"><span class="comment">//移除一个菜单</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(MenuComponent m)</span></span>;</span><br><span class="line"><span class="comment">//获取菜单栏中菜单个数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getMenuCount</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取菜单栏中菜单个数 已经弃用 使用上面的方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countMenus</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//根据下标获取菜单对象</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Menu <span class="title">getMenu</span><span class="params">(<span class="keyword">int</span> i)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>Menu类为菜单对象，其中可以添加选项类MenuItem对象，Menu类中常用方法如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Menu</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//label参数设置菜单的标题</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Menu</span><span class="params">(String label)</span></span>;</span><br><span class="line"><span class="comment">//布尔值参数设置是否为tear-off菜单</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Menu</span><span class="params">(String label, <span class="keyword">boolean</span> tearOff)</span></span>;</span><br><span class="line"><span class="comment">//获取菜单是否为tear-off菜单</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isTearOff</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取选项个数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getItemCount</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取选项个数 已经弃用 使用上面方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">countItems</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取某个选项对象</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> MenuItem <span class="title">getItem</span><span class="params">(<span class="keyword">int</span> index)</span></span>;</span><br><span class="line"><span class="comment">//添加一个菜单选项</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> MenuItem <span class="title">add</span><span class="params">(MenuItem mi)</span></span>;</span><br><span class="line"><span class="comment">//添加一个指定标题的菜单项</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(String label)</span></span>;</span><br><span class="line"><span class="comment">//插入一个菜单项</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(MenuItem menuitem, <span class="keyword">int</span> index)</span></span>;</span><br><span class="line"><span class="comment">//插入一个指定标题的菜单项</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(String label, <span class="keyword">int</span> index)</span> </span>;</span><br><span class="line"><span class="comment">//添加分割线</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addSeparator</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//插入分割线</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insertSeparator</span><span class="params">(<span class="keyword">int</span> index)</span></span>;</span><br><span class="line"><span class="comment">//根据下标移除一个选项</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(<span class="keyword">int</span> index)</span></span>;</span><br><span class="line"><span class="comment">//移除一个选项</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(MenuComponent item)</span></span>;</span><br><span class="line"><span class="comment">//移除所有选项</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">removeAll</span><span class="params">()</span> </span>;</span><br></pre></td></tr></table></figure>
+<p>下面是MenuItem类的方法解析：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MenuItem</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//label参数设置选项标题</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MenuItem</span><span class="params">(String label)</span></span>;</span><br><span class="line"><span class="comment">//MenuShortcut为设置快捷键</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">MenuItem</span><span class="params">(String label, MenuShortcut s)</span></span>;</span><br><span class="line"><span class="comment">//获取选项标题</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">getLabel</span><span class="params">()</span> </span>;</span><br><span class="line"><span class="comment">//设置选项标题</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setLabel</span><span class="params">(String label)</span></span>;</span><br><span class="line"><span class="comment">//获取选项是否有效</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEnabled</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置选项</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setEnabled</span><span class="params">(<span class="keyword">boolean</span> b)</span></span>;</span><br><span class="line"><span class="comment">//获取快捷键</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> MenuShortcut <span class="title">getShortcut</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置快捷键</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setShortcut</span><span class="params">(MenuShortcut s)</span></span>;</span><br><span class="line"><span class="comment">//删除快捷键</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteShortcut</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//添加事件监听</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addActionListener</span><span class="params">(ActionListener l)</span></span>;</span><br><span class="line"><span class="comment">//移除事件监听</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeActionListener</span><span class="params">(ActionListener l)</span></span>;</span><br><span class="line"><span class="comment">//获取所有监听者</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> ActionListener[] getActionListeners();</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/06/14/336Java开发GUI之滚动条/" class="pre-post btn btn-default" title='Java开发GUI之滚动条'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Java开发GUI之滚动条</span>
+        </a>
+    
+    
+        <a href="/2017/06/09/334Java开发GUI之列表/" class="next-post btn btn-default" title='Java开发GUI之列表'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Java开发GUI之列表</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java开发GUI之Menu菜单"><span class="toc-text">Java开发GUI之Menu菜单</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

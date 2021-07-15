@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS开发之CoreSpotlight框架的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发之CoreSpotlight框架的应用">
+            
+	            iOS开发之CoreSpotlight框架的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/02/25</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发之CoreSpotlight框架的应用"><a href="#iOS开发之CoreSpotlight框架的应用" class="headerlink" title="iOS开发之CoreSpotlight框架的应用"></a>iOS开发之CoreSpotlight框架的应用</h2><pre><code>CoreSpotlight是iOS提供的一套本地检索推荐功能。开发者可以为自己的应用添加本地索引，用户通过索引中定义的关键字可以搜索并定位到应用程序内的指定功能。
+</code></pre><h3 id="一、一个简单的添加索引示例"><a href="#一、一个简单的添加索引示例" class="headerlink" title="一、一个简单的添加索引示例"></a>一、一个简单的添加索引示例</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">//创建索引属性对象</span></span><br><span class="line">    CSSearchableItemAttributeSet *set = [[CSSearchableItemAttributeSet alloc] initWithItemContentType:(<span class="built_in">NSString</span>*)kUTTypeText];</span><br><span class="line">    <span class="comment">//设置索引属性</span></span><br><span class="line">    set.title = <span class="string">@"哈哈哈"</span>;</span><br><span class="line">    set.displayName = <span class="string">@"Hello"</span>;</span><br><span class="line">    set.alternateNames = @[<span class="string">@"aaa"</span>,<span class="string">@"bbb"</span>];</span><br><span class="line">    set.keywords = @[<span class="string">@"333"</span>,<span class="string">@"444"</span>];</span><br><span class="line">    set.version = <span class="string">@"1.1"</span>;</span><br><span class="line">    set.path = <span class="string">@"path"</span>;</span><br><span class="line">    set.thumbnailURL = [<span class="built_in">NSURL</span> fileURLWithPath:[[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"image"</span> ofType:<span class="string">@"png"</span>]];</span><br><span class="line">    <span class="comment">//创建索引</span></span><br><span class="line">    CSSearchableItem *item = [[CSSearchableItem alloc] initWithUniqueIdentifier:<span class="string">@"1111"</span> domainIdentifier:<span class="string">@"huishao"</span> attributeSet:set];</span><br><span class="line">    <span class="comment">//添加索引</span></span><br><span class="line">    [[CSSearchableIndex defaultSearchableIndex] indexSearchableItems:@[item] completionHandler:^(<span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="keyword">if</span> (error) &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"buildSearchableItem Error:%@"</span>,error.localizedDescription);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在搜索栏中搜索索引的关键字，标题，名称、路径都可以搜索到当前应用程序。例如：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/b229f3f87d18985012fa96e5228e787c0ac.jpg" alt=""></p>
+<h3 id="二、CSSearchableIndex索引管理类"><a href="#二、CSSearchableIndex索引管理类" class="headerlink" title="二、CSSearchableIndex索引管理类"></a>二、CSSearchableIndex索引管理类</h3><pre><code>CSSearchableIndex类提供了对索引的操作功能，例如添加索引，查找索引，删除索引等等，解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代理对象</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>,<span class="keyword">nullable</span>) <span class="keyword">id</span>&lt;CSSearchableIndexDelegate&gt; indexDelegate; </span><br><span class="line"><span class="comment">//获取索引检索是否可用</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isIndexingAvailable;</span><br><span class="line"><span class="comment">//获取默认提供的索引管理对象</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)defaultSearchableIndex;</span><br><span class="line"><span class="comment">//创建一个索引管理对象</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithName:(<span class="built_in">NSString</span> *)name;</span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithName:(<span class="built_in">NSString</span> *)name protectionClass:(<span class="keyword">nullable</span> <span class="built_in">NSFileProtectionType</span>)protectionClass;</span><br><span class="line"><span class="comment">//获取索引管理对象中的所有索引</span></span><br><span class="line">- (<span class="keyword">void</span>)indexSearchableItems:(<span class="built_in">NSArray</span>&lt;CSSearchableItem *&gt; *)items completionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">NSError</span> * __<span class="keyword">nullable</span> error))completionHandler;</span><br><span class="line"><span class="comment">//通过标识符来删除索引</span></span><br><span class="line">- (<span class="keyword">void</span>)deleteSearchableItemsWithIdentifiers:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt; *)identifiers completionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">NSError</span> * __<span class="keyword">nullable</span> error))completionHandler;</span><br><span class="line"><span class="comment">//通过域名来删除索引</span></span><br><span class="line">- (<span class="keyword">void</span>)deleteSearchableItemsWithDomainIdentifiers:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt; *)domainIdentifiers completionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">NSError</span> * __<span class="keyword">nullable</span> error))completionHandler;</span><br><span class="line"><span class="comment">//删除所有索引</span></span><br><span class="line">- (<span class="keyword">void</span>)deleteAllSearchableItemsWithCompletionHandler:(<span class="keyword">void</span> (^ __<span class="keyword">nullable</span>)(<span class="built_in">NSError</span> * __<span class="keyword">nullable</span> error))completionHandler;</span><br></pre></td></tr></table></figure>
+<h3 id="三、CSSearchableIndexDelegate详解"><a href="#三、CSSearchableIndexDelegate详解" class="headerlink" title="三、CSSearchableIndexDelegate详解"></a>三、CSSearchableIndexDelegate详解</h3><pre><code>CSSearchableIndexDelegate提供了索引查找的相关回调方法，解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个代理重新索引所有可搜索的数据，并且清除任何本地状态（可能该状态已经被持久化），因为索引已经丢失了</span></span><br><span class="line">- (<span class="keyword">void</span>)searchableIndex:(CSSearchableIndex *)searchableIndex reindexAllSearchableItemsWithAcknowledgementHandler:(<span class="keyword">void</span> (^)(<span class="keyword">void</span>))acknowledgementHandler;</span><br><span class="line"><span class="comment">//根据id重新索引所有可搜索的数据</span></span><br><span class="line">- (<span class="keyword">void</span>)searchableIndex:(CSSearchableIndex *)searchableIndex reindexSearchableItemsWithIdentifiers:(<span class="built_in">NSArray</span> &lt;<span class="built_in">NSString</span> *&gt; *)identifiers</span><br><span class="line"> acknowledgementHandler:(<span class="keyword">void</span> (^)(<span class="keyword">void</span>))acknowledgementHandler;</span><br><span class="line"><span class="comment">//已经进入节能模式调用的方法</span></span><br><span class="line">- (<span class="keyword">void</span>)searchableIndexDidThrottle:(CSSearchableIndex *)searchableIndex;</span><br><span class="line"><span class="comment">// 结束节能模式调用的方法</span></span><br><span class="line">- (<span class="keyword">void</span>)searchableIndexDidFinishThrottle:(CSSearchableIndex *)searchableIndex;</span><br><span class="line"><span class="comment">//用来提供数据</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)dataForSearchableIndex:(CSSearchableIndex *)searchableIndex itemIdentifier:(<span class="built_in">NSString</span> *)itemIdentifier typeIdentifier:(<span class="built_in">NSString</span> *)typeIdentifier error:(<span class="keyword">out</span> <span class="built_in">NSError</span> ** __<span class="keyword">nullable</span>)outError;</span><br><span class="line"><span class="comment">//用来提供文件地址</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSURL</span> *)fileURLForSearchableIndex:(CSSearchableIndex *)searchableIndex itemIdentifier:(<span class="built_in">NSString</span> *)itemIdentifier typeIdentifier:(<span class="built_in">NSString</span> *)typeIdentifier inPlace:(<span class="built_in">BOOL</span>)inPlace error:(<span class="keyword">out</span> <span class="built_in">NSError</span> ** __<span class="keyword">nullable</span>)outError;</span><br></pre></td></tr></table></figure>
+<h3 id="四、CSSearchableItem索引类"><a href="#四、CSSearchableItem索引类" class="headerlink" title="四、CSSearchableItem索引类"></a>四、CSSearchableItem索引类</h3><pre><code>CSSearchableItem用来进行索引的定义，解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过设置唯一标识符、域名和属性来定义索引</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithUniqueIdentifier:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)uniqueIdentifier </span><br><span class="line">                        domainIdentifier:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)domainIdentifier</span><br><span class="line">                            attributeSet:(CSSearchableItemAttributeSet *)attributeSet;</span><br><span class="line"><span class="comment">//唯一标识符</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>) <span class="built_in">NSString</span> *uniqueIdentifier;</span><br><span class="line"><span class="comment">//域名标识符</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *domainIdentifier;</span><br><span class="line"><span class="comment">//过期时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">null_resettable</span>) <span class="built_in">NSDate</span> * expirationDate;</span><br><span class="line"><span class="comment">//属性</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>) CSSearchableItemAttributeSet *attributeSet;</span><br></pre></td></tr></table></figure>
+<h3 id="五、CSSearchableItemAttributeSet类"><a href="#五、CSSearchableItemAttributeSet类" class="headerlink" title="五、CSSearchableItemAttributeSet类"></a>五、CSSearchableItemAttributeSet类</h3><pre><code>这个类的主要作用是进行索引信息的配置，CSSearchableItemAttributeSet并没定义太多的属性，CoreSpotlight中提供了这个类的大量Category来补充这个类的功能，解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//---------------标准---------------------------------</span></span><br><span class="line"><span class="comment">//通过类型创建一个索引信息类</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithItemContentType:(<span class="keyword">nonnull</span> <span class="built_in">NSString</span> *)itemContentType;</span><br><span class="line"><span class="comment">//设置索引的展示名称  可以进行搜索</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *displayName;</span><br><span class="line"><span class="comment">//设置可交互的名称数组 可以进行搜索</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *alternateNames;</span><br><span class="line"><span class="comment">//设置索引的完整路径 可以进行搜索</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *path;</span><br><span class="line"><span class="comment">//设置索引关联的文件URL</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSURL</span> *contentURL;</span><br><span class="line"><span class="comment">//设置索引缩略图的URL</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSURL</span> *thumbnailURL;</span><br><span class="line"><span class="comment">//设置索引缩略图数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSData</span> *thumbnailData;</span><br><span class="line"><span class="comment">//数据最后更改日期</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSDate</span> *metadataModificationDate;</span><br><span class="line"><span class="comment">//内容类型</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *contentType;</span><br><span class="line"><span class="comment">//关键字数组</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *keywords;</span><br><span class="line"><span class="comment">//设置标题</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *title;</span><br><span class="line"><span class="comment">//设置版本</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *version;</span><br><span class="line"><span class="comment">//设置搜索权重 0-100之间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *rankingHint;</span><br><span class="line"><span class="comment">//域名标识</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *domainIdentifier;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------动作相关--------------------------------</span></span><br><span class="line"><span class="comment">//是否支持拨打电话  必须先设置phoneNumbers属性</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *supportsPhoneCall;</span><br><span class="line"><span class="comment">//是否支持导航 必须先设置经纬度信息</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *supportsNavigation;</span><br><span class="line"></span><br><span class="line"><span class="comment">//------------容器相关--------------------------------</span></span><br><span class="line"><span class="comment">//设置容器标题</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *containerTitle;</span><br><span class="line"><span class="comment">//设置容器显示名</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *containerDisplayName;</span><br><span class="line"><span class="comment">//设置容器标识</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *containerIdentifier;</span><br><span class="line"><span class="comment">//设置容器顺序</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *containerOrder;</span><br><span class="line"></span><br><span class="line"><span class="comment">//-----------图片相关-------------------------------</span></span><br><span class="line"><span class="comment">//图片高度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *pixelHeight;</span><br><span class="line"><span class="comment">//图片高度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *pixelWidth;</span><br><span class="line"><span class="comment">//像素总数</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *pixelCount;</span><br><span class="line"><span class="comment">//颜色空间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *colorSpace;</span><br><span class="line"><span class="comment">//每一帧的bit数</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *bitsPerSample;</span><br><span class="line"><span class="comment">//拍照时是否开启闪光灯</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>, <span class="keyword">getter</span>=isFlashOn) <span class="built_in">NSNumber</span> *flashOn;</span><br><span class="line"><span class="comment">//焦距是否35毫米</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>, <span class="keyword">getter</span>=isFocalLength35mm) <span class="built_in">NSNumber</span> *focalLength35mm;</span><br><span class="line"><span class="comment">//设备制造商信息</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *acquisitionMake;</span><br><span class="line"><span class="comment">//设备模型信息</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *acquisitionModel;</span><br><span class="line"><span class="comment">//... 更多图片信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//----------媒体相关-------------------------------</span></span><br><span class="line"><span class="comment">//编辑者</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *editors;</span><br><span class="line"><span class="comment">//下载时间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSDate</span> *downloadedDate;</span><br><span class="line"><span class="comment">//文件描述</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *comment;</span><br><span class="line"><span class="comment">//内容版权</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *copyright;</span><br><span class="line"><span class="comment">//最后使用时间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSDate</span> *lastUsedDate;</span><br><span class="line"><span class="comment">//添加时间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSDate</span> *addedDate;</span><br><span class="line"><span class="comment">//时长</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *duration;</span><br><span class="line"><span class="comment">//联系人关键字</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *contactKeywords;</span><br><span class="line"><span class="comment">//媒体类型</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *mediaTypes;</span><br><span class="line"><span class="comment">//总比特率</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *totalBitRate;</span><br><span class="line"><span class="comment">//视频比特币</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *videoBitRate;</span><br><span class="line"><span class="comment">//音频比特率</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *audioBitRate;</span><br><span class="line"><span class="comment">//组织信息</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *organizations;</span><br><span class="line"><span class="comment">//创建者</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *role;</span><br><span class="line"><span class="comment">//语言信息</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *languages;</span><br><span class="line"><span class="comment">//发布者</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *publishers;</span><br><span class="line"><span class="comment">//地址</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSURL</span> *URL;</span><br><span class="line"><span class="comment">//... 更多媒体信息</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//---------------信息相关---------------------------</span></span><br><span class="line"><span class="comment">//网页数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSData</span> *HTMLContentData;</span><br><span class="line"><span class="comment">//文本数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *textContent;</span><br><span class="line"><span class="comment">//作者数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;CSPerson*&gt; *authors;</span><br><span class="line"><span class="comment">//邮箱地址</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *authorEmailAddresses;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *emailAddresses;</span><br><span class="line"><span class="comment">//电话号码</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span>*&gt; *phoneNumbers;</span><br><span class="line"><span class="comment">//... 更多</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//--------------地址相关-------------------</span></span><br><span class="line"><span class="comment">//邮编</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *postalCode;</span><br><span class="line"><span class="comment">//城市</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *city;</span><br><span class="line"><span class="comment">//国家</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *country;</span><br><span class="line"><span class="comment">//海拔</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *altitude;</span><br><span class="line"><span class="comment">//经度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *latitude;</span><br><span class="line"><span class="comment">//纬度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *longitude;</span><br><span class="line"><span class="comment">//速度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *speed;</span><br><span class="line"><span class="comment">//时间戳</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSDate</span> *timestamp;</span><br><span class="line"><span class="comment">//...  更多</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/26/391iOS开发之CoreTelephoney框架的应用/" class="pre-post btn btn-default" title='iOS开发之CoreTelephoney框架的应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发之CoreTelephoney框架的应用</span>
+        </a>
+    
+    
+        <a href="/2019/01/28/389MD5加密原理解析及OC版原理实现/" class="next-post btn btn-default" title='MD5加密原理解析及OC版原理实现'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">MD5加密原理解析及OC版原理实现</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发之CoreSpotlight框架的应用"><span class="toc-text">iOS开发之CoreSpotlight框架的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、一个简单的添加索引示例"><span class="toc-text">一、一个简单的添加索引示例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、CSSearchableIndex索引管理类"><span class="toc-text">二、CSSearchableIndex索引管理类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、CSSearchableIndexDelegate详解"><span class="toc-text">三、CSSearchableIndexDelegate详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、CSSearchableItem索引类"><span class="toc-text">四、CSSearchableItem索引类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、CSSearchableItemAttributeSet类"><span class="toc-text">五、CSSearchableItemAttributeSet类</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

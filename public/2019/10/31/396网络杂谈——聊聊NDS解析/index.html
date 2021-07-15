@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>网络杂谈——聊聊NDS解析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="网络杂谈——聊聊NDS解析">
+            
+	            网络杂谈——聊聊NDS解析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/编程珠玑">
+            编程珠玑
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/10/31</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="网络杂谈——聊聊NDS解析"><a href="#网络杂谈——聊聊NDS解析" class="headerlink" title="网络杂谈——聊聊NDS解析"></a>网络杂谈——聊聊NDS解析</h1><h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><pre><code>在浏览器中输入一个地址，点击回车之后发生了什么？这是一个面试中常见的问题 ，这个看似常见简单的操作，其中却隐藏了大量复杂的互联网技术。本篇博客，我们就聊一聊网上冲浪的第一步：DNS解析。
+
+DNS解析是一种服务，其又被称为域名解析。它的作用是将域名解析到具体的网络IP地址，以便进行后续的网络连接操作。DNS解析说起来也简单，从表面上看，就是通过一个查询服务，将域名映射成IP地址，可以往深处推敲，你就会发现其实并没有那么简单，世界上有无数的终端接入互联网，DNS服务是如何从浩如烟海的数据中找到目标数据的，DNS服务是如何保证搜索性能的等等都是值得讨论的话题。
+</code></pre><h2 id="二、分层的网络"><a href="#二、分层的网络" class="headerlink" title="二、分层的网络"></a>二、分层的网络</h2><pre><code>在深入了解DNS解析之前，首先需要对我们当下使用的网络系统有大致的了解。关于网络系统的分层，流行的有OSI的7层模型与TCP/IP的五层模型，其中关系如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/67cf42dd6caa36d422ef9696ae151591912.jpg" alt=""></p>
+<p>以OSI的7层网络模型为例，其中每一层都负责对应的协议，两台终端在进行交互时，同层之间进行交互。我们从上到下来看：</p>
+<p>应用层：顾名思义应用层的主要作用是搭建应用，其负责实现应用层面的协议，例如文件传输FTP协议，还有我们最常用的HTTP协议以及邮箱相关协议等。</p>
+<p>表示层：表示层用来对应用层的数据进行封装处理，如压缩与解压。</p>
+<p>会话层：会话层位于传输层之上，其用来管理一对会话，即会话的连接开始，同步，中断等等。</p>
+<p>传输层：传输层述责数据的分段传输与接收重组，这一层有TCP、UDP等传输协议。</p>
+<p>网络层：网路层负责根据IP来将数据传递到指定的目的主机，其会确定传输路由等问题。</p>
+<p>数据链路层：将数据进行MAC地址的封装与解封等。</p>
+<p>物理层：定义物理媒介的协议，以二进制的方式传输数据，定义数据的传输速率等参数。</p>
+<pre><code>当数据真正的通过7层网络模型传输之前，首要确定的是数据要传输到哪里，我们知道通过IP地址确定数据要到达的目的终端，然而IP地址是有一串数字(字母)与点符号构成的，可读性很差且难于记忆，因此采用别名的方式来代替直接使用IP进行地址确定，这个别名就是域名，将域名解析为IP的过程就是域名解析。
+</code></pre><h2 id="三、DNS服务器"><a href="#三、DNS服务器" class="headerlink" title="三、DNS服务器"></a>三、DNS服务器</h2><pre><code>既然需要将域名解析成为IP地址，则就需要有一个服务器提供这样的解析功能，这个服务器需要维护这一张域名与IP地址映射的表，在客户提出解析需求时，从表中查询出域名对应的IP地址返回给客户，如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/db481d637fe53eff1ea640beb9760486abb.jpg" alt=""></p>
+<p>然而在实际应用中，上图中的设计结构明显是不切实际的，由一台服务器来维护所有的域名与IP映射关系明显是不现实的。首先，世界上的域名和IP数量非常庞大，并且更新也非常频繁，维护成本很多。另一方面，大量的客户同时进行域名解析请求，也会使解析的效率和速度出现瓶颈。现实中的DNS解析是采用层层递进，多级缓存，递归查询的结构组织而成的，下图很好的描述了这一过程：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/2c73c3485f8075b3e56ca7a9e3bf85ece80.jpg" alt=""></p>
+<pre><code>从图中可以看到首先当客户端发起DNS解析时，会从本机NDS缓存中进行查找，同样也会查找本机的Hosts文件中是否有指定对应的解析规则，由于本机的Hosts文件具有最高的优先级，因此我们想在本机将某个域名强制指向一个固定的IP，则可以采用修改Hosts文件的方式，在Mac系统中，此Hosts文件在etc文件夹下。
+
+当本机缓存中没有解析出此域名的信息且Hosts文件中也没有指定时，会想本地DNS服务器发起查询，本地DNS服务器也会维护一张缓存表用来提高查询效率，如果本地DNS服务器没有查到，会向根DNS服务器发起请求，根DNS服务器会采用递归迭代的方式进行搜索，全球有13台根DNS服务器，根DNS服务器会根据域名后缀返回对应的顶级域名服务器，顶级域名服务器会再次根据域名分类将指定的主DNS地址返回，如此迭代直到解析到对应的IP地址再一步步返回给客户机。
+</code></pre><h2 id="四、域名服务器类型"><a href="#四、域名服务器类型" class="headerlink" title="四、域名服务器类型"></a>四、域名服务器类型</h2><h3 id="根域名服务器"><a href="#根域名服务器" class="headerlink" title="根域名服务器"></a>根域名服务器</h3><pre><code>根域名服务器是域名解析系统中最高级别的域名服务器，其复杂返回顶级域名服务器，他们是互联网的基础。目前，全球有13个根域名服务器地址(并非实际的服务器数量)，可以在如下网站查找到这些根域名服务器的信息。
+</code></pre><p><a href="https://zh.wikipedia.org/wiki/%E6%A0%B9%E7%B6%B2%E5%9F%9F%E5%90%8D%E7%A8%B1%E4%BC%BA%E6%9C%8D%E5%99%A8" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/%E6%A0%B9%E7%B6%B2%E5%9F%9F%E5%90%8D%E7%A8%B1%E4%BC%BA%E6%9C%8D%E5%99%A8</a></p>
+<h3 id="顶级域名服务器"><a href="#顶级域名服务器" class="headerlink" title="顶级域名服务器"></a>顶级域名服务器</h3><pre><code>顶级域名服务器用于某个顶级域名下的DNS解析，例如有专门负责.com后缀的顶级域名服务器，负责.edu后缀的顶级域名服务器等，顶级域名服务器将查询到的主域名服务器返回。
+</code></pre><h3 id="主域名服务器"><a href="#主域名服务器" class="headerlink" title="主域名服务器"></a>主域名服务器</h3><pre><code>主域名服务器负责某个区域的域名解析。同样，主域名服务器会配套辅助域名服务器进行备份与分担负载。
+</code></pre><h2 id="五、手动进行DNS解析"><a href="#五、手动进行DNS解析" class="headerlink" title="五、手动进行DNS解析"></a>五、手动进行DNS解析</h2><pre><code>一次完整的HTTP请求首先要做的就是DNS解析(如果是通过域名进行请求)。平时在开发中，我们很少关注是因为发起HTTP的网络请求层帮我们封装好了这一部分逻辑。有时候，为了提高请求的效率或防止DNS劫持，我们也可以自己进行DNS解析。
+
+以iOS中的编程为例，可以直接使用CoreFoundation框架中的接口进行NDS解析：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Boolean result;</span><br><span class="line"><span class="built_in">CFHostRef</span> hostRef;</span><br><span class="line"><span class="built_in">CFArrayRef</span> addresses = <span class="literal">NULL</span>;</span><br><span class="line"><span class="built_in">CFArrayRef</span> names = <span class="literal">NULL</span>;</span><br><span class="line"><span class="built_in">NSMutableArray</span> * ipsArr = [[<span class="built_in">NSMutableArray</span> alloc] init];</span><br><span class="line"><span class="built_in">CFStringRef</span> hostNameRef = <span class="built_in">CFStringCreateWithCString</span>(kCFAllocatorDefault, <span class="string">"www.baidu.com"</span>, kCFStringEncodingASCII);</span><br><span class="line">hostRef = <span class="built_in">CFHostCreateWithName</span>(kCFAllocatorDefault, hostNameRef);</span><br><span class="line"><span class="built_in">CFAbsoluteTime</span> start = <span class="built_in">CFAbsoluteTimeGetCurrent</span>();</span><br><span class="line">result = <span class="built_in">CFHostStartInfoResolution</span>(hostRef, kCFHostAddresses, <span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">if</span> (result == <span class="literal">true</span>) &#123;</span><br><span class="line">    addresses = <span class="built_in">CFHostGetAddressing</span>(hostRef, &amp;result);</span><br><span class="line">    names = <span class="built_in">CFHostGetNames</span>(hostRef, &amp;result);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span>(result)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">struct</span> sockaddr_in* remoteAddr;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="built_in">CFArrayGetCount</span>(addresses); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">CFDataRef</span> saData = (<span class="built_in">CFDataRef</span>)<span class="built_in">CFArrayGetValueAtIndex</span>(addresses, i);</span><br><span class="line">        remoteAddr = (<span class="keyword">struct</span> sockaddr_in*)<span class="built_in">CFDataGetBytePtr</span>(saData);</span><br><span class="line">        <span class="keyword">if</span>(remoteAddr != <span class="literal">NULL</span>)</span><br><span class="line">        &#123;</span><br><span class="line">           <span class="comment">//获取IP地址</span></span><br><span class="line">            <span class="keyword">char</span> ip[<span class="number">16</span>];</span><br><span class="line">            strcpy(ip, inet_ntoa(remoteAddr-&gt;sin_addr));</span><br><span class="line">            <span class="built_in">NSString</span> * ipStr = [<span class="built_in">NSString</span> stringWithCString:ip encoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">            [ipsArr addObject:ipStr];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">CFAbsoluteTime</span> end = <span class="built_in">CFAbsoluteTimeGetCurrent</span>();</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"name:%@"</span>, names);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"IP:%@ \n time cost: %0.3fs"</span>, ipsArr,end - start);</span><br><span class="line"><span class="built_in">CFRelease</span>(hostNameRef);</span><br><span class="line"><span class="built_in">CFRelease</span>(hostRef);</span><br></pre></td></tr></table></figure>
+<p>运行上面代码，即可将指定域名的IP地址解析出来，其中CFHostCreateWithName方法根据域名创建一个主机引用对象，CFHostStartInfoResolution方法用来进行主机信息的解析，如果解析成功，CFHostGetAddressing方法用来获取具体的IP地址数据。</p>
+<pre><code>上面进行NDS解析的方法比较上层，还有一种方式可以获取到更多的信息，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CFAbsoluteTime</span> start = <span class="built_in">CFAbsoluteTimeGetCurrent</span>();</span><br><span class="line"><span class="keyword">char</span>   *ptr, **pptr;</span><br><span class="line"><span class="keyword">struct</span> hostent *hptr;</span><br><span class="line"><span class="keyword">char</span>   str[<span class="number">32</span>];</span><br><span class="line">ptr = <span class="string">"www.baidu.com"</span>;</span><br><span class="line"><span class="built_in">NSMutableArray</span> * ips = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line"><span class="built_in">NSMutableArray</span> * alis = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line"><span class="keyword">if</span>((hptr = gethostbyname(ptr)) == <span class="literal">NULL</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(pptr=hptr-&gt;h_addr_list; *pptr!=<span class="literal">NULL</span>; pptr++) &#123;</span><br><span class="line">    <span class="comment">// inet_ntop方法是将二进制数据转换成IP字符串</span></span><br><span class="line">    <span class="built_in">NSString</span> * ipStr = [<span class="built_in">NSString</span> stringWithCString:inet_ntop(hptr-&gt;h_addrtype, *pptr, str, <span class="keyword">sizeof</span>(str)) encoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">    [ips addObject:ipStr?:<span class="string">@""</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 获取主机别名</span></span><br><span class="line"><span class="keyword">for</span>(pptr=hptr-&gt;h_aliases; *pptr!=<span class="literal">NULL</span>; pptr++) &#123;</span><br><span class="line">    <span class="built_in">NSString</span> * ali = [<span class="built_in">NSString</span> stringWithCString:*pptr encoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">    [alis addObject:ali?:<span class="string">@""</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">CFAbsoluteTime</span> end = <span class="built_in">CFAbsoluteTimeGetCurrent</span>();</span><br><span class="line"><span class="comment">// 获取主机名</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%s"</span>, hptr-&gt;h_name);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"alias:%@"</span>, alis);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"ip:%@\ntime cost: %0.3fs"</span>, ips,end - start);</span><br></pre></td></tr></table></figure>
+<p>gethostbyname方法可以方便的获取指定域名的主机信息，其只支持IPV4，若支持解析IPV6，需要使用gethostbyname2方法，这两个方法都会返回hostent结构体，其中封装了主机的信息。</p>
+<pre><code>除了上面介绍的两种方便的方式外，也可以直接通过C语言的Socket接口来进行DNS解析，DNS实际上也是一种协议，只需要向域名解析服务器的指定端口发送指定的请求数据即可获取到解析的结果，代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#include <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#include <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#include <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#include <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#include <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#include <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#include <span class="meta-string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#include <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="meta">#include <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#define DNS_SVR <span class="meta-string">"198.41.0.4"</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#define DNS_HOST  0x01</span></span><br><span class="line"><span class="meta">#define DNS_CNAME 0x05</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> socketfd;</span><br><span class="line"><span class="keyword">struct</span> sockaddr_in dest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">send_dns_request(<span class="keyword">const</span> <span class="keyword">char</span> *dns_name);</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">parse_dns_response();</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Generate DNS question chunk</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">generate_question(<span class="keyword">const</span> <span class="keyword">char</span> *dns_name</span><br><span class="line">        , <span class="keyword">unsigned</span> <span class="keyword">char</span> *buf , <span class="keyword">int</span> *len);</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span></span><br><span class="line">is_pointer(<span class="keyword">int</span> <span class="keyword">in</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">parse_dns_name(<span class="keyword">unsigned</span> <span class="keyword">char</span> *chunk , <span class="keyword">unsigned</span> <span class="keyword">char</span> *ptr</span><br><span class="line">        , <span class="keyword">char</span> *<span class="keyword">out</span> , <span class="keyword">int</span> *len);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc , <span class="keyword">char</span> *argv[])&#123;</span><br><span class="line">    socketfd = socket(AF_INET , SOCK_DGRAM , <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span>(socketfd &lt; <span class="number">0</span>)&#123;</span><br><span class="line">        perror(<span class="string">"create socket failed"</span>);</span><br><span class="line">        exit(<span class="number">-1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    bzero(&amp;dest , <span class="keyword">sizeof</span>(dest));</span><br><span class="line">    dest.sin_family = AF_INET;</span><br><span class="line">    dest.sin_port = htons(<span class="number">53</span>);</span><br><span class="line">    dest.sin_addr.s_addr = inet_addr(DNS_SVR);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    send_dns_request(<span class="string">"www.baidu.com"</span>);</span><br><span class="line"></span><br><span class="line">    parse_dns_response();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> parse_dns_response()&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *ptr = buf;</span><br><span class="line">    <span class="keyword">struct</span> sockaddr_in addr;</span><br><span class="line">    <span class="keyword">char</span> *src_ip;</span><br><span class="line">    <span class="keyword">int</span> n , i , flag , querys , answers;</span><br><span class="line">    <span class="keyword">int</span> type , ttl , datalen , len;</span><br><span class="line">    <span class="keyword">char</span> cname[<span class="number">128</span>] , aname[<span class="number">128</span>] , ip[<span class="number">20</span>] , *cname_ptr;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> netip[<span class="number">4</span>];</span><br><span class="line">    size_t addr_len = <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr_in);</span><br><span class="line"></span><br><span class="line">    n = recvfrom(socketfd , buf , <span class="keyword">sizeof</span>(buf) , <span class="number">0</span></span><br><span class="line">        , (<span class="keyword">struct</span> sockaddr*)&amp;addr , &amp;addr_len);</span><br><span class="line">    ptr += <span class="number">4</span>; <span class="comment">/* move ptr to Questions */</span></span><br><span class="line">    querys = ntohs(*((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr));</span><br><span class="line">    ptr += <span class="number">2</span>; <span class="comment">/* move ptr to Answer RRs */</span></span><br><span class="line">    answers = ntohs(*((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr));</span><br><span class="line">    ptr += <span class="number">6</span>; <span class="comment">/* move ptr to Querys */</span></span><br><span class="line">    <span class="comment">/* move over Querys */</span></span><br><span class="line">    <span class="keyword">for</span>(i= <span class="number">0</span> ; i &lt; querys ; i ++)&#123;</span><br><span class="line">        <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">            flag = (<span class="keyword">int</span>)ptr[<span class="number">0</span>];</span><br><span class="line">            ptr += (flag + <span class="number">1</span>);</span><br><span class="line">            <span class="keyword">if</span>(flag == <span class="number">0</span>)</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ptr += <span class="number">4</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"-------------------------------\n"</span>);</span><br><span class="line">    <span class="comment">/* now ptr points to Answers */</span></span><br><span class="line">    <span class="keyword">for</span>(i = <span class="number">0</span> ; i &lt; answers ; i ++)&#123;</span><br><span class="line">        bzero(aname , <span class="keyword">sizeof</span>(aname));</span><br><span class="line">        len = <span class="number">0</span>;</span><br><span class="line">        parse_dns_name(buf , ptr , aname , &amp;len);</span><br><span class="line">        ptr += <span class="number">2</span>; <span class="comment">/* move ptr to Type*/</span></span><br><span class="line">        type = htons(*((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr));</span><br><span class="line">        ptr += <span class="number">4</span>; <span class="comment">/* move ptr to Time to live */</span></span><br><span class="line">        ttl = htonl(*((<span class="keyword">unsigned</span> <span class="keyword">int</span>*)ptr));</span><br><span class="line">        ptr += <span class="number">4</span>; <span class="comment">/* move ptr to Data lenth */</span></span><br><span class="line">        datalen = ntohs(*((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr));</span><br><span class="line">        ptr += <span class="number">2</span>; <span class="comment">/* move ptr to Data*/</span></span><br><span class="line">        <span class="keyword">if</span>(type == DNS_CNAME)&#123;</span><br><span class="line">            bzero(cname , <span class="keyword">sizeof</span>(cname));</span><br><span class="line">            len = <span class="number">0</span>;</span><br><span class="line">            parse_dns_name(buf , ptr , cname , &amp;len);</span><br><span class="line">            printf(<span class="string">"%s is an alias for %s\n"</span> , aname , cname);</span><br><span class="line">            ptr += datalen;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(type == DNS_HOST)&#123;</span><br><span class="line">            bzero(ip , <span class="keyword">sizeof</span>(ip));</span><br><span class="line">            <span class="keyword">if</span>(datalen == <span class="number">4</span>)&#123;</span><br><span class="line">                memcpy(netip , ptr , datalen);</span><br><span class="line">                inet_ntop(AF_INET , netip , ip , <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr));</span><br><span class="line">                printf(<span class="string">"%s has address %s\n"</span> , aname , ip);</span><br><span class="line">                printf(<span class="string">"\tTime to live: %d minutes , %d seconds\n"</span></span><br><span class="line">                        , ttl / <span class="number">60</span> , ttl % <span class="number">60</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            ptr += datalen;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    ptr += <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">parse_dns_name(<span class="keyword">unsigned</span> <span class="keyword">char</span> *chunk</span><br><span class="line">        , <span class="keyword">unsigned</span> <span class="keyword">char</span> *ptr , <span class="keyword">char</span> *<span class="keyword">out</span> , <span class="keyword">int</span> *len)&#123;</span><br><span class="line">    <span class="keyword">int</span> n , alen , flag;</span><br><span class="line">    <span class="keyword">char</span> *pos = <span class="keyword">out</span> + (*len);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">        flag = (<span class="keyword">int</span>)ptr[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">if</span>(flag == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">if</span>(is_pointer(flag))&#123;</span><br><span class="line">            n = (<span class="keyword">int</span>)ptr[<span class="number">1</span>];</span><br><span class="line">            ptr = chunk + n;</span><br><span class="line">            parse_dns_name(chunk , ptr , <span class="keyword">out</span> , len);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            ptr ++;</span><br><span class="line">            memcpy(pos , ptr , flag);</span><br><span class="line">            pos += flag;</span><br><span class="line">            ptr += flag;</span><br><span class="line">            *len += flag;</span><br><span class="line">            <span class="keyword">if</span>((<span class="keyword">int</span>)ptr[<span class="number">0</span>] != <span class="number">0</span>)&#123;</span><br><span class="line">                memcpy(pos , <span class="string">"."</span> , <span class="number">1</span>);</span><br><span class="line">                pos += <span class="number">1</span>;</span><br><span class="line">                (*len) += <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> is_pointer(<span class="keyword">int</span> <span class="keyword">in</span>)&#123;</span><br><span class="line">    <span class="keyword">return</span> ((<span class="keyword">in</span> &amp; <span class="number">0xc0</span>) == <span class="number">0xc0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> send_dns_request(<span class="keyword">const</span> <span class="keyword">char</span> *dns_name)&#123;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> request[<span class="number">256</span>];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *ptr = request;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> question[<span class="number">128</span>];</span><br><span class="line">    <span class="keyword">int</span> question_len;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    generate_question(dns_name , question , &amp;question_len);</span><br><span class="line"></span><br><span class="line">    *((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr) = htons(<span class="number">0xff00</span>);</span><br><span class="line">    ptr += <span class="number">2</span>;</span><br><span class="line">    *((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr) = htons(<span class="number">0x0100</span>);</span><br><span class="line">    ptr += <span class="number">2</span>;</span><br><span class="line">    *((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr) = htons(<span class="number">1</span>);</span><br><span class="line">    ptr += <span class="number">2</span>;</span><br><span class="line">    *((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr) = <span class="number">0</span>;</span><br><span class="line">    ptr += <span class="number">2</span>;</span><br><span class="line">    *((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr) = <span class="number">0</span>;</span><br><span class="line">    ptr += <span class="number">2</span>;</span><br><span class="line">    *((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr) = <span class="number">0</span>;</span><br><span class="line">    ptr += <span class="number">2</span>;</span><br><span class="line">    memcpy(ptr , question , question_len);</span><br><span class="line">    ptr += question_len;</span><br><span class="line"></span><br><span class="line">    sendto(socketfd , request , question_len + <span class="number">12</span> , <span class="number">0</span></span><br><span class="line">       , (<span class="keyword">struct</span> sockaddr*)&amp;dest , <span class="keyword">sizeof</span>(<span class="keyword">struct</span> sockaddr));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span></span><br><span class="line">generate_question(<span class="keyword">const</span> <span class="keyword">char</span> *dns_name , <span class="keyword">unsigned</span> <span class="keyword">char</span> *buf , <span class="keyword">int</span> *len)&#123;</span><br><span class="line">    <span class="keyword">char</span> *pos;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *ptr;</span><br><span class="line">    <span class="keyword">int</span> n;</span><br><span class="line"></span><br><span class="line">    *len = <span class="number">0</span>;</span><br><span class="line">    ptr = buf;</span><br><span class="line">    pos = (<span class="keyword">char</span>*)dns_name;</span><br><span class="line">    <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">        n = strlen(pos) - (strstr(pos , <span class="string">"."</span>) ? strlen(strstr(pos , <span class="string">"."</span>)) : <span class="number">0</span>);</span><br><span class="line">        *ptr ++ = (<span class="keyword">unsigned</span> <span class="keyword">char</span>)n;</span><br><span class="line">        memcpy(ptr , pos , n);</span><br><span class="line">        *len += n + <span class="number">1</span>;</span><br><span class="line">        ptr += n;</span><br><span class="line">        <span class="keyword">if</span>(!strstr(pos , <span class="string">"."</span>))&#123;</span><br><span class="line">            *ptr = (<span class="keyword">unsigned</span> <span class="keyword">char</span>)<span class="number">0</span>;</span><br><span class="line">            ptr ++;</span><br><span class="line">            *len += <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        pos += n + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    *((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr) = htons(<span class="number">1</span>);</span><br><span class="line">    *len += <span class="number">2</span>;</span><br><span class="line">    ptr += <span class="number">2</span>;</span><br><span class="line">    *((<span class="keyword">unsigned</span> <span class="keyword">short</span>*)ptr) = htons(<span class="number">1</span>);</span><br><span class="line">    *len += <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中198.41.0.4是任意选择的一个根域名服务器的地址，如果解析成功，将在控制台看到如下的打印信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-------------------------------</span><br><span class="line">www.baidu.com is an alias for www.a.shifen.com</span><br><span class="line">www.a.shifen.com has address 112.80.248.76</span><br><span class="line">    Time to live: 1 minutes , 7 seconds</span><br><span class="line">www.a.shifen.com has address 112.80.248.75</span><br><span class="line">    Time to live: 1 minutes , 7 seconds</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2020/04/22/397玩转iOS“宏定义”/" class="pre-post btn btn-default" title='玩转iOS“宏定义”'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">玩转iOS“宏定义”</span>
+        </a>
+    
+    
+        <a href="/2019/06/27/395iOS开发之ExternalAccessory框架的应用/" class="next-post btn btn-default" title='iOS开发之ExternalAccessory框架的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发之ExternalAccessory框架的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#网络杂谈——聊聊NDS解析"><span class="toc-text">网络杂谈——聊聊NDS解析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、分层的网络"><span class="toc-text">二、分层的网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、DNS服务器"><span class="toc-text">三、DNS服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、域名服务器类型"><span class="toc-text">四、域名服务器类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#根域名服务器"><span class="toc-text">根域名服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#顶级域名服务器"><span class="toc-text">顶级域名服务器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#主域名服务器"><span class="toc-text">主域名服务器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、手动进行DNS解析"><span class="toc-text">五、手动进行DNS解析</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

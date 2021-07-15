@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>iOS初级教程之一:社会化分享实践 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS初级教程之一:社会化分享实践">
+            
+	            iOS初级教程之一:社会化分享实践
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/03/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS初级教程之一-社会化分享实践"><a href="#iOS初级教程之一-社会化分享实践" class="headerlink" title="[iOS初级教程之一]社会化分享实践"></a>[iOS初级教程之一]社会化分享实践</h1><h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><pre><code>社会化分享，是指在中，基于其分享功能，将信息网络化输入输出，加速组织传播。博客、微博客、WIKI、社交网络、内容社区等，是可以常见到的社会化媒体形式。在国内近两年，社会化分享的传播量又以QQ空间、新浪微博、腾讯微博势头最猛。
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-287414b202491cb9e06cd456302d90fdb81.png" alt="">  <img src="https://oscimg.oschina.net/oscnet/up-c3f356b47f7289d3de8a981c605f4867ba5.png" alt="">  <img src="https://oscimg.oschina.net/oscnet/up-e74141ba91508a5bfcb7941e4718a066a4f.png" alt=""></p>
+<pre><code>为应用程序添加社会化分享的能力本身并不复杂，繁琐的地方在于不同的分享平台需要接入不同的SDK，例如要支持微信、QQ、微博这3种平台的分享，就要分别对微信SDK、QQSDK和微博SDK进行接入，这些工作非常麻烦。因此，如果我们需要快速的使应用程序具备社会化分享能力，最快捷的方式是采用第三方整合的SDK进行接入，友盟社会化分享平台就提供了非常好的这种服务。
+
+U-Share社会化分享平台官网如下：
+</code></pre><p><a href="https://www.umeng.com/social" target="_blank" rel="noopener">https://www.umeng.com/social</a></p>
+<p>简单来概括，U-Share平台提供了如下功能：</p>
+<p>1.一键分享</p>
+<p>2.一键唤醒与拉新</p>
+<p>3.营销裂变效果追踪</p>
+<p>4.自由定制分享页面</p>
+<p>对U-Share工具的整体接入也非常容易，流程如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-6ab0f9927f4cf722af25949c41953d81c66.png" alt=""></p>
+<p>本教程中，我们将结合友盟社会化分享服务平台来完整的介绍如何快速的为应用程序添加分享功能。你将收获到：</p>
+<p>1. 社会化分享技术的实践经验</p>
+<p>2.借助友盟平台快速实现应用的社会化分享功能</p>
+<p>3.能够自定义分享组件</p>
+<p>4.各种社会化平台进行分享的账号申请流程</p>
+<p>5.等等…</p>
+<h2 id="二、创建友盟应用"><a href="#二、创建友盟应用" class="headerlink" title="二、创建友盟应用"></a>二、创建友盟应用</h2><pre><code>要借助友盟平台实现社会化分享功能，首先需要在友盟后台创建一个应用程序。打开前面提到的友盟官网，如果已有友盟账号，可以直接进行登录，没有的话注册一个友盟账号即可。登录成功后，点击页面上的进入工作台按钮即可来后友盟管理后台，其中可以创建和管理应用。
+
+如果是第一次使用友盟后台，第一步需要先创建一个应用，友盟应用的创建非常简单，只需要根据提示来一步步进行选择即可，如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-492958bb505f2c9414ae133d1717fbf1513.png" alt=""></p>
+<p>我们需要使用哪些功能只需要进行勾选即可。创建好了应用程序后，我们可以在U-Share后台对此应用进行查看和管理，在应用设置页面可以查看AppKey数据，这个数据非常重要，我们在集成友盟SDK时需要使用到此AppKey。如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-84266cae905a45209d0004ccabfeec42bbc.png" alt=""></p>
+<p>也可以看到，在U-Share后台也有很多统计数据，详细的记录了App的分享次数、分享人数、回流率、新用户数等重要数据，可以帮助我们持续的对业务进行优化。</p>
+<h2 id="三、友盟SDK的获取和接入"><a href="#三、友盟SDK的获取和接入" class="headerlink" title="三、友盟SDK的获取和接入"></a>三、友盟SDK的获取和接入</h2><pre><code>集成友盟分享SDK的方式有两种，使用CocoaPods集成和手动进行集成。
+</code></pre><h3 id="1-使用CocoaPods进行集成"><a href="#1-使用CocoaPods进行集成" class="headerlink" title="1. 使用CocoaPods进行集成"></a>1. 使用CocoaPods进行集成</h3><pre><code>使用CocoaPods集成非常方便，整体来说有3步：
+</code></pre><ul>
+<li>创建PodFile文件</li>
+<li>添加依赖</li>
+<li>执行pod install安装依赖库</li>
+</ul>
+<p>首先在工程目录下执行pod init指令来创建一个podfile文件，在其中编写如下代码：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Uncomment the next line to define a global platform for your project</span></span><br><span class="line"><span class="comment"># platform :ios, '9.0'</span></span><br><span class="line"></span><br><span class="line">target <span class="string">'UMShareTest'</span> <span class="keyword">do</span></span><br><span class="line">  <span class="comment"># Comment the next line if you don't want to use dynamic frameworks</span></span><br><span class="line">  use_frameworks!</span><br><span class="line">  pod <span class="string">'UMCommon'</span></span><br><span class="line">  pod <span class="string">'UMDevice'</span></span><br><span class="line">  pod <span class="string">'UMShare/UI'</span></span><br><span class="line">  pod <span class="string">'UMShare/Social/WeChat'</span></span><br><span class="line">  pod <span class="string">'UMShare/Social/QQ'</span> </span><br><span class="line">  pod <span class="string">'UMShare/Social/Sina'</span> </span><br><span class="line">  <span class="comment"># Pods for UMShareTest</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>在添加依赖时，UMCommon、UMDevice是必选依赖，UMShare/UI是一个UI库，如果需要使用到友盟提供的分享UI组件，可以加入这个库。WeChat、QQ和Sina是第三方分享平台的SDK，我们需要哪些就引入哪些即可。友盟所支持的第三方平台可以在如下文档中进行查看：</p>
+<p><a href="https://developer.umeng.com/docs/128606/detail/193653" target="_blank" rel="noopener">https://developer.umeng.com/docs/128606/detail/193653</a></p>
+<h3 id="2-手动集成"><a href="#2-手动集成" class="headerlink" title="2. 手动集成"></a>2. 手动集成</h3><pre><code>手动集成是指我们直接下载好所需要的SDK，将其加入工程并进行相关的配置。相比CocoaPods的集成方式，手动集成更加麻烦一些。首先，我们需要下载所需的SDK，在如下网址中可以进行下载：
+</code></pre><p><a href="https://developer.umeng.com/sdk/ios" target="_blank" rel="noopener">https://developer.umeng.com/sdk/ios</a></p>
+<p>同样，在下载SDK时，我们可以进行设置，只下载所需要的分享平台的SDK，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-17f6b553084cc15e249959369e409fa42e8.png" alt=""></p>
+<p>下载完成后，只需要将解压好的SDK文件夹拖入到工程中即可。之后在Xcode工程的Build Settings中的other linker flags添加-Objc参数。最后，需要将要依赖的系统库进行添加，在Link Binary With Libraries里进行配置，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-ea6df44ad7d0313cf59e58ed15a8d4d031a.png" alt=""></p>
+<p>需要注意，这里配置的系统库可能会由于所支持的分享平台不同而略有不同，可以在下面文档中找到对应分享平台需要对应配置的系统库：</p>
+<p><a href="https://developer.umeng.com/docs/128606/detail/193653" target="_blank" rel="noopener">https://developer.umeng.com/docs/128606/detail/193653</a></p>
+<h2 id="四、三方平台物料准备"><a href="#四、三方平台物料准备" class="headerlink" title="四、三方平台物料准备"></a>四、三方平台物料准备</h2><pre><code>通过前面的准备，友盟应用和SDK部分的配置基本已经完成，但在真正接入分享功能前，还有至关重要的一步需要做。我们需要根据需求，来申请各个开放平台的开发者账号。例如我们需要支持微信，QQ和微博的分享操作，就需要申请微信开放平台，腾讯开放平台和微博开放平台的账号，并进行应用的创建。
+</code></pre><h3 id="1-微信开放平台"><a href="#1-微信开放平台" class="headerlink" title="1.微信开放平台"></a>1.微信开放平台</h3><pre><code>微信开放平台的官网如下：
+</code></pre><p><a href="https://open.weixin.qq.com/" target="_blank" rel="noopener">https://open.weixin.qq.com/</a></p>
+<p>在开放平台注册了开发者账号后，即可进行应用创建，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-032dea5c373730424f389c623db5239ee6f.png" alt=""></p>
+<p>将所需要提供的信息填写后，即可创建应用程序。需要注意，在配置应用程序时，其设置的bundle ID的值要与工程中的配置一致。提交了创建应用的申请后，需要等待微信开放平台的审核，审核完成后可以得到应用的AppID和AppSecret，这两个参数在我们配置分享时会使用到。</p>
+<h3 id="2-腾讯开放平台"><a href="#2-腾讯开放平台" class="headerlink" title="2.腾讯开放平台"></a>2.腾讯开放平台</h3><pre><code>和微信开放平台类似，要支持进行QQ相关分享操作需要申请一个腾讯开放平台的账号，地址如下：
+</code></pre><p><a href="https://open.tencent.com/" target="_blank" rel="noopener">https://open.tencent.com/</a></p>
+<p>在申请应用时同样需要填写一些基本信息，应用申请后，可以得到AppID和AppKey相关参数用来进行分享配置，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-382c096fd7be641d6bc2659a6e4e00321ad.png" alt=""></p>
+<p>其他各种开发平台的应用创建和配置逻辑基本大同小异，在友盟的如下文档中找到具体的申请方法：</p>
+<p><a href="https://developer.umeng.com/docs/128606/detail/193651" target="_blank" rel="noopener">https://developer.umeng.com/docs/128606/detail/193651</a></p>
+<h2 id="五、接入分享功能"><a href="#五、接入分享功能" class="headerlink" title="五、接入分享功能"></a>五、接入分享功能</h2><pre><code>现在，万事俱备，只欠东风。我们已经做完了实现分享功能的所有准备工作。可以进行工程的配置和代码的编写了。
+</code></pre><h3 id="1-初始化友盟SDK与回调设置"><a href="#1-初始化友盟SDK与回调设置" class="headerlink" title="1. 初始化友盟SDK与回调设置"></a>1. 初始化友盟SDK与回调设置</h3><pre><code>初始化友盟SDK是使用分享功能的第一步，这里我们需要初始化友盟应用并为各个分享平台进行配置，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="built_in">NSDictionary</span> *)launchOptions &#123;</span><br><span class="line">    [<span class="keyword">self</span> configShare];</span><br><span class="line">    [<span class="keyword">self</span> configPlatform];</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)configShare &#123;</span><br><span class="line">    [UMConfigure initWithAppkey:<span class="string">@"602505af668f9e17b8aef059"</span> channel:<span class="literal">nil</span>];</span><br><span class="line">    [UMSocialGlobal shareInstance].universalLinkDic = @&#123;</span><br><span class="line">        @(UMSocialPlatformType_WechatSession):<span class="string">@"https://umplus-sdk-download.oss-cn-shanghai.aliyuncs.com/"</span>,</span><br><span class="line">                                                            </span><br><span class="line">        @(UMSocialPlatformType_QQ):<span class="string">@"https://umplus-sdk-download.oss-cn-shanghai.aliyuncs.com/qq_conn/101830139"</span></span><br><span class="line">                                                            &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)configPlatform &#123;</span><br><span class="line">    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_WechatSession appKey:<span class="string">@"wxdc1e388c3822c80b"</span> appSecret:<span class="string">@"3baf1193c85774b3fd9d18447d76cab0"</span> redirectURL:<span class="string">@"http://mobile.umeng.com/social"</span>];</span><br><span class="line">           [[UMSocialManager defaultManager] setLauchFromPlatform:(UMSocialPlatformType_WechatSession) completion:^(<span class="keyword">id</span> userInfoResponse, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">           <span class="built_in">NSLog</span>(<span class="string">@"setLauchFromPlatform:userInfoResponse:%@"</span>,userInfoResponse);</span><br><span class="line">    &#125;];</span><br><span class="line">    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_QQ appKey:<span class="string">@"1105821097"</span>  appSecret:<span class="literal">nil</span> redirectURL:<span class="string">@"http://mobile.umeng.com/social"</span>];</span><br><span class="line">    </span><br><span class="line">    [[UMSocialManager defaultManager] setPlaform:UMSocialPlatformType_Sina appKey:<span class="string">@"3921700954"</span>  appSecret:<span class="string">@"04b48b094faeb16683c32669824ebdad"</span> redirectURL:<span class="string">@"https://sns.whalecloud.com/sina2/callback"</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码都写在AppDelegate类中，实际应用中，我们也可以根据使用时机来进行初始化。上面代码中，configShare方法用来进行友盟SDK本身的初始化和配置，configPlatform方法用来对第三方分享平台进行配置。</p>
+<pre><code>还需要实现几个AppDelegate的回调来处理通过分享链接打开App后的后续逻辑，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application handleOpenURL:(<span class="built_in">NSURL</span> *)url &#123;</span><br><span class="line">    <span class="built_in">BOOL</span> res = [[UMSocialManager defaultManager] handleOpenURL:url];</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)app openURL:(<span class="built_in">NSURL</span> *)url options:(<span class="built_in">NSDictionary</span>&lt;<span class="built_in">UIApplicationOpenURLOptionsKey</span>,<span class="keyword">id</span>&gt; *)options &#123;</span><br><span class="line">    <span class="built_in">BOOL</span> res = [[UMSocialManager defaultManager] handleOpenURL:url options:options];</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application openURL:(<span class="built_in">NSURL</span> *)url sourceApplication:(<span class="built_in">NSString</span> *)sourceApplication annotation:(<span class="keyword">id</span>)annotation &#123;</span><br><span class="line">    <span class="built_in">BOOL</span> res = [[UMSocialManager defaultManager] handleOpenURL:url sourceApplication:sourceApplication annotation:annotation];</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application continueUserActivity:(<span class="built_in">NSUserActivity</span> *)userActivity restorationHandler:(<span class="keyword">void</span> (^)(<span class="built_in">NSArray</span>&lt;<span class="keyword">id</span>&lt;<span class="built_in">UIUserActivityRestoring</span>&gt;&gt; * _Nullable))restorationHandler &#123;</span><br><span class="line">    <span class="built_in">BOOL</span> res = [[UMSocialManager defaultManager] handleUniversalLink:userActivity options:<span class="literal">nil</span>];</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-白名单配置"><a href="#2-白名单配置" class="headerlink" title="2. 白名单配置"></a>2. 白名单配置</h3><pre><code>目前，代码配置部分基本完成，下面我们需要在工程的info.plist文件中对要分享的三方平台进行白名单配置。在info.plist文件中添加LSApplicationQueriesSchemes键，其值配置为列表，具体各个分享平台的白名单列举如下：
+</code></pre><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">key</span>&gt;</span>LSApplicationQueriesSchemes<span class="tag">&lt;/<span class="name">key</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">array</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 微信 URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wechat<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>weixin<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>weixinULAPI<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line"> <span class="comment">&lt;!-- QQ、Qzone URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdklaunchminiapp<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdkminiapp<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqapi<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqq<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqOpensdkSSoLogin<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqconnect<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdkdataline<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdkgrouptribeshare<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdkfriend<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdkapi<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdkapiV2<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdkapiV3<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqopensdkapiV4<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqzoneopensdk<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wtloginmqq<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wtloginmqq2<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqwpa<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqzone<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqzonev2<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqzoneshare<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wtloginqzone<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqzonewx<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqzoneopensdkapiV2<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqzoneopensdkapi19<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqzoneopensdkapi<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mqqbrowser<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>mttbrowser<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>tim<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timapi<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timopensdkfriend<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timwpa<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timgamebindinggroup<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timapiwallet<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timOpensdkSSoLogin<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wtlogintim<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timopensdkgrouptribeshare<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timopensdkapiV4<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timgamebindinggroup<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timopensdkdataline<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wtlogintimV1<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>timapiV1<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 新浪微博 URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>sinaweibohd<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>sinaweibo<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>sinaweibosso<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>weibosdk<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>weibosdk2.5<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 支付宝 URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>alipay<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>alipayshare<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 钉钉 URL Scheme 白名单--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">string</span>&gt;</span>dingtalk<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">string</span>&gt;</span>dingtalk-open<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 企业微信--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">string</span>&gt;</span>wxwork<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wxworkdebug<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wxworkrdm<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>wxworkrelease<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="comment">&lt;!--抖音--&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">string</span>&gt;</span>douyinopensdk<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>douyinsharesdk<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>snssdk1128<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!--Linkedin URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>linkedin<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>linkedin-sdk2<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>linkedin-sdk<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 易信 URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>yixin<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>yixinopenapi<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- instagram URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>instagram<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- whatsapp URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>whatsapp<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- line URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>line<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Facebook URL Scheme 白名单--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>fbapi<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>fb-messenger-api<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>fb-messenger-share-api<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>fbauth2<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>fbshareextension<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- Kakao URL Scheme 白名单--&gt;</span>  </span><br><span class="line">    <span class="comment">&lt;!-- 注：以下第一个参数需替换为自己的kakao appkey--&gt;</span> </span><br><span class="line">    <span class="comment">&lt;!-- 格式为 kakao + "kakao appkey"--&gt;</span>    </span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>kakaofa63a0b2356e923f3edd6512d531f546<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>kakaokompassauth<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>storykompassauth<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>kakaolink<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>kakaotalk-4.5.0<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>kakaostory-2.9.0<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- pinterest URL Scheme 白名单--&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>pinterestsdk.v1<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- Tumblr URL Scheme 白名单--&gt;</span>  </span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>tumblr<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 印象笔记 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>evernote<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>en<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>enx<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>evernotecid<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>evernotemsg<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- 有道云笔记--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>youdaonote<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>ynotedictfav<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.youdao.note.todayViewNote<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>ynotesharesdk<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- Google+--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>gplus<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- Pocket--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>pocket<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>readitlater<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>pocket-oauth-v1<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>fb131450656879143<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>en-readitlater-5776<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.ideashower.ReadItLaterPro3<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.ideashower.ReadItLaterPro<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.ideashower.ReadItLaterProAlpha<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>com.ideashower.ReadItLaterProEnterprise<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- VKontakte--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>vk<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>vk-share<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>vkauthorize<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">&lt;!-- Twitter--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>twitter<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>twitterauth<span class="tag">&lt;/<span class="name">string</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">array</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>需要注意，默认在Xocde中打开的info.plist文件是以plist浏览模式打开的，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8ac7ca3e1ac5f95079fbebbbb694e747b84.png" alt=""></p>
+<p>我们可以以文本的方式打开，将所需要的代码复制进去即可，方法如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e3cc00f3dc5f0b5b42ed47420dd8c3b8f5e.png" alt=""></p>
+<h3 id="3-配置URL-Scheme"><a href="#3-配置URL-Scheme" class="headerlink" title="3.配置URL Scheme"></a>3.配置URL Scheme</h3><pre><code>配置白名单的目的是为了让我们的应用可以打开第三方App进行分享操作，而配置URL Scheme的作用是当分享操作完成后，第三方App可以再次唤醒我们的App，回到App内做后续逻辑。
+
+在工程的Info项目中进行URL Types的配置，如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-dffcc3c0860d55e6b82a6b6e760e1f8f6ae.png" alt=""></p>
+<p>如上图中，我们只配置了微信和QQ的URL Scheme，在配置的时候，不同平台有不同的规则，例如微信是：</p>
+<p>wx + 微信开放平台的应用appKey</p>
+<p>具体每个分享平台的配置规则可参考如下文档：</p>
+<p><a href="https://developer.umeng.com/docs/128606/detail/193653#h3--sso-12" target="_blank" rel="noopener">https://developer.umeng.com/docs/128606/detail/193653#h3–sso-12</a></p>
+<h2 id="六、进行分享操作"><a href="#六、进行分享操作" class="headerlink" title="六、进行分享操作"></a>六、进行分享操作</h2><pre><code>前面的工作完成后，进行分享操作就非常容易，以文本分享为例，只需要创建出UMSocialMessageObject对象即可，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)shareText:(UMSocialPlatformType)type &#123;</span><br><span class="line">    UMSocialMessageObject *object = [[UMSocialMessageObject alloc] init];</span><br><span class="line">    object.text = <span class="string">@"title"</span>;</span><br><span class="line">    [[UMSocialManager defaultManager] shareToPlatform:type messageObject:object currentViewController:<span class="keyword">self</span> completion:^(<span class="keyword">id</span> result, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,error);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样，我们也可以分享网页、小程序、图文、视频、音乐等数据，使用不同的传参即可，具体分享类型的传参方式可以在下面的文档中查询：</p>
+<p><a href="https://developer.umeng.com/docs/128606/detail/193655#h2-u5206u4EABu7F51u9875u94FEu63A51" target="_blank" rel="noopener">https://developer.umeng.com/docs/128606/detail/193655#h2-u5206u4EABu7F51u9875u94FEu63A51</a></p>
+<pre><code>调用如上的方法进行分享是纯业务逻辑层面的，我们可以根据需求任意的定制化自己的分享UI。如果你接入了UShareUI库，则可以仅仅通过一些简单的配置，更加快速的接入分享功能，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    [UMSocialShareUIConfig shareInstance].sharePageScrollViewConfig.shareScrollViewBackgroundColor = [<span class="built_in">UIColor</span> greenColor];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">IBAction</span>)share:(<span class="keyword">id</span>)sender &#123;</span><br><span class="line">    [UMSocialUIManager showShareMenuViewInWindowWithPlatformSelectionBlock:^(UMSocialPlatformType platformType, <span class="built_in">NSDictionary</span> *userInfo) &#123;</span><br><span class="line">        [<span class="keyword">self</span> shareText:platformType];</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)shareText:(UMSocialPlatformType)type &#123;</span><br><span class="line">    UMSocialMessageObject *object = [[UMSocialMessageObject alloc] init];</span><br><span class="line">    object.text = <span class="string">@"title"</span>;</span><br><span class="line">    [[UMSocialManager defaultManager] shareToPlatform:type messageObject:object currentViewController:<span class="keyword">self</span> completion:^(<span class="keyword">id</span> result, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,error);</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>运行上面代码，效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-53b3bb4a27129036e763a20327fa757e1b4.png" alt=""></p>
+<p>这个分享面板中的组件都有暴露接口供开发者进行定制化使用，接入非常便捷。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/03/19/411[iOS初级教程之二]DeepLink实践/" class="pre-post btn btn-default" title='iOS初级教程之二:DeepLink实践'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS初级教程之二:DeepLink实践</span>
+        </a>
+    
+    
+        <a href="/2021/02/18/409iOS原理分析之从源码看load与initialize方法/" class="next-post btn btn-default" title='iOS原理分析之从源码看load与initialize方法'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS原理分析之从源码看load与initialize方法</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS初级教程之一-社会化分享实践"><span class="toc-text">[iOS初级教程之一]社会化分享实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、简介"><span class="toc-text">一、简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、创建友盟应用"><span class="toc-text">二、创建友盟应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、友盟SDK的获取和接入"><span class="toc-text">三、友盟SDK的获取和接入</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-使用CocoaPods进行集成"><span class="toc-text">1. 使用CocoaPods进行集成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-手动集成"><span class="toc-text">2. 手动集成</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、三方平台物料准备"><span class="toc-text">四、三方平台物料准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-微信开放平台"><span class="toc-text">1.微信开放平台</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-腾讯开放平台"><span class="toc-text">2.腾讯开放平台</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、接入分享功能"><span class="toc-text">五、接入分享功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-初始化友盟SDK与回调设置"><span class="toc-text">1. 初始化友盟SDK与回调设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-白名单配置"><span class="toc-text">2. 白名单配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-配置URL-Scheme"><span class="toc-text">3.配置URL Scheme</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六、进行分享操作"><span class="toc-text">六、进行分享操作</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
