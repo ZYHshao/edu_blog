@@ -1,0 +1,308 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客"/>
+
+
+
+<meta name="keywords" content="珲少"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>一起玩转树莓派（5）——让蜂鸣器播放音乐 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（5）——让蜂鸣器播放音乐">
+            
+	            一起玩转树莓派（5）——让蜂鸣器播放音乐
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/07/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（5）——让蜂鸣器播放音乐"><a href="#一起玩转树莓派（5）——让蜂鸣器播放音乐" class="headerlink" title="一起玩转树莓派（5）——让蜂鸣器播放音乐"></a>一起玩转树莓派（5）——让蜂鸣器播放音乐</h1><p>前面博客中，我们尝试使用开关控制有源蜂鸣器的播放。有源蜂鸣器的一大特点是使用简单，无需复杂的程序控制即可发声，然而其缺陷也很明显，其发声的频率是一定的，我们无法通过频率控制器音调高低。本次实验，我们将尝试使用无源蜂鸣器来进行音乐的播放。</p>
+<h2 id="一、实验前的准备"><a href="#一、实验前的准备" class="headerlink" title="一、实验前的准备"></a>一、实验前的准备</h2><p>在开始本实验前，我们先来对乐理只是和无源蜂鸣器的工作原理进行简单的学习。</p>
+<h3 id="1、关于音调的基础乐理知识"><a href="#1、关于音调的基础乐理知识" class="headerlink" title="1、关于音调的基础乐理知识"></a>1、关于音调的基础乐理知识</h3><p>简单的物理学知识告诉我们，声音的声调高低是有声波的频率决定的，而声音的大小是有声波的振幅决定的。人耳可以听到的声音频率在20Hz-20000Hz之间。频率低于20Hz的声波被称为次声波，我们听不到。同样，频率高于20000Hz的声波称为超声波，我们也听不到。生活中，我们都喜欢听美妙的音乐，音乐是由很多不同的音调和参差的拍子组合而成的。小时候音乐课上常说的Do，Re，Mi，Fa，So，La，Xi就是最常见的音调。我们以C大调为例，其7个音阶与对应的频率如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>Do</th>
+<th>Re</th>
+<th>Mi</th>
+<th>Fa</th>
+<th>So</th>
+<th>La</th>
+<th>Xi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>262</td>
+<td>294</td>
+<td>330</td>
+<td>350</td>
+<td>393</td>
+<td>441</td>
+<td>495</td>
+</tr>
+</tbody>
+</table>
+<p>与上表对应，如果是高音音调，只需要将上面的频率乘以2，如果是低音音调，需要将上面的音频除以2。</p>
+<p>要演奏出美妙的旋律，仅仅只控制音调是不够的，我们还需要把握每个音调演奏的节奏，即每个音调播放的时长。在乐曲中，节奏的把控是通过节拍来定义的，例如常见的四分之四节拍，指的是四分音符为一拍，每小节有四拍，这样，每遇到一个四分音符我们就播放这个音调一拍的单位时间，如果遇到八分音符，我们就播放二分之一拍的单位时间，如果遇到二分音符，我们就播放两拍的单位时间。</p>
+<p>现在，你可以练习一下，将喜欢的歌曲翻译为编程符号，音调翻译成频率，对应的节拍翻译为毫秒时间。后面，我们将使用树莓派控制蜂鸣器来播放它。</p>
+<h3 id="2、无源蜂鸣器播放声音原理"><a href="#2、无源蜂鸣器播放声音原理" class="headerlink" title="2、无源蜂鸣器播放声音原理"></a>2、无源蜂鸣器播放声音原理</h3><p>之前，我们分析过有源蜂鸣器的工作原理，其很好理解，电压触发器内部的振荡源工作，震荡源的震动产生一定频率的声波，从而发出声音让我们听到。无源蜂鸣器内部没有震荡源，如果直接通过直流电，其无法产生周期性的声波，因此简单的接通电源是无法使无源蜂鸣器工作的。无源蜂鸣器内部没有震荡源，但却有震荡片，当通电时，无源蜂鸣器通过电磁感应现象来吸引震荡片，当失去电流时，震荡片位置还原。因此，我们只要周期性的给蜂鸣器通电，其就会产生周期性的振荡，从而产生声波，发出声音。</p>
+<p>由于无源蜂鸣器的这种特点，我们可以非常容易的通过控制加压的频率来实现播放不同音调的声音。相比有源蜂鸣器而言，无源蜂鸣器成本更低，且可以控制音调高低，唯一的不足之处是程序要略微复杂一些。</p>
+<p>本次实验，我们使用的无源蜂鸣器是低电平触发的，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-eeb2e3b240c1b9c3c919e8c7e114f642404.png" alt=""></p>
+<h2 id="二、使用树莓派制作电子琴"><a href="#二、使用树莓派制作电子琴" class="headerlink" title="二、使用树莓派制作电子琴"></a>二、使用树莓派制作电子琴</h2><p>明白了无源蜂鸣器的工作原理，本实验对你来说应该非常简单，使用到的知识都是我们之前实验有涉及过的。当你听到视频频率来控制无缘蜂鸣器的发声时，你一定已经想到了，使用PWM脉冲宽度调制技术，其刚好可以产生指定频率的脉冲电压。</p>
+<h3 id="1-开始连线"><a href="#1-开始连线" class="headerlink" title="1.开始连线"></a>1.开始连线</h3><p>连线本身非常简单，只是在开始之前，我们要先确定所使用的树莓派引脚。无缘蜂鸣器有3个引脚，其中VCC接3.3V电源，GMD接地，I/O控制引脚接一个树莓派的GPIO功能引脚，我们选择BCM编码为17的GPIO引脚，即物理引脚11。笔者这里使用的扩展板连接如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-df92935993b46fc7b9892090fe36c7ed704.png" alt=""></p>
+<p>这一步非常简单，下面我们来开始程序的编写。</p>
+<h3 id="2-开始动手编程"><a href="#2-开始动手编程" class="headerlink" title="2.开始动手编程"></a>2.开始动手编程</h3><p>在本实验中，我们将编写这个一个程序，其类似一个简易的电子琴，有7个按键来发出不同音调的7种声音，同时我们内置一首示例乐曲。笔者这里选用周杰伦的《花海》前奏作为示例乐曲。完整的程序示例代码如下（我建议先自主动手实践，遇到问题再参考示例代码）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入UI模块</span></span><br><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> Tkinter</span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义音调频率</span></span><br><span class="line"><span class="comment"># C调低音</span></span><br><span class="line">CL = [<span class="number">0</span>, <span class="number">131</span>, <span class="number">147</span>, <span class="number">165</span>, <span class="number">175</span>, <span class="number">196</span>, <span class="number">211</span>, <span class="number">248</span>] </span><br><span class="line"><span class="comment"># C调中音</span></span><br><span class="line">CM = [<span class="number">0</span>, <span class="number">262</span>, <span class="number">294</span>, <span class="number">330</span>, <span class="number">350</span>, <span class="number">393</span>, <span class="number">441</span>, <span class="number">495</span>]   </span><br><span class="line"><span class="comment"># C调高音</span></span><br><span class="line">CH = [<span class="number">0</span>, <span class="number">525</span>, <span class="number">589</span>, <span class="number">661</span>, <span class="number">700</span>, <span class="number">786</span>, <span class="number">882</span>, <span class="number">990</span>]  </span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义乐谱</span></span><br><span class="line"><span class="comment"># 音调 0表示休止符</span></span><br><span class="line">songP = [</span><br><span class="line">    CM[<span class="number">1</span>],CM[<span class="number">2</span>],CM[<span class="number">3</span>],CM[<span class="number">5</span>],CM[<span class="number">5</span>],CM[<span class="number">0</span>],CM[<span class="number">3</span>],CM[<span class="number">2</span>],CM[<span class="number">1</span>],CM[<span class="number">2</span>],CM[<span class="number">3</span>],CM[<span class="number">0</span>],</span><br><span class="line">    CM[<span class="number">1</span>],CM[<span class="number">2</span>],CM[<span class="number">3</span>],CM[<span class="number">7</span>],CH[<span class="number">1</span>],CH[<span class="number">1</span>],CH[<span class="number">1</span>],CM[<span class="number">7</span>],CH[<span class="number">1</span>],CM[<span class="number">7</span>],CM[<span class="number">6</span>],CM[<span class="number">5</span>],CM[<span class="number">0</span>],</span><br><span class="line">    CM[<span class="number">1</span>],CM[<span class="number">2</span>],CM[<span class="number">3</span>],CM[<span class="number">5</span>],CM[<span class="number">5</span>],CM[<span class="number">0</span>],CM[<span class="number">3</span>],CM[<span class="number">2</span>],CM[<span class="number">1</span>],CM[<span class="number">2</span>],CM[<span class="number">1</span>],CM[<span class="number">0</span>],</span><br><span class="line">    CM[<span class="number">1</span>],CM[<span class="number">2</span>],CM[<span class="number">3</span>],CM[<span class="number">5</span>],CM[<span class="number">1</span>],CM[<span class="number">0</span>],CM[<span class="number">1</span>],CL[<span class="number">7</span>],CL[<span class="number">6</span>],CL[<span class="number">7</span>],CM[<span class="number">1</span>],CM[<span class="number">0</span>]</span><br><span class="line">]</span><br><span class="line"><span class="comment"># 音调对应的节拍</span></span><br><span class="line">songT = [</span><br><span class="line">    <span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">4</span>,</span><br><span class="line">    <span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">4</span>,</span><br><span class="line">    <span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>,</span><br><span class="line">    <span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">2</span>,<span class="number">8</span>,<span class="number">2</span></span><br><span class="line">]</span><br><span class="line"><span class="comment"># 定义标准节拍时间</span></span><br><span class="line">metre = <span class="number">0.125</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化要使用的引脚</span></span><br><span class="line">io = <span class="number">11</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line">GPIO.setup(io, GPIO.OUT)</span><br><span class="line">pwm = GPIO.PWM(io, <span class="number">440</span>)</span><br><span class="line"><span class="comment"># 开始设置占空比为100 则无缘蜂鸣器不会发声</span></span><br><span class="line">pwm.start(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 播放示例乐曲的方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playSong</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 修改占空比为50 此时频率生效</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">    <span class="comment"># 遍历所有音调</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(songP)):</span><br><span class="line">        <span class="comment"># 0表示休止 禁声</span></span><br><span class="line">        <span class="keyword">if</span> songP[i] == <span class="number">0</span>:</span><br><span class="line">            pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line">        <span class="comment"># 更改频率控制音调</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">            pwm.ChangeFrequency(songP[i])</span><br><span class="line">        <span class="comment"># 通过节拍控制播放时间</span></span><br><span class="line">        time.sleep(songT[i] * metre) </span><br><span class="line">    <span class="comment"># 禁声</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 分别播放各个音阶的方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playDo</span><span class="params">()</span>:</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">    pwm.ChangeFrequency(CM[<span class="number">1</span>])</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playRe</span><span class="params">()</span>:</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">    pwm.ChangeFrequency(CM[<span class="number">2</span>])</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playMi</span><span class="params">()</span>:</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">    pwm.ChangeFrequency(CM[<span class="number">3</span>])</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playFa</span><span class="params">()</span>:</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">    pwm.ChangeFrequency(CM[<span class="number">4</span>])</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playSo</span><span class="params">()</span>:</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">    pwm.ChangeFrequency(CM[<span class="number">5</span>])</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playLa</span><span class="params">()</span>:</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">    pwm.ChangeFrequency(CM[<span class="number">6</span>])</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playXi</span><span class="params">()</span>:</span></span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">50</span>)</span><br><span class="line">    pwm.ChangeFrequency(CM[<span class="number">7</span>])</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br><span class="line">    pwm.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># UI相关设置</span></span><br><span class="line"><span class="comment"># 主页面设置</span></span><br><span class="line">top = Tkinter.Tk()</span><br><span class="line">top.geometry(<span class="string">'360x300'</span>)</span><br><span class="line">top.minsize(<span class="number">420</span>, <span class="number">300</span>) </span><br><span class="line">top.maxsize(<span class="number">420</span>, <span class="number">300</span>)</span><br><span class="line">top.title(<span class="string">"自制电子琴"</span>)</span><br><span class="line">l = Tkinter.Label(top, text=<span class="string">'自制电子琴'</span>, font=(<span class="string">'Arial'</span>, <span class="number">18</span>), width=<span class="number">30</span>, height=<span class="number">2</span>)</span><br><span class="line">l.pack()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># UI上的按钮布局</span></span><br><span class="line">songBtn = Tkinter.Button(top, text=<span class="string">"示例歌曲：花海"</span>, command=playSong)</span><br><span class="line">songBtn.place(x=<span class="number">30</span>,y=<span class="number">30</span>,width=<span class="number">120</span>,height=<span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">doBtn = Tkinter.Button(top,bitmap=<span class="string">"gray50"</span>, text=<span class="string">"Do"</span>, compound=Tkinter.LEFT, command=playDo)</span><br><span class="line">doBtn.place(x=<span class="number">0</span>,y=<span class="number">105</span>,width=<span class="number">60</span>,height=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">reBtn = Tkinter.Button(top,bitmap=<span class="string">"gray50"</span>, text=<span class="string">"Re"</span>, compound=Tkinter.LEFT, command=playRe)</span><br><span class="line">reBtn.place(x=<span class="number">60</span>,y=<span class="number">105</span>,width=<span class="number">60</span>,height=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">miBtn = Tkinter.Button(top,bitmap=<span class="string">"gray50"</span>, text=<span class="string">"Mi"</span>, compound=Tkinter.LEFT, command=playMi)</span><br><span class="line">miBtn.place(x=<span class="number">120</span>,y=<span class="number">105</span>,width=<span class="number">60</span>,height=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">faBtn = Tkinter.Button(top,bitmap=<span class="string">"gray50"</span>, text=<span class="string">"Fa"</span>, compound=Tkinter.LEFT, command=playFa)</span><br><span class="line">faBtn.place(x=<span class="number">180</span>,y=<span class="number">105</span>,width=<span class="number">60</span>,height=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">soBtn = Tkinter.Button(top,bitmap=<span class="string">"gray50"</span>, text=<span class="string">"So"</span>, compound=Tkinter.LEFT, command=playSo)</span><br><span class="line">soBtn.place(x=<span class="number">240</span>,y=<span class="number">105</span>,width=<span class="number">60</span>,height=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">laBtn = Tkinter.Button(top,bitmap=<span class="string">"gray50"</span>, text=<span class="string">"La"</span>, compound=Tkinter.LEFT, command=playLa)</span><br><span class="line">laBtn.place(x=<span class="number">300</span>,y=<span class="number">105</span>,width=<span class="number">60</span>,height=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">xiBtn = Tkinter.Button(top,bitmap=<span class="string">"gray50"</span>, text=<span class="string">"Xi"</span>, compound=Tkinter.LEFT, command=playXi)</span><br><span class="line">xiBtn.place(x=<span class="number">360</span>,y=<span class="number">105</span>,width=<span class="number">60</span>,height=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">stopButton = Tkinter.Button(top, text=<span class="string">"关闭"</span>)</span><br><span class="line">stopButton.place(x=<span class="number">340</span>,y=<span class="number">30</span>,width=<span class="number">60</span>,height=<span class="number">40</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入消息循环</span></span><br><span class="line">top.mainloop()</span><br></pre></td></tr></table></figure>
+<p>上面代码有比较详尽的注释，程序运行的UI效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-c000162e6d97ac77d1138aa3dc40ed9e368.png" alt=""></p>
+<p>现在，尽情的玩耍吧！</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2021/07/13/417一起玩转树莓派（4）——用开关控制蜂鸣器发声/" class="next-post btn btn-default" title='一起玩转树莓派（4）——用开关控制蜂鸣器发声'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（4）——用开关控制蜂鸣器发声</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（5）——让蜂鸣器播放音乐"><span class="toc-text">一起玩转树莓派（5）——让蜂鸣器播放音乐</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、实验前的准备"><span class="toc-text">一、实验前的准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1、关于音调的基础乐理知识"><span class="toc-text">1、关于音调的基础乐理知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、无源蜂鸣器播放声音原理"><span class="toc-text">2、无源蜂鸣器播放声音原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、使用树莓派制作电子琴"><span class="toc-text">二、使用树莓派制作电子琴</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-开始连线"><span class="toc-text">1.开始连线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-开始动手编程"><span class="toc-text">2.开始动手编程</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
