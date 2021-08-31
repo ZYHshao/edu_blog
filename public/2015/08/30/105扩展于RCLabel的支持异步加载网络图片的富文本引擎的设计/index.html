@@ -1,0 +1,286 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计">
+            
+	            扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/代码灵魂">
+            代码灵魂
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/08/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计"><a href="#扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计" class="headerlink" title="扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计"></a>扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计</h2><pre><code>在iOS开发中，图文混排一直都是UI编程的一个核心点，也有许多优秀的第三方引擎，其中很有名的一套图文混排的框架叫做DTCoreText。但是在前些日的做的一个项目中，我并没有采用这套框架，原因有二，一是这套框架体积非常大，而项目的需求其实并不太高；二是要在这套框架中修改一些东西，难度也非常大，我最终采用的是一个叫做RCLabel的第三方控件，经过一些简单的优化和完善，达到了项目的要求。
+
+先来介绍一下我项目中的图文混排的需求：首先我从服务器中取到的数据是字符串，但是其中穿插图片的位置是一个HTML的图片标签，标签里的资源路径就是图片的请求地址。需要达到的要求是这些数据显示出来后，图片的位置要空出来，然后通过异步的网络请求获取图片的数据，再将图片插入文字中。
+
+要自己实现一套这样的引擎确实会比较麻烦，幸运的是RCLabel可以完美的帮我们解析带有HTML标签的数据，进行图文混排，我们先来看一下这个东西怎么用，下面是我封装的一个展示html数据的view：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">@interface YHBaseHtmlView()&lt;YHRTLabelImageDelegate&gt;</span><br><span class="line">&#123;</span><br><span class="line">    //RCLabel对象</span><br><span class="line">    RCLabel * _rcLabel;</span><br><span class="line">    //保存属性 用于异步加载完成后刷新</span><br><span class="line">    RTLabelComponentsStructure * _origenComponent;</span><br><span class="line">    //含html标签的数据字符串</span><br><span class="line">    NSString * _srt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation YHBaseHtmlView</span><br><span class="line"></span><br><span class="line">/*</span><br><span class="line">// Only override drawRect: if you perform custom drawing.</span><br><span class="line">// An empty implementation adversely affects performance during animation.</span><br><span class="line">- (void)drawRect:(CGRect)rect &#123;</span><br><span class="line">    // Drawing code</span><br><span class="line">&#125;</span><br><span class="line">*/</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)coder</span><br><span class="line">&#123;</span><br><span class="line">    self = [super initWithCoder:coder];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">    //将rclabel初始化</span><br><span class="line">        _rcLabel = [[RCLabel alloc]init];</span><br><span class="line">        [self addSubview:_rcLabel];</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (instancetype)initWithFrame:(CGRect)frame</span><br><span class="line">&#123;</span><br><span class="line">    self = [super initWithFrame:frame];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        _rcLabel = [[RCLabel alloc]initWithFrame:frame];</span><br><span class="line">        [self addSubview:_rcLabel];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line">-(void)reSetHtmlStr:(NSString *)htmlStr&#123;</span><br><span class="line">    _srt = htmlStr;</span><br><span class="line">    //这个代理是我额外添加的 后面解释</span><br><span class="line">    _rcLabel.imageDelegate=self;</span><br><span class="line">    //设置frame</span><br><span class="line">    _rcLabel.frame=CGRectMake(0, 0, self.frame.size.width, 0);</span><br><span class="line">    //设置属性</span><br><span class="line">    _origenComponent = [RCLabel extractTextStyle:htmlStr IsLocation:NO withRCLabel:_rcLabel];</span><br><span class="line">    _rcLabel.componentsAndPlainText = _origenComponent;</span><br><span class="line">   //获取排版后的size</span><br><span class="line">    CGSize size = [_rcLabel optimumSize];</span><br><span class="line">    //重新设置frame</span><br><span class="line">    _rcLabel.frame=CGRectMake(0, 0, _rcLabel.frame.size.width, size.height);</span><br><span class="line">    self.frame=CGRectMake(self.frame.origin.x, self.frame.origin.y, _rcLabel.frame.size.width, size.height);</span><br><span class="line">&#125;</span><br><span class="line">//这是我额外添加的代理方法的实现</span><br><span class="line">-(void)YHRTLabelImageSuccess:(RCLabel *)label&#123;</span><br><span class="line">    _origenComponent = [RCLabel extractTextStyle:_srt IsLocation:NO withRCLabel:_rcLabel];</span><br><span class="line">    _rcLabel.componentsAndPlainText = _origenComponent;</span><br><span class="line">    </span><br><span class="line">    CGSize size = [_rcLabel optimumSize];</span><br><span class="line">    _rcLabel.frame=CGRectMake(0, 0, _rcLabel.frame.size.width, size.height);</span><br><span class="line">    self.frame=_rcLabel.frame;</span><br><span class="line">    if ([self.delegate respondsToSelector:@selector(YHBaseHtmlView:SizeChanged:)]) &#123;</span><br><span class="line">        [self.delegate YHBaseHtmlView:self SizeChanged:self.frame.size];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>RCLabel的用法很简单，总结来说只有三步：</p>
+<p>1.初始化并设置frame</p>
+<p>2.通过带html标签的数据进行属性的初始化</p>
+<p>3.将属性进行set设置并重设视图frame</p>
+<p>RCLabel是很强大，并且代码很简练，但是其中处理图片的部分必须是本地的图片，即图片html标签中的路径必须是本地图片的名字，其内部是通过[UIImage ImageNamed:]这个方法进行图片的渲染的，所以要达到我们的需要，我们需要对其进行一些简单的扩展：</p>
+<p>1、在属性设置方法中添加一个参数，来区分本地图片与网络图片：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//我在这个方法中添加了location这个bool值，实际上rclabel这个参数也是我添加的，是为了后面代理使用的</span><br><span class="line">+ (RTLabelComponentsStructure*)extractTextStyle:(NSString*)dataimage IsLocation:(BOOL)location withRCLabel:(RCLabel *)rcLabel;</span><br></pre></td></tr></table></figure>
+<p>2、在实现方法中添加如下代码，因为原文件有1900多行，在其中弄清楚逻辑关系也确实费了我不小的力气，我这里只将我添加的代码贴过来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">#warning 这里进行了兼容性处理</span><br><span class="line">                if (location) &#123;</span><br><span class="line">                //本地图片的渲染</span><br><span class="line">                    if (tempURL) &#123;</span><br><span class="line">                        UIImage  *tempImg = [UIImage imageNamed:tempURL];</span><br><span class="line">                        component.img = tempImg;</span><br><span class="line">                        </span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;else&#123;//这里做远程图片数据的处理</span><br><span class="line">                //这里我进行了缓存的操作，这个缓存中心是我封装的框架中的另一套东西，这里可以不用在意</span><br><span class="line">                    //先读缓存</span><br><span class="line">                    NSData * ceche = [[YHBaseCecheCenter sharedTheSingletion] readCecheFile:tempURL fromPath:YHBaseCecheImage];</span><br><span class="line">                    if (ceche) &#123;</span><br><span class="line">                        UIImage * tempImg = [UIImage imageWithData:ceche];</span><br><span class="line">                        component.img=tempImg;</span><br><span class="line">                    &#125;else&#123;</span><br><span class="line">                    //在分线程中进行图片数据的获取</span><br><span class="line">                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^&#123;</span><br><span class="line">                            if (tempURL) &#123;</span><br><span class="line">                                NSData * data = [YHBaseData getDataWithUrl:tempURL];</span><br><span class="line">                                if (data) &#123;</span><br><span class="line">                                //获取完成后村缓存</span><br><span class="line">                                    //做缓存</span><br><span class="line">                                    [[YHBaseCecheCenter sharedTheSingletion]writeCecheFile:data withFileID:tempURL toPath:YHBaseCecheImage];</span><br><span class="line">                                    //赋值 回调代理</span><br><span class="line">                                    UIImage * tempImg = [UIImage imageWithData:data];</span><br><span class="line">                                    component.img=tempImg;</span><br><span class="line">                                    //这里代理是我添加的，当图片下载完成后 通知视图重新排版</span><br><span class="line">                                    if ([[rcLabel imageDelegate]respondsToSelector:@selector(YHRTLabelImageSuccess:)]) &#123;</span><br><span class="line">                                        //在主线程中执行回调</span><br><span class="line">                                        //这个地方要在主线程中执行，否则刷新会有延时</span><br><span class="line">                                        dispatch_async(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">                                             [[rcLabel imageDelegate] YHRTLabelImageSuccess:rcLabel];</span><br><span class="line">                                        &#125;);</span><br><span class="line">                            </span><br><span class="line">                                    &#125;</span><br><span class="line">                                   </span><br><span class="line">                                &#125;</span><br><span class="line">                                </span><br><span class="line">                            &#125;;</span><br><span class="line">                            </span><br><span class="line">                        &#125;);</span><br><span class="line">                    &#125;</span><br><span class="line">                   </span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+<p>通过如上简单的扩展，基本达到了项目中的需求，这里把我的一些想法和思路分享给大家，有更好的解决方案，或者同是开发爱好者，欢迎指点与交流，我的QQ是316045346。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/09/03/106Objective-C使用位运算设计可复选的枚举/" class="pre-post btn btn-default" title='Objective-C使用位运算设计可复选的枚举'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Objective-C使用位运算设计可复选的枚举</span>
+        </a>
+    
+    
+        <a href="/2015/08/21/104iOS程序框架设计之皮肤切换功能/" class="next-post btn btn-default" title='iOS程序框架设计之皮肤切换功能'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS程序框架设计之皮肤切换功能</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计"><span class="toc-text">扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

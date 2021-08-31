@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS网络编程之七——本地用户凭证Cookie的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS网络编程之七——本地用户凭证Cookie的应用">
+            
+	            iOS网络编程之七——本地用户凭证Cookie的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/03/01</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS网络编程之七——本地用户凭证Cookie的应用"><a href="#iOS网络编程之七——本地用户凭证Cookie的应用" class="headerlink" title="iOS网络编程之七——本地用户凭证Cookie的应用"></a>iOS网络编程之七——本地用户凭证Cookie的应用</h2><h3 id="一、何为Cookie"><a href="#一、何为Cookie" class="headerlink" title="一、何为Cookie"></a>一、何为Cookie</h3><pre><code>Cookie是网站为了便是终端身份，保存在终端本地的用户凭证信息。Cookie中的字段与意义由服务端进行定义。例如，当用户在某个网站进行了登录操作后，服务端会将Cookie信息返回给终端，终端会将这些信息进行保存，在下一次再次访问这个网站时，终端会将保存的Cookie信息一并发送到服务端，服务端根据Cookie信息是否有效来判断此用户是否可以自动登录。
+</code></pre><h3 id="二、iOS中进行Cookie管理的两个类"><a href="#二、iOS中进行Cookie管理的两个类" class="headerlink" title="二、iOS中进行Cookie管理的两个类"></a>二、iOS中进行Cookie管理的两个类</h3><pre><code>iOS中进行HTTP网络请求Cookie管理主要由两个类负责，一个类是NSHTTPCookieStorage类，一个是NSHTTPCookie类。
+</code></pre><h4 id="1-NSHTTPCookieStorage"><a href="#1-NSHTTPCookieStorage" class="headerlink" title="1.NSHTTPCookieStorage"></a>1.NSHTTPCookieStorage</h4><pre><code>NSHTTPCookieStorage类采用单例的设计模式，其中管理着所有HTTP请求的Cookie信息，常用方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">//获取单例对象</span><br><span class="line">+ (NSHTTPCookieStorage *)sharedHTTPCookieStorage;</span><br><span class="line">//所有Cookie数据数组 其中存放NSHTTPCookie对象</span><br><span class="line">@property (nullable , readonly, copy) NSArray&lt;NSHTTPCookie *&gt; *cookies;</span><br><span class="line">//手动设置一条Cookie数据</span><br><span class="line">- (void)setCookie:(NSHTTPCookie *)cookie;</span><br><span class="line">//删除某条Cookie信息</span><br><span class="line">- (void)deleteCookie:(NSHTTPCookie *)cookie;</span><br><span class="line">//删除某个时间后的所有Cookie信息 iOS8后可用</span><br><span class="line">- (nullable NSArray&lt;NSHTTPCookie *&gt; *)cookiesForURL:(NSURL *)URL;</span><br><span class="line">//获取某个特定URL的所有Cookie数据</span><br><span class="line">- (void)removeCookiesSinceDate:(NSDate *)date NS_AVAILABLE(10_10, 8_0);</span><br><span class="line">//为某个特定的URL设置Cookie</span><br><span class="line">- (void)setCookies:(NSArray&lt;NSHTTPCookie *&gt; *)cookies forURL:(nullable NSURL *)URL mainDocumentURL:(nullable NSURL *)mainDocumentURL;</span><br><span class="line">//Cookie数据的接收协议</span><br><span class="line">/*</span><br><span class="line">枚举如下：</span><br><span class="line">typedef NS_ENUM(NSUInteger, NSHTTPCookieAcceptPolicy) &#123;</span><br><span class="line">    NSHTTPCookieAcceptPolicyAlways,//接收所有Cookie信息</span><br><span class="line">    NSHTTPCookieAcceptPolicyNever,//不接收所有Cookie信息</span><br><span class="line">    NSHTTPCookieAcceptPolicyOnlyFromMainDocumentDomain//只接收主文档域的Cookie信息</span><br><span class="line">&#125;;</span><br><span class="line">*/</span><br><span class="line">@property NSHTTPCookieAcceptPolicy cookieAcceptPolicy;</span><br></pre></td></tr></table></figure>
+<p>系统下面的两个通知与Cookie管理有关：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//Cookie数据的接收协议改变时发送的通知</span><br><span class="line">FOUNDATION_EXPORT NSString * const NSHTTPCookieManagerAcceptPolicyChangedNotification;</span><br><span class="line">//管理的Cookie数据发生变化时发送的通知</span><br><span class="line">FOUNDATION_EXPORT NSString * const NSHTTPCookieManagerCookiesChangedNotification;</span><br></pre></td></tr></table></figure>
+<h4 id="2-NSHTTPCookie"><a href="#2-NSHTTPCookie" class="headerlink" title="2.NSHTTPCookie"></a>2.NSHTTPCookie</h4><pre><code>NSHTTPCookie是具体的HTTP请求Cookie数据对象，其中属性方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">//下面两个方法用于对象的创建和初始化 都是通过字典进行键值设置</span><br><span class="line">- (nullable instancetype)initWithProperties:(NSDictionary&lt;NSString *, id&gt; *)properties;</span><br><span class="line">+ (nullable NSHTTPCookie *)cookieWithProperties:(NSDictionary&lt;NSString *, id&gt; *)properties;</span><br><span class="line">//返回Cookie数据中可用于添加HTTP头字段的字典</span><br><span class="line">+ (NSDictionary&lt;NSString *, NSString *&gt; *)requestHeaderFieldsWithCookies:(NSArray&lt;NSHTTPCookie *&gt; *)cookies;</span><br><span class="line">//从指定的响应头和URL地址中解析出Cookie数据</span><br><span class="line">+ (NSArray&lt;NSHTTPCookie *&gt; *)cookiesWithResponseHeaderFields:(NSDictionary&lt;NSString *, NSString *&gt; *)headerFields forURL:(NSURL *)URL;</span><br><span class="line">//Cookie数据中的属性字典</span><br><span class="line">@property (nullable, readonly, copy) NSDictionary&lt;NSString *, id&gt; *properties;</span><br><span class="line">//请求响应的版本</span><br><span class="line">@property (readonly) NSUInteger version;</span><br><span class="line">//请求相应的名称</span><br><span class="line">@property (readonly, copy) NSString *name;</span><br><span class="line">//请求相应的值</span><br><span class="line">@property (readonly, copy) NSString *value;</span><br><span class="line">//过期时间</span><br><span class="line">@property (nullable, readonly, copy) NSDate *expiresDate;</span><br><span class="line">//请求的域名</span><br><span class="line">@property (readonly, copy) NSString *domain;</span><br><span class="line">//请求的路径</span><br><span class="line">@property (readonly, copy) NSString *path;</span><br><span class="line">//是否是安全传输</span><br><span class="line">@property (readonly, getter=isSecure) BOOL secure;</span><br><span class="line">//是否只发送HTTP的服务</span><br><span class="line">@property (readonly, getter=isHTTPOnly) BOOL HTTPOnly;</span><br><span class="line">//响应的文档</span><br><span class="line">@property (nullable, readonly, copy) NSString *comment;</span><br><span class="line">//相应的文档URL</span><br><span class="line">@property (nullable, readonly, copy) NSURL *commentURL;</span><br><span class="line">//服务端口列表</span><br><span class="line">@property (nullable, readonly, copy) NSArray&lt;NSNumber *&gt; *portList;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/03/03/184iOS翻页视图控制器UIPageViewController的应用/" class="pre-post btn btn-default" title='iOS翻页视图控制器UIPageViewController的应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS翻页视图控制器UIPageViewController的应用</span>
+        </a>
+    
+    
+        <a href="/2016/02/26/182iOS网络编程之六——数据缓存类NSURLCache使用解析/" class="next-post btn btn-default" title='iOS网络编程之六——数据缓存类NSURLCache使用解析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS网络编程之六——数据缓存类NSURLCache使用解析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS网络编程之七——本地用户凭证Cookie的应用"><span class="toc-text">iOS网络编程之七——本地用户凭证Cookie的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、何为Cookie"><span class="toc-text">一、何为Cookie</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、iOS中进行Cookie管理的两个类"><span class="toc-text">二、iOS中进行Cookie管理的两个类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-NSHTTPCookieStorage"><span class="toc-text">1.NSHTTPCookieStorage</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-NSHTTPCookie"><span class="toc-text">2.NSHTTPCookie</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

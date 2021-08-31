@@ -1,0 +1,285 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>JavaScript基础之三——基本运算符 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="JavaScript基础之三——基本运算符">
+            
+	            JavaScript基础之三——基本运算符
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/前后端">
+            前后端
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/12/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="JavaScript基础之三——基本运算符"><a href="#JavaScript基础之三——基本运算符" class="headerlink" title="JavaScript基础之三——基本运算符"></a>JavaScript基础之三——基本运算符</h2><pre><code>大多数语言支持的基本运算符都差别不大。其中最常用的莫属赋值运算符，编程初学者总是会将赋值运算符与相等运算符混淆，需要注意，赋值运算符用于将等号右侧的值赋值给等号左侧的变量，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//赋值运算符</span></span><br><span class="line"><span class="keyword">var</span> v = <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+<pre><code>基本的算术运算符在JavaScript中都是支持的，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//+加法运算符</span></span><br><span class="line"><span class="keyword">var</span> sum = <span class="number">4</span>+<span class="number">5</span>;</span><br><span class="line"><span class="built_in">console</span>.log(sum);</span><br><span class="line"><span class="comment">//加法运算符也可以用于字符串之间的拼接</span></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">"Hello"</span> + <span class="string">"World"</span>;</span><br><span class="line"><span class="comment">//如果把数字与字符串进行相加 结果为字符串</span></span><br><span class="line">str = str + sum;</span><br><span class="line"><span class="built_in">console</span>.log(str);</span><br><span class="line"><span class="comment">//-减法运算符</span></span><br><span class="line"><span class="keyword">var</span> sub = <span class="number">10</span><span class="number">-2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(sub);</span><br><span class="line"><span class="comment">//*乘法运算符</span></span><br><span class="line"><span class="keyword">var</span> mul = <span class="number">5</span>*<span class="number">2</span>;</span><br><span class="line"><span class="built_in">console</span>.log(mul);</span><br><span class="line"><span class="comment">//\除法运算符</span></span><br><span class="line"><span class="keyword">var</span> dev = <span class="number">30</span>/<span class="number">4</span>;</span><br><span class="line"><span class="built_in">console</span>.log(dev);</span><br><span class="line"><span class="comment">//%取余运算符</span></span><br><span class="line"><span class="keyword">var</span> rem = <span class="number">10.5</span>%<span class="number">2.5</span>;</span><br><span class="line"><span class="built_in">console</span>.log(rem);</span><br><span class="line">rem = <span class="number">10</span>%<span class="number">3</span>;</span><br><span class="line"><span class="built_in">console</span>.log(rem);</span><br></pre></td></tr></table></figure>
+<p>JavaScript语言中的取余运算符十分强大，其不仅可以用于整数间的取余运算，也可以用于小数间的取余运算(Swift2.2以前的版本也可以支持浮点数取余运算，后面的版本将这个特性删掉了)。</p>
+<pre><code>除了前面列举的算术运算符外，JavaScript也支持递增与递减运算符，和C中的此类运算符用法一致，其可以放在操作数前也可以放在操作数后。通俗的理解，当运算符放在操作数前表示先进行递增或递减，再将结果返回；当运算符放在操作符后表示先将操作数的值返回，再进行递增或递减操作，演示如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//累加</span></span><br><span class="line"><span class="keyword">var</span> t1 = <span class="number">5</span>;</span><br><span class="line"><span class="built_in">console</span>.log(t1++);</span><br><span class="line"><span class="built_in">console</span>.log(t1);</span><br><span class="line"><span class="built_in">console</span>.log(++t1);</span><br><span class="line"><span class="built_in">console</span>.log(t1);</span><br><span class="line"><span class="comment">//递减</span></span><br><span class="line"><span class="keyword">var</span> t2 = <span class="number">5</span>;</span><br><span class="line"><span class="built_in">console</span>.log(t2--);</span><br><span class="line"><span class="built_in">console</span>.log(t2);</span><br><span class="line"><span class="built_in">console</span>.log(--t2);</span><br><span class="line"><span class="built_in">console</span>.log(t2);</span><br></pre></td></tr></table></figure>
+<pre><code>如果将赋值运算符与算术运算符结合起来，就组成了复合赋值运算符，复合运算符将接收的变量本身进行算术运算后返回，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//复合运算符</span></span><br><span class="line"><span class="keyword">var</span> t3 = <span class="number">5</span>;</span><br><span class="line">t3+=<span class="number">1</span>;</span><br><span class="line">t3-=<span class="number">1</span>;</span><br><span class="line">t3*=<span class="number">2</span>;</span><br><span class="line">t3/=<span class="number">2</span>;</span><br><span class="line">t3%=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
+<pre><code>在条件与循环结构中，逻辑表达式十分重要，逻辑运算符是构成逻辑表达式的基础，在编程的世界中逻辑值只有两个，非真即假。比较运算符会返回一个逻辑值，JavaScript中支持的比较运算符如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//比较运算符</span></span><br><span class="line"><span class="comment">//比较值是否相等 false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>==<span class="number">4</span>);</span><br><span class="line"><span class="comment">//当数字和字符串进行比较时  只对值是否相等进行比较 true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>==<span class="string">'3'</span>);</span><br><span class="line"><span class="comment">//全等比较 值和类型都相等才返回true  下面示例为fasle</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>===<span class="string">'3'</span>);</span><br><span class="line"><span class="comment">//是否不等 只比较值</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>!=<span class="string">'3'</span>);</span><br><span class="line"><span class="comment">//是否不全等 值和类型都比较</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>!==<span class="string">'3'</span>);</span><br><span class="line"><span class="comment">//小于比较</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>&lt;<span class="number">4</span>);</span><br><span class="line"><span class="comment">//大于比较</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>&gt;<span class="number">4</span>);</span><br><span class="line"><span class="comment">//不大于比较</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>&lt;=<span class="number">4</span>);</span><br><span class="line"><span class="comment">//不小于比较</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>&gt;=<span class="number">4</span>);</span><br></pre></td></tr></table></figure>
+<p>上面列举的比较运算符中的“==”与“===”需要注意，前者是对值进行比较，并不比较类型，后者除了比较值之外，还会对类型进行比较。   </p>
+<pre><code>JavaScript中支持的逻辑运算符有与运算符，或运算符和非运算符，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//进行与运算 有1个为false则为false  都为true才为true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">false</span>&amp;&amp;<span class="literal">true</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">true</span>&amp;&amp;<span class="literal">true</span>);</span><br><span class="line"><span class="comment">//进行或运算 有1个为true则为true 都为false才为false</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">false</span>||<span class="literal">true</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="literal">false</span>&amp;&amp;<span class="literal">false</span>);</span><br><span class="line"><span class="comment">//进行非运算</span></span><br><span class="line"><span class="built_in">console</span>.log(!<span class="literal">false</span>);</span><br><span class="line"><span class="built_in">console</span>.log(!<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<pre><code>JavaScript中还有一个运算符十分常用，条件运算符(问号冒号运算符)通常可以用来代替简单的条件语句，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//条件运算符</span></span><br><span class="line"><span class="keyword">var</span> a;</span><br><span class="line">a = <span class="literal">true</span>?<span class="string">"aaa"</span>:<span class="string">"bbb"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br><span class="line"><span class="keyword">var</span> b;</span><br><span class="line">b = <span class="literal">false</span>?<span class="string">"aaa"</span>:<span class="string">"bbb"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(b);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>前端学习新人，有志同道合的朋友，欢迎交流与指导，QQ群:541458536</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/12/31/297JavaScript基础之四——选择与循环结构/" class="pre-post btn btn-default" title='JavaScript基础之四——选择与循环结构'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">JavaScript基础之四——选择与循环结构</span>
+        </a>
+    
+    
+        <a href="/2016/12/29/295 Bootstrap响应式前端框架笔记十八——导航滚动监听/" class="next-post btn btn-default" title='Bootstrap响应式前端框架笔记十八——导航滚动监听'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Bootstrap响应式前端框架笔记十八——导航滚动监听</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#JavaScript基础之三——基本运算符"><span class="toc-text">JavaScript基础之三——基本运算符</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

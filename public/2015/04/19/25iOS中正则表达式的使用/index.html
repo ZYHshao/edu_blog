@@ -1,0 +1,307 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS中正则表达式的使用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中正则表达式的使用">
+            
+	            iOS中正则表达式的使用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+                    <a href="/tags/iOS编程" title='iOS编程'>
+                        iOS编程
+                    </a>
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/19</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="正则表达式在iOS开发中的应用"><a href="#正则表达式在iOS开发中的应用" class="headerlink" title="正则表达式在iOS开发中的应用"></a>正则表达式在iOS开发中的应用</h2><p>正则表达式在字符串查找，替换，检测中的应用非常广泛，正则表达式是什么，有怎样的语法，我的另一篇博客中有详细的介绍：<a href="http://my.oschina.net/u/2340880/blog/403508" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/403508</a>。这里只简单说一下其概念 ，正则表达式是一种语法小巧简单的语言，用来约束一些过滤字符串条的条件。很多开发工具都有支持正则表达式的内容，IOS也不例外，在IOS中NSRegularExpression类就是一个专门来处理正则表达式的类。</p>
+<h3 id="一、初始化方法"><a href="#一、初始化方法" class="headerlink" title="一、初始化方法"></a>一、初始化方法</h3><p>初始化NSRegularExpression的方法有两种，一个init方法和一个类方法。其作用基本是一样的</p>
+<p>+ (NSRegularExpression <em>)regularExpressionWithPattern:(NSString </em>)pattern options:(NSRegularExpressionOptions)options error:(NSError **)error;</p>
+<p>- (instancetype)initWithPattern:(NSString *)pattern options:(NSRegularExpressionOptions)options error:(NSError **)error </p>
+<p>其中，pattern是正则表达式，options是参数。对于option参数，它是一个枚举，表示正则模式的设置，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, NSRegularExpressionOptions) &#123;</span><br><span class="line">   NSRegularExpressionCaseInsensitive             = 1 &lt;&lt; 0, //不区分字母大小写的模式</span><br><span class="line">   NSRegularExpressionAllowCommentsAndWhitespace  = 1 &lt;&lt; 1, //忽略掉正则表达式中的空格和#号之后的字符</span><br><span class="line">   NSRegularExpressionIgnoreMetacharacters        = 1 &lt;&lt; 2, //将正则表达式整体作为字符串处理</span><br><span class="line">   NSRegularExpressionDotMatchesLineSeparators    = 1 &lt;&lt; 3, //允许.匹配任何字符，包括换行符  </span><br><span class="line">   NSRegularExpressionAnchorsMatchLines           = 1 &lt;&lt; 4, //允许^和$符号匹配行的开头和结尾</span><br><span class="line">   NSRegularExpressionUseUnixLineSeparators       = 1 &lt;&lt; 5, //设置\n为唯一的行分隔符，否则所有的都有效。</span><br><span class="line">   NSRegularExpressionUseUnicodeWordBoundaries    = 1 &lt;&lt; 6 //使用Unicode TR#29标准作为词的边界，否则所有传统正则表达式的词边界都有效</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>注意：1、NSRegularExpressionCaseInsensitive模式下正则表达式 aBc 会匹配到abc.</p>
+<pre><code>2、NSRegularExpressionIgnoreMetacharacters模式下正则表达式a b c 会匹配到abc，正则表达式ab#c会匹配到ab。
+
+3、NSRegularExpressionAllowCommentsAndWhitespace模式下正则表达式\[a-z\]，会匹配到\[a-z\]。
+</code></pre><h3 id="二、获取查询结果"><a href="#二、获取查询结果" class="headerlink" title="二、获取查询结果"></a>二、获取查询结果</h3><p>初始化完毕正则表达式的处理类后，我们需要进行正则表达式的查询，IOS官方提供了两种模式：</p>
+<h4 id="1、带block模式的方法："><a href="#1、带block模式的方法：" class="headerlink" title="1、带block模式的方法："></a>1、带block模式的方法：</h4><p>- (void)enumerateMatchesInString:(NSString <em>)string options:(NSMatchingOptions)options range:(NSRange)range usingBlock:(void (^)(NSTextCheckingResult \</em>result, NSMatchingFlags flags, BOOL *stop))block;</p>
+<p>使用举例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSRegularExpression * regex = [[NSRegularExpression alloc]initWithPattern:@&quot;[a-z]&quot; options:NSRegularExpressionCaseInsensitive error:nil];</span><br><span class="line">    [regex enumerateMatchesInString:@&quot;124a&quot; options:NSMatchingReportProgress range:NSMakeRange(0, 4) usingBlock:^(NSTextCheckingResult *result, NSMatchingFlags flags, BOOL *stop) &#123;</span><br><span class="line">        NSLog(@&quot;%@&quot;,result);</span><br><span class="line">    &#125; ];</span><br></pre></td></tr></table></figure>
+<p>注意：1、这个函数的一个参数options是一个枚举，设置回调的方式，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, NSMatchingOptions) &#123;</span><br><span class="line">   NSMatchingReportProgress         = 1 &lt;&lt; 0, //找到最长的匹配字符串后调用block回调</span><br><span class="line">   NSMatchingReportCompletion       = 1 &lt;&lt; 1, //找到任何一个匹配串后都回调一次block</span><br><span class="line">   NSMatchingAnchored               = 1 &lt;&lt; 2, //从匹配范围的开始出进行极限匹配</span><br><span class="line">   NSMatchingWithTransparentBounds  = 1 &lt;&lt; 3, //允许匹配的范围超出设置的范围</span><br><span class="line">   NSMatchingWithoutAnchoringBounds = 1 &lt;&lt; 4  //禁止^和$自动匹配行还是和结束</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre><code>2、block回调中的flags枚举对应如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, NSMatchingFlags) &#123;</span><br><span class="line">   NSMatchingProgress               = 1 &lt;&lt; 0, //匹配到最长串是被设置     </span><br><span class="line">   NSMatchingCompleted              = 1 &lt;&lt; 1, //全部分配完成后被设置    </span><br><span class="line">   NSMatchingHitEnd                 = 1 &lt;&lt; 2, //匹配到设置范围的末尾时被设置   </span><br><span class="line">   NSMatchingRequiredEnd            = 1 &lt;&lt; 3, //当前匹配到的字符串在匹配范围的末尾时被设置     </span><br><span class="line">   NSMatchingInternalError          = 1 &lt;&lt; 4  //由于错误导致的匹配失败时被设置   </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre><code>3、还有一点需要注意，就是那个bool值stop，我们可以在block块中设置它为YES，之后便会停止查找。
+</code></pre><h4 id="2、非block的方法"><a href="#2、非block的方法" class="headerlink" title="2、非block的方法"></a>2、非block的方法</h4><p>这个方法会返回一个结果数组，将所有匹配的结果返回</p>
+<p>- (NSArray <em>)matchesInString:(NSString </em>)string options:(NSMatchingOptions)options range:(NSRange)range;</p>
+<p>这个方法会返回匹配到得字符串的个数</p>
+<p>- (NSUInteger)numberOfMatchesInString:(NSString *)string options:(NSMatchingOptions)options range:(NSRange)range;</p>
+<p>这个方法会返回第一个查询到得结果，这个NSTextCheckingResult对象中有一个range属性，可以得到匹配到的字符串的范围。</p>
+<p>- (NSTextCheckingResult <em>)firstMatchInString:(NSString </em>)string options:(NSMatchingOptions)options range:(NSRange)range;</p>
+<p>这个方法直接返回匹配到得范围，NSRange。</p>
+<p>- (NSRange)rangeOfFirstMatchInString:(NSString *)string options:(NSMatchingOptions)options range:(NSRange)range;</p>
+<h3 id="三、一个辅助方法"><a href="#三、一个辅助方法" class="headerlink" title="三、一个辅助方法"></a>三、一个辅助方法</h3><p>在NSRegularExpression类中还提供了一个辅助方法：</p>
+<p>+ (NSString <em>)escapedPatternForString:(NSString </em>)string;</p>
+<p>它可以帮助我们将正则表达式加上”\“进行保护，将元字符转化成字面值。</p>
+<p>到此，在IOS中正则表达式的基本用法就介绍完了，希望正则表达式的应用，能为你的项目节省更多时间。</p>
+<p>疏漏之处 欢迎指正</p>
+<p>学习使用 欢迎转载</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/20/26iOS中图片(UIImage)拉伸技巧/" class="pre-post btn btn-default" title='iOS中图片(UIImage)拉伸技巧'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS中图片(UIImage)拉伸技巧</span>
+        </a>
+    
+    
+        <a href="/2015/04/19/24分分钟使用正则表达式/" class="next-post btn btn-default" title='分分钟使用正则表达式'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">分分钟使用正则表达式</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#正则表达式在iOS开发中的应用"><span class="toc-text">正则表达式在iOS开发中的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、初始化方法"><span class="toc-text">一、初始化方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、获取查询结果"><span class="toc-text">二、获取查询结果</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、带block模式的方法："><span class="toc-text">1、带block模式的方法：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、非block的方法"><span class="toc-text">2、非block的方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、一个辅助方法"><span class="toc-text">三、一个辅助方法</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

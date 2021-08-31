@@ -1,0 +1,344 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>配合LLDB调试器进行iOS代码调试 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="配合LLDB调试器进行iOS代码调试">
+            
+	            配合LLDB调试器进行iOS代码调试
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/日常技巧">
+            日常技巧
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/04/24</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="配合LLDB调试器进行iOS代码调试"><a href="#配合LLDB调试器进行iOS代码调试" class="headerlink" title="配合LLDB调试器进行iOS代码调试"></a>配合LLDB调试器进行iOS代码调试</h2><pre><code>在一款完整iOS移动应用的开发中，代码的调试和编写占着同等重要的地位。Xcode默认使用LLDB作为代码调试器，LLDB功能丰富且强大，恰当的使用它，可以帮助开发者事半功倍的完成代码调试的工作。
+</code></pre><h4 id="1-expression代码执行指令"><a href="#1-expression代码执行指令" class="headerlink" title="1.expression代码执行指令"></a>1.expression代码执行指令</h4><pre><code>关于LLDB调试器，最常用的指令应该是p与po了，开发者常用这两个命令来进行对象的打印操作，p会打印出对象地址和类型，po则会额外打印出对象的值得内容，实际上，这两个命令都是expression相关命令的简写。expression命令也并非简单的打印命令，实际上它是一个执行代码命令，执行后将返回值进行打印，这个命令有一个十分强大的特点，它可以真实改变程序运行中变量的值。例如在如下代码中的int c = a+b 一行添加一个断点，运行工程。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    int a = 0;</span><br><span class="line">    int b = 1;</span><br><span class="line">    int c = a+b;</span><br><span class="line">    NSLog(@&quot;%d&quot;,c);</span><br></pre></td></tr></table></figure>
+<p>如果开发者不进行任何认为操作，此时打印出的值应该是1，为了测试，可以在调试区输入如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) expression a=1</span><br></pre></td></tr></table></figure>
+<p>此后跳过断点继续运行程序，可以看到打印的结果如下，c变成2。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(lldb) expression a=1</span><br><span class="line">(int) $0 = 1</span><br><span class="line">2016-04-24 11:39:40.213 BreakPointTest[1010:79065] 2</span><br></pre></td></tr></table></figure>
+<p>通过上面的演示，我们发现使用LLDB调试代码十分方便的一个特点，当我们知道程序某个地方可能会出现问题，为了找到解决方法，不使用LLDB时我们可能需要在代码中添加大量的打印函数，并且多次尝试修改源代码才能解决问题，如果使用LLDB的expression命令，我们不仅不需要添加额外的打印代码，也不需要直接修改源代码，在调试区进行多次调试，直到找到正确的修改方法后再对源代码修改一次即可。</p>
+<h4 id="2-frame代码堆栈块信息相关指令"><a href="#2-frame代码堆栈块信息相关指令" class="headerlink" title="2.frame代码堆栈块信息相关指令"></a>2.frame代码堆栈块信息相关指令</h4><pre><code>当Xcode进入断点调试或者遇到异常程序崩溃时，在Xcode左侧的导航区都会将程序运行中的相关堆栈块信息列举出来，例如使用如下测试代码，在text方法中的int c = a+b 一行添加一个断点。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;ViewController.h&quot;</span><br><span class="line">@interface ViewController ()</span><br><span class="line">&#123;</span><br><span class="line">    int ab;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line">@implementation ViewController</span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    ab = 1;</span><br><span class="line">    [self test];  </span><br><span class="line">&#125;</span><br><span class="line">-(void)test&#123;</span><br><span class="line">    int a = 0;</span><br><span class="line">    int b = 1;</span><br><span class="line">    int c = a+b;</span><br><span class="line">    NSLog(@&quot;%d&quot;,c);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>当程序运行到断点处断开时，Xcode左侧的堆栈块如下图所示：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0424/120438_RdDl_2340880.png" alt></p>
+<p>从图中可以看出，程序当前处于激活状态的线程有5个，程序目前断在线程1中的test方法堆栈块中，使用frame info指令可以打印当前堆栈块的信息，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) frame info</span><br><span class="line">frame #0: 0x0000000102497905 BreakPointTest`-[ViewController test](self=0x00007fcd5b413320, _cmd=&quot;test&quot;) + 37 at ViewController.m:39</span><br></pre></td></tr></table></figure>
+<p>在打印的信息中，会有所在的文件名称和函数名称及堆栈块标号和内存地址。</p>
+<pre><code>在实际代码调试过程中，程序运行的回溯是一个重要的方法，例如上面的代码例子，虽然现在断点断在test方法中，开发者可能需要在viewDidLoad方法中进行相关调试，例如上面viewDidLoad方法中有一个变量ab，如果想查看ab变量的值，我们就需要将当前选中调试的堆栈块选择为viewDidLoad方法所在的堆栈块，从Xcode左侧导航区可以看到，viewDidLoad方法堆栈块的标号为1，执行如下LLDB指令即可切换：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(lldb) frame select 1</span><br><span class="line">frame #1: 0x00000001024978cb BreakPointTest`-[ViewController viewDidLoad](self=0x00007fcd5b413320, _cmd=&quot;viewDidLoad&quot;) + 91 at ViewController.m:31</span><br><span class="line">   28          int a = 0;</span><br><span class="line">   29          int b = 1;</span><br><span class="line">   30          int c = a+b;</span><br><span class="line">-&gt; 31          NSLog(@&quot;%d&quot;,c);</span><br><span class="line">   32      &#125;</span><br><span class="line">   33      @end</span><br></pre></td></tr></table></figure>
+<p>从打印信息可以看到，现在选中的调试堆栈块已经切换到viewDidLoad方法，再使用expression指令时就可以操作这个方法中的相关变量了。</p>
+<pre><code>在使用LLDB工具前，遇到这样的情况，我往往会采用打多个断点，一步步追溯代码的运行过程并检查过程中变量的值是否正确，调试起来并不十分方便，如果不小心错过了某个断点，又要重新开始，通过选择调试的frame堆栈块可以十分方便的解决这个问题。
+
+与frame相关的还有一个指令十分有用，下面的指令可以打印出当前堆栈块中所有对象的内容：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(lldb) frame variable</span><br><span class="line">(ViewController *) self = 0x00007fcd5b413320</span><br><span class="line">(SEL) _cmd = &quot;test&quot;</span><br><span class="line">(int) a = 0</span><br><span class="line">(int) b = 1</span><br><span class="line">(int) c = 0</span><br></pre></td></tr></table></figure>
+<p>variable后面也可以添加参数名来打印特定对象的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) frame variable a</span><br><span class="line">(int) a = 0</span><br></pre></td></tr></table></figure>
+<h4 id="3-thread线程操作相关指令"><a href="#3-thread线程操作相关指令" class="headerlink" title="3.thread线程操作相关指令"></a>3.thread线程操作相关指令</h4><pre><code>上面提到过，程序运行中会有多个激活的线程，每个线程中又有许多堆栈块，frame相关指令用于综合调试各个堆栈块，thread指令则是用于综合调试各个线程。首先Xcode左侧导航区为我们列出的线程堆栈块并不是当前线程中的所有堆栈块，使用如下命令可以打印出当前线程的所有堆栈块：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(lldb) thread backtrace</span><br><span class="line">* thread #1: tid = 0x152f8, 0x0000000102497905 BreakPointTest`-[ViewController test](self=0x00007fcd5b413320, _cmd=&quot;test&quot;) + 37 at ViewController.m:39, queue = &apos;com.apple.main-thread&apos;, stop reason = breakpoint 2.1</span><br><span class="line">  * frame #0: 0x0000000102497905 BreakPointTest`-[ViewController test](self=0x00007fcd5b413320, _cmd=&quot;test&quot;) + 37 at ViewController.m:39</span><br><span class="line">    frame #1: 0x00000001024978cb BreakPointTest`-[ViewController viewDidLoad](self=0x00007fcd5b413320, _cmd=&quot;viewDidLoad&quot;) + 91 at ViewController.m:31</span><br><span class="line">    frame #2: 0x0000000103475984 UIKit`-[UIViewController loadViewIfRequired] + 1198</span><br><span class="line">    frame #3: 0x0000000103475cd3 UIKit`-[UIViewController view] + 27</span><br><span class="line">    frame #4: 0x000000010334bfb4 UIKit`-[UIWindow addRootViewControllerViewIfPossible] + 61</span><br><span class="line">    frame #5: 0x000000010334c69d UIKit`-[UIWindow _setHidden:forced:] + 282</span><br><span class="line">    frame #6: 0x000000010335e180 UIKit`-[UIWindow makeKeyAndVisible] + 42</span><br><span class="line">    frame #7: 0x00000001032d2ed9 UIKit`-[UIApplication _callInitializationDelegatesForMainScene:transitionContext:] + 4131</span><br><span class="line">    frame #8: 0x00000001032d9568 UIKit`-[UIApplication _runWithMainScene:transitionContext:completion:] + 1769</span><br><span class="line">    frame #9: 0x00000001032d6714 UIKit`-[UIApplication workspaceDidEndTransaction:] + 188</span><br><span class="line">    frame #10: 0x0000000105d438c8 FrontBoardServices`__FBSSERIALQUEUE_IS_CALLING_OUT_TO_A_BLOCK__ + 24</span><br><span class="line">    frame #11: 0x0000000105d43741 FrontBoardServices`-[FBSSerialQueue _performNext] + 178</span><br><span class="line">    frame #12: 0x0000000105d43aca FrontBoardServices`-[FBSSerialQueue _performNextFromRunLoopSource] + 45</span><br><span class="line">    frame #13: 0x0000000102e4a301 CoreFoundation`__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__ + 17</span><br><span class="line">    frame #14: 0x0000000102e4022c CoreFoundation`__CFRunLoopDoSources0 + 556</span><br><span class="line">    frame #15: 0x0000000102e3f6e3 CoreFoundation`__CFRunLoopRun + 867</span><br><span class="line">    frame #16: 0x0000000102e3f0f8 CoreFoundation`CFRunLoopRunSpecific + 488</span><br><span class="line">    frame #17: 0x00000001032d5f21 UIKit`-[UIApplication _run] + 402</span><br><span class="line">    frame #18: 0x00000001032daf09 UIKit`UIApplicationMain + 171</span><br><span class="line">    frame #19: 0x0000000102497c3f BreakPointTest`main(argc=1, argv=0x00007fff5d768668) + 111 at main.m:14</span><br><span class="line">    frame #20: 0x00000001056fe92d libdyld.dylib`start + 1</span><br><span class="line">    frame #21: 0x00000001056fe92d libdyld.dylib`start + 1</span><br></pre></td></tr></table></figure>
+<p>thread list指令则可以打印出当前所有激活的线程，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(lldb) thread list</span><br><span class="line">Process 1049 stopped</span><br><span class="line">* thread #1: tid = 0x152f8, 0x0000000102497905 BreakPointTest`-[ViewController test](self=0x00007fcd5b413320, _cmd=&quot;test&quot;) + 37 at ViewController.m:39, queue = &apos;com.apple.main-thread&apos;, stop reason = breakpoint 2.1</span><br><span class="line">  thread #2: tid = 0x1531b, 0x0000000105a43ee2 libsystem_kernel.dylib`kevent64 + 10, queue = &apos;com.apple.libdispatch-manager&apos;</span><br><span class="line">  thread #3: tid = 0x1531c, 0x0000000105a435e2 libsystem_kernel.dylib`__workq_kernreturn + 10</span><br><span class="line">  thread #4: tid = 0x15324, 0x0000000105a435e2 libsystem_kernel.dylib`__workq_kernreturn + 10</span><br><span class="line">  thread #5: tid = 0x15328, 0x0000000105a435e2 libsystem_kernel.dylib`__workq_kernreturn + 10</span><br></pre></td></tr></table></figure>
+<p>thread info可以打印出当前选中调试的线程的信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) thread info</span><br><span class="line">thread #1: tid = 0x152f8, 0x0000000102497905 BreakPointTest`-[ViewController test](self=0x00007fcd5b413320, _cmd=&quot;test&quot;) + 37 at ViewController.m:39, queue = &apos;com.apple.main-thread&apos;, stop reason = breakpoint 2.1</span><br></pre></td></tr></table></figure>
+<p>同样也可以使用thread select指令来切换选中调试的线程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(lldb) thread select 2</span><br></pre></td></tr></table></figure>
+<p>thread continue指令用于继续执行当前的线程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(lldb) thread continue</span><br><span class="line">2016-04-24 12:29:54.562 BreakPointTest[1049:86776] 1</span><br><span class="line">Resuming thread 0x152f8 in process 1049</span><br><span class="line">Process 1049 resuming</span><br></pre></td></tr></table></figure>
+<h4 id="4-disassemble代码反汇编相关指令"><a href="#4-disassemble代码反汇编相关指令" class="headerlink" title="4.disassemble代码反汇编相关指令"></a>4.disassemble代码反汇编相关指令</h4><pre><code>disassemble相关指令用于输出某段程序的汇编代码，执行disassemble指令将会反汇编当前函数：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">BreakPointTest`-[ViewController test]:</span><br><span class="line">    0x10aab7940 &lt;+0&gt;:  pushq  %rbp</span><br><span class="line">    0x10aab7941 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">    0x10aab7944 &lt;+4&gt;:  subq   $0x20, %rsp</span><br><span class="line">    0x10aab7948 &lt;+8&gt;:  leaq   0x1711(%rip), %rax        ; @&quot;%d&quot;</span><br><span class="line">    0x10aab794f &lt;+15&gt;: movq   %rdi, -0x8(%rbp)</span><br><span class="line">    0x10aab7953 &lt;+19&gt;: movq   %rsi, -0x10(%rbp)</span><br><span class="line">    0x10aab7957 &lt;+23&gt;: movl   $0x0, -0x14(%rbp)</span><br><span class="line">    0x10aab795e &lt;+30&gt;: movl   $0x1, -0x18(%rbp)</span><br><span class="line">-&gt;  0x10aab7965 &lt;+37&gt;: movl   -0x14(%rbp), %ecx</span><br><span class="line">    0x10aab7968 &lt;+40&gt;: addl   -0x18(%rbp), %ecx</span><br><span class="line">    0x10aab796b &lt;+43&gt;: movl   %ecx, -0x1c(%rbp)</span><br><span class="line">    0x10aab796e &lt;+46&gt;: movl   -0x1c(%rbp), %esi</span><br><span class="line">    0x10aab7971 &lt;+49&gt;: movq   %rax, %rdi</span><br><span class="line">    0x10aab7974 &lt;+52&gt;: movb   $0x0, %al</span><br><span class="line">    0x10aab7976 &lt;+54&gt;: callq  0x10aab7c80               ; symbol stub for: NSLog</span><br><span class="line">    0x10aab797b &lt;+59&gt;: addq   $0x20, %rsp</span><br><span class="line">    0x10aab797f &lt;+63&gt;: popq   %rbp</span><br><span class="line">    0x10aab7980 &lt;+64&gt;: retq</span><br></pre></td></tr></table></figure>
+<pre><code>使用disassemble -b则会输出带字节信息的汇编代码：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">(lldb) disassemble -b</span><br><span class="line">BreakPointTest`-[ViewController test]:</span><br><span class="line">    0x10aab7940 &lt;+0&gt;:  55                    pushq  %rbp</span><br><span class="line">    0x10aab7941 &lt;+1&gt;:  48 89 e5              movq   %rsp, %rbp</span><br><span class="line">    0x10aab7944 &lt;+4&gt;:  48 83 ec 20           subq   $0x20, %rsp</span><br><span class="line">    0x10aab7948 &lt;+8&gt;:  48 8d 05 11 17 00 00  leaq   0x1711(%rip), %rax        ; @&quot;%d&quot;</span><br><span class="line">    0x10aab794f &lt;+15&gt;: 48 89 7d f8           movq   %rdi, -0x8(%rbp)</span><br><span class="line">    0x10aab7953 &lt;+19&gt;: 48 89 75 f0           movq   %rsi, -0x10(%rbp)</span><br><span class="line">    0x10aab7957 &lt;+23&gt;: c7 45 ec 00 00 00 00  movl   $0x0, -0x14(%rbp)</span><br><span class="line">    0x10aab795e &lt;+30&gt;: c7 45 e8 01 00 00 00  movl   $0x1, -0x18(%rbp)</span><br><span class="line">-&gt;  0x10aab7965 &lt;+37&gt;: 8b 4d ec              movl   -0x14(%rbp), %ecx</span><br><span class="line">    0x10aab7968 &lt;+40&gt;: 03 4d e8              addl   -0x18(%rbp), %ecx</span><br><span class="line">    0x10aab796b &lt;+43&gt;: 89 4d e4              movl   %ecx, -0x1c(%rbp)</span><br><span class="line">    0x10aab796e &lt;+46&gt;: 8b 75 e4              movl   -0x1c(%rbp), %esi</span><br><span class="line">    0x10aab7971 &lt;+49&gt;: 48 89 c7              movq   %rax, %rdi</span><br><span class="line">    0x10aab7974 &lt;+52&gt;: b0 00                 movb   $0x0, %al</span><br><span class="line">    0x10aab7976 &lt;+54&gt;: e8 05 03 00 00        callq  0x10aab7c80               ; symbol stub for: NSLog</span><br><span class="line">    0x10aab797b &lt;+59&gt;: 48 83 c4 20           addq   $0x20, %rsp</span><br><span class="line">    0x10aab797f &lt;+63&gt;: 5d                    popq   %rbp</span><br><span class="line">    0x10aab7980 &lt;+64&gt;: c3                    retq</span><br></pre></td></tr></table></figure>
+<pre><code>使用disassemble -c 指令可以设置输出汇编代码的行数，如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(lldb) disassemble -c 5</span><br><span class="line">BreakPointTest`-[ViewController test]:</span><br><span class="line">    0x10aab7940 &lt;+0&gt;:  pushq  %rbp</span><br><span class="line">    0x10aab7941 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">    0x10aab7944 &lt;+4&gt;:  subq   $0x20, %rsp</span><br><span class="line">    0x10aab7948 &lt;+8&gt;:  leaq   0x1711(%rip), %rax        ; @&quot;%d&quot;</span><br><span class="line">    0x10aab794f &lt;+15&gt;: movq   %rdi, -0x8(%rbp)</span><br></pre></td></tr></table></figure>
+<pre><code>使用disassemble -l只输出当前断点处汇编代码：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">BreakPointTest`-[ViewController test] + 37 at ViewController.m:30</span><br><span class="line">   29          int b = 1;</span><br><span class="line">-&gt; 30          int c = a+b;</span><br><span class="line">   31          NSLog(@&quot;%d&quot;,c);</span><br><span class="line">BreakPointTest`-[ViewController test]:</span><br><span class="line">-&gt;  0x10aab7965 &lt;+37&gt;: movl   -0x14(%rbp), %ecx</span><br></pre></td></tr></table></figure>
+<pre><code>使用disassemble -m混合显示汇编代码：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">(lldb) disassemble -m</span><br><span class="line">BreakPointTest`-[ViewController test] at ViewController.m:27</span><br><span class="line">   26      &#125;</span><br><span class="line">   27      -(void)test&#123;</span><br><span class="line">   28          int a = 0;</span><br><span class="line">BreakPointTest`-[ViewController test]:</span><br><span class="line">    0x10aab7940 &lt;+0&gt;:  pushq  %rbp</span><br><span class="line">    0x10aab7941 &lt;+1&gt;:  movq   %rsp, %rbp</span><br><span class="line">    0x10aab7944 &lt;+4&gt;:  subq   $0x20, %rsp</span><br><span class="line">    0x10aab7948 &lt;+8&gt;:  leaq   0x1711(%rip), %rax        ; @&quot;%d&quot;</span><br><span class="line">    0x10aab794f &lt;+15&gt;: movq   %rdi, -0x8(%rbp)</span><br><span class="line">    0x10aab7953 &lt;+19&gt;: movq   %rsi, -0x10(%rbp)</span><br><span class="line">BreakPointTest`-[ViewController test] + 23 at ViewController.m:28</span><br><span class="line">   27      -(void)test&#123;</span><br><span class="line">   28          int a = 0;</span><br><span class="line">   29          int b = 1;</span><br><span class="line">    0x10aab7957 &lt;+23&gt;: movl   $0x0, -0x14(%rbp)</span><br><span class="line">BreakPointTest`-[ViewController test] + 30 at ViewController.m:29</span><br><span class="line">   28          int a = 0;</span><br><span class="line">   29          int b = 1;</span><br><span class="line">   30          int c = a+b;</span><br><span class="line">    0x10aab795e &lt;+30&gt;: movl   $0x1, -0x18(%rbp)</span><br><span class="line">BreakPointTest`-[ViewController test] + 37 at ViewController.m:30</span><br><span class="line">   29          int b = 1;</span><br><span class="line">-&gt; 30          int c = a+b;</span><br><span class="line">   31          NSLog(@&quot;%d&quot;,c);</span><br><span class="line">-&gt;  0x10aab7965 &lt;+37&gt;: movl   -0x14(%rbp), %ecx</span><br><span class="line">BreakPointTest`-[ViewController test] + 40 at ViewController.m:30</span><br><span class="line">   29          int b = 1;</span><br><span class="line">   30          int c = a+b;</span><br><span class="line">   31          NSLog(@&quot;%d&quot;,c);</span><br><span class="line">    0x10aab7968 &lt;+40&gt;: addl   -0x18(%rbp), %ecx</span><br><span class="line">BreakPointTest`-[ViewController test] + 43 at ViewController.m:30</span><br><span class="line">   29          int b = 1;</span><br><span class="line">   30          int c = a+b;</span><br><span class="line">   31          NSLog(@&quot;%d&quot;,c);</span><br><span class="line">    0x10aab796b &lt;+43&gt;: movl   %ecx, -0x1c(%rbp)</span><br><span class="line">BreakPointTest`-[ViewController test] + 46 at ViewController.m:31</span><br><span class="line">   30          int c = a+b;</span><br><span class="line">   31          NSLog(@&quot;%d&quot;,c);</span><br><span class="line">   32      &#125;</span><br><span class="line">    0x10aab796e &lt;+46&gt;: movl   -0x1c(%rbp), %esi</span><br><span class="line">BreakPointTest`-[ViewController test] + 49 at ViewController.m:31</span><br><span class="line">   30          int c = a+b;</span><br><span class="line">   31          NSLog(@&quot;%d&quot;,c);</span><br><span class="line">   32      &#125;</span><br><span class="line">    0x10aab7971 &lt;+49&gt;: movq   %rax, %rdi</span><br><span class="line">    0x10aab7974 &lt;+52&gt;: movb   $0x0, %al</span><br><span class="line">    0x10aab7976 &lt;+54&gt;: callq  0x10aab7c80               ; symbol stub for: NSLog</span><br><span class="line">BreakPointTest`-[ViewController test] + 59 at ViewController.m:32</span><br><span class="line">   31          NSLog(@&quot;%d&quot;,c);</span><br><span class="line">   32      &#125;</span><br><span class="line">   33      @end</span><br><span class="line">    0x10aab797b &lt;+59&gt;: addq   $0x20, %rsp</span><br><span class="line">    0x10aab797f &lt;+63&gt;: popq   %rbp</span><br><span class="line">    0x10aab7980 &lt;+64&gt;: retq</span><br></pre></td></tr></table></figure>
+<pre><code>使用disassemble -p进行当前行的汇编代码输出：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(lldb) disassemble -p</span><br><span class="line">BreakPointTest`-[ViewController test]:</span><br><span class="line">-&gt;  0x10aab7965 &lt;+37&gt;: movl   -0x14(%rbp), %ecx</span><br><span class="line">    0x10aab7968 &lt;+40&gt;: addl   -0x18(%rbp), %ecx</span><br><span class="line">    0x10aab796b &lt;+43&gt;: movl   %ecx, -0x1c(%rbp)</span><br><span class="line">    0x10aab796e &lt;+46&gt;: movl   -0x1c(%rbp), %esi</span><br></pre></td></tr></table></figure>
+<h4 id="5-其他LLDB常用指令"><a href="#5-其他LLDB常用指令" class="headerlink" title="5.其他LLDB常用指令"></a>5.其他LLDB常用指令</h4><pre><code>bt指令用于打印当前线程所有堆栈块信息：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(lldb) bt</span><br><span class="line">* thread #1: tid = 0x19f11, 0x000000010aab7965 BreakPointTest`-[ViewController test](self=0x00007fee9c11e330, _cmd=&quot;test&quot;) + 37 at ViewController.m:30, queue = &apos;com.apple.main-thread&apos;, stop reason = breakpoint 2.1</span><br><span class="line">  * frame #0: 0x000000010aab7965 BreakPointTest`-[ViewController test](self=0x00007fee9c11e330, _cmd=&quot;test&quot;) + 37 at ViewController.m:30</span><br><span class="line">    frame #1: 0x000000010aab792b BreakPointTest`-[ViewController viewDidLoad](self=0x00007fee9c11e330, _cmd=&quot;viewDidLoad&quot;) + 91 at ViewController.m:22</span><br><span class="line">    frame #2: 0x000000010ba95984 UIKit`-[UIViewController loadViewIfRequired] + 1198</span><br><span class="line">    frame #3: 0x000000010ba95cd3 UIKit`-[UIViewController view] + 27</span><br><span class="line">    frame #4: 0x000000010b96bfb4 UIKit`-[UIWindow addRootViewControllerViewIfPossible] + 61</span><br><span class="line">    frame #5: 0x000000010b96c69d UIKit`-[UIWindow _setHidden:forced:] + 282</span><br><span class="line">    frame #6: 0x000000010b97e180 UIKit`-[UIWindow makeKeyAndVisible] + 42</span><br><span class="line">    frame #7: 0x000000010b8f2ed9 UIKit`-[UIApplication _callInitializationDelegatesForMainScene:transitionContext:] + 4131</span><br><span class="line">    frame #8: 0x000000010b8f9568 UIKit`-[UIApplication _runWithMainScene:transitionContext:completion:] + 1769</span><br><span class="line">    frame #9: 0x000000010b8f6714 UIKit`-[UIApplication workspaceDidEndTransaction:] + 188</span><br><span class="line">    frame #10: 0x000000010e3638c8 FrontBoardServices`__FBSSERIALQUEUE_IS_CALLING_OUT_TO_A_BLOCK__ + 24</span><br><span class="line">    frame #11: 0x000000010e363741 FrontBoardServices`-[FBSSerialQueue _performNext] + 178</span><br><span class="line">    frame #12: 0x000000010e363aca FrontBoardServices`-[FBSSerialQueue _performNextFromRunLoopSource] + 45</span><br><span class="line">    frame #13: 0x000000010b46a301 CoreFoundation`__CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__ + 17</span><br><span class="line">    frame #14: 0x000000010b46022c CoreFoundation`__CFRunLoopDoSources0 + 556</span><br><span class="line">    frame #15: 0x000000010b45f6e3 CoreFoundation`__CFRunLoopRun + 867</span><br><span class="line">    frame #16: 0x000000010b45f0f8 CoreFoundation`CFRunLoopRunSpecific + 488</span><br><span class="line">    frame #17: 0x000000010b8f5f21 UIKit`-[UIApplication _run] + 402</span><br><span class="line">    frame #18: 0x000000010b8faf09 UIKit`UIApplicationMain + 171</span><br><span class="line">    frame #19: 0x000000010aab7c5f BreakPointTest`main(argc=1, argv=0x00007fff55148668) + 111 at main.m:14</span><br><span class="line">    frame #20: 0x000000010dd1e92d libdyld.dylib`start + 1</span><br><span class="line">    frame #21: 0x000000010dd1e92d libdyld.dylib`start + 1</span><br></pre></td></tr></table></figure>
+<p><strong>  c指令**</strong>继续运行线程<strong><strong>和</strong></strong>process continue<strong>**效果一样。</strong></p>
+<p><strong>        call指令**</strong>运行一个表达式，<strong>**和</strong> <strong>expression</strong> <strong>效果一样。</strong></p>
+<p><strong>        detach指令**</strong>结束当前调试的线程。**</p>
+<p><strong>        di指令**</strong>反汇编当前函数<strong><strong>与</strong></strong>disassemble<strong>**相同。</strong></p>
+<p><strong>        exit指令**</strong>退出<strong><strong>lldb</strong></strong>调试器。**</p>
+<p><strong>        finish指令**</strong>完成当前堆栈块的调试，<strong>**程序会继续运行。</strong></p>
+<p><strong>        n指令**</strong>进行单步调试，<strong><strong>与</strong></strong>next<strong>**作用一样。</strong></p>
+<p><strong>        p指令**</strong>与<strong><strong>expression</strong></strong>作用一样。**</p>
+<p><strong>        print指令用于变量的打印。</strong></p>
+<p><strong>        r指令**</strong>重新运行应用程序。**</p>
+<p><strong>        quit指令结束调试。</strong></p>
+<p><strong>        bugreport指令用于创建堆栈信息报告。</strong></p>
+<p><strong>        command history指令用于打印LLDB调试命令记录。</strong></p>
+<p><strong>        help指令用于查询LLDB相关调试指令的用法。</strong></p>
+<p><strong>        apropo指令用于查询某些包含某些关键字的指令。</strong></p>
+<p><strong>        version指令用于查询LLDB调试器的版本，如下：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(lldb) version</span><br><span class="line">lldb-350.0.21.3</span><br></pre></td></tr></table></figure>
+<pre><code> image list命令用于打印工程中所有用到的库文件。
+
+image相关指令还有一个十分有用的命令，image lookup --address可以查询某个内存地址的内容，如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(lldb) image lookup --address 0x000000010373e885</span><br><span class="line">      Address: CoreFoundation[0x00000000000f4885] (CoreFoundation.__TEXT.__text + 996309)</span><br><span class="line">      Summary: CoreFoundation`-[__NSArray0 objectAtIndex:] + 101</span><br></pre></td></tr></table></figure>
+<pre><code>image lookup --type用于查询某种类型中包含的属性，如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">(lldb) image lookup --type UILabel</span><br><span class="line">Best match found in /Users/vip/Library/Developer/Xcode/DerivedData/BreakPointTest-cearqrjqbntqcnfgiqzpxhyadewi/Build/Products/Debug-iphonesimulator/BreakPointTest.app/BreakPointTest:</span><br><span class="line">id = &#123;0x000082c1&#125;, name = &quot;UILabel&quot;, byte-size = 8, decl = UILabel.h:18, compiler_type = &quot;@interface UILabel : UIView</span><br><span class="line">@property ( getter = text,setter = setText:,readwrite,copy,nonatomic ) NSString * text;</span><br><span class="line">@property ( getter = font,setter = setFont:,readwrite,nonatomic ) UIFont * font;</span><br><span class="line">@property ( getter = textColor,setter = setTextColor:,readwrite,nonatomic ) UIColor * textColor;</span><br><span class="line">@property ( getter = shadowColor,setter = setShadowColor:,readwrite,nonatomic ) UIColor * shadowColor;</span><br><span class="line">@property ( getter = shadowOffset,setter = setShadowOffset:,assign,readwrite,nonatomic ) CGSize shadowOffset;</span><br><span class="line">@property ( getter = textAlignment,setter = setTextAlignment:,assign,readwrite,nonatomic ) NSTextAlignment textAlignment;</span><br><span class="line">@property ( getter = lineBreakMode,setter = setLineBreakMode:,assign,readwrite,nonatomic ) NSLineBreakMode lineBreakMode;</span><br><span class="line">@property ( getter = attributedText,setter = setAttributedText:,readwrite,copy,nonatomic ) NSAttributedString * attributedText;</span><br><span class="line">@property ( getter = highlightedTextColor,setter = setHighlightedTextColor:,readwrite,nonatomic ) UIColor * highlightedTextColor;</span><br><span class="line">@property ( getter = isHighlighted,setter = setHighlighted:,assign,readwrite,nonatomic ) BOOL highlighted;</span><br><span class="line">@property ( getter = isUserInteractionEnabled,setter = setUserInteractionEnabled:,assign,readwrite,nonatomic ) BOOL userInteractionEnabled;</span><br><span class="line">@property ( getter = isEnabled,setter = setEnabled:,assign,readwrite,nonatomic ) BOOL enabled;</span><br><span class="line">@property ( getter = numberOfLines,setter = setNumberOfLines:,assign,readwrite,nonatomic ) NSInteger numberOfLines;</span><br><span class="line">@property ( getter = adjustsFontSizeToFitWidth,setter = setAdjustsFontSizeToFitWidth:,assign,readwrite,nonatomic ) BOOL adjustsFontSizeToFitWidth;</span><br><span class="line">@property ( getter = baselineAdjustment,setter = setBaselineAdjustment:,assign,readwrite,nonatomic ) UIBaselineAdjustment baselineAdjustment;</span><br><span class="line">@property ( getter = minimumScaleFactor,setter = setMinimumScaleFactor:,assign,readwrite,nonatomic ) CGFloat minimumScaleFactor;</span><br><span class="line">@property ( getter = allowsDefaultTighteningForTruncation,setter = setAllowsDefaultTighteningForTruncation:,assign,readwrite,nonatomic ) BOOL allowsDefaultTighteningForTruncation;</span><br><span class="line">@property ( getter = preferredMaxLayoutWidth,setter = setPreferredMaxLayoutWidth:,assign,readwrite,nonatomic ) CGFloat preferredMaxLayoutWidth;</span><br><span class="line">@property ( getter = minimumFontSize,setter = setMinimumFontSize:,assign,readwrite,nonatomic ) CGFloat minimumFontSize;</span><br><span class="line">@property ( getter = adjustsLetterSpacingToFitWidth,setter = setAdjustsLetterSpacingToFitWidth:,assign,readwrite,nonatomic ) BOOL adjustsLetterSpacingToFitWidth;</span><br><span class="line">@end&quot;</span><br></pre></td></tr></table></figure>
+<pre><code>x指令可以读取某段内存的二进制数据：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(lldb) x 0x000000010373e885</span><br><span class="line">0x10373e885: 66 66 2e 0f 1f 84 00 00 00 00 00 55 48 89 e5 48  ff.........UH..H</span><br><span class="line">0x10373e895: 8d 3d 6d f2 28 00 e8 c0 d9 f0 ff 48 89 05 c1 58  .=m.(......H...X</span><br></pre></td></tr></table></figure>
+<pre><code>LLDB的用法和技巧还有很多，它可以大大提高我们调试代码的效率，有疏漏和错误之处，还望与志同道合的朋友共同学习进步。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/04/26/200iOS头部渐变的表格视图设计/" class="pre-post btn btn-default" title='iOS头部渐变的表格视图设计'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS头部渐变的表格视图设计</span>
+        </a>
+    
+    
+        <a href="/2016/04/16/198带动画渐进效果与颜色渐变的圆弧进度控件设计/" class="next-post btn btn-default" title='带动画渐进效果与颜色渐变的圆弧进度控件设计'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">带动画渐进效果与颜色渐变的圆弧进度控件设计</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#配合LLDB调试器进行iOS代码调试"><span class="toc-text">配合LLDB调试器进行iOS代码调试</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-expression代码执行指令"><span class="toc-text">1.expression代码执行指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-frame代码堆栈块信息相关指令"><span class="toc-text">2.frame代码堆栈块信息相关指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-thread线程操作相关指令"><span class="toc-text">3.thread线程操作相关指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-disassemble代码反汇编相关指令"><span class="toc-text">4.disassemble代码反汇编相关指令</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-其他LLDB常用指令"><span class="toc-text">5.其他LLDB常用指令</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

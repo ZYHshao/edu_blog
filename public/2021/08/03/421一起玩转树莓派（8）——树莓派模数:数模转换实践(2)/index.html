@@ -1,0 +1,438 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（8）——树莓派模数/数模转换实践(2) | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（8）——树莓派模数/数模转换实践(2)">
+            
+	            一起玩转树莓派（8）——树莓派模数/数模转换实践(2)
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/08/03</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（8）——树莓派模数-数模转换实践-2"><a href="#一起玩转树莓派（8）——树莓派模数-数模转换实践-2" class="headerlink" title="一起玩转树莓派（8）——树莓派模数/数模转换实践(2)"></a>一起玩转树莓派（8）——树莓派模数/数模转换实践(2)</h1><p>在上一篇博客中，我们介绍了在树莓派中使用模数转换芯片的基本方法，如果你对上一篇博文中介绍的内容已经有了深入的理解，那后面的应用试验对你来说将非常容易。如果不是，那么我建议你先将之前介绍的内容在研究一下：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5142788" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5142788</a></p>
+<p>现在，如果你决定继续本篇博客的学习，那么我认为你已经了解了PCF8591芯片的基本用法，明白了PCF8591的接线方式，I2C总线的基本工作原理以及PCF8591的设置命令的意义和读数据的方法。</p>
+<h2 id="一、读取外部传感器的模拟信号"><a href="#一、读取外部传感器的模拟信号" class="headerlink" title="一、读取外部传感器的模拟信号"></a>一、读取外部传感器的模拟信号</h2><p>在本系列博客的上一篇文章中，我们通过读取PCF8591实验模块自带的可调节电压输出、光敏传感器和热敏传感器实现了对当前环境信息的的读取，除了可以读取当前设置的输出电压外，我们还可以获得当前的环境的温度和亮度。PCF8591实验模块自带的传感器可以让我们很方便的进行实验，其实在实际应用中，更多时候我们需要从AIN0到AIN3引脚来获取外接传感器的模拟信号。现在，我们尝试下通过AIN0和AIN1两个输入引脚来获取外接光敏和热敏传感器的数据。</p>
+<h3 id="1-关于实验所使用的传感器"><a href="#1-关于实验所使用的传感器" class="headerlink" title="1.关于实验所使用的传感器"></a>1.关于实验所使用的传感器</h3><p>我们这里的小实验将使用光敏和热敏传感器。</p>
+<h4 id="光敏模块"><a href="#光敏模块" class="headerlink" title="光敏模块"></a>光敏模块</h4><p>光敏传感器能够感应光纤的明暗变化，其实现此功能的核心在于光敏电阻，只做光敏电阻的常用材料有硫化镉、硫化铝等。这些材料在特定波长的光波照射下，其阻值会产生明显的变化。本次实验，我们使用的光敏传感器模块如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-cf0ab1a1b62b66ce5a1717bc3f810d5bad8.png" alt></p>
+<p>可以看到，此模块的核心是一个光敏电阻，提供了可调节灵敏度的功能单元和两个LED指示灯，其中一个LED是电源指示灯，接通电源后会亮，另一个LED灯是电平指示灯，当光亮达到阈值时，输出引脚输出低电平，此LED灯亮，当光亮度较暗时，输出引脚输出高电平，此LED灯不亮。我们再看此模块的4个引脚：</p>
+<p>VCC：电源引脚</p>
+<p>GND：接地引脚</p>
+<p>DO：数字信号输出引脚(高低电平)</p>
+<p>AO：模拟信号输出引脚</p>
+<h4 id="热敏模块"><a href="#热敏模块" class="headerlink" title="热敏模块"></a>热敏模块</h4><p>本次实验我们使用的热敏模块的功能与上面将的光敏模块类似，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-cd04de01a966fa0d5def160588062b519b2.png" alt></p>
+<p>此热敏模块同样包含两个LED指示灯、灵敏度调节单元和4个引脚，引脚如下：</p>
+<p>VCC：电源引脚</p>
+<p>GND：接地引脚</p>
+<p>DO：数字信号输出引脚(高低电平)</p>
+<p>AO：模拟信号输出引脚</p>
+<h3 id="2-实验连线"><a href="#2-实验连线" class="headerlink" title="2.实验连线"></a>2.实验连线</h3><p>本次实验，我们使用PCF8591读取光敏和热敏传感器的模拟信号，将其转换成数字信号被树莓派程序处理，同时，我们使用树莓派的GPIO端口来读取传感器本身输出的数字信号，首先，我们先确定要使用的PCF8591的输入引脚和要使用的树莓派GPIO引脚。</p>
+<p>PCF8591输入引脚使用：AINO和AIN1，其中AINO读取光敏模拟信号，AIN1读取热敏模拟信号。</p>
+<p>GPIO输入引脚使用：GPIO17和GPIO18（BCM编码方式），其中17引脚读取光敏数字信号，18引脚读取热敏数字信号。</p>
+<h4 id="PCF8591连线："><a href="#PCF8591连线：" class="headerlink" title="PCF8591连线："></a>PCF8591连线：</h4><table>
+<thead>
+<tr>
+<th>PCF8591</th>
+<th>树莓派功能引脚</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SCL</td>
+<td>SCL</td>
+</tr>
+<tr>
+<td>SDA</td>
+<td>SDA</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>VCC</td>
+<td>5V</td>
+</tr>
+</tbody>
+</table>
+<h4 id="光敏传感器："><a href="#光敏传感器：" class="headerlink" title="光敏传感器："></a>光敏传感器：</h4><table>
+<thead>
+<tr>
+<th>光敏传感器</th>
+<th>树莓派/PCF8591</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>树莓派3.3V</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>树莓派GND</td>
+</tr>
+<tr>
+<td>DO</td>
+<td>树莓派GPIO11(物理引脚)</td>
+</tr>
+<tr>
+<td>AO</td>
+<td>PCF8591 AIN0</td>
+</tr>
+</tbody>
+</table>
+<h4 id="热敏传感器："><a href="#热敏传感器：" class="headerlink" title="热敏传感器："></a>热敏传感器：</h4><table>
+<thead>
+<tr>
+<th>热敏传感器</th>
+<th>树莓派/PCF8591</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>树莓派3.3V</td>
+</tr>
+<tr>
+<td>---</td>
+<td>---</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>树莓派GND</td>
+</tr>
+<tr>
+<td>---</td>
+<td>---</td>
+</tr>
+<tr>
+<td>DO</td>
+<td>树莓派GPIO12(物理引脚)</td>
+</tr>
+<tr>
+<td>---</td>
+<td>---</td>
+</tr>
+<tr>
+<td>AO</td>
+<td>PCF8591 AIN1</td>
+</tr>
+<tr>
+<td>---</td>
+<td>---</td>
+</tr>
+</tbody>
+</table>
+<p>连线最终如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-164397c48159f2f141cf5bef93cf6c9b80d.JPEG" alt></p>
+<p>和之前相比，我们这次直接在树莓派上连接了3个元件，连线也复杂了很多，只要按照上面的表格，注意引脚的正确即可。</p>
+<h3 id="3-编写程序"><a href="#3-编写程序" class="headerlink" title="3.编写程序"></a>3.编写程序</h3><p>步入正题，先上代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#SMBus (System Management Bus,系统管理总线) </span></span><br><span class="line"><span class="keyword">import</span> smbus   <span class="comment">#在程序中导入“smbus”模块</span></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO </span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">bus = smbus.SMBus(<span class="number">1</span>)         <span class="comment">#创建一个smbus实例</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过PCF8591读取模拟信号</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据亮度的模拟数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readLight</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#发送一个控制字节到设备 表示要读取AIN0通道的数据</span></span><br><span class="line">    bus.write_byte(<span class="number">0x48</span>,<span class="number">0x40</span>)   </span><br><span class="line">    bus.read_byte(<span class="number">0x48</span>)         <span class="comment"># 空读一次，消费掉无效数据</span></span><br><span class="line">    <span class="keyword">return</span> bus.read_byte(<span class="number">0x48</span>)  <span class="comment"># 返回某通道输入的模拟值A/D转换后的数字值</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readTemperature</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#发送一个控制字节到设备 表示要读取AIN1通道的数据</span></span><br><span class="line">    bus.write_byte(<span class="number">0x48</span>,<span class="number">0x41</span>)   </span><br><span class="line">    bus.read_byte(<span class="number">0x48</span>)         <span class="comment"># 空读一次，消费掉无效数据</span></span><br><span class="line">    <span class="keyword">return</span> bus.read_byte(<span class="number">0x48</span>)  <span class="comment"># 返回某通道输入的模拟值A/D转换后的数字值</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过GPIO读取数字信号</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置使用的引脚编码模式</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line"><span class="comment"># 光敏模块的数字输出引脚 BCM 17</span></span><br><span class="line">LP = <span class="number">11</span></span><br><span class="line"><span class="comment"># 热敏模块的数字输出引脚 BCM 18</span></span><br><span class="line">TP = <span class="number">12</span></span><br><span class="line"><span class="comment"># 引脚初始化</span></span><br><span class="line">GPIO.setup(LP, GPIO.IN)</span><br><span class="line">GPIO.setup(TP, GPIO.IN)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    print(<span class="string">'--------分割线----------'</span>)</span><br><span class="line">    print(<span class="string">'亮度数字信号：'</span>, GPIO.input(LP))</span><br><span class="line">    print(<span class="string">'亮度模拟信号：'</span>, readLight())</span><br><span class="line">    print(<span class="string">'温度数字信号：'</span>, GPIO.input(TP))</span><br><span class="line">    print(<span class="string">'温度模拟信号：'</span>, readTemperature())</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<p>上面的代码有着比较详尽的注释，这里我们无需多说，在树莓派上运行此代码，即可观察到控制台的数据输出。</p>
+<h2 id="二、使用操纵杆外设控制圆球移动"><a href="#二、使用操纵杆外设控制圆球移动" class="headerlink" title="二、使用操纵杆外设控制圆球移动"></a>二、使用操纵杆外设控制圆球移动</h2><p>如果你顺利完成了上面的实验，先别急着庆祝，你会发现，和本系列前面几篇博客的内容较比，到目前为止我们并没有介绍新的知识，同时也没有做什么新颖的事情。的确如此，但是通过上面实验的练习，可以帮助你更深入的理解数模/模数转换的应用场景，并且让你能够更加灵活的对I2C总线与通用GPIO串口结合进行使用。下面我们要来做一些好玩的事情了，不知道你小时候是否有玩过“大把机”，这是一种摇杆游戏机，摇杆可以朝上下左右4个方向转动，也可以从中间按下。通常，上下左右用来控制游戏人物的行动方向，按下用来进行人物跳跃。现在，我们要来做一个简单的游戏，为树莓派连接操纵杆，控制游戏程序页面上圆球的行为，其中方向控制圆球的移动，按下操纵杆则使圆球变色。</p>
+<p>此实验所使用的操纵杆如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-153baf340329f1613b9f4bf92682c05a002.png" alt></p>
+<p>可以看到，此元件有5个引脚：</p>
+<p>GND：接地引脚</p>
+<p>+5V：5V电源引脚</p>
+<p>VRX：横向坐标模拟信号输出引脚</p>
+<p>VRY：纵向坐标模拟信号输出引脚</p>
+<p>SW：按钮数字信号输出引脚</p>
+<p>操作杆内部实际上封装了双向的电阻器，其阻值会根据摇杆的方向变动产生变化，从而影响引脚信号的产生变化。</p>
+<h3 id="1-进行连线"><a href="#1-进行连线" class="headerlink" title="1.进行连线"></a>1.进行连线</h3><p>我相信，现在连线对你来说应该是最简单的工作了。操纵杆有模拟信号输出同时也有数字信号输出，我们依然需要结合PCF8591与树莓派GPIO一起使用。关于PCF8591的接线上面有介绍，这里不再重复。操作杆的接线方式如下：</p>
+<table>
+<thead>
+<tr>
+<th>操纵杆</th>
+<th>树莓派/PCF8591</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GND</td>
+<td>树莓派GND</td>
+</tr>
+<tr>
+<td>+5V</td>
+<td>树莓派5.5V</td>
+</tr>
+<tr>
+<td>VRX</td>
+<td>PCF8591 AIN0</td>
+</tr>
+<tr>
+<td>VRY</td>
+<td>PCF8591 AIN1</td>
+</tr>
+<tr>
+<td>SW</td>
+<td>树莓派GPIO 11（物理引脚）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-编写代码"><a href="#2-编写代码" class="headerlink" title="2.编写代码"></a>2.编写代码</h3><p>对于本实验来说，有涉及到UI开发，我们依然采用Python自带的Tkinter库，其有很好的移植性，并且其提供了Canvas画布，我们可以灵活的渲染所需要的图形。示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入UI模块</span></span><br><span class="line"><span class="keyword">import</span> tkinter <span class="keyword">as</span> Tkinter</span><br><span class="line"></span><br><span class="line"><span class="comment">#SMBus (System Management Bus,系统管理总线) </span></span><br><span class="line"><span class="keyword">import</span> smbus   <span class="comment">#在程序中导入“smbus”模块</span></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO <span class="comment"># 导入树莓派GPIO模块</span></span><br><span class="line"><span class="keyword">import</span> time <span class="comment"># 导入定时器模块</span></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 主页面设置</span></span><br><span class="line">top = Tkinter.Tk()</span><br><span class="line">top.geometry(<span class="string">'500x300'</span>)</span><br><span class="line">top.title(<span class="string">"操纵杆控制圆球"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当前圆球的坐标</span></span><br><span class="line">currentX = <span class="number">0</span></span><br><span class="line">currentY = <span class="number">0</span></span><br><span class="line"><span class="comment"># 当前圆球的颜色是否红色</span></span><br><span class="line">currentColor = <span class="keyword">True</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行窗口的初始化</span></span><br><span class="line">canvas = Tkinter.Canvas(top, width=<span class="number">500</span>, height=<span class="number">300</span>, borderwidth=<span class="number">0</span>, highlightthickness=<span class="number">0</span>)</span><br><span class="line">canvas.grid()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进化画布的初始化</span></span><br><span class="line">circle = canvas.create_oval(currentX, currentY, <span class="number">100</span>, <span class="number">100</span>, fill=<span class="string">"red"</span>, outline=<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义移动圆球的方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">moveCircle</span><span class="params">(c, x, y)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> currentX, currentY</span><br><span class="line">    moveX = x</span><br><span class="line">    moveY = y</span><br><span class="line">    <span class="keyword">if</span> x &gt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> x + currentX &gt; <span class="number">400</span>:</span><br><span class="line">            moveX = <span class="number">400</span> - currentX</span><br><span class="line">            currentX = <span class="number">400</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            currentX += x</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> x + currentX &lt; <span class="number">0</span>:</span><br><span class="line">            moveX = -currentX</span><br><span class="line">            currentX = <span class="number">0</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            currentX += x</span><br><span class="line">    <span class="keyword">if</span> y &gt;= <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> y + currentY &gt; <span class="number">200</span>:</span><br><span class="line">            moveY = <span class="number">200</span> - currentY</span><br><span class="line">            currentY = <span class="number">200</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            currentY += y</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">if</span> y + currentY &lt; <span class="number">0</span>:</span><br><span class="line">            moveY = -currentY</span><br><span class="line">            currentY = <span class="number">0</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            currentY += y    </span><br><span class="line">    canvas.move(c, moveX, moveY)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义改变圆球颜色的方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">changeColor</span><span class="params">(c)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> currentColor</span><br><span class="line">    canvas.itemconfig(c, fill= <span class="string">'red'</span> <span class="keyword">if</span> currentColor <span class="keyword">else</span> <span class="string">'blue'</span>)</span><br><span class="line">    currentColor = <span class="keyword">not</span> currentColor</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">bus = smbus.SMBus(<span class="number">1</span>)         <span class="comment">#创建一个smbus实例</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过PCF8591读取模拟信号</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 摇杆X引脚的模拟数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readX</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#发送一个控制字节到设备 表示要读取AIN0通道的数据</span></span><br><span class="line">    bus.write_byte(<span class="number">0x48</span>,<span class="number">0x40</span>)   </span><br><span class="line">    bus.read_byte(<span class="number">0x48</span>)         <span class="comment"># 空读一次，消费掉无效数据</span></span><br><span class="line">    <span class="keyword">return</span> bus.read_byte(<span class="number">0x48</span>)  <span class="comment"># 返回某通道输入的模拟值A/D转换后的数字值</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 摇杆Y引脚的模拟数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readY</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment">#发送一个控制字节到设备 表示要读取AIN1通道的数据</span></span><br><span class="line">    bus.write_byte(<span class="number">0x48</span>,<span class="number">0x41</span>)   </span><br><span class="line">    bus.read_byte(<span class="number">0x48</span>)         <span class="comment"># 空读一次，消费掉无效数据</span></span><br><span class="line">    <span class="keyword">return</span> bus.read_byte(<span class="number">0x48</span>)  <span class="comment"># 返回某通道输入的模拟值A/D转换后的数字值</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过GPIO读取数字信号</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置使用的引脚编码模式</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line"><span class="comment"># 按键使用引脚 BCM 17</span></span><br><span class="line">BTN = <span class="number">11</span></span><br><span class="line"><span class="comment"># 引脚初始化 设置下拉高电平</span></span><br><span class="line">GPIO.setup(BTN, GPIO.IN, pull_up_down=GPIO.PUD_UP)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建定时器函数，用来检查摇杆动作</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fun_timer</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> timer</span><br><span class="line">    x = readX()</span><br><span class="line">    y = readY()</span><br><span class="line">    press = GPIO.input(BTN)</span><br><span class="line">    print(<span class="string">'X：'</span>, x)</span><br><span class="line">    print(<span class="string">'Y：'</span>, y)</span><br><span class="line">    print(<span class="string">'按钮：'</span>, press)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> x &lt;= <span class="number">10</span>:</span><br><span class="line">        moveCircle(circle, <span class="number">-10</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">if</span> x &gt;= <span class="number">245</span>:</span><br><span class="line">        moveCircle(circle, <span class="number">10</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">if</span> y &lt;= <span class="number">10</span>:</span><br><span class="line">        moveCircle(circle, <span class="number">0</span>, <span class="number">-10</span>)</span><br><span class="line">    <span class="keyword">if</span> y &gt;= <span class="number">245</span>:</span><br><span class="line">        moveCircle(circle, <span class="number">0</span>, <span class="number">10</span>)</span><br><span class="line"></span><br><span class="line">    timer = threading.Timer(<span class="number">0.2</span>, fun_timer)</span><br><span class="line">    timer.start()</span><br><span class="line"></span><br><span class="line">timer = threading.Timer(<span class="number">0.2</span>, fun_timer)</span><br><span class="line">timer.start()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义GPIO输入端口的回调</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">btnCallback</span><span class="params">(channel)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> GPIO.input(channel):</span><br><span class="line">        changeColor(circle)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加输入引脚电平变化的回调函数</span></span><br><span class="line">GPIO.add_event_detect(BTN, GPIO.FALLING, callback=btnCallback, bouncetime=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">top.mainloop()</span><br></pre></td></tr></table></figure>
+<p>上面的代码有些长，但是有详尽的注释，关于UI开发方面的内容不是我们本系列博客的重点，这里我们不做过多介绍。moveCircle函数是核心的圆球移动函数，内部通过边界判定逻辑可以确保圆球不会移动到视图界面外。changeColor方法用来修改圆球的颜色，这里我们让每次按键后在红绿颜色间进行切换。readX和readY函数我们无需做过多介绍了，其通过PCF8591的AIN0和AIN1来传输摇杆的横纵坐标信号。GPIO的相关操作我们也非常熟悉了，我们通过注册回调函数来监听操作杆按钮按下的行为。</p>
+<p>在树莓派上运行上面的代码，尝试操作下，感受下使用操纵杆控制页面元素的喜悦吧。</p>
+<h3 id="3-一点扩展"><a href="#3-一点扩展" class="headerlink" title="3.一点扩展"></a>3.一点扩展</h3><p>观察上面的示例代码，你会发现，我们使用了一些临界值来作为触发方向动作的阈值，例如10，245这种，这是因为PCF8591是8位的数模转换模块，即其转换出的数字量在0-255之间（包括0和255），对于本实验来说，我们并没有让摇杆元件传输的模拟量发挥正真的作用，想一下，你是否能够根据操作杆的旋转程度来调整圆球移动的速度呢？动手试试吧！</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/08/09/422一起玩转树莓派（9）——DS18B20测温模块应用/" class="pre-post btn btn-default" title='一起玩转树莓派（9）——DS18B20测温模块应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（9）——DS18B20测温模块应用</span>
+        </a>
+    
+    
+        <a href="/2021/07/24/420一起玩转树莓派（7）——树莓派模数:数模转换实践/" class="next-post btn btn-default" title='一起玩转树莓派（7）——树莓派模数/数模转换实践'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（7）——树莓派模数/数模转换实践</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（8）——树莓派模数-数模转换实践-2"><span class="toc-text">一起玩转树莓派（8）——树莓派模数/数模转换实践(2)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、读取外部传感器的模拟信号"><span class="toc-text">一、读取外部传感器的模拟信号</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-关于实验所使用的传感器"><span class="toc-text">1.关于实验所使用的传感器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#光敏模块"><span class="toc-text">光敏模块</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#热敏模块"><span class="toc-text">热敏模块</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-实验连线"><span class="toc-text">2.实验连线</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#PCF8591连线："><span class="toc-text">PCF8591连线：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#光敏传感器："><span class="toc-text">光敏传感器：</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#热敏传感器："><span class="toc-text">热敏传感器：</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-编写程序"><span class="toc-text">3.编写程序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、使用操纵杆外设控制圆球移动"><span class="toc-text">二、使用操纵杆外设控制圆球移动</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-进行连线"><span class="toc-text">1.进行连线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-编写代码"><span class="toc-text">2.编写代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-一点扩展"><span class="toc-text">3.一点扩展</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

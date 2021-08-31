@@ -1,0 +1,293 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Objective-C关于id引发的一些思考 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Objective-C关于id引发的一些思考">
+            
+	            Objective-C关于id引发的一些思考
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Objective-C浅探">
+            Objective-C浅探
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/10/14</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Objective-C关于id引发的一些思考"><a href="#Objective-C关于id引发的一些思考" class="headerlink" title="Objective-C关于id引发的一些思考"></a>Objective-C关于id引发的一些思考</h2><pre><code>Objective-C是面向对象语言，但其中又并非全部是对象。在初学这门语言时，我常常从意识上将NS开头的类型与C语言原本的那些类型分割开来，假装他们之间没有联系，只关注“类”的世界。然而类终究只是一种应用上的抽象，就像“语法糖”一样，抛开华丽的外表，内部依然是最朴素的结构体和指针。本篇博客的来由源自朋友的一个问题：在ARC环境，performSelector:withObject:方法如何传递非对象类型的数据呢？这个问题乍看起来简单，但要较较真，却也并非那么简单。下面的内容都是有这个简单的问题引出的，如果你感兴趣，在读之前可以先试着解决下上面的疑问。
+</code></pre><h3 id="一、还要先说id"><a href="#一、还要先说id" class="headerlink" title="一、还要先说id"></a>一、还要先说id</h3><pre><code>id是Objective-C中定义的一种泛型实现，它可以表示任何对象类型。尽管id看起来是如此简单，但细细琢磨，其却包含了3层意义：
+</code></pre><p>1.作为参数或返回值</p>
+<pre><code>将id类型作为函数的参数或返回值是最浅的一层意义，其增加了函数的灵活性，Foundation框架中也有其大量的应用，例如可变数组追加元素。
+</code></pre><p>2.id类型的参数不会进行类型检查</p>
+<pre><code>这是id类型十分重要的一个特点，声明为id类型的对象就相当于告诉了编译器不进行类型检查(这也是和NSObject类型最大区别)。因此，你可以将id类型的变量赋值给任何对象类型，也可以将任何对象类型的变量赋值给id类型，更重要的是，使用id类型的对象可以调用任意方法，都不会进行类型检查。
+</code></pre><p>3.id<protocol>是一种优雅的编程方式</protocol></p>
+<pre><code>由于id类型不会进行编译检查，要约束类型方法实现最好的方式就是通过协议，id&lt;protocol&gt;是一种十分优雅的编程方式，其不再关心类型，只注重约定的实现，Foundation框架中的代理多采用这种方式设计。
+
+另外，在objc.h文件中，id被定位为如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> objc_object &#123;</span><br><span class="line">    Class _Nonnull isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//结构体指针</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_object *<span class="keyword">id</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="二、关于void与void"><a href="#二、关于void与void" class="headerlink" title="二、关于void与void*"></a>二、关于void与void*</h3><pre><code>在开发中，void用的最多的地方要数标记Objective-C无返回值的函数，Objective-C函数和C函数不同，其必须有一个确定的返回值类型，如果没有返回值，则需要使用void来标记返回值类型，而C函数是可以不指定返回值类型的，默认的C函数则是返回int类型的值，例如下面的两个函数实际上是完全一样的：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">print()&#123;</span><br><span class="line">    printf(<span class="string">"cccccc"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> print()&#123;</span><br><span class="line">    printf(<span class="string">"cccccc"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>void在C语言中还有一大用途在于约束无参函数，例如上面示例的函数虽然没有参数，但是如果你在调用的时候强制传入参数编译器也不出进行错误提醒，如果将函数修改如下，则此函数就完全不能传入参数了：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> print(<span class="keyword">void</span>)&#123;</span><br><span class="line">    printf(<span class="string">"cccccc"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>归根结底，void大多时候用来表示“空”，而void * 则完全不同，它所描述的实际上是任意类型的指针。这里和id很像对不对，虽然id描述的是Objective-C对象但是本质也是指针，那么根据我们的推测，id类型的数据和void*类型的数据是可以进行类型转换的。事实上，在MRC环境下确实如此，ARC环境下则要更复杂一些，由于ARC机制要对Objective-C对象进行引用计数管理，对C指针并不会，因此在ARC环境下编译器是不允许我们直接将id于void*进行进行转换的，例如下面的报错：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2017/1014/174458_SNKM_2340880.png" alt></p>
+<h3 id="三、ARC中用-bridge的应用"><a href="#三、ARC中用-bridge的应用" class="headerlink" title="三、ARC中用__bridge的应用"></a>三、ARC中用__bridge的应用</h3><pre><code>前面说过，由于ARC的原因，导致无法在Objective-C对象与C指针类型之间进行直接转换，但是可以通过\_\_bridge来转换，从字面理解，\_\_bridge的作用就是用来桥接。在做Objective-C相关开发时，你一定遇到过CoreFoundation框架与Foundation框架混用的情况，CF框架中的类都是由C语言直接实现的，例如CFString，CFURL等，其虽然可以和NSString，NSURL互用，但在ARC环境在，却必须进行桥接转换，即使用__bridge。上面的代码可以做如下修改：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line"><span class="keyword">void</span> * ap = &amp;a;</span><br><span class="line"><span class="keyword">id</span> c = (__bridge <span class="keyword">id</span>)ap;</span><br></pre></td></tr></table></figure>
+<p>同样，将id类型转换为void *如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSNumber</span> * num = [[<span class="built_in">NSNumber</span> alloc]initWithInt:<span class="number">1</span>];</span><br><span class="line"><span class="keyword">void</span> * cNumber = (__bridge <span class="keyword">void</span> *)num;</span><br></pre></td></tr></table></figure>
+<p>与__bridge相对应的还有__bridge_transfer与__bridge_retained，他们的区别是__bridge不会改变对象的所有权，__bridge_transfer会将对象所有权进行转移，即release掉转换前的Objective-C对象，而__bridge_retained则是将所有权进行retain强引用。</p>
+<h3 id="四、解决最初的问题"><a href="#四、解决最初的问题" class="headerlink" title="四、解决最初的问题"></a>四、解决最初的问题</h3><pre><code>再来看我们最初的问题，下面方法的两个参数都是id类型的：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)performSelector:(SEL)aSelector withObject:(<span class="keyword">id</span>)object1 withObject:(<span class="keyword">id</span>)object2;</span><br></pre></td></tr></table></figure>
+<p>虽然我们也可以用其他方式来达到相同的效果，比如修改原函数的参数类型，或者使用NSInvocation来发送消息，一种更简便的方式如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view, typically from a nib.</span></span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    [<span class="keyword">self</span> performSelector:<span class="keyword">@selector</span>(log:age:) withObject:<span class="string">@"huishao"</span> withObject:(__bridge <span class="keyword">id</span>)(<span class="keyword">void</span>*)a];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>)log:(<span class="built_in">NSString</span> *)name age:(<span class="keyword">int</span>)age&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@,%d"</span>,name,age);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，总结一点，其实不论任何编程语言，类型检查都是编译时的特性，真正传递的数据依然是在运行时决定的。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/10/20/360iOS11新特性：新增拖拽交互体验/" class="pre-post btn btn-default" title='iOS11新特性：新增拖拽交互体验'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS11新特性：新增拖拽交互体验</span>
+        </a>
+    
+    
+        <a href="/2017/08/24/358Swift4语法新特性/" class="next-post btn btn-default" title='Swift4语法新特性'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift4语法新特性</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Objective-C关于id引发的一些思考"><span class="toc-text">Objective-C关于id引发的一些思考</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、还要先说id"><span class="toc-text">一、还要先说id</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、关于void与void"><span class="toc-text">二、关于void与void*</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、ARC中用-bridge的应用"><span class="toc-text">三、ARC中用__bridge的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、解决最初的问题"><span class="toc-text">四、解决最初的问题</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

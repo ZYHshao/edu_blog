@@ -1,0 +1,334 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS界面布局之二——初识autolayout布局模型 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS界面布局之二——初识autolayout布局模型">
+            
+	            iOS界面布局之二——初识autolayout布局模型
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/06/01</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS界面布局之二——初识autolayout布局模型"><a href="#iOS界面布局之二——初识autolayout布局模型" class="headerlink" title="iOS界面布局之二——初识autolayout布局模型"></a>iOS界面布局之二——初识autolayout布局模型</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code> 在上一篇博客中介绍了传统的布局方式：autoresizing。随着iphone型号的越来越多，屏幕的标准也更加多样化，通过autoresizing已经不能满足开发的需求，而进行两套布局或者动态代码控制又大大增加了开发者的工作量，autolayout的出现拯救个这一切，它让动态布局变的十分简单便捷。
+
+autoresizing介绍：[http://my.oschina.net/u/2340880/blog/423357](http://my.oschina.net/u/2340880/blog/423357)。
+</code></pre><h3 id="二、autolayout的设计思想"><a href="#二、autolayout的设计思想" class="headerlink" title="二、autolayout的设计思想"></a>二、autolayout的设计思想</h3><pre><code>正如storyboard的设计目的是为了让开发者将更多的精力投入到逻辑实现而不是界面布局一样。autolayout的设计思想是让开发者将布局上更多的精力放在控件关系上而不是坐标。我们只需要关心控件之间的摆放关系，而并不需要关心这是如何实现的。因此你使用autolayout进行布局时，就是在添加一个一个的约束。控件与控件之间的约束，控件与父视图之间的约束。
+</code></pre><h4 id="1、了解几种约束"><a href="#1、了解几种约束" class="headerlink" title="1、了解几种约束"></a>1、了解几种约束</h4><pre><code>点击xcode的storyboard文件，在xcode的导航栏上点击Edito，然后选择Pin，可以看到如图，其中是可以添加的约束类型。
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/0601/154914_EdDr_2340880.png" alt></p>
+<p>Width：对视图宽度的约束</p>
+<p>Height：对视图高度的约束</p>
+<p>Horizontal Spacing：对视图间水平距离的约束</p>
+<p>Vertical Spacing：对视图间垂直距离的约束</p>
+<p>Leading Space to Superview：与父视图左边界的约束</p>
+<p>Trailing Space to Superview：与父视图右边界的约束</p>
+<p>Top Space to Superview：与父视图上边界的约束</p>
+<p>Bottom Space to Superview：与父视图下边界的约束</p>
+<p>Widehs Equally：视图等宽约束</p>
+<p>Heights Equally：视图等高约束</p>
+<h3 id="2、网上的一个很简单的约束例子"><a href="#2、网上的一个很简单的约束例子" class="headerlink" title="2、网上的一个很简单的约束例子"></a>2、网上的一个很简单的约束例子</h3><pre><code>了解了上面的几种约束，现在我们来实现一个效果，借用网上关于autolayout自动布局的一个小例子。我们在storyboard中拖入三个label，使它们如下效果：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/0601/155935_qJrn_2340880.png" alt></p>
+<p>然后我们将屏幕横过来，会发现这时的效果并不是我们想得到的结果：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0601/160033_8vCZ_2340880.png" alt></p>
+<p>在进行添加约束之前，我们先来理清这三个视图之间的关系，将上面两个视图编号为1.2，下面那个视图编号为3.</p>
+<p>（1）1和2的宽和高相等</p>
+<p>（2）1距离父视图左边20px</p>
+<p>（3）2距离父视图右边20px</p>
+<p>（4）3距离父视图左边20px，右边20px</p>
+<p>（5）1和2水平间距20px</p>
+<p>（6）1与3垂直间距20px</p>
+<p>（7）1和2距离父视图上边距50px</p>
+<p>（8）3距离父视图下边距20px</p>
+<p>（9）3与1和2的高度一样</p>
+<p>通过上面的约束，所有视图的位置都将被相对的固定，下面我们只需要按照顺序一一添加即可。</p>
+<p>（1）选中1和2视图（按住cmd键可以多选），然后点击Editor-&gt;Pin之后选择Widehs Equally，重复上面的过程，选择Heights Equally。我们会看到如下的效果：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0601/161110_qokG_2340880.png" alt></p>
+<p>几点注意：</p>
+<p>*线是橙色代表警告，我们没有添加足够的约束来确定位置或者约束有矛盾。</p>
+<p>*如果线的中间显示的不是等号，而是数字，则是因为视图1和2的尺寸设置的不等，约束有矛盾。</p>
+<p>（2）选中1.重复上面步骤，选择Leading Space to Superview。这时1的左边又会增加一条线：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0601/161620_KkFt_2340880.png" alt></p>
+<p>点击这条线，在右边的设置去将约束值设置为20：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0601/161707_WNXc_2340880.png" alt></p>
+<p>（3）重复上面步骤，选中视图2，添加Trailing Space to Superview约束。</p>
+<p>（4）选中视图3，重复上面步骤。</p>
+<p>（5）选中1和2，添加Horizontal Spacing，设置为20.</p>
+<p>（6）选中1和3，添加Vertical Spacing，设置为20.</p>
+<p>（7）为1和2分别添加Top Space to Superview约束。</p>
+<p>（8）为3添加Bottom Space to Superview约束。</p>
+<p>（9）选中1和3，添加Heights Equally约束。</p>
+<p>上面的过程虽然繁琐，但是逻辑性十分清晰，这时你会发现所有的线都变成了蓝色，约束已经添加完整，我们再次运行后横屏，效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0601/164305_x3yK_2340880.png" alt></p>
+<p>这就是我们想要的结果了。</p>
+<h4 id="3、自动布局的几种对其方式"><a href="#3、自动布局的几种对其方式" class="headerlink" title="3、自动布局的几种对其方式"></a>3、自动布局的几种对其方式</h4><pre><code>在xcode导航的Editor菜单中，还有一个子菜单，Align，这里面的选项可以为控件添加对其约束：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/0601/165558_w0S0_2340880.png" alt></p>
+<p>Left Edges：控件左对齐</p>
+<p>Right Edges：控件右对齐</p>
+<p>Top Edges：控件上对齐</p>
+<p>Bottom Edges：控件下对齐</p>
+<p>Horizontal Centers：控件水平中心对齐</p>
+<p>Vertical Centers：控件垂直水平对齐</p>
+<p>Horizontal Center in Container：控件与其父视图水平中心对齐</p>
+<p>Vertical Center in Container：控件与其父视图垂直中心对齐</p>
+<h3 id="三、几点小感悟"><a href="#三、几点小感悟" class="headerlink" title="三、几点小感悟"></a>三、几点小感悟</h3><pre><code>到此为止，基本上已经可以使用autolayout自动布局解决复杂的布局需求了，但是切记，正式因为aotulayout的强大使它会隐藏更多的坑，下面是我的几点感悟，再次分享：
+</code></pre><p>1、autolayout的精髓在于足够多的约束，autolayout之所以比autoresizing强大，就在于其布局的精确性，而精确性正是由约束来提供的。</p>
+<p>2、切莫画蛇添足，矛盾的约束会使xcode晕掉，所以在添加约束前，我建议将试图间的布局关系先整理出来。</p>
+<p>3、应该转变你的思路，如果你已经习惯了使用CGRect、Point等传统的坐标布局模式，那么你应该稍微转变一下，autolayout倡导的是一个相对的概念，你需要将更多的关注放在视图间的关系，比如A和B距离10，A和C右对齐等。具体的坐标会有autolayout帮你算。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/06/01/68iOS界面布局之一——使用autoresizing进行动态布局/" class="pre-post btn btn-default" title='iOS界面布局之一——使用autoresizing进行动态布局'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS界面布局之一——使用autoresizing进行动态布局</span>
+        </a>
+    
+    
+        <a href="/2015/05/26/66iOS开发音频播放基础——AVAudioPlayer的应用/" class="next-post btn btn-default" title='iOS开发音频播放基础——AVAudioPlayer的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发音频播放基础——AVAudioPlayer的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS界面布局之二——初识autolayout布局模型"><span class="toc-text">iOS界面布局之二——初识autolayout布局模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、autolayout的设计思想"><span class="toc-text">二、autolayout的设计思想</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、了解几种约束"><span class="toc-text">1、了解几种约束</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2、网上的一个很简单的约束例子"><span class="toc-text">2、网上的一个很简单的约束例子</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3、自动布局的几种对其方式"><span class="toc-text">3、自动布局的几种对其方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、几点小感悟"><span class="toc-text">三、几点小感悟</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间">
+            
+	            iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/10/20</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间"><a href="#iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间" class="headerlink" title="iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间"></a>iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>颜色的实质是表示颜色的二进制数据，如果没有确定的规则，则这些二进制数据完全没有意义。所谓色彩空间，即是表示这些颜色数据信息是如何解释的。同样的一张图片，在不同的色彩空间下，其渲染的模样将有很大的不同。在CoreGraphics框架中，与色彩相关的功能主要有CGColor与CGColorSpace构成。
+</code></pre><h3 id="二、关于CGColor相关方法的解析"><a href="#二、关于CGColor相关方法的解析" class="headerlink" title="二、关于CGColor相关方法的解析"></a>二、关于CGColor相关方法的解析</h3><pre><code>CGColorRef是CoreGraphics框架中用于描述颜色的引用类型，其中常用方法解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//根据色彩空间创建一个CGColorRef实例</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">需要注意，这个方法中的第2个参数需要传递一个float数据，其需要和第1个参数的色彩空间意义对应</span></span><br><span class="line"><span class="comment">例如在RGBA色彩空间中，float数组中需要传递4个值，分别表示红绿蓝和透明度</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGColorRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorCreate</span>(<span class="built_in">CGColorSpaceRef</span> cg_nullable space, <span class="keyword">const</span> <span class="built_in">CGFloat</span> * cg_nullable components);</span><br><span class="line"><span class="comment">//创建黑白色彩空间下的颜色</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">参数 </span></span><br><span class="line"><span class="comment">gray为灰度</span></span><br><span class="line"><span class="comment">alpha 为透明度</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGColorRef</span>  <span class="built_in">CGColorCreateGenericGray</span>(<span class="built_in">CGFloat</span> gray, <span class="built_in">CGFloat</span> alpha);</span><br><span class="line"><span class="comment">//创建RGB色彩空间下的颜色</span></span><br><span class="line"><span class="built_in">CGColorRef</span>  <span class="built_in">CGColorCreateGenericRGB</span>(<span class="built_in">CGFloat</span> red, <span class="built_in">CGFloat</span> green, <span class="built_in">CGFloat</span> blue, <span class="built_in">CGFloat</span> alpha);</span><br><span class="line"><span class="comment">//创建CMYB印刷模式色彩空间下的颜色</span></span><br><span class="line"><span class="built_in">CGColorCreateGenericCMYK</span>(<span class="built_in">CGFloat</span> cyan, <span class="built_in">CGFloat</span> magenta, <span class="built_in">CGFloat</span> yellow, <span class="built_in">CGFloat</span> black, <span class="built_in">CGFloat</span> alpha);</span><br><span class="line"><span class="comment">//获取颜色常量</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">colorName定义如下：</span></span><br><span class="line"><span class="comment"> //标准白色</span></span><br><span class="line"><span class="comment"> CFStringRef  kCGColorWhite;</span></span><br><span class="line"><span class="comment"> //标准黑色</span></span><br><span class="line"><span class="comment"> CFStringRef  kCGColorBlack;</span></span><br><span class="line"><span class="comment"> //标准透明色</span></span><br><span class="line"><span class="comment"> CFStringRef  kCGColorClear;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGColorRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorGetConstantColor</span>(<span class="built_in">CFStringRef</span> cg_nullable colorName);</span><br><span class="line"><span class="comment">//通过模式与色彩空间创建颜色</span></span><br><span class="line"><span class="built_in">CGColorRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorCreateWithPattern</span>(<span class="built_in">CGColorSpaceRef</span> cg_nullable space, <span class="built_in">CGPatternRef</span> cg_nullable pattern, <span class="keyword">const</span> <span class="built_in">CGFloat</span> * cg_nullable components);</span><br><span class="line"><span class="comment">//复制一个CGColorRef</span></span><br><span class="line"><span class="built_in">CGColorRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorCreateCopy</span>(<span class="built_in">CGColorRef</span> cg_nullable color);</span><br><span class="line"><span class="comment">//复制颜色 并追加透明度</span></span><br><span class="line"><span class="built_in">CGColorRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorCreateCopyWithAlpha</span>(<span class="built_in">CGColorRef</span> cg_nullable color, <span class="built_in">CGFloat</span> alpha);</span><br><span class="line"><span class="comment">//将原色彩空间与目标色彩空间相匹配 创建颜色实例</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">CGColorRenderingInter设置颜色渲染模式</span></span><br><span class="line"><span class="comment">typedef CF_ENUM (int32_t, CGColorRenderingIntent) &#123;</span></span><br><span class="line"><span class="comment">    kCGRenderingIntentDefault,   //默认的渲染模式</span></span><br><span class="line"><span class="comment">    kCGRenderingIntentAbsoluteColorimetric, //绝对比色模式</span></span><br><span class="line"><span class="comment">    kCGRenderingIntentRelativeColorimetric, //相对比色模式</span></span><br><span class="line"><span class="comment">    kCGRenderingIntentPerceptual,   //压缩色域模式</span></span><br><span class="line"><span class="comment">    kCGRenderingIntentSaturation   //转换色域模式</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGColorRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorCreateCopyByMatchingToColorSpace</span>(cg_nullable <span class="built_in">CGColorSpaceRef</span>, <span class="built_in">CGColorRenderingIntent</span> intent, <span class="built_in">CGColorRef</span> cg_nullable color, __<span class="keyword">nullable</span> <span class="built_in">CFDictionaryRef</span> options);</span><br><span class="line"><span class="comment">//内存引用+1</span></span><br><span class="line"><span class="built_in">CGColorRef</span> cg_nullable <span class="built_in">CGColorRetain</span>(<span class="built_in">CGColorRef</span> cg_nullable color);</span><br><span class="line"><span class="comment">//内存引用-1</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGColorRelease</span>(<span class="built_in">CGColorRef</span> cg_nullable color);</span><br><span class="line"><span class="comment">//比较两个颜色引用是否相同</span></span><br><span class="line"><span class="keyword">bool</span> <span class="built_in">CGColorEqualToColor</span>(<span class="built_in">CGColorRef</span> cg_nullable color1, <span class="built_in">CGColorRef</span> cg_nullable color2);</span><br><span class="line"><span class="comment">//获取颜色内容的色彩描述值个数 包括alpha通道</span></span><br><span class="line">size_t <span class="built_in">CGColorGetNumberOfComponents</span>(<span class="built_in">CGColorRef</span> cg_nullable color);</span><br><span class="line"><span class="comment">//获取颜色色彩描述值数组</span></span><br><span class="line"><span class="built_in">CGFloat</span> * __<span class="keyword">nullable</span> <span class="built_in">CGColorGetComponents</span>(<span class="built_in">CGColorRef</span> cg_nullable color);</span><br><span class="line"><span class="comment">//获取颜色的透明度</span></span><br><span class="line"><span class="built_in">CGFloat</span> <span class="built_in">CGColorGetAlpha</span>(<span class="built_in">CGColorRef</span> cg_nullable color);</span><br><span class="line"><span class="comment">//获取颜色的色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorGetColorSpace</span>(<span class="built_in">CGColorRef</span> cg_nullable color);</span><br><span class="line"><span class="comment">//获取与此颜色相关的模型</span></span><br><span class="line"><span class="built_in">CGPatternRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorGetPattern</span>(<span class="built_in">CGColorRef</span> cg_nullable color);</span><br><span class="line"><span class="comment">//获取CGColorRef类在CoreGraphics框架中的id</span></span><br><span class="line"><span class="built_in">CFTypeID</span> <span class="built_in">CGColorGetTypeID</span>(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="三、关于CGColorSpace相关方法解析"><a href="#三、关于CGColorSpace相关方法解析" class="headerlink" title="三、关于CGColorSpace相关方法解析"></a>三、关于CGColorSpace相关方法解析</h3><pre><code>CGColorSpace用来描述色彩空间，其中方法解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个基于设备的黑白色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> cg_nullable <span class="built_in">CGColorSpaceCreateDeviceGray</span>(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//创建一个基于设备的RGB色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> cg_nullable <span class="built_in">CGColorSpaceCreateDeviceRGB</span>(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//创建一个基于设备的CMYK色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> cg_nullable <span class="built_in">CGColorSpaceCreateDeviceCMYK</span>(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//创建一个经过校准的黑白色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorSpaceCreateCalibratedGray</span>(<span class="keyword">const</span> <span class="built_in">CGFloat</span> whitePoint[<span class="number">3</span>], <span class="keyword">const</span> <span class="built_in">CGFloat</span> blackPoint[<span class="number">3</span>], <span class="built_in">CGFloat</span> gamma);</span><br><span class="line"><span class="comment">//创建一个经过校准的RGB色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorSpaceCreateCalibratedRGB</span>(<span class="keyword">const</span> <span class="built_in">CGFloat</span> whitePoint[<span class="number">3</span>], <span class="keyword">const</span> <span class="built_in">CGFloat</span> blackPoint[<span class="number">3</span>], <span class="keyword">const</span> <span class="built_in">CGFloat</span> gamma[<span class="number">3</span>], <span class="keyword">const</span> <span class="built_in">CGFloat</span> matrix[<span class="number">9</span>]);</span><br><span class="line"><span class="comment">//创建一个经过校准的LAB色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorSpaceCreateLab</span>(<span class="keyword">const</span> <span class="built_in">CGFloat</span> whitePoint[<span class="number">3</span>], <span class="keyword">const</span> <span class="built_in">CGFloat</span> blackPoint[<span class="number">3</span>], <span class="keyword">const</span> <span class="built_in">CGFloat</span> range[<span class="number">4</span>]);</span><br><span class="line"><span class="comment">//使用ICC文件创建ICC-based色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorSpaceCreateWithICCProfile</span>(<span class="built_in">CFDataRef</span> cg_nullable data);</span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorSpaceCreateICCBased</span>(size_t nComponents, <span class="keyword">const</span> <span class="built_in">CGFloat</span> * __<span class="keyword">nullable</span> range, <span class="built_in">CGDataProviderRef</span> cg_nullable profile, <span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> alternate);</span><br><span class="line"><span class="comment">//使用索引创建色彩空间</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorSpaceCreateIndexed</span>(<span class="built_in">CGColorSpaceRef</span> cg_nullable baseSpace, size_t lastIndex, <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> * cg_nullable colorTable);</span><br><span class="line"><span class="comment">//通过名称创建色彩空间</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">标准的黑白色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceGenericGray;</span></span><br><span class="line"><span class="comment">标准的RGB色彩空间</span></span><br><span class="line"><span class="comment">const CFStringRef kCGColorSpaceGenericRGB;</span></span><br><span class="line"><span class="comment">标准的CMYK色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceGenericCMYK;</span></span><br><span class="line"><span class="comment">displatP3色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceDisplayP3;</span></span><br><span class="line"><span class="comment">LinearRGB色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceGenericRGBLinear;</span></span><br><span class="line"><span class="comment">Adobe RGB 1998 版本的色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceAdobeRGB1998;</span></span><br><span class="line"><span class="comment">黑白色彩空间 设置伽马值为2.2</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceGenericGrayGamma2_2;</span></span><br><span class="line"><span class="comment">XYZ色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceGenericXYZ;</span></span><br><span class="line"><span class="comment">ACEScg色彩空间</span></span><br><span class="line"><span class="comment">kCGColorSpaceACESCGLinear;</span></span><br><span class="line"><span class="comment">ITU-R Recommendation BT.709 色彩空间</span></span><br><span class="line"><span class="comment">kCGColorSpaceITUR_709;</span></span><br><span class="line"><span class="comment">ITU-R Recommendation BT.2020色彩空间</span></span><br><span class="line"><span class="comment">kCGColorSpaceITUR_2020;</span></span><br><span class="line"><span class="comment">RGB色彩空间</span></span><br><span class="line"><span class="comment">kCGColorSpaceROMMRGB;</span></span><br><span class="line"><span class="comment">DCI P3 色彩空间</span></span><br><span class="line"><span class="comment">kCGColorSpaceDCIP3;</span></span><br><span class="line"><span class="comment">扩展的sRGB色彩空间</span></span><br><span class="line"><span class="comment">kCGColorSpaceExtendedSRGB;</span></span><br><span class="line"><span class="comment">线性sRGB色彩空间</span></span><br><span class="line"><span class="comment">kCGColorSpaceLinearSRGB;</span></span><br><span class="line"><span class="comment">扩展的线性sRGB扩展空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceExtendedLinearSRGB;</span></span><br><span class="line"><span class="comment">扩展的黑白色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceExtendedGray;</span></span><br><span class="line"><span class="comment">扩展的线性黑白色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceLinearGray;</span></span><br><span class="line"><span class="comment">扩展的Generic Gray 2.2色彩空间</span></span><br><span class="line"><span class="comment">CFStringRef kCGColorSpaceExtendedLinearGray;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorSpaceCreateWithName</span>(<span class="built_in">CFStringRef</span> cg_nullable name);</span><br><span class="line"><span class="comment">//内存引用计数+1</span></span><br><span class="line"><span class="built_in">CGColorSpaceRef</span> cg_nullable <span class="built_in">CGColorSpaceRetain</span>(<span class="built_in">CGColorSpaceRef</span> cg_nullable space);</span><br><span class="line"><span class="comment">//内存引用计数-1</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGColorSpaceRelease</span>(<span class="built_in">CGColorSpaceRef</span> cg_nullable space);</span><br><span class="line"><span class="comment">//进行色彩空间的复制</span></span><br><span class="line"><span class="built_in">CFStringRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGColorSpaceCopyName</span>(<span class="built_in">CGColorSpaceRef</span> cg_nullable space);</span><br><span class="line"><span class="comment">//获取CGColorRef类在CoreGraphics框架中的id</span></span><br><span class="line"><span class="built_in">CFTypeID</span> <span class="built_in">CGColorSpaceGetTypeID</span>(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//获取色彩空间颜色值参数个数</span></span><br><span class="line"><span class="built_in">CGColorSpaceGetNumberOfComponents</span>(<span class="built_in">CGColorSpaceRef</span> cg_nullable space);</span><br><span class="line"><span class="comment">//获取色彩空间模式</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef CF_ENUM (int32_t,  CGColorSpaceModel) &#123;</span></span><br><span class="line"><span class="comment">    kCGColorSpaceModelUnknown = -1,  未知模式</span></span><br><span class="line"><span class="comment">    kCGColorSpaceModelMonochrome,    单色色彩空间模式</span></span><br><span class="line"><span class="comment">    kCGColorSpaceModelRGB,           RGB色彩空间模式</span></span><br><span class="line"><span class="comment">    kCGColorSpaceModelCMYK,          CMYK色彩空间模式</span></span><br><span class="line"><span class="comment">    kCGColorSpaceModelLab,           LAB色彩空间模式</span></span><br><span class="line"><span class="comment">    kCGColorSpaceModelDeviceN,       设备色彩空间模式</span></span><br><span class="line"><span class="comment">    kCGColorSpaceModelIndexed,       引用色彩空间模式</span></span><br><span class="line"><span class="comment">    kCGColorSpaceModelPattern        模型色彩空间模式</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGColorSpaceModel</span> <span class="built_in">CGColorSpaceGetModel</span>(<span class="built_in">CGColorSpaceRef</span> cg_nullable space);</span><br></pre></td></tr></table></figure>
+<p>相同的图像，使用不同的色彩空间进行渲染，得到的结果可能大不一样，例如如下代码修改图片的色彩空间：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">CGImageRef</span> image = <span class="built_in">CGImageCreateCopyWithColorSpace</span>([<span class="built_in">UIImage</span> imageNamed:<span class="string">@"image"</span>].CGImage, <span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB));</span><br><span class="line">    <span class="built_in">CGImageRef</span> image2 = <span class="built_in">CGImageCreateCopyWithColorSpace</span>([<span class="built_in">UIImage</span> imageNamed:<span class="string">@"image"</span>].CGImage, <span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceROMMRGB));</span><br><span class="line">    <span class="built_in">UIImageView</span> * imageView = [[<span class="built_in">UIImageView</span> alloc]initWithImage:[<span class="built_in">UIImage</span> imageWithCGImage:image]];</span><br><span class="line">    <span class="built_in">UIImageView</span> * imageView2 = [[<span class="built_in">UIImageView</span> alloc]initWithImage:[<span class="built_in">UIImage</span> imageWithCGImage:image2]];</span><br><span class="line">    imageView.frame = <span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">100</span>, <span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line">    imageView2.frame = <span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">300</span>, <span class="number">200</span>, <span class="number">200</span>);</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:imageView];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:imageView2];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p>原图如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/1020/164246_R3qx_2340880.png" alt></p>
+<p>模拟器运行如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/1020/164659_1mRS_2340880.png" alt></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/10/30/262iOS开发CoreGraphics核心图形框架之四——变换函数/" class="pre-post btn btn-default" title='iOS开发CoreGraphics核心图形框架之四——变换函数'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发CoreGraphics核心图形框架之四——变换函数</span>
+        </a>
+    
+    
+        <a href="/2016/10/16/260iOS开发CoreGraphics核心图形框架之二——深入理解图形上下文/" class="next-post btn btn-default" title='iOS开发CoreGraphics核心图形框架之二——深入理解图形上下文'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发CoreGraphics核心图形框架之二——深入理解图形上下文</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间"><span class="toc-text">iOS开发CoreGraphics核心图形框架之三——颜色与色彩空间</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、关于CGColor相关方法的解析"><span class="toc-text">二、关于CGColor相关方法的解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、关于CGColorSpace相关方法解析"><span class="toc-text">三、关于CGColorSpace相关方法解析</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

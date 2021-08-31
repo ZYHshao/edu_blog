@@ -1,0 +1,357 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS通过NSUserDefaults实现简单的应用间数据传递 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS通过NSUserDefaults实现简单的应用间数据传递">
+            
+	            iOS通过NSUserDefaults实现简单的应用间数据传递
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/05/06</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中NSUserDefaults详解"><a href="#iOS中NSUserDefaults详解" class="headerlink" title="iOS中NSUserDefaults详解"></a>iOS中NSUserDefaults详解</h2><p>NSUserDefaults是用于保存应用程序设置，应用信息等轻量级数据的的一个类，其本质是将数据写为plist文件的形式保存在本地。在IOS中，系统为每一个应用程序都默认创建了一个NSUserDefaults对象。</p>
+<h3 id="一、常用方法总结"><a href="#一、常用方法总结" class="headerlink" title="一、常用方法总结"></a>一、常用方法总结</h3><p>+ (NSUserDefaults *)standardUserDefaults;</p>
+<p>获取系统默认创建的应用程序设置表</p>
+<p>+ (void)resetStandardUserDefaults;</p>
+<p>这个方法用于将默认的UserDefaults释放掉，并在下次使用时创建一个新的对象，需要注意的是，调用这个方法后，对原UserDefaults单例进行的KVO监听将失效。</p>
+<p>- (instancetype)initWithSuiteName:(NSString *)suitename;</p>
+<p>这个方法创建一个新的域：根据名字可以创建一些不同的域，分别存储几套设置信息。</p>
+<p>- (id)objectForKey:(NSString *)defaultName;</p>
+<p>- (void)setObject:(id)value forKey:(NSString *)defaultName;</p>
+<p>- (void)removeObjectForKey:(NSString *)defaultName;</p>
+<p>上面三个方法是对对象存储进行的操作，分别是存储，获取和删除。</p>
+<p>- (NSString <em>)stringForKey:(NSString </em>)defaultName;</p>
+<p>获取字符串数据</p>
+<p>- (NSArray <em>)arrayForKey:(NSString </em>)defaultName;</p>
+<p>获取数组数据</p>
+<p>- (NSDictionary <em>)dictionaryForKey:(NSString </em>)defaultName;</p>
+<p>获取字典数据</p>
+<p>- (NSData <em>)dataForKey:(NSString </em>)defaultName;</p>
+<p>获取data数据</p>
+<p>- (NSArray <em>)stringArrayForKey:(NSString </em>)defaultName;</p>
+<p>获取字符串数组数据</p>
+<p>- (NSInteger)integerForKey:(NSString *)defaultName;</p>
+<p>获取整型数据</p>
+<p>- (float)floatForKey:(NSString *)defaultName;</p>
+<p>获取浮点型数据</p>
+<p>- (double)doubleForKey:(NSString *)defaultName;</p>
+<p>获取双精度浮点型数据</p>
+<p>- (BOOL)boolForKey:(NSString *)defaultName;</p>
+<p>获取布尔诗句</p>
+<p>- (NSURL <em>)URLForKey:(NSString </em>)defaultName;</p>
+<p>获取网址数据</p>
+<p>下面是一些对应的set方法</p>
+<p>- (void)setInteger:(NSInteger)value forKey:(NSString *)defaultName;</p>
+<p>- (void)setFloat:(float)value forKey:(NSString *)defaultName;</p>
+<p>- (void)setDouble:(double)value forKey:(NSString *)defaultName;</p>
+<p>- (void)setBool:(BOOL)value forKey:(NSString *)defaultName;</p>
+<p>- (void)setURL:(NSURL <em>)url forKey:(NSString </em>)defaultName;</p>
+<p>- (void)registerDefaults:(NSDictionary *)registrationDictionary;</p>
+<p>这个方法可以通过字典对数据表进行赋值</p>
+<p>- (void)addSuiteNamed:(NSString *)suiteName;</p>
+<p>添加一个域</p>
+<p>- (void)removeSuiteNamed:(NSString *)suiteName;</p>
+<p>移除一个域</p>
+<p>- (NSDictionary *)dictionaryRepresentation;</p>
+<p>返回系统设置的信息，也是NSGlobalDomain域中的信息。</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (readonly, copy) NSArray *volatileDomainNames;</p>
+<p>返回一个数组，其中是所有不稳定域的名字</p>
+<p>- (NSDictionary <em>)volatileDomainForName:(NSString </em>)domainName;</p>
+<p>根据名字获取不稳定域中的数据</p>
+<p>- (void)setVolatileDomain:(NSDictionary <em>)domain forName:(NSString </em>)domainName;</p>
+<p>根据名字设置不稳定域</p>
+<p>- (void)removeVolatileDomainForName:(NSString *)domainName;</p>
+<p>根据名字移除不稳定域</p>
+<p>- (NSDictionary <em>)persistentDomainForName:(NSString </em>)domainName;</p>
+<p>根据名字获取稳定域的数据</p>
+<p>- (void)setPersistentDomain:(NSDictionary <em>)domain forName:(NSString </em>)domainName;</p>
+<p>根据名字设置稳定域</p>
+<p>- (void)removePersistentDomainForName:(NSString *)domainName;</p>
+<p>根据名字移除稳定域</p>
+<p>- (BOOL)synchronize;</p>
+<p>对象的同步方法，将内存中的数据写入磁盘。</p>
+<p>- (BOOL)objectIsForcedForKey:(NSString *)key;</p>
+<p>判断某个键值的数据是否存在</p>
+<p>- (BOOL)objectIsForcedForKey:(NSString <em>)key inDomain:(NSString </em>)domain;</p>
+<p>判断某个域中某个键值的数据是否存在</p>
+<p>注：目前的iOS版本已经不能通过下面的方法在应用间进行传值！！！</p>
+<h3 id="二、三个特殊的域及实现简单的应用间信息传递"><a href="#二、三个特殊的域及实现简单的应用间信息传递" class="headerlink" title="二、三个特殊的域及实现简单的应用间信息传递"></a>二、三个特殊的域及实现简单的应用间信息传递</h3><p>我们应该了解到，在IOS中，因为沙盒模式的存在，应用间是不允许互相访问数据与传值通信的。这样做的好处显而易见：</p>
+<p>1、保证了数据的安全性</p>
+<p>2、数据的管理更加简洁</p>
+<p>3、当我们删除数据时，只需要将沙盒删除。</p>
+<p>在某些需求下，我们可能会需要应用程序间的传值与通信，当然除了通过网络外，对于非常小的数据量，比如验证另一应用从程序是否登录，是否安装并且开启过一次，我们也可以通过NSUserDefaults的一个全局的数据表来实现。</p>
+<p>NSUserDefaults的三个特殊的系统域如下：</p>
+<p>NSString * const NSGlobalDomain;</p>
+<p>这个是一个系统级别的全局的域，存储这系统配置信息，我们可以通过它实现应用程序间传值</p>
+<p>NSString * const NSArgumentDomain;</p>
+<p>这个是在本应用程序内可访问的域，存储着应用程序的信息</p>
+<p>NSString * const NSRegistrationDomain;</p>
+<p>这个是存放临时数据的域</p>
+<p>代码示例如下：</p>
+<p>首先在第一个工程中，我们写如下代码运运行一下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    //获取全局的域</span><br><span class="line">    NSDictionary * dic = [[NSUserDefaults standardUserDefaults]persistentDomainForName:NSGlobalDomain];</span><br><span class="line">    NSMutableDictionary * temDic = [NSMutableDictionary dictionaryWithDictionary:dic];</span><br><span class="line">    [temDic setObject:@&quot;传递的值&quot; forKey:@&quot;应用1&quot;];</span><br><span class="line">    //重设</span><br><span class="line">    [[NSUserDefaults standardUserDefaults]setPersistentDomain:temDic forName:NSGlobalDomain];</span><br><span class="line">    //同步</span><br><span class="line">    [NSUserDefaults resetStandardUserDefaults];</span><br><span class="line">    NSLog(@&quot;%@&quot;,dic);</span><br></pre></td></tr></table></figure>
+<p>打印的结果是许多系统信息。</p>
+<p>在第二个工程中，我们这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> NSDictionary * dic = [[NSUserDefaults standardUserDefaults]persistentDomainForName:NSGlobalDomain];</span><br><span class="line">    NSLog(@&quot;%@\n--------------\n%@=%@&quot;,dic,@&quot;应用1&quot;,[dic objectForKey:@&quot;应用1&quot;]);</span><br></pre></td></tr></table></figure>
+<p>结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">2015-05-06 15:48:49.897 321[4100:186745] &#123;</span><br><span class="line">    AppleITunesStoreItemKinds =     (</span><br><span class="line">        newsstand,</span><br><span class="line">        podcast,</span><br><span class="line">        &quot;itunes-u&quot;,</span><br><span class="line">        artist,</span><br><span class="line">        booklet,</span><br><span class="line">        document,</span><br><span class="line">        eBook,</span><br><span class="line">        software,</span><br><span class="line">        &quot;software-update&quot;,</span><br><span class="line">        &quot;podcast-episode&quot;</span><br><span class="line">    );</span><br><span class="line">    AppleLanguages =     (</span><br><span class="line">        en,</span><br><span class="line">        fr,</span><br><span class="line">        de,</span><br><span class="line">        &quot;zh-Hans&quot;,</span><br><span class="line">        &quot;zh-Hant&quot;,</span><br><span class="line">        ja,</span><br><span class="line">        nl,</span><br><span class="line">        it,</span><br><span class="line">        es,</span><br><span class="line">        &quot;es-MX&quot;,</span><br><span class="line">        ko,</span><br><span class="line">        pt,</span><br><span class="line">        &quot;pt-PT&quot;,</span><br><span class="line">        da,</span><br><span class="line">        fi,</span><br><span class="line">        nb,</span><br><span class="line">        sv,</span><br><span class="line">        ru,</span><br><span class="line">        pl,</span><br><span class="line">        tr,</span><br><span class="line">        uk,</span><br><span class="line">        ar,</span><br><span class="line">        hr,</span><br><span class="line">        cs,</span><br><span class="line">        el,</span><br><span class="line">        he,</span><br><span class="line">        ro,</span><br><span class="line">        sk,</span><br><span class="line">        th,</span><br><span class="line">        id,</span><br><span class="line">        ms,</span><br><span class="line">        &quot;en-GB&quot;,</span><br><span class="line">        &quot;en-AU&quot;,</span><br><span class="line">        ca,</span><br><span class="line">        hu,</span><br><span class="line">        vi,</span><br><span class="line">        hi</span><br><span class="line">    );</span><br><span class="line">    AppleLocale = &quot;en_US&quot;;</span><br><span class="line">    MSVLoggingMasterSwitchEnabledKey = 0;</span><br><span class="line">    &quot;\U5e94\U75281&quot; = &quot;\U4f20\U9012\U7684\U503c&quot;;</span><br><span class="line">&#125;</span><br><span class="line">--------------</span><br><span class="line">应用1=传递的值</span><br></pre></td></tr></table></figure>
+<p>这样，我们就简单实现了应用程序间的传值，但是建议最好不要轻易操作系统的这个域。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/05/07/48iOS开发遇到的屏幕上下闪出黑边的解决方法/" class="pre-post btn btn-default" title='iOS开发遇到的屏幕上下闪出黑边的解决方法'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发遇到的屏幕上下闪出黑边的解决方法</span>
+        </a>
+    
+    
+        <a href="/2015/05/06/47标签之美一——HTML基础元素/" class="next-post btn btn-default" title='标签之美一——HTML基础元素'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">标签之美一——HTML基础元素</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中NSUserDefaults详解"><span class="toc-text">iOS中NSUserDefaults详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、常用方法总结"><span class="toc-text">一、常用方法总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、三个特殊的域及实现简单的应用间信息传递"><span class="toc-text">二、三个特殊的域及实现简单的应用间信息传递</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

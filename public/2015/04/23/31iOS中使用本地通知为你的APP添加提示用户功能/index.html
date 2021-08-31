@@ -1,0 +1,327 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS中使用本地通知为你的APP添加提示用户功能 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中使用本地通知为你的APP添加提示用户功能">
+            
+	            iOS中使用本地通知为你的APP添加提示用户功能
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/23</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中使用本地通知为你的APP添加提示用户功能"><a href="#iOS中使用本地通知为你的APP添加提示用户功能" class="headerlink" title="iOS中使用本地通知为你的APP添加提示用户功能"></a>iOS中使用本地通知为你的APP添加提示用户功能</h2><p>首先，我们先要明白一个概念，这里的本地通知是UILocalNotification类，和系统的NSNotificationCenter通知中心是完全不同的概念。</p>
+<h3 id="一、我们可以通过本地通知做什么"><a href="#一、我们可以通过本地通知做什么" class="headerlink" title="一、我们可以通过本地通知做什么"></a>一、我们可以通过本地通知做什么</h3><p>通知，实际上是由IOS系统管理的一个功能，比如某些后台应用做了某项活动需要我们处理、已经退出的应用在某个时间提醒我们唤起等等，如果注册了通知，系统都会在通知触发时给我们发送消息。由此，我们可以通过系统给我们的APP添加通知用户的功能，并且应用非常广泛。例如，闹种类应用，有按时签到相似功能的应用。下面，我们就来介绍如何注册并且设置一个本地通知。</p>
+<h3 id="二、了解UILocalNotification类"><a href="#二、了解UILocalNotification类" class="headerlink" title="二、了解UILocalNotification类"></a>二、了解UILocalNotification类</h3><p>顾名思义，这个类就是我们需要使用的本地通知类，先来看它的几个属性：</p>
+<p>设置系统发送通知的时间(如果是过去的时间或者0，则会立刻发起通知)</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,copy) NSDate *fireDate;</p>
+<p>设置时间的时区</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,copy) NSTimeZone *timeZone;</p>
+<p>设置周期性通知</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic) NSCalendarUnit repeatInterval;</p>
+<p>NSCalendarUnit对象是枚举，设定通知的周期</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, NSCalendarUnit) &#123;</span><br><span class="line">        NSCalendarUnitEra                = kCFCalendarUnitEra,</span><br><span class="line">        NSCalendarUnitYear               = kCFCalendarUnitYear,</span><br><span class="line">        NSCalendarUnitMonth              = kCFCalendarUnitMonth,</span><br><span class="line">        NSCalendarUnitDay                = kCFCalendarUnitDay,</span><br><span class="line">        NSCalendarUnitHour               = kCFCalendarUnitHour,</span><br><span class="line">        NSCalendarUnitMinute             = kCFCalendarUnitMinute,</span><br><span class="line">        NSCalendarUnitSecond             = kCFCalendarUnitSecond,</span><br><span class="line">        NSCalendarUnitWeekday            = kCFCalendarUnitWeekday,</span><br><span class="line">        NSCalendarUnitWeekdayOrdinal     = kCFCalendarUnitWeekdayOrdinal,</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>设置周期性通知参照的日历表</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,copy) NSCalendar *repeatCalendar;</p>
+<p>下面这两个函数是IOS8的新功能，在用户进去或者离开某一区域时发送通知</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,copy) CLRegion *region;</p>
+<p>设置区域检测通知是否重复(如果为YES，则没次进去出来都会发送，否则只发送一次)</p>
+<p>@property(nonatomic,assign) BOOL regionTriggersOnce;</p>
+<p>设置通知的主体内容</p>
+<p>@property(nonatomic,copy) NSString *alertBody;</p>
+<p>是否隐藏滑动启动按钮</p>
+<p>@property(nonatomic) BOOL hasAction;</p>
+<p>设置滑动打开的提示文字</p>
+<p>@property(nonatomic,copy) NSString *alertAction;</p>
+<p>设置点击通知后启动的启动图片</p>
+<p>@property(nonatomic,copy) NSString *alertLaunchImage; </p>
+<p>下面这个方法是IOS8的新方法，是iwatch的接口，通知的短标题</p>
+<p>@property(nonatomic,copy) NSString *alertTitle;</p>
+<p>收到通知时，播放的系统音</p>
+<p>@property(nonatomic,copy) NSString *soundName;</p>
+<p>设置应用程序Icon头标数字</p>
+<p>@property(nonatomic) NSInteger applicationIconBadgeNumber; </p>
+<p>用户字典，可用于传递通知消息参数</p>
+<p>@property(nonatomic,copy) NSDictionary *userInfo;</p>
+<p>注意：这个字符串是系统默认的提示音</p>
+<p>NSString *const UILocalNotificationDefaultSoundName;</p>
+<h3 id="三、本地通知的设计流程"><a href="#三、本地通知的设计流程" class="headerlink" title="三、本地通知的设计流程"></a>三、本地通知的设计流程</h3><p>首先，想让我们的APP实现本地通知功能，必须得到用户的授权，在Appdelegate中实现如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">    // Override point for customization after application launch.</span><br><span class="line">    //如果已经得到授权，就直接添加本地通知，否则申请询问授权</span><br><span class="line">    if ([[UIApplication sharedApplication]currentUserNotificationSettings].types!=UIUserNotificationTypeNone) &#123;</span><br><span class="line">        [self addLocalNotification];</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        [[UIApplication sharedApplication]registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound  categories:nil]];</span><br><span class="line">    &#125;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当用户点击允许或者不允许后，会执行如下代理方法，我们把处理逻辑在其中实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-(void)application:(UIApplication *)application didRegisterUserNotificationSettings:(UIUserNotificationSettings *)notificationSettings&#123;</span><br><span class="line">    if (notificationSettings.types!=UIUserNotificationTypeNone) &#123;</span><br><span class="line">        [self addLocalNotification];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>添加本地通知的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-(void)addLocalNotification&#123;</span><br><span class="line">    //定义本地通知对象</span><br><span class="line">    UILocalNotification *notification=[[UILocalNotification alloc]init];</span><br><span class="line">    //设置调用时间</span><br><span class="line">    notification.fireDate=[NSDate dateWithTimeIntervalSinceNow:0];//立即触发</span><br><span class="line">    //设置通知属性</span><br><span class="line">    notification.alertBody=@&quot;HELLO，我是本地通知哦!&quot;; //通知主体</span><br><span class="line">    notification.applicationIconBadgeNumber=1;//应用程序图标右上角显示的消息数</span><br><span class="line">    notification.alertAction=@&quot;打开应用&quot;; //待机界面的滑动动作提示 </span><br><span class="line">    notification.soundName=UILocalNotificationDefaultSoundName;//收到通知时播放的声音，默认消息声音</span><br><span class="line">    //调用通知</span><br><span class="line">    [[UIApplication sharedApplication] scheduleLocalNotification:notification];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实现了上面三个步骤，本地通知的发出和接受基本都已完成，还有一些细节我们需要考虑：</p>
+<p>应用进入前台后，将Icon上的头标清除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-(void)applicationWillEnterForeground:(UIApplication *)application&#123;</span><br><span class="line">    [[UIApplication sharedApplication]setApplicationIconBadgeNumber:0];//进入前台取消应用消息图标</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当不再需要这个通知时，清除它</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"> [[UIApplication sharedApplication] cancelAllLocalNotifications];</span><br></pre></td></tr></table></figure>
+<h3 id="四、获取通知中的用户参数字典"><a href="#四、获取通知中的用户参数字典" class="headerlink" title="四、获取通知中的用户参数字典"></a>四、获取通知中的用户参数字典</h3><p>在上面，我们提到了一个参数</p>
+<p>@property(nonatomic,copy) NSDictionary *userInfo; </p>
+<p>我们可以在注册通知时将这个参数设置，然后在收到通知时使用get方法得到，但是这里有两种情况：</p>
+<h4 id="1、如果我们的APP在前台或者后台进入前台时"><a href="#1、如果我们的APP在前台或者后台进入前台时" class="headerlink" title="1、如果我们的APP在前台或者后台进入前台时"></a>1、如果我们的APP在前台或者后台进入前台时</h4><p>-(void)application:(UIApplication <em>)application didReceiveLocalNotification:(UILocalNotification </em>)notification;</p>
+<p>这个方法是APP在前台或者后台收到通知进入前台时调用的方法</p>
+<h4 id="2、如果我们的APP在关闭状态"><a href="#2、如果我们的APP在关闭状态" class="headerlink" title="2、如果我们的APP在关闭状态"></a>2、如果我们的APP在关闭状态</h4><p>如果是这种情况，我们只能从下面函数的launchOptions中取到我们想要的参数</p>
+<p>- (BOOL)application:(UIApplication <em>)application didFinishLaunchingWithOptions:(NSDictionary </em>)launchOptions;</p>
+<p>代码示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> //接收通知参数   </span><br><span class="line">  UILocalNotification *notification=[launchOptions valueForKey:UIApplicationLaunchOptionsLocalNotificationKey];</span><br><span class="line">    NSDictionary *userInfo= notification.userInfo;</span><br></pre></td></tr></table></figure>
+<p>疏漏之处 欢迎指正</p>
+<p>学习使用 欢迎转载</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/24/32iOS7使用原生API进行二维码和条形码的扫描/" class="pre-post btn btn-default" title='iOS7使用原生API进行二维码和条形码的扫描'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS7使用原生API进行二维码和条形码的扫描</span>
+        </a>
+    
+    
+        <a href="/2015/04/22/29iOS UITableView代理方法详解/" class="next-post btn btn-default" title='iOS UITableView代理方法详解'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS UITableView代理方法详解</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中使用本地通知为你的APP添加提示用户功能"><span class="toc-text">iOS中使用本地通知为你的APP添加提示用户功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、我们可以通过本地通知做什么"><span class="toc-text">一、我们可以通过本地通知做什么</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、了解UILocalNotification类"><span class="toc-text">二、了解UILocalNotification类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、本地通知的设计流程"><span class="toc-text">三、本地通知的设计流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、获取通知中的用户参数字典"><span class="toc-text">四、获取通知中的用户参数字典</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、如果我们的APP在前台或者后台进入前台时"><span class="toc-text">1、如果我们的APP在前台或者后台进入前台时</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、如果我们的APP在关闭状态"><span class="toc-text">2、如果我们的APP在关闭状态</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

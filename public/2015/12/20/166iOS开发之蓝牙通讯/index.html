@@ -1,0 +1,307 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发之蓝牙通讯 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发之蓝牙通讯">
+            
+	            iOS开发之蓝牙通讯
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/12/20</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发之蓝牙通讯"><a href="#iOS开发之蓝牙通讯" class="headerlink" title="iOS开发之蓝牙通讯"></a>iOS开发之蓝牙通讯</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>蓝牙是设备近距离通信的一种方便手段，在iPhone引入蓝牙4.0后，设备之间的通讯变得更加简单。相关的蓝牙操作由专门的CoreBluetooth.framework进行统一管理。通过蓝牙进行通讯交互分为两方，一方为中心设备central，一方为外设peripheral，外设通过广播的方式向外发送信息，中心设备检索到外设发的广播信息，可以进行配对连接，进而进行数据交互。
+</code></pre><h3 id="二、中心设备CBCentralManager"><a href="#二、中心设备CBCentralManager" class="headerlink" title="二、中心设备CBCentralManager"></a>二、中心设备CBCentralManager</h3><pre><code>CBCentralManager是管理中心设备的管理类，其中重要方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//设置中心设备代理</span><br><span class="line">@property(assign, nonatomic, nullable) id&lt;CBCentralManagerDelegate&gt; delegate;</span><br><span class="line">//中心设备当前状态</span><br><span class="line">@property(readonly) CBCentralManagerState state;</span><br><span class="line">//中心设备是否正在扫描</span><br><span class="line">@property(readonly) BOOL isScanning NS_AVAILABLE(NA, 9_0);</span><br></pre></td></tr></table></figure>
+<p>   其中state是一个枚举，有关蓝牙是否可用的状态如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, CBCentralManagerState) &#123;</span><br><span class="line">        //状态未知</span><br><span class="line">    CBCentralManagerStateUnknown = 0,</span><br><span class="line">    //连接断开 即将重置</span><br><span class="line">    CBCentralManagerStateResetting,</span><br><span class="line">    //该平台不支持蓝牙</span><br><span class="line">    CBCentralManagerStateUnsupported,</span><br><span class="line">    //未授权蓝牙使用</span><br><span class="line">    CBCentralManagerStateUnauthorized,</span><br><span class="line">    //蓝牙关闭</span><br><span class="line">    CBCentralManagerStatePoweredOff,</span><br><span class="line">    //蓝牙正常开启</span><br><span class="line">    CBCentralManagerStatePoweredOn,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>下面这些方法用于初始化管理中心：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//初始化方法</span><br><span class="line">//设置的代理需要遵守CBCentralManagerDelegate协议</span><br><span class="line">//queue可以设置蓝牙扫描的线程 传入nil则为在主线程中进行</span><br><span class="line">- (instancetype)initWithDelegate:(nullable id&lt;CBCentralManagerDelegate&gt;)delegate</span><br><span class="line">                           queue:(nullable dispatch_queue_t)queue;</span><br><span class="line">//此方法同上 在options字典中用于进行一些管理中心的初始化属性设置</span><br><span class="line">//字典中支持的键值如下</span><br><span class="line">/*</span><br><span class="line">NSString * const CBCentralManagerOptionShowPowerAlertKey 对应一个NSNumber类型的bool值，用于设置是否在关闭蓝牙时弹出用户提示</span><br><span class="line">NSString * const CBCentralManagerOptionRestoreIdentifierKey 对应一个NSString对象，设置管理中心的标识符ID</span><br><span class="line">*/</span><br><span class="line">- (instancetype)initWithDelegate:(nullable id&lt;CBCentralManagerDelegate&gt;)delegate</span><br><span class="line">                           queue:(nullable dispatch_queue_t)queue</span><br><span class="line">                         options:(nullable NSDictionary&lt;NSString *, id&gt; *)options;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//根据获取所有已知设备</span><br><span class="line">- (NSArray&lt;CBPeripheral *&gt; *)retrievePeripheralsWithIdentifiers:(NSArray&lt;NSUUID *&gt; *)identifiers;</span><br><span class="line">//根据服务id获取所有连接的设备</span><br><span class="line">- (NSArray&lt;CBPeripheral *&gt; *)retrieveConnectedPeripheralsWithServices:(NSArray&lt;CBUUID *&gt; *)serviceUUIDs;</span><br></pre></td></tr></table></figure>
+<p>在初始化管理中心完成后，会回调代理中的如下方法，我们必须实现如下方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//这个方法中可以获取到管理中心的状态</span><br><span class="line">- (void)centralManagerDidUpdateState:(CBCentralManager *)central;</span><br></pre></td></tr></table></figure>
+<p>如果上面方法中管理中心状态为蓝牙可用，可以通过下面方法开启扫描外设：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//serviceUUIDs用于扫描一个特点ID的外设 options用于设置一些扫描属性 键值如下</span><br><span class="line">/*</span><br><span class="line">//是否允许重复扫描 对应NSNumber的bool值，默认为NO，会自动去重</span><br><span class="line">NSString *const CBCentralManagerScanOptionAllowDuplicatesKey;</span><br><span class="line">//要扫描的设备UUID 数组 对应NSArray</span><br><span class="line">NSString *const CBCentralManagerScanOptionSolicitedServiceUUIDsKey;</span><br><span class="line">*/</span><br><span class="line">- (void)scanForPeripheralsWithServices:(nullable NSArray&lt;CBUUID *&gt; *)serviceUUIDs options:(nullable NSDictionary&lt;NSString *, id&gt; *)options;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//停止扫描外设</span><br><span class="line">- (void)stopScan;</span><br></pre></td></tr></table></figure>
+<p>扫描的结果会在如下代理方法中回掉：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//peripheral 扫描到的外设</span><br><span class="line">//advertisementData是外设发送的广播数据</span><br><span class="line">//RSSI 是信号强度</span><br><span class="line">- (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary&lt;NSString *, id&gt; *)advertisementData RSSI:(NSNumber *)RSSI;</span><br></pre></td></tr></table></figure>
+<p>扫描到外设后，通过下面方法可以连接一个外设：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">options中可以设置一些连接设备的初始属性键值如下</span><br><span class="line">//对应NSNumber的bool值，设置当外设连接后是否弹出一个警告</span><br><span class="line">NSString *const CBConnectPeripheralOptionNotifyOnConnectionKey;</span><br><span class="line">//对应NSNumber的bool值，设置当外设断开连接后是否弹出一个警告</span><br><span class="line">NSString *const CBConnectPeripheralOptionNotifyOnDisconnectionKey;</span><br><span class="line">//对应NSNumber的bool值，设置当外设暂停连接后是否弹出一个警告</span><br><span class="line">NSString *const CBConnectPeripheralOptionNotifyOnNotificationKey;</span><br><span class="line">*/</span><br><span class="line">- (void)connectPeripheral:(CBPeripheral *)peripheral options:(nullable NSDictionary&lt;NSString *, id&gt; *)options;</span><br><span class="line">//取消一个外设的连接</span><br><span class="line">- (void)cancelPeripheralConnection:(CBPeripheral *)peripheral;</span><br></pre></td></tr></table></figure>
+<p>调用过连接外设的方法后，会回掉如下代理方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//连接外设成功</span><br><span class="line">- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral;</span><br><span class="line">//连接外设失败</span><br><span class="line">- (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(nullable NSError *)error;</span><br><span class="line">//断开外设连接</span><br><span class="line">- (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(nullable NSError *)error;</span><br></pre></td></tr></table></figure>
+<p>当管理中心恢复时会调用如下代理：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//dict中会传入如下键值对</span><br><span class="line">/*</span><br><span class="line">//恢复连接的外设数组</span><br><span class="line">NSString *const CBCentralManagerRestoredStatePeripheralsKey;</span><br><span class="line">//恢复连接的服务UUID数组</span><br><span class="line">NSString *const CBCentralManagerRestoredStateScanServicesKey;</span><br><span class="line">//恢复连接的外设扫描属性字典数组</span><br><span class="line">NSString *const CBCentralManagerRestoredStateScanOptionsKey;</span><br><span class="line">*/</span><br><span class="line">- (void)centralManager:(CBCentralManager *)central willRestoreState:(NSDictionary&lt;NSString *, id&gt; *)dict;</span><br></pre></td></tr></table></figure>
+<h3 id="三、外设CBPeripheralManager"><a href="#三、外设CBPeripheralManager" class="headerlink" title="三、外设CBPeripheralManager"></a>三、外设CBPeripheralManager</h3><pre><code>从上面我们知道，中心设备是用来扫描周围的外设，两台设备的通讯中，必须有一个充当中心设备，一个充当外设，外设是由CBPeripheralManager进行管理，主要方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">//设置外设管理中心代理</span><br><span class="line">@property(assign, nonatomic, nullable) id&lt;CBPeripheralManagerDelegate&gt; delegate;</span><br><span class="line">//外设状态 枚举如中心设备</span><br><span class="line">@property(readonly) CBPeripheralManagerState state;</span><br><span class="line">//是否正在发送广播</span><br><span class="line">@property(readonly) BOOL isAdvertising;</span><br><span class="line">//用户的授权状态</span><br><span class="line">+ (CBPeripheralManagerAuthorizationStatus)authorizationStatus;</span><br><span class="line">//初始化并设置代理 参数的具体含义与中心设备管理中心</span><br><span class="line">- (instancetype)initWithDelegate:(nullable id&lt;CBPeripheralManagerDelegate&gt;)delegate</span><br><span class="line">                           queue:(nullable dispatch_queue_t);</span><br><span class="line">- (instancetype)initWithDelegate:(nullable id&lt;CBPeripheralManagerDelegate&gt;)delegate</span><br><span class="line">                           queue:(nullable dispatch_queue_t)queue</span><br><span class="line">                         options:(nullable NSDictionary&lt;NSString *, id&gt; *)options;</span><br><span class="line">//开始发送广播</span><br><span class="line">//advertisementData中可以发送的数据有约定 如下</span><br><span class="line">/*</span><br><span class="line">对应设置NSString类型的广播名</span><br><span class="line">NSString *const CBAdvertisementDataLocalNameKey;</span><br><span class="line">外设制造商的NSData数据</span><br><span class="line">NSString *const CBAdvertisementDataManufacturerDataKey;</span><br><span class="line">外设制造商的CBUUID数据</span><br><span class="line">NSString *const CBAdvertisementDataServiceDataKey;</span><br><span class="line">服务的UUID与其对应的服务数据字典数组</span><br><span class="line">NSString *const CBAdvertisementDataServiceUUIDsKey;</span><br><span class="line">附加服务的UUID数组</span><br><span class="line">NSString *const CBAdvertisementDataOverflowServiceUUIDsKey;</span><br><span class="line">外设的发送功率 NSNumber类型</span><br><span class="line">NSString *const CBAdvertisementDataTxPowerLevelKey;</span><br><span class="line">外设是否可以连接</span><br><span class="line">NSString *const CBAdvertisementDataIsConnectable;</span><br><span class="line">服务的UUID数组</span><br><span class="line">NSString *const CBAdvertisementDataSolicitedServiceUUIDsKey;</span><br><span class="line">*/</span><br><span class="line">- (void)startAdvertising:(nullable NSDictionary&lt;NSString *, id&gt; *)advertisementData;</span><br><span class="line">//停止发送广播</span><br><span class="line">- (void)stopAdvertising;</span><br><span class="line">//设置一个连接的具体central设备的延时 枚举如下</span><br><span class="line">/*</span><br><span class="line">typedef NS_ENUM(NSInteger, CBPeripheralManagerConnectionLatency) &#123;</span><br><span class="line">    CBPeripheralManagerConnectionLatencyLow = 0,</span><br><span class="line">    CBPeripheralManagerConnectionLatencyMedium,</span><br><span class="line">    CBPeripheralManagerConnectionLatencyHigh</span><br><span class="line">&#125; NS_ENUM_AVAILABLE(NA, 6_0);</span><br><span class="line">*/</span><br><span class="line">- (void)setDesiredConnectionLatency:(CBPeripheralManagerConnectionLatency)latency forCentral:(CBCentral *)central;</span><br><span class="line">//添加一个服务</span><br><span class="line">- (void)addService:(CBMutableService *)service;</span><br><span class="line">//移除一个服务</span><br><span class="line">- (void)removeService:(CBMutableService *)service;</span><br><span class="line">//移除所有服务</span><br><span class="line">- (void)removeAllServices;</span><br><span class="line">//响应中心设备的读写请求</span><br><span class="line">- (void)respondToRequest:(CBATTRequest *)request withResult:(CBATTError)result;</span><br><span class="line">//更新一个连接中心设备的订阅特征值</span><br><span class="line">- (BOOL)updateValue:(NSData *)value forCharacteristic:(CBMutableCharacteristic *)characteristic onSubscribedCentrals:(nullable NSArray&lt;CBCentral *&gt; *)centrals;</span><br></pre></td></tr></table></figure>
+<p>外设代理的相关方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">//这个方法是必须实现的 状态可用后可以发送广播</span><br><span class="line">- (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral;</span><br><span class="line">//连接回复时调用的方法 和centralManager类似</span><br><span class="line">- (void)peripheralManager:(CBPeripheralManager *)peripheral willRestoreState:(NSDictionary&lt;NSString *, id&gt; *)dict;</span><br><span class="line">//开始发送广播时调用的方法</span><br><span class="line">- (void)peripheralManagerDidStartAdvertising:(CBPeripheralManager *)peripheral error:(nullable NSError *)error;</span><br><span class="line">//添加服务调用的回调</span><br><span class="line">- (void)peripheralManager:(CBPeripheralManager *)peripheral didAddService:(CBService *)service error:(nullable NSError *)error;</span><br><span class="line">//当一个central设备订阅一个特征值时调用的方法</span><br><span class="line">- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didSubscribeToCharacteristic:(CBCharacteristic *)characteristic;</span><br><span class="line">//取消订阅一个特征值时调用的方法</span><br><span class="line">- (void)peripheralManager:(CBPeripheralManager *)peripheral central:(CBCentral *)central didUnsubscribeFromCharacteristic:(CBCharacteristic *)characteristic;</span><br><span class="line">//收到读请求时触发的方法</span><br><span class="line">- (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveReadRequest:(CBATTRequest *)request;</span><br><span class="line">//收到写请求时触发的方法</span><br><span class="line">- (void)peripheralManager:(CBPeripheralManager *)peripheral didReceiveWriteRequests:(NSArray&lt;CBATTRequest *&gt; *)requests;</span><br><span class="line">//外设准备更新特征值时调用的方法</span><br><span class="line">- (void)peripheralManagerIsReadyToUpdateSubscribers:(CBPeripheralManager *)peripheral;</span><br></pre></td></tr></table></figure>
+<h3 id="四、中心设备与外设对象CBCentral与CBPeripheral"><a href="#四、中心设备与外设对象CBCentral与CBPeripheral" class="headerlink" title="四、中心设备与外设对象CBCentral与CBPeripheral"></a>四、中心设备与外设对象CBCentral与CBPeripheral</h3><pre><code>上面介绍了中心设备管理类与外设管理类，这些类用于将设备连接建立起来，器具的数据交换的服务和一些信息则是在对应的设备对象中。
+</code></pre><h4 id="1、中心设备-CBCentral属性与方法"><a href="#1、中心设备-CBCentral属性与方法" class="headerlink" title="1、中心设备 CBCentral属性与方法"></a>1、中心设备 CBCentral属性与方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//设备UUID</span><br><span class="line">@property(readonly, nonatomic) NSUUID *identifier;</span><br><span class="line">//中心设备最大接收的数据长度</span><br><span class="line">@property(readonly, nonatomic) NSUInteger maximumUpdateValueLength;</span><br></pre></td></tr></table></figure>
+<h4 id="2、外设CAPeripheral属性与方法"><a href="#2、外设CAPeripheral属性与方法" class="headerlink" title="2、外设CAPeripheral属性与方法"></a>2、外设CAPeripheral属性与方法</h4><pre><code>外设对象要比中心对象复杂的多，当centralManager连接到外设后，需要通过外设对象的代理方法进行数据交互，其中主要方法属性如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">//设置代理</span><br><span class="line">@property(assign, nonatomic, nullable) id&lt;CBPeripheralDelegate&gt; delegate;</span><br><span class="line">//外设name</span><br><span class="line">@property(retain, readonly, nullable) NSString *name;</span><br><span class="line">//信号强度</span><br><span class="line">@property(retain, readonly, nullable) NSNumber *RSSI NS_DEPRECATED(NA, NA, 5_0, 8_0);</span><br><span class="line">//外设状态</span><br><span class="line">/*</span><br><span class="line">typedef NS_ENUM(NSInteger, CBPeripheralState) &#123;</span><br><span class="line">    CBPeripheralStateDisconnected = 0,//未连接</span><br><span class="line">    CBPeripheralStateConnecting,//正在链接</span><br><span class="line">    CBPeripheralStateConnected,//已经连接</span><br><span class="line">    CBPeripheralStateDisconnecting NS_AVAILABLE(NA, 9_0),//正在断开连接</span><br><span class="line">&#125; NS_AVAILABLE(NA, 7_0);</span><br><span class="line">*/</span><br><span class="line">@property(readonly) CBPeripheralState state;</span><br><span class="line">//所有的服务数组</span><br><span class="line">@property(retain, readonly, nullable) NSArray&lt;CBService *&gt; *services;</span><br><span class="line">//获取当前信号强度</span><br><span class="line">- (void)readRSSI;</span><br><span class="line">//根据服务UUID寻找服务对象</span><br><span class="line">- (void)discoverServices:(nullable NSArray&lt;CBUUID *&gt; *)serviceUUIDs;</span><br><span class="line">//在服务对象UUID数组中寻找特定服务</span><br><span class="line">- (void)discoverIncludedServices:(nullable NSArray&lt;CBUUID *&gt; *)includedServiceUUIDs forService:(CBService *)service;</span><br><span class="line">//在一个服务中寻找特征值</span><br><span class="line">- (void)discoverCharacteristics:(nullable NSArray&lt;CBUUID *&gt; *)characteristicUUIDs forService:(CBService *)service;</span><br><span class="line">//从一个特征中读取数据</span><br><span class="line">- (void)readValueForCharacteristic:(CBCharacteristic *)characteristic;</span><br><span class="line">//写数据的最大长度</span><br><span class="line">//type枚举如下</span><br><span class="line">/*</span><br><span class="line">typedef NS_ENUM(NSInteger, CBCharacteristicWriteType) &#123;</span><br><span class="line">    CBCharacteristicWriteWithResponse = 0,//写数据并且接收成功与否回执</span><br><span class="line">    CBCharacteristicWriteWithoutResponse,//写数据不接收回执</span><br><span class="line">&#125;;</span><br><span class="line">*/</span><br><span class="line">- (NSUInteger)maximumWriteValueLengthForType:(CBCharacteristicWriteType)type NS_AVAILABLE(NA, 9_0);</span><br><span class="line">//向某个特征中写数据</span><br><span class="line">- (void)writeValue:(NSData *)data forCharacteristic:(CBCharacteristic *)characteristic type:(CBCharacteristicWriteType)type;</span><br><span class="line">//为制定的特征值设置监听通知</span><br><span class="line">- (void)setNotifyValue:(BOOL)enabled forCharacteristic:(CBCharacteristic *)characteristic;</span><br><span class="line">//寻找特征值的描述</span><br><span class="line">- (void)discoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic;</span><br><span class="line">//读取特征的描述值</span><br><span class="line">- (void)readValueForDescriptor:(CBDescriptor *)descriptor;</span><br><span class="line">//写特征的描述值</span><br><span class="line">- (void)writeValue:(NSData *)data forDescriptor:(CBDescriptor *)descriptor;</span><br></pre></td></tr></table></figure>
+<p>外设的代理方法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//外设名称更改时回调的方法</span><br><span class="line">- (void)peripheralDidUpdateName:(CBPeripheral *)peripheral NS_AVAILABLE(NA, 6_0);</span><br><span class="line">//外设服务变化时回调的方法</span><br><span class="line">- (void)peripheral:(CBPeripheral *)peripheral didModifyServices:(NSArray&lt;CBService *&gt; *)invalidatedServices NS_AVAILABLE(NA, 7_0);</span><br><span class="line">//信号强度改变时调用的方法</span><br><span class="line">- (void)peripheralDidUpdateRSSI:(CBPeripheral *)peripheral error:(nullable NSError *)error NS_DEPRECATED(NA, NA, 5_0, 8_0);</span><br><span class="line">//读取信号强度回调的方法</span><br><span class="line">- (void)peripheral:(CBPeripheral *)peripheral didReadRSSI:(NSNumber *)RSSI error:(nullable NSError *)error NS_AVAILABLE(NA, 8_0);</span><br><span class="line">//发现服务时调用的方法</span><br><span class="line">- (void)peripheral:(CBPeripheral *)peripheral didDiscoverServices:(nullable NSError *)error;</span><br><span class="line">//在服务中发现子服务回调的方法</span><br><span class="line">- (void)peripheral:(CBPeripheral *)peripheral didDiscoverIncludedServicesForService:(CBService *)service error:(nullable NSError *)error;</span><br><span class="line">//发现服务的特征值后回调的方法</span><br><span class="line">- (void)peripheral:(CBPeripheral *)peripheral didDiscoverCharacteristicsForService:(CBService *)service error:(nullable NSError *)error;</span><br><span class="line">//特征值更新时回调的方法</span><br><span class="line">- (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error;</span><br><span class="line">//向特征值写数据时回调的方法</span><br><span class="line"> - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error;</span><br><span class="line"> //特征值的通知设置改变时触发的方法</span><br><span class="line"> - (void)peripheral:(CBPeripheral *)peripheral didUpdateNotificationStateForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error;</span><br><span class="line"> //发现特征值的描述信息触发的方法</span><br><span class="line"> - (void)peripheral:(CBPeripheral *)peripheral didDiscoverDescriptorsForCharacteristic:(CBCharacteristic *)characteristic error:(nullable NSError *)error;</span><br><span class="line"> //特征的描述值更新时触发的方法</span><br><span class="line"> - (void)peripheral:(CBPeripheral *)peripheral didUpdateValueForDescriptor:(CBDescriptor *)descriptor error:(nullable NSError *)error;</span><br><span class="line"> //写描述信息时触发的方法</span><br><span class="line"> - (void)peripheral:(CBPeripheral *)peripheral didWriteValueForDescriptor:(CBDescriptor *)descriptor error:(nullable NSError *)error;</span><br></pre></td></tr></table></figure>
+<h3 id="五、服务对象CBService"><a href="#五、服务对象CBService" class="headerlink" title="五、服务对象CBService"></a>五、服务对象CBService</h3><pre><code>服务对象是用来管理外设提供的一些数据服务的，其中属性如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//对应的外设</span><br><span class="line">@property(assign, readonly, nonatomic) CBPeripheral *peripheral;</span><br><span class="line">//是否是初等服务</span><br><span class="line">@property(readonly, nonatomic) BOOL isPrimary;</span><br><span class="line">//包含的自服务</span><br><span class="line">@property(retain, readonly, nullable) NSArray&lt;CBService *&gt; *includedServices;</span><br><span class="line">//服务中的特征值</span><br><span class="line">@property(retain, readonly, nullable) NSArray&lt;CBCharacteristic *&gt; *characteristics;</span><br></pre></td></tr></table></figure>
+<h3 id="六、服务的特征值CBCharacteristic"><a href="#六、服务的特征值CBCharacteristic" class="headerlink" title="六、服务的特征值CBCharacteristic"></a>六、服务的特征值CBCharacteristic</h3><pre><code>通过绑定服务中的特征值来进行数据的读写操作，其中属性如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//对应的服务对象</span><br><span class="line">@property(assign, readonly, nonatomic) CBService *service;</span><br><span class="line">//特征值的属性 枚举如下</span><br><span class="line">/*</span><br><span class="line">typedef NS_OPTIONS(NSUInteger, CBCharacteristicProperties) &#123;</span><br><span class="line">    CBCharacteristicPropertyBroadcast,//允许广播特征</span><br><span class="line">    CBCharacteristicPropertyRead,//可读属性</span><br><span class="line">    CBCharacteristicPropertyWriteWithoutResponse,//可写并且接收回执</span><br><span class="line">    CBCharacteristicPropertyWrite,//可写属性</span><br><span class="line">    CBCharacteristicPropertyNotify,//可通知属性</span><br><span class="line">    CBCharacteristicPropertyIndicate,//可展现的特征值</span><br><span class="line">    CBCharacteristicPropertyAuthenticatedSignedWrites,//允许签名的特征值写入</span><br><span class="line">    CBCharacteristicPropertyExtendedProperties,</span><br><span class="line">    CBCharacteristicPropertyNotifyEncryptionRequired,</span><br><span class="line">    CBCharacteristicPropertyIndicateEncryptionRequired</span><br><span class="line">&#125;;</span><br><span class="line">*/</span><br><span class="line">@property(readonly, nonatomic) CBCharacteristicProperties properties;</span><br><span class="line">//特征值的数据</span><br><span class="line">@property(retain, readonly, nullable) NSData *value;</span><br><span class="line">//特征值的描述</span><br><span class="line">@property(retain, readonly, nullable) NSArray&lt;CBDescriptor *&gt; *descriptors;</span><br><span class="line">//是否是当前广播的特征</span><br><span class="line">@property(readonly) BOOL isBroadcasted;</span><br><span class="line">//是否是正在通知的特征</span><br><span class="line">@property(readonly) BOOL isNotifying;</span><br></pre></td></tr></table></figure>
+<h3 id="七、读写请求对象CBATTRequest"><a href="#七、读写请求对象CBATTRequest" class="headerlink" title="七、读写请求对象CBATTRequest"></a>七、读写请求对象CBATTRequest</h3><pre><code>服务对象是外设向中心设备提供的相关数据服务，获取到相应服务后，中心设备可以进行读写请求，读写对象属性如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//对应的中心设备</span><br><span class="line">@property(readonly, nonatomic) CBCentral *central;</span><br><span class="line">//对应的特征值</span><br><span class="line">@property(readonly, nonatomic) CBCharacteristic *characteristic;</span><br><span class="line">//读写数据值</span><br><span class="line">@property(readwrite, copy, nullable) NSData *value;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/12/23/167iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展/" class="pre-post btn btn-default" title='iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展</span>
+        </a>
+    
+    
+        <a href="/2015/12/18/165iOS获取和监测设备基本信息——UIDevice的使用/" class="next-post btn btn-default" title='iOS获取和监测设备基本信息——UIDevice的使用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS获取和监测设备基本信息——UIDevice的使用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发之蓝牙通讯"><span class="toc-text">iOS开发之蓝牙通讯</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、中心设备CBCentralManager"><span class="toc-text">二、中心设备CBCentralManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、外设CBPeripheralManager"><span class="toc-text">三、外设CBPeripheralManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、中心设备与外设对象CBCentral与CBPeripheral"><span class="toc-text">四、中心设备与外设对象CBCentral与CBPeripheral</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、中心设备-CBCentral属性与方法"><span class="toc-text">1、中心设备 CBCentral属性与方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、外设CAPeripheral属性与方法"><span class="toc-text">2、外设CAPeripheral属性与方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、服务对象CBService"><span class="toc-text">五、服务对象CBService</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、服务的特征值CBCharacteristic"><span class="toc-text">六、服务的特征值CBCharacteristic</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#七、读写请求对象CBATTRequest"><span class="toc-text">七、读写请求对象CBATTRequest</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

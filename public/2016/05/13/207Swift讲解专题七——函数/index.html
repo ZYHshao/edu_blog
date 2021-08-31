@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift讲解专题七——函数 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift讲解专题七——函数">
+            
+	            Swift讲解专题七——函数
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/13</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift讲解专题七——函数"><a href="#Swift讲解专题七——函数" class="headerlink" title="Swift讲解专题七——函数"></a>Swift讲解专题七——函数</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>函数是有特定功能的代码段，函数会有一个特定的名称调用时来使用。Swift提供了十分灵活的方式来创建与调用函数。事实上在Swift，每个函数都是一种类型，这种类型由参数和返回值来决定。Swift和Objective-C的一大区别就在于Swift中的函数可以进行嵌套。
+</code></pre><h3 id="二、函数的创建与调用"><a href="#二、函数的创建与调用" class="headerlink" title="二、函数的创建与调用"></a>二、函数的创建与调用</h3><pre><code>函数通过函数名，参数和返回值来定义，参数和返回值决定一个函数的类型，在调用函数时，使用函数名来进行调用，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//传入一个名字 打印并将其返回</span><br><span class="line">func printName(name:String) -&gt; String &#123;</span><br><span class="line">    print(name)</span><br><span class="line">    return name</span><br><span class="line">&#125;</span><br><span class="line">//进行函数的调用</span><br><span class="line">printName(&quot;HS&quot;)</span><br></pre></td></tr></table></figure>
+<p>也可以创建没有参数的函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func onePuseTwo()-&gt;Int &#123;</span><br><span class="line">    return 1+2</span><br><span class="line">&#125;</span><br><span class="line">onePuseTwo()</span><br></pre></td></tr></table></figure>
+<p>同样也可以创建没有返回值的函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func sayHello()&#123;</span><br><span class="line">    print(&quot;Hello&quot;)</span><br><span class="line">&#125;</span><br><span class="line">sayHello()</span><br></pre></td></tr></table></figure>
+<p>上面介绍的函数类型都比较常见，对于多返回值的函数，在Objective-C中十分难处理，开发者通常会采用字典、数组等集合方式或者干脆使用block回调，在Swift中，可以使用元组作为函数的返回值，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func tuples()-&gt;(Int,String)&#123;</span><br><span class="line">    return (1,&quot;1&quot;)</span><br><span class="line">&#125;</span><br><span class="line">tuples()</span><br></pre></td></tr></table></figure>
+<p>也可以是函数返回一个Optional类型的值，支持返回nil，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func func1(param:Int)-&gt;Int? &#123;</span><br><span class="line">    guard(param&gt;0)else&#123;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">    return param</span><br><span class="line">&#125;</span><br><span class="line">func1(0)</span><br><span class="line">func1(1)</span><br></pre></td></tr></table></figure>
+<p>在函数的参数名前，开发者还可以再为其添加一个参数名称作为外部参数名，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func func1(count param:Int ,count2 param2:Int)-&gt;Int? &#123;</span><br><span class="line">    //内部依然使用param</span><br><span class="line">    guard(param&gt;0)else&#123;</span><br><span class="line">        return nil</span><br><span class="line">    &#125;</span><br><span class="line">    return param</span><br><span class="line">&#125;</span><br><span class="line">//外部调用使用count</span><br><span class="line">func1(count: 0,count2: 0)</span><br><span class="line">func1(count: 1,count2: 1)</span><br></pre></td></tr></table></figure>
+<p>其实Swift函数中的参数列表有这样一个特点，除了第一个参数外，之后的参数都默认添加一个一个和内部名称相同的外部名称，如果开发者不想使用这个外部名称，使用_符号设置，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func func2(param:Int,param2:Int,param3:Int) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">//有外部名称</span><br><span class="line">func2(0, param2: 0, param3: 0)</span><br><span class="line">func func3(param:Int,_ param2:Int,_ param3:Int) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">//没有外部名称</span><br><span class="line">func3(0, 0, 0)</span><br></pre></td></tr></table></figure>
+<p>Swift也支持开发者为函数的参数创建一个默认值，如果函数的某个参数有设置默认值，则开发者在调用时可以省略此参数，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func func4(param:Int=1,param2:Int=2,param3:Int) &#123;</span><br><span class="line">    print(param,param2,param3)</span><br><span class="line">&#125;</span><br><span class="line">func4(3,param3:3)</span><br></pre></td></tr></table></figure>
+<p>还有一种情形在Objective-C中也很处理，对于参数数量不定的函数，在前面章节介绍过，Objective-C一般会使用list指针来完成，在Swift中编写这样的函数十分简单，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func func5(param:Int...)  &#123;</span><br><span class="line">    for index in param &#123;</span><br><span class="line">        print(index)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">func5(1,2,3,4)</span><br></pre></td></tr></table></figure>
+<p>Swift中参数默认是常量，在函数中是不能修改外部传入参数的值得，如果有需求，需要将参数声明成inout类型，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">func func6(inout param:Int)  &#123;</span><br><span class="line">    param = 10</span><br><span class="line">&#125;</span><br><span class="line">var count = 1</span><br><span class="line">//实际上传入的是参数地址</span><br><span class="line">func6(&amp;count)</span><br><span class="line">print(count)</span><br></pre></td></tr></table></figure>
+<h3 id="三、函数类型"><a href="#三、函数类型" class="headerlink" title="三、函数类型"></a>三、函数类型</h3><pre><code>函数是一种特殊的数据类型，每一个函数属于一种数据类型，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">func func7(a:Int,_ b:Int)-&gt;Int&#123;</span><br><span class="line">    return a+b</span><br><span class="line">&#125;</span><br><span class="line">var addFunc:(Int,Int)-&gt;Int = func7</span><br><span class="line">addFunc(1,2)</span><br></pre></td></tr></table></figure>
+<p>函数也可以作为参数传入另一个函数，这十分类似于Objective-C中的block语法，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func func7(a:Int,_ b:Int)-&gt;Int&#123;</span><br><span class="line">    return a+b</span><br><span class="line">&#125;</span><br><span class="line">var addFunc:(Int,Int)-&gt;Int = func7</span><br><span class="line">addFunc(1,2)</span><br><span class="line">func func8(param:Int,param2:Int,param3:(Int,Int)-&gt;Int) -&gt; Int &#123;</span><br><span class="line">   return param3(param,param2)</span><br><span class="line">&#125;</span><br><span class="line">//传入函数</span><br><span class="line">func8(1, param2: 2, param3: addFunc)</span><br><span class="line">//闭包的方式</span><br><span class="line">func8(2, param2: 2, param3:&#123; (a:Int,b:Int) -&gt; Int in</span><br><span class="line">    return a*b</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
+<p>一个人函数也可以作为另一个函数的返回值，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">func func9()-&gt;(Int)-&gt;Int&#123;</span><br><span class="line">    //Swift支持嵌套函数</span><br><span class="line">    func tmp(a:Int)-&gt;Int&#123;</span><br><span class="line">       return a*a</span><br><span class="line">    &#125;</span><br><span class="line">    return tmp</span><br><span class="line">&#125;</span><br><span class="line">var myFunc = func9()</span><br><span class="line">myFunc(3)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/14/208Swift讲解专题八——闭包/" class="pre-post btn btn-default" title='Swift讲解专题八——闭包'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift讲解专题八——闭包</span>
+        </a>
+    
+    
+        <a href="/2016/05/12/206Swift讲解专题六——流程控制/" class="next-post btn btn-default" title='Swift讲解专题六——流程控制'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift讲解专题六——流程控制</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift讲解专题七——函数"><span class="toc-text">Swift讲解专题七——函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、函数的创建与调用"><span class="toc-text">二、函数的创建与调用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、函数类型"><span class="toc-text">三、函数类型</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

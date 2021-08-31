@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS文本布局探讨之一——文本布局框架TextKit浅析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS文本布局探讨之一——文本布局框架TextKit浅析">
+            
+	            iOS文本布局探讨之一——文本布局框架TextKit浅析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/09/08</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS文本布局探讨之一——文本布局框架TextKit浅析"><a href="#iOS文本布局探讨之一——文本布局框架TextKit浅析" class="headerlink" title="iOS文本布局探讨之一——文本布局框架TextKit浅析"></a>iOS文本布局探讨之一——文本布局框架TextKit浅析</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在iOS开发中，处理文本的视图控件主要有4中，UILabel，UITextField，UITextView和UIWebView。其中UILabel与UITextField相对简单，UITextView是功能完备的文本布局展示类，通过它可以进行复杂的富文本布局，UIWebView主要用来加载网页或者pdf文件，其可以进行HTML,CSS和JS等文件的解析。
+
+TextKit是一个偏上层的开发框架，在iOS7以上可用，使用它开发者可以方便灵活处理复杂的文本布局，满足开发中对文本布局的各种复杂需求。TextKit实际上是基于CoreText的一个上层框架，其是面向对象的，如果TextKit中提供的API无法满足需求，可以使用CoreText中的API进行更底层的开发。
+
+官方文档中的一张图片很确切，经常会被用来描述TextKit框架在iOS系统文本渲染中所处的位置。
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0907/144209_lTBy_2340880.png" alt></p>
+<h3 id="二、TextKit框架的结构"><a href="#二、TextKit框架的结构" class="headerlink" title="二、TextKit框架的结构"></a>二、TextKit框架的结构</h3><pre><code>界面在进行文本的渲染时，有下面几个必要条件：
+</code></pre><p>1.要渲染展示的内容。</p>
+<p>2.将内容渲染在某个视图上。</p>
+<p>3.内容渲染在视图上的尺寸位置和形状。</p>
+<p>在TextKit框架中，提供了几个类分别对应处理上述的必要条件：</p>
+<p>1.NSTextStorage对应要渲染展示的内容。</p>
+<p>2.UITextView对应要渲染的视图。</p>
+<p>3.NSTextContainer对应渲染的尺寸位置和形状信息。</p>
+<p>除了上述3个类之外，TextKit框架中的NSLayoutManager类作为协调者来进行布局操作。</p>
+<p>上述关系如下图所示：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0907/151329_DAqp_2340880.png" alt></p>
+<h3 id="三、使用TextKit进行文本布局流程"><a href="#三、使用TextKit进行文本布局流程" class="headerlink" title="三、使用TextKit进行文本布局流程"></a>三、使用TextKit进行文本布局流程</h3><pre><code>个人理解，TextKit主要用于更精细的处理文本布局以及进行复杂的图文混排布局，使用TextKit进行文本的布局展示十分繁琐，首先需要将显示内容定义为一个NSTextStorage对象，之后为其添加一个布局管理器对象NSLayoutManager，在NSLayoutManager中，需要进行NSTextContainer的定义，定义多了NSTextContainer对象则会将文本进行分页。最后，将要展示的NSTextContainer绑定到具体的UITextView视图上。
+</code></pre><p>示例代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义Container</span></span><br><span class="line"><span class="built_in">NSTextContainer</span> * container = [[<span class="built_in">NSTextContainer</span> alloc]initWithSize:<span class="built_in">CGSizeMake</span>(<span class="number">150</span>, <span class="number">200</span>)];</span><br><span class="line"><span class="comment">//定义布局管理类</span></span><br><span class="line"><span class="built_in">NSLayoutManager</span> * layoutManager = [[<span class="built_in">NSLayoutManager</span>  alloc]init];</span><br><span class="line"><span class="comment">//将container添加进布局管理类管理</span></span><br><span class="line">[layoutManager addTextContainer:container];</span><br><span class="line"><span class="comment">//定义一个Storage</span></span><br><span class="line"><span class="built_in">NSTextStorage</span> * storage = [[<span class="built_in">NSTextStorage</span> alloc]initWithString:<span class="string">@"The NSTextContainer class defines a region where text is laid out. An NSLayoutManager uses NSTextContainer to determine where to break lines, lay out portions of text, and so on."</span>];</span><br><span class="line"><span class="comment">//为Storage添加一个布局管理器</span></span><br><span class="line">[storage addLayoutManager:layoutManager];</span><br><span class="line"><span class="comment">//将要显示的container与视图TextView绑定</span></span><br><span class="line"><span class="built_in">UITextView</span> * textView = [[<span class="built_in">UITextView</span> alloc]initWithFrame:<span class="keyword">self</span>.view.frame textContainer:container];</span><br><span class="line">[<span class="keyword">self</span>.view addSubview:textView];</span><br></pre></td></tr></table></figure>
+<p>上面代码演示的过程如下图所示：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0907/165945_QdHp_2340880.png" alt></p>
+<p>需要注意，TextKit进行布局的核心思路是最终的视图对应一个文本块Container，并不是一段文本内容Storage，LayoutManager会将完整的内容根据其中Container的尺寸进行分页，TextView根据需要显示的部分进行Container的选择。</p>
+<h3 id="四、了解NSTextContainer类"><a href="#四、了解NSTextContainer类" class="headerlink" title="四、了解NSTextContainer类"></a>四、了解NSTextContainer类</h3><pre><code>NSTextContainer可以简单理解为创建一个文本区块，文本内容将在这个区块中进行渲染，其中常用属性与方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化方法 设置区块的尺寸</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithSize:(<span class="built_in">CGSize</span>)size;</span><br><span class="line"><span class="comment">//与其绑定的layoutManager 需要注意，不是设置这个属性 使用[NSLayoutManager addTextContainer:]方式来进行绑定</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">assign</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">NSLayoutManager</span> *layoutManager;</span><br><span class="line"><span class="comment">//替换绑定的布局管理类对象</span></span><br><span class="line">- (<span class="keyword">void</span>)replaceLayoutManager:(<span class="built_in">NSLayoutManager</span> *)newLayoutManager;</span><br><span class="line"><span class="comment">//获取区块尺寸</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">CGSize</span> size;</span><br><span class="line"><span class="comment">//设置从区块中剔除某一区域</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">copy</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">UIBezierPath</span> *&gt; *exclusionPaths;</span><br><span class="line"><span class="comment">//设置截断模式 需要注意 这个属性的设置只是会影响此区块的最后一行的截断模式</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">NSLineBreakMode</span> lineBreakMode;</span><br><span class="line"><span class="comment">//设置每行文本左右空出的间距</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">CGFloat</span> lineFragmentPadding;</span><br><span class="line"><span class="comment">//设置TextView上可输入的文本最大行数</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">NSUInteger</span> maximumNumberOfLines;</span><br><span class="line"></span><br><span class="line"><span class="comment">//这个方法用于提供给子类进行重写 这里返回的Rect是可以布局文本的区域</span></span><br><span class="line">- (<span class="built_in">CGRect</span>)lineFragmentRectForProposedRect:(<span class="built_in">CGRect</span>)proposedRect atIndex:(<span class="built_in">NSUInteger</span>)characterIndex writingDirection:(<span class="built_in">NSWritingDirection</span>)baseWritingDirection remainingRect:(<span class="keyword">nullable</span> <span class="built_in">CGRect</span> *)remainingRect;</span><br><span class="line"><span class="comment">//这个BOOL值的属性决定Container的宽度是否自适应TextView的宽度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">BOOL</span> widthTracksTextView;</span><br><span class="line"><span class="comment">//这个BOOL值的属性决定Container的高度是否自适应TextView的高度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">BOOL</span> heightTracksTextView;</span><br></pre></td></tr></table></figure>
+<p>上面所列举的方法中，exclusionPaths属性十分强大，通过设置它，可以将布局区域内剔出一块区域不进行布局，示例代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">   <span class="built_in">NSTextContainer</span> * container = [[<span class="built_in">NSTextContainer</span> alloc]initWithSize:<span class="built_in">CGSizeMake</span>(<span class="number">300</span>, <span class="number">500</span>)];</span><br><span class="line"></span><br><span class="line">   <span class="built_in">UIBezierPath</span> * path = [<span class="built_in">UIBezierPath</span> bezierPathWithArcCenter:<span class="keyword">self</span>.view.center radius:<span class="number">70</span> startAngle:<span class="number">0</span> endAngle:M_PI*<span class="number">2</span> clockwise:<span class="literal">YES</span>];</span><br><span class="line">   container.exclusionPaths = @[path];</span><br><span class="line">   container.lineBreakMode = <span class="built_in">NSLineBreakByCharWrapping</span>;</span><br><span class="line">   <span class="built_in">NSLayoutManager</span> * layoutManager = [[<span class="built_in">NSLayoutManager</span>  alloc]init];</span><br><span class="line">   [layoutManager addTextContainer:container];</span><br><span class="line">   <span class="built_in">NSTextStorage</span> * storage = [[<span class="built_in">NSTextStorage</span> alloc]initWithString:<span class="string">@"The NSTextContainer class defines a region where text is laid out. An NSLayoutManager uses NSTextContainer to determine where to break lines, lay out portions of text, and so on. An NSTextContainer object normally defines rectangular regions, but you can define exclusion paths inside the text container to create regions where text does not flow. You can also subclass to create text containers with nonrectangular regions, such as circular regions, regions with holes in them, or regions that flow alongside graphics.The NSTextContainer class defines a region where text is laid out. An NSLayoutManager uses NSTextContainer to determine where to break lines, lay out portions of text, and so on. An NSTextContainer object normally defines rectangular regions, but you can define exclusion paths inside the text container to create regions where text does not flow. You can also subclass to create text containers with nonrectangular regions, such as circular regions, regions with holes in them, or regions that flow alongside graphics.An NSLayoutManager uses NSTextContainer to determine where to break lines, lay out portions of text, and so on. An NSTextContainer object normally defines rectangular regions, but you can define exclusion paths inside the text container to create regions where text does not flow. You can also subclass to create text containers with nonrectangular regions, such as circular regions, regions with holes in them, or regions that flow alongside graphics."</span>];</span><br><span class="line">   [storage addLayoutManager:layoutManager];</span><br><span class="line">   <span class="built_in">UITextView</span> * textView = [[<span class="built_in">UITextView</span> alloc]initWithFrame:<span class="keyword">self</span>.view.frame textContainer:container];</span><br><span class="line">   [<span class="keyword">self</span>.view addSubview:textView];</span><br></pre></td></tr></table></figure>
+<p>效果如下图：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0907/181210_GVd0_2340880.png" alt></p>
+<h3 id="五、关于NSLayoutManager"><a href="#五、关于NSLayoutManager" class="headerlink" title="五、关于NSLayoutManager"></a>五、关于NSLayoutManager</h3><pre><code>顾名思义，NSLayoutManager专门负责对文本的布局渲染，简单理解，其从NSTextStorage从拿去展示的内容，将去处理后布局到NSTextContainer中。
+
+NSLayoutManager与NSTextContainer的关系为一对多，放入NSLayoutManager中的NSTextContainer会以有序数组的形式进行管理，在内容布局时，超出第一个NSTextContainer的内容会被布局到后一个NSTextContainer中。
+
+NSLayoutManager中有关NSTextContainer操作的方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//container数组</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSTextContainer</span> *&gt; *textContainers;</span><br><span class="line"><span class="comment">//添加一个container</span></span><br><span class="line">- (<span class="keyword">void</span>)addTextContainer:(<span class="built_in">NSTextContainer</span> *)container;</span><br><span class="line"><span class="comment">//在指定位置插入一个container</span></span><br><span class="line">- (<span class="keyword">void</span>)insertTextContainer:(<span class="built_in">NSTextContainer</span> *)container atIndex:(<span class="built_in">NSUInteger</span>)index;</span><br><span class="line"><span class="comment">//删除一个指定的container</span></span><br><span class="line">- (<span class="keyword">void</span>)removeTextContainerAtIndex:(<span class="built_in">NSUInteger</span>)index;</span><br><span class="line"><span class="comment">//注意 这个方法不需要显式的调用 当布局Container发生变化时 系统会自动调用</span></span><br><span class="line">- (<span class="keyword">void</span>)textContainerChangedGeometry:(<span class="built_in">NSTextContainer</span> *)container;</span><br></pre></td></tr></table></figure>
+<p>与布局管理相关的属性与方法如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//是否显示隐形的符号</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">默认为NO，如果设置为YES，则会将空格等隐形字符显示出来</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">BOOL</span> showsInvisibleCharacters;</span><br><span class="line"><span class="comment">//是否显示某些布局控制字符</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">BOOL</span> showsControlCharacters;</span><br><span class="line"><span class="comment">//这个属性可以用于设置断字</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这个属性的取值为0到1之间 默认为0 即单词换行时从来不会中断 越接近1 则使用连字符进行单词换行中断的概率越大</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">CGFloat</span> hyphenationFactor;</span><br><span class="line"><span class="comment">//是否使用字体定义的行距</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">默认使用字体所定义的行距信息 通过设置这个属性为NO可以关闭此功能</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">BOOL</span> usesFontLeading;</span><br><span class="line"><span class="comment">//这个属性设置是否允许对相邻位置的内容进行布局 默认为YES，设置为NO后将可以提供大文本布局的效率</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">BOOL</span> allowsNonContiguousLayout;</span><br><span class="line"></span><br><span class="line"><span class="comment">//下面这几个方法用于移除某一范围内的布局</span></span><br><span class="line">- (<span class="keyword">void</span>)invalidateGlyphsForCharacterRange:(<span class="built_in">NSRange</span>)charRange changeInLength:(<span class="built_in">NSInteger</span>)delta actualCharacterRange:(<span class="keyword">nullable</span> <span class="built_in">NSRangePointer</span>)actualCharRange;</span><br><span class="line">- (<span class="keyword">void</span>)invalidateLayoutForCharacterRange:(<span class="built_in">NSRange</span>)charRange actualCharacterRange:(<span class="keyword">nullable</span> <span class="built_in">NSRangePointer</span>)actualCharRange <span class="built_in">NS_AVAILABLE</span>(<span class="number">10</span>_5, <span class="number">7</span>_0);</span><br><span class="line">- (<span class="keyword">void</span>)invalidateDisplayForCharacterRange:(<span class="built_in">NSRange</span>)charRange;</span><br><span class="line">- (<span class="keyword">void</span>)invalidateDisplayForGlyphRange:(<span class="built_in">NSRange</span>)glyphRange;</span><br></pre></td></tr></table></figure>
+<h3 id="六、文本内容类NSTextStorage"><a href="#六、文本内容类NSTextStorage" class="headerlink" title="六、文本内容类NSTextStorage"></a>六、文本内容类NSTextStorage</h3><pre><code>NSTextStorage实际上是继承自NSMutableAttributedString。NSAttributedString是一种自带属性的字符串类，关于NSAttributedString的基本用法，如下博客中有介绍：
+</code></pre><p><a href="http://my.oschina.net/u/2340880/blog/397500" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/397500</a>。</p>
+<pre><code>TextKit框架中在对文本进行布局时，主要关注于3个方面：
+</code></pre><p>1.字符的属性，例如颜色，字体等。</p>
+<p>2.行与段落的属性，如缩进，行间距等。</p>
+<p>3.文档属性，包括四周边距、文档尺寸等。</p>
+<p>这些都由NSAttributedString来进行定义。</p>
+<pre><code>如上所介绍的是TextKit框架的主要工作原理，文字渲染，图文混排的更多内容，后面博客会继续探讨。有疏漏之处，共同讨论进步。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/09/09/253iOS文本布局探讨之二——关于TextKit框架中的字体描述/" class="pre-post btn btn-default" title='iOS文本布局探讨之二——关于TextKit框架中的字体描述'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS文本布局探讨之二——关于TextKit框架中的字体描述</span>
+        </a>
+    
+    
+        <a href="/2016/09/06/251Android开发中RelativeLayout相对布局/" class="next-post btn btn-default" title='Android开发中RelativeLayout相对布局'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Android开发中RelativeLayout相对布局</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS文本布局探讨之一——文本布局框架TextKit浅析"><span class="toc-text">iOS文本布局探讨之一——文本布局框架TextKit浅析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、TextKit框架的结构"><span class="toc-text">二、TextKit框架的结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、使用TextKit进行文本布局流程"><span class="toc-text">三、使用TextKit进行文本布局流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、了解NSTextContainer类"><span class="toc-text">四、了解NSTextContainer类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、关于NSLayoutManager"><span class="toc-text">五、关于NSLayoutManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、文本内容类NSTextStorage"><span class="toc-text">六、文本内容类NSTextStorage</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift讲解专题五——集合类型 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift讲解专题五——集合类型">
+            
+	            Swift讲解专题五——集合类型
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/11</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift讲解专题五——集合类型"><a href="#Swift讲解专题五——集合类型" class="headerlink" title="Swift讲解专题五——集合类型"></a>Swift讲解专题五——集合类型</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>Swift中提供了3种集合类型，Array数据类型，Set集合类型，Dictionary字典类型。Array用于存放一组有序的数据，数据角标从0开始一次递增；Set用于存放一组无序的数据，数据不可以重复；Dictionary也用于存放一组无序的数据，只是其是按照键值对的方式存储，键值必须唯一。这里借用官方文档中的一张图来表示3种集合类型的特点：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0511/112738_Qddl_2340880.png" alt></p>
+<h3 id="二、Array类型"><a href="#二、Array类型" class="headerlink" title="二、Array类型"></a>二、Array类型</h3><pre><code>Array通常也被称为数组，Swift是一种类型安全语言，其中的Array类型也必须确定其元素的类型，声明数组类型有两种方法，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//将数组声明为Int类型值集合的数组</span><br><span class="line">var array1:[Int]</span><br><span class="line">var array2:Array&lt;Int&gt;</span><br><span class="line">//创建空数组</span><br><span class="line">array1 = []</span><br><span class="line">array2 = Array()</span><br></pre></td></tr></table></figure>
+<p>数组对象如果通过var变量也接收，则其为可变的数组，可以通过append方法来追加元素，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//向数组中追加元素</span><br><span class="line">array1.append(3)</span><br></pre></td></tr></table></figure>
+<p>在创建数组时，也可以对数组进行初始化，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//创建数组[0,0,0]</span><br><span class="line">var array3 = [Double](count: 3, repeatedValue: 0)</span><br><span class="line">//创建数组[2.5,2.5,2.5]</span><br><span class="line">var array4 = Array(count: 3, repeatedValue: 2.5)</span><br><span class="line">//数组可以使用+号直接进行追加 [0,0,0,2.5,2.5,2.5]</span><br><span class="line">var array5 = array3+array4</span><br></pre></td></tr></table></figure>
+<p>Swift中提供了许多访问和修改数组的方法，示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//获取数组中元素个数</span><br><span class="line">array5.count</span><br><span class="line">//判断数组是否为空</span><br><span class="line">array5.isEmpty</span><br><span class="line">//通过下标访问数组中的元素</span><br><span class="line">array5[1]</span><br><span class="line">//通过下标修改数组元素</span><br><span class="line">array5[1]=2</span><br><span class="line">//修改数据中的一组数据</span><br><span class="line">array5[0...3] = [1,1,1,1]</span><br><span class="line">//向数组中某个位置插入一个数据</span><br><span class="line">array5.insert(3, atIndex: 1)</span><br><span class="line">//移除数组某个角标处的元素</span><br><span class="line">array5.removeAtIndex(1)</span><br><span class="line">//移除数组的最后一个元素</span><br><span class="line">array5.removeLast()</span><br><span class="line">//移除数组第一个元素</span><br><span class="line">array5.removeFirst()</span><br><span class="line">//遍历整个数组</span><br><span class="line">for item in array5 &#123;</span><br><span class="line">    print(item)</span><br><span class="line">&#125;</span><br><span class="line">//遍历数组枚举</span><br><span class="line">for (index,item) in array5.enumerate() &#123;</span><br><span class="line">    print(index,item)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、Set类型"><a href="#三、Set类型" class="headerlink" title="三、Set类型"></a>三、Set类型</h3><pre><code>Set类型集合不关注元素的顺序，但是其可以保证其中元素的唯一性。和Array类型一样，Set类型来声明时也需要确定其内元素的类型，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var set1:Set&lt;Character&gt; = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]</span><br></pre></td></tr></table></figure>
+<p>下面示例代码演示对集合进行操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">var set1:Set&lt;Character&gt; = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]</span><br><span class="line">var set2:Set&lt;Character&gt; = [&quot;e&quot;,&quot;f&quot;,&quot;g&quot;]</span><br><span class="line">//向集合中插入元素</span><br><span class="line">set1.insert(&quot;z&quot;)</span><br><span class="line">//获取集合中元素个数</span><br><span class="line">set1.count</span><br><span class="line">//判断集合是否为空</span><br><span class="line">set1.isEmpty</span><br><span class="line">//将集合中的某个元素移除</span><br><span class="line">set1.remove(&quot;a&quot;)</span><br><span class="line">//移除集合中的所有元素</span><br><span class="line">set1.removeAll()</span><br><span class="line">//判断集合中是否包含某个元素</span><br><span class="line">set2.contains(&quot;e&quot;)</span><br><span class="line">//遍历集合</span><br><span class="line">for item in set2 &#123;</span><br><span class="line">    print(item)</span><br><span class="line">&#125;</span><br><span class="line">//进行从小到大的排序遍历</span><br><span class="line">for item in set2.sort() &#123;</span><br><span class="line">    print(item)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Set也支持进行一些集合的数学运算，例如交集，并集，补集等，下面一张图演示了Set进行集合运算的一些特性：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0511/122935_Fb1k_2340880.png" alt></p>
+<p>intersect()方法返回两个集合的交集。</p>
+<p>exclusiveOr()方法用于返回两个集合交集的补集。</p>
+<p>union()方法用于返回两个集合的并集。</p>
+<p>subtract()方法用于返回第二个集合的补集。</p>
+<p>示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var set3:Set&lt;Int&gt; = [1,2,3,4]</span><br><span class="line">var set4:Set&lt;Int&gt; = [1,2,5,6]</span><br><span class="line">//返回交集 &#123;1，2&#125;</span><br><span class="line">var setInter = set3.intersect(set4)</span><br><span class="line">//返回交集的补集&#123;3，4，5，6&#125;</span><br><span class="line">var setEx = set3.exclusiveOr(set4)</span><br><span class="line">//返回并集&#123;1，2，3，4，5，6&#125;</span><br><span class="line">var setUni = set3.union(set4)</span><br><span class="line">//返回第二个集合的补集&#123;3，4&#125;</span><br><span class="line">var setSub = set3.subtract(set4)</span><br></pre></td></tr></table></figure>
+<p>使用比较运算符==可以比较两个Set集合是否相等，当两个Set集合中所有元素都相等时，这两个集合才相等。下面代码显示了与子集相关的运算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var set5:Set = [1,2]</span><br><span class="line">var set6:Set = [2,3]</span><br><span class="line">var set7:Set = [1,2,3]</span><br><span class="line">var set8:Set = [1,2,3]</span><br><span class="line">//判断是否是某个集合的子集 set5是set7的子集 返回ture</span><br><span class="line">set5.isSubsetOf(set7)</span><br><span class="line">//判断是否是某个集合的超集 set7是set5的超集 返回ture</span><br><span class="line">set7.isSupersetOf(set5)</span><br><span class="line">//判断是否是某个集合的真子集 set5是set7的真子集 返回ture</span><br><span class="line">set5.isStrictSubsetOf(set7)</span><br><span class="line">//判断是否是某个集合的真超集 set7不是set8的真超集 返回false</span><br><span class="line">set7.isStrictSupersetOf(set8)</span><br></pre></td></tr></table></figure>
+<h3 id="四、Dictionary类型"><a href="#四、Dictionary类型" class="headerlink" title="四、Dictionary类型"></a>四、Dictionary类型</h3><pre><code>Swift中的Dictionary在声明时必须明确键的类型和值的类型，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var dic:Dictionary&lt;Int,String&gt;</span><br><span class="line">var dic2:[Int:String] = [1:&quot;one&quot;,2:&quot;Two&quot;]</span><br></pre></td></tr></table></figure>
+<p>访问与操作Dictionary的方法，代码示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">var dic2:[Int:String] = [1:&quot;One&quot;,2:&quot;Two&quot;,3:&quot;Three&quot;,4:&quot;Four&quot;]</span><br><span class="line">//获取字典键值对个数</span><br><span class="line">dic2.count</span><br><span class="line">//判断字典是否为空</span><br><span class="line">dic2.isEmpty</span><br><span class="line">//通过键获取值</span><br><span class="line">dic2[1]</span><br><span class="line">//通过键修改值</span><br><span class="line">dic2[1] = &quot;First&quot;</span><br><span class="line">//添加键值</span><br><span class="line">dic2[0] = &quot;Zero&quot;</span><br><span class="line">//updateValue 方法将更新一个键值 如果此键存在 则更新键值 并且将旧的键值返回 如果此键不存在 则添加键值 返回nil 其返回的为一个Optional类型值 可以使用if let进行处理</span><br><span class="line">dic2.updateValue(&quot;9&quot;, forKey: 1)</span><br><span class="line">//使用if let 处理updateValue的返回值</span><br><span class="line">if let oldValue = dic2.updateValue(&quot;One&quot;, forKey: 1) &#123;</span><br><span class="line">    print(&quot;Old Value is \(oldValue)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//通过键值获取的数据也将是有个Optional类型的值 也可以使用if let</span><br><span class="line">if let value = dic2[1] &#123;</span><br><span class="line">    print(&quot;The Value is \(value)&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//移除某个键值对</span><br><span class="line">dic2[9]=nil</span><br><span class="line">dic2.removeValueForKey(9)</span><br><span class="line">//对字典进行遍历</span><br><span class="line">for (key,value) in dic2 &#123;</span><br><span class="line">    print(key,value)</span><br><span class="line">&#125;</span><br><span class="line">//遍历所有键</span><br><span class="line">for key in dic2.keys &#123;</span><br><span class="line">    print(key)</span><br><span class="line">&#125;</span><br><span class="line">//遍历所有值</span><br><span class="line">for value in dic2.values &#123;</span><br><span class="line">    print(value)</span><br><span class="line">&#125;</span><br><span class="line">//进行从小到大的排序遍历</span><br><span class="line">for key in dic2.keys.sort() &#123;</span><br><span class="line">    print(key)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/12/206Swift讲解专题六——流程控制/" class="pre-post btn btn-default" title='Swift讲解专题六——流程控制'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift讲解专题六——流程控制</span>
+        </a>
+    
+    
+        <a href="/2016/05/10/204Swift解读专题四——字符串与字符/" class="next-post btn btn-default" title='Swift解读专题四——字符串与字符'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift解读专题四——字符串与字符</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift讲解专题五——集合类型"><span class="toc-text">Swift讲解专题五——集合类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、Array类型"><span class="toc-text">二、Array类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、Set类型"><span class="toc-text">三、Set类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、Dictionary类型"><span class="toc-text">四、Dictionary类型</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>SwiftUI直通车系列（1）—— 视图的布局与组织 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SwiftUI直通车系列（1）—— 视图的布局与组织">
+            
+	            SwiftUI直通车系列（1）—— 视图的布局与组织
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/SwiftUI">
+            SwiftUI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2020/08/26</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="SwiftUI直通车系列（1）——-视图的布局与组织"><a href="#SwiftUI直通车系列（1）——-视图的布局与组织" class="headerlink" title="SwiftUI直通车系列（1）—— 视图的布局与组织"></a>SwiftUI直通车系列（1）—— 视图的布局与组织</h1><h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><pre><code>SwiftUI提供了一种更快、更高效也更简单的页面开发方式。我们知道相对于Objective-C，Swift语言本身就更加高效简洁，SwiftUI采用了结构化的布局方式，使得应用的界面开发更加直观快速。本系列博客，基于Apple官方的SwiftUI Tutorials为参考，配合代码示例介绍了SwiftUI的基础应用和特性，帮助大家快速入门SwiftUI开发，为工作中的开发效率赋能。
+</code></pre><h2 id="二、SwiftUI初体验"><a href="#二、SwiftUI初体验" class="headerlink" title="二、SwiftUI初体验"></a>二、SwiftUI初体验</h2><pre><code>做为Apple相关产品的开发者，影响界面开发效率的一大问题是每次代码的修改要查看效果都需要重新编译运行。往往，调试验证的时间要远远大于编码时间，严重影响了开发效率。当然，这也是大多数编译型语言所共有的痛点。使用SwiftUI配合Xcode的预览功能，可以做到代码的实时修改实时预览效果，界面的开发效率非常高。
+
+ 首先，我们可以创建一个模板工程体验下SwiftUI的基础功能。使用Xcode新建一个App项目，在选择语言时，选择Swift，并使用SwiftUI创建界面入口，如下图所示。
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-6106e0a07c098ea3227c19b048fd9742e40.png" alt></p>
+<p>创建出的工程中包含3个swift文件，其中AppDelegate.swift文件是应用的入口文件，其在任何模板项目中几乎都是一样的，没有什么特别支持。SceneDelegate.swift文件是iOS 13后新引入的，用来进行多场景的管理，我们也无需关注。ContentView.swift文件是最终的界面定义文件，其中使用SwiftUI定义了界面的显示内容，ContentView.swift文件中的代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView_Previews</span>: <span class="title">PreviewProvider</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> previews: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">ContentView</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上代码所示，ContentView是定义的一个视图结构体，其描述的就是界面的渲染信息，其中Text会在页面上渲染出一个文本标签，显示“Hello Swift!”，ContentView_Previews定义了当前界面的预览视图，你可以尝试对Text中的文本进行修改，修改后预览页面就会实时的展示出当前的界面模样，如下图所示。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-72a90544f07953fb51f23b54e5f196b2557.png" alt></p>
+<p>可以通过为Text组件设置属性来实时的改变界面，例如文本的颜色，字体，是否加下划线等等，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!"</span>)</span><br><span class="line">            .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">            .underline()</span><br><span class="line">            .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时页面效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-1fa7e50699956661d08e8b89000a6051158.png" alt></p>
+<p>通过代码可以修改UI元素的属性，除此之外，我们还可以设置容器的对齐方式和元素间距等，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span> (alignment: .leading, spacing: <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!啊啊啊"</span>)</span><br><span class="line">                .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">                .underline()</span><br><span class="line">                .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">            <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!"</span>)</span><br><span class="line">            .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">            .underline()</span><br><span class="line">            .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中alignment设置内部组件的对其方式，spacing设置组件间距离，对于水平栈，spacing设置的是列间距，对于垂直栈，spacing设置的是行间距。默认，组件会自动计算其做占据的位置，SwiftUI中也提供了一种特殊的占位元素，其可以将剩余的空间充满，例如在两个垂直布局的元素中间加入一个占位元素，则其会进行两端布局，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span> (alignment: .leading, spacing: <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!啊啊啊"</span>)</span><br><span class="line">                .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">                .underline()</span><br><span class="line">                .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">            <span class="type">Spacer</span>()</span><br><span class="line">            <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!"</span>)</span><br><span class="line">            .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">            .underline()</span><br><span class="line">            .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-529ff8c2e8f243a5d1edd778412f2734955.png" alt></p>
+<p>可以发现，SwiftUI在布局上，很多思路都和CSS布局很像，对于组件元素，我们也可以为其追加内间距Padding，例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView</span>: <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span> (alignment: .leading, spacing: <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!啊啊啊"</span>)</span><br><span class="line">                .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">                .underline()</span><br><span class="line">                .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">            <span class="type">Spacer</span>()</span><br><span class="line">            <span class="type">Text</span>(<span class="string">"Hello, SwiftUI!"</span>)</span><br><span class="line">            .foregroundColor(<span class="type">Color</span>.red)</span><br><span class="line">            .underline()</span><br><span class="line">            .font(<span class="type">Font</span>.system(size: <span class="number">25</span>))</span><br><span class="line">        &#125;</span><br><span class="line">        .padding(<span class="type">EdgeInsets</span>(top: <span class="number">30</span>, leading: <span class="number">0</span>, bottom: <span class="number">30</span>, trailing: <span class="number">0</span>))</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="三、使用图片组件"><a href="#三、使用图片组件" class="headerlink" title="三、使用图片组件"></a>三、使用图片组件</h2><pre><code>在SwiftUI中，可以方便的布局图片元素，并设置图片的圆角，阴影，边框等。使用如下代码即可在界面中间布局出一个图片元素：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentImage</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Image</span>(<span class="string">"demo"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中“demo”为工程中一个资源图片的名字。预览效果如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7bab0b7e7c0655ac8b0fbad18c067b9e12b.png" alt></p>
+<p>图片元素也有很多属性可以设置，如clipShape设置元素的形状，shadow设置元素的阴影，示例代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentImage</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Image</span>(<span class="string">"demo"</span>)</span><br><span class="line">        .clipShape(<span class="type">Circle</span>())</span><br><span class="line">        .shadow(radius: <span class="number">30</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-1683dcdf11dac7dd20f6480d2877c25c5b2.png" alt></p>
+<h2 id="四、在SwiftUI中使用UIKit组件"><a href="#四、在SwiftUI中使用UIKit组件" class="headerlink" title="四、在SwiftUI中使用UIKit组件"></a>四、在SwiftUI中使用UIKit组件</h2><pre><code>上面我们使用的文本与图片元素，都是SwiftUI框架中定义的基础组件。在实际开发中的更多时候，你需要结合UIKit来自定义一个SwiftUI组件，这本身也非常方便。例如我们要使用UIKit中的UILabel组件，示例如下：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Label</span>:<span class="title">UIViewRepresentable</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">makeUIView</span><span class="params">(context: Context)</span></span> -&gt; <span class="type">UILabel</span> &#123;</span><br><span class="line">        <span class="type">UILabel</span>(frame: .zero)</span><br><span class="line">     &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">updateUIView</span><span class="params">(<span class="number">_</span> uiView: UILabel, context: Context)</span></span> &#123;</span><br><span class="line">        uiView.text = <span class="string">"Hello"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UIViewRepresentable协议用来将UIKit中的组件定义为一个SwiftUI元素，其中有两个方法是必须要实现的，makeUIView用来返回一个指定的UIKit组件，updateUIView当组件更新时会被调用。</p>
+<blockquote>
+<p>有了这些基础知识，我们已经可以使用SwiftUI来实现简单的页面构建了，你可以尝试用其做些简单的页面组合，只需要把握住，在SwiftUI中，无论简单还是复杂的界面都是通过水平和和垂直栈的组合，加上组件的位置偏移所布局出来的。</p>
+</blockquote>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：805263726</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2020/08/28/404 SwiftUI直通车系列（2）—— 列表视图/" class="pre-post btn btn-default" title='SwiftUI直通车系列（2）—— 列表视图'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SwiftUI直通车系列（2）—— 列表视图</span>
+        </a>
+    
+    
+        <a href="/2020/07/10/402iOS14新特性探索之二：App Widget小组件应用/" class="next-post btn btn-default" title='iOS14新特性探索之二：App Widget小组件应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS14新特性探索之二：App Widget小组件应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SwiftUI直通车系列（1）——-视图的布局与组织"><span class="toc-text">SwiftUI直通车系列（1）—— 视图的布局与组织</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、SwiftUI初体验"><span class="toc-text">二、SwiftUI初体验</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、使用图片组件"><span class="toc-text">三、使用图片组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、在SwiftUI中使用UIKit组件"><span class="toc-text">四、在SwiftUI中使用UIKit组件</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

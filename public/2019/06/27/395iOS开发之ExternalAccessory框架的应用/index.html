@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发之ExternalAccessory框架的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发之ExternalAccessory框架的应用">
+            
+	            iOS开发之ExternalAccessory框架的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/06/27</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发之ExternalAccessory框架的应用"><a href="#iOS开发之ExternalAccessory框架的应用" class="headerlink" title="iOS开发之ExternalAccessory框架的应用"></a>iOS开发之ExternalAccessory框架的应用</h2><pre><code>ExternalAccessory框架用来对外设进行管理，iOS外设通常是通过MFI认证的外部设备，可以通过蓝牙进行连接，也可以使用lighting端口进行连接。
+
+EAAccessoryManager类用来对外设进行管理，其中属性方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">EAAccessoryManager</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">// 获取单例对象</span></span><br><span class="line">+ (EAAccessoryManager *)sharedAccessoryManager;</span><br><span class="line"><span class="comment">// 打开蓝牙外设搜索列表</span></span><br><span class="line">- (<span class="keyword">void</span>)showBluetoothAccessoryPickerWithNameFilter:(<span class="keyword">nullable</span> <span class="built_in">NSPredicate</span> *)predicate completion:(<span class="keyword">nullable</span> EABluetoothAccessoryPickerCompletion)completion;</span><br><span class="line"><span class="comment">// 注册本地通知 当外设连接状态变化后会触发通知</span></span><br><span class="line">- (<span class="keyword">void</span>)registerForLocalNotifications;</span><br><span class="line"><span class="comment">// 取消通知的注册</span></span><br><span class="line">- (<span class="keyword">void</span>)unregisterForLocalNotifications;</span><br><span class="line"><span class="comment">// 所有连接的外设列表</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSArray</span>&lt;EAAccessory *&gt; *connectedAccessories;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>如果注册了本地通知，则可以监听下面两个通知：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">EAAccessoryDidConnectNotification     <span class="comment">// 外设已经连接的通知</span></span><br><span class="line">EAAccessoryDidDisconnectNotification  <span class="comment">// 外设断开连接的通知</span></span><br></pre></td></tr></table></figure>
+<pre><code>EAAccessory是外设对象，其中定义了外设的相关信息，如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">EAAccessory</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">// 是否已经连接</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isConnected) <span class="built_in">BOOL</span> connected;</span><br><span class="line"><span class="comment">// 连接ID</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSUInteger</span> connectionID;</span><br><span class="line"><span class="comment">// 制造商</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *manufacturer; </span><br><span class="line"><span class="comment">// 外设名称</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="comment">// 模式编码</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *modelNumber;</span><br><span class="line"><span class="comment">// 序列号</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *serialNumber;</span><br><span class="line"><span class="comment">// 固件版本</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *firmwareRevision;</span><br><span class="line"><span class="comment">// 硬件版本</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *hardwareRevision;</span><br><span class="line"><span class="comment">// 接口类型</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *dockType;</span><br><span class="line"><span class="comment">// 协议列表</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt; *protocolStrings;</span><br><span class="line"><span class="comment">// 代理</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>, <span class="keyword">nullable</span>) <span class="keyword">id</span>&lt;EAAccessoryDelegate&gt; delegate;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">EAAccessoryDelegate</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"><span class="keyword">@optional</span></span><br><span class="line"><span class="comment">// 外设断开连接时调用</span></span><br><span class="line">- (<span class="keyword">void</span>)accessoryDidDisconnect:(EAAccessory *)accessory;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<pre><code>需要注意，与外设进行通讯需要指定对应的协议，首先，需要在iOS应用的info.plist文件中添加如下键来指定此应用要交互的外设协议：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/15939fa7cecf10fb618f3a12dc3d4341a90.jpg" alt></p>
+<p>具体的外设协议需要查看外设的说明文档。</p>
+<p>EASession类用来进行外设交互，解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">EASession</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">// 指定外设和协议来创建会话对象</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="keyword">instancetype</span>)initWithAccessory:(EAAccessory *)accessory forProtocol:(<span class="built_in">NSString</span> *)protocolString;</span><br><span class="line"><span class="comment">// 外设对象</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">nullable</span>) EAAccessory *accessory;</span><br><span class="line"><span class="comment">// 协议</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *protocolString;</span><br><span class="line"><span class="comment">// 输入流 用来向外设发送数据</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">nullable</span>) <span class="built_in">NSInputStream</span> *inputStream;</span><br><span class="line"><span class="comment">// 输出流 用来接收外设发送的数据</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">nullable</span>) <span class="built_in">NSOutputStream</span> *outputStream;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<pre><code>EAWiFiUnconfiguredAccessoryBrowser类用来浏览未配置的WIFI外设：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">EAWiFiUnconfiguredAccessoryBrowser</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">// 初始化方法</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithDelegate:(<span class="keyword">nullable</span> <span class="keyword">id</span>&lt;EAWiFiUnconfiguredAccessoryBrowserDelegate&gt;)delegate queue:(<span class="keyword">nullable</span> <span class="built_in">dispatch_queue_t</span>)queue;</span><br><span class="line"><span class="comment">// 代理</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">weak</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="keyword">id</span>&lt;EAWiFiUnconfiguredAccessoryBrowserDelegate&gt; delegate;</span><br><span class="line"><span class="comment">// 未配置的外设</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">copy</span>, atomic) <span class="built_in">NSSet</span>&lt;EAWiFiUnconfiguredAccessory *&gt; *unconfiguredAccessories;</span><br><span class="line"><span class="comment">// 开始进行搜索</span></span><br><span class="line">- (<span class="keyword">void</span>)startSearchingForUnconfiguredAccessoriesMatchingPredicate:(<span class="keyword">nullable</span> <span class="built_in">NSPredicate</span> *)predicate;</span><br><span class="line"><span class="comment">// 结束搜索</span></span><br><span class="line">- (<span class="keyword">void</span>)stopSearchingForUnconfiguredAccessories;</span><br><span class="line"><span class="comment">// 对外设进行配置</span></span><br><span class="line">- (<span class="keyword">void</span>)configureAccessory:(EAWiFiUnconfiguredAccessory *)accessory withConfigurationUIOnViewController:(<span class="built_in">UIViewController</span> *)viewController;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">EAWiFiUnconfiguredAccessoryBrowserDelegate</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"><span class="comment">// 搜索状态改变后调用的回调</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, EAWiFiUnconfiguredAccessoryBrowserState)</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">    EAWiFiUnconfiguredAccessoryBrowserStateWiFiUnavailable = 0,  // WIFI不可用</span></span><br><span class="line"><span class="comment">    EAWiFiUnconfiguredAccessoryBrowserStateStopped,              // 停止</span></span><br><span class="line"><span class="comment">    EAWiFiUnconfiguredAccessoryBrowserStateSearching,            // 搜索中</span></span><br><span class="line"><span class="comment">    EAWiFiUnconfiguredAccessoryBrowserStateConfiguring,          // 配置中</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)accessoryBrowser:(EAWiFiUnconfiguredAccessoryBrowser *)browser didUpdateState:(EAWiFiUnconfiguredAccessoryBrowserState)state;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发现了未配置的外设</span></span><br><span class="line">- (<span class="keyword">void</span>)accessoryBrowser:(EAWiFiUnconfiguredAccessoryBrowser *)browser didFindUnconfiguredAccessories:(<span class="built_in">NSSet</span>&lt;EAWiFiUnconfiguredAccessory *&gt; *)accessories;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 移除了未配置的外设</span></span><br><span class="line">- (<span class="keyword">void</span>)accessoryBrowser:(EAWiFiUnconfiguredAccessoryBrowser *)browser didRemoveUnconfiguredAccessories:(<span class="built_in">NSSet</span>&lt;EAWiFiUnconfiguredAccessory *&gt; *)accessories;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 完成配置</span></span><br><span class="line">- (<span class="keyword">void</span>)accessoryBrowser:(EAWiFiUnconfiguredAccessoryBrowser *)browser didFinishConfiguringAccessory:(EAWiFiUnconfiguredAccessory *)accessory withStatus:(EAWiFiUnconfiguredAccessoryConfigurationStatus)status;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>EAWiFiUnconfiguredAccessory对象描述WIFI外设，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">EAWiFiUnconfiguredAccessory</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">// 名称</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="comment">// 设备商</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *manufacturer;</span><br><span class="line"><span class="comment">// 模式</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *model;</span><br><span class="line"><span class="comment">// WIFI的SSID</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *ssid;</span><br><span class="line"><span class="comment">// 硬件地址</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSString</span> *macAddress;</span><br><span class="line"><span class="comment">//属性 </span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_OPTIONS(NSUInteger, EAWiFiUnconfiguredAccessoryProperties)</span></span><br><span class="line"><span class="comment">&#123;</span></span><br><span class="line"><span class="comment">    EAWiFiUnconfiguredAccessoryPropertySupportsAirPlay  = (1 &lt;&lt; 0),</span></span><br><span class="line"><span class="comment">    EAWiFiUnconfiguredAccessoryPropertySupportsAirPrint = (1 &lt;&lt; 1),</span></span><br><span class="line"><span class="comment">    EAWiFiUnconfiguredAccessoryPropertySupportsHomeKit  = (1 &lt;&lt; 2)</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) EAWiFiUnconfiguredAccessoryProperties properties;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/10/31/396网络杂谈——聊聊NDS解析/" class="pre-post btn btn-default" title='网络杂谈——聊聊NDS解析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">网络杂谈——聊聊NDS解析</span>
+        </a>
+    
+    
+        <a href="/2019/06/26/394iOS开发之EventKitUI框架的应用/" class="next-post btn btn-default" title='iOS开发之EventKitUI框架的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发之EventKitUI框架的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发之ExternalAccessory框架的应用"><span class="toc-text">iOS开发之ExternalAccessory框架的应用</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

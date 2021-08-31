@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS数据持久化之一——plist文件 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS数据持久化之一——plist文件">
+            
+	            iOS数据持久化之一——plist文件
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/10/08</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS数据持久化之一——plist文件"><a href="#iOS数据持久化之一——plist文件" class="headerlink" title="iOS数据持久化之一——plist文件"></a>iOS数据持久化之一——plist文件</h2><pre><code>iOS开发中，我们时常会将一些简单的数据进行持久化的存储，方便我们保存程序的一些配置和用户的一些数据，plist文件就是我们保存这些数据的最佳选择。
+</code></pre><h3 id="一、何为plist"><a href="#一、何为plist" class="headerlink" title="一、何为plist"></a>一、何为plist</h3><pre><code>plist是一种文件格式，其内容规则是xml文件，后缀为.plist，因此，我们更习惯于成它问plist文件，在iOS开发中，这种文件常用来保存一些简单的配置数据，例如项目中的info.plist。
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/1008/101222_ZCKH_2340880.png" alt></p>
+<p>通过plist文件编辑器，我们可以很方便的查看和编辑层次清晰的plist文件。</p>
+<h3 id="二、通过操作plist文件进行数据持久化的几种方式"><a href="#二、通过操作plist文件进行数据持久化的几种方式" class="headerlink" title="二、通过操作plist文件进行数据持久化的几种方式"></a>二、通过操作plist文件进行数据持久化的几种方式</h3><h4 id="1、操作系统为我们准备的用户配置文件——NSUserDefaults"><a href="#1、操作系统为我们准备的用户配置文件——NSUserDefaults" class="headerlink" title="1、操作系统为我们准备的用户配置文件——NSUserDefaults"></a>1、操作系统为我们准备的用户配置文件——NSUserDefaults</h4><pre><code>对于NSUserDefaults，具体用法和一些小技巧在以前的一篇博客中有详细的描述，一般的用户配置信息，我们都会选择通过这种方式来进行持久化，地址如下：[http://my.oschina.net/u/2340880/blog/411344](http://my.oschina.net/u/2340880/blog/411344)。
+</code></pre><h4 id="2、在项目包中手动创建一个plist文件，通过代码对其进行操作"><a href="#2、在项目包中手动创建一个plist文件，通过代码对其进行操作" class="headerlink" title="2、在项目包中手动创建一个plist文件，通过代码对其进行操作"></a>2、在项目包中手动创建一个plist文件，通过代码对其进行操作</h4><pre><code>这种方式创建的plist文件非常自由且直观，我们可以创建多个根据功能进行分类存储，并且可以通过Xcode的可视化工具进行可视化的修改。
+</code></pre><p>首先，我们新创建一个文件，在Resource中选择 Property List文件：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1008/103954_Chsr_2340880.png" alt></p>
+<p>之后，我们通过Xcode，在其中添加一些数据：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1008/111550_x6Ut_2340880.png" alt></p>
+<p>通过代码，我们来获取这些数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> //获取myInfo文件地址</span><br><span class="line">    NSString * path = [[NSBundle mainBundle]pathForResource:@&quot;myInfo&quot; ofType:@&quot;plist&quot;];</span><br><span class="line">    NSMutableDictionary * dic =[NSMutableDictionary dictionaryWithContentsOfFile:path];</span><br><span class="line">    NSLog(@&quot;%@&quot;,dic);</span><br></pre></td></tr></table></figure>
+<p>打印结果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1008/111713_f5al_2340880.png" alt></p>
+<p>这种方式添加的plist文件，我们只能在xcode中配置好，然后再程序中读取使用，但是不能在程序中修改这些数据，可以应用于一些固定的数据的存储，例如地图shu xing列表等。</p>
+<h4 id="3、在沙盒目录中创建和使用plist文件"><a href="#3、在沙盒目录中创建和使用plist文件" class="headerlink" title="3、在沙盒目录中创建和使用plist文件"></a>3、在沙盒目录中创建和使用plist文件</h4><pre><code>我们还可以通过代码在沙盒中创建我们自己的plist文件，进行数据的存储。同时可以支持add，delete，replace，find等操作。
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    //获取沙盒目录</span><br><span class="line">    NSArray *paths=NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask,YES);</span><br><span class="line">    NSString *plistPath1 = [paths objectAtIndex:0];</span><br><span class="line">    </span><br><span class="line">    //得到完整的文件名</span><br><span class="line">    NSString *filename=[plistPath1 stringByAppendingPathComponent:@&quot;my.plist&quot;];</span><br><span class="line">    NSDictionary * dic = @&#123;@&quot;my&quot;:@&quot;haha&quot;&#125;;</span><br><span class="line">    [dic  writeToFile:filename atomically:YES];</span><br><span class="line">    </span><br><span class="line">    //取数据</span><br><span class="line">    NSDictionary * getDic = [NSDictionary dictionaryWithContentsOfFile:filename];</span><br><span class="line">    NSLog(@&quot;%@&quot;,getDic);</span><br></pre></td></tr></table></figure>
+<p>打印如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1008/113352_9wsE_2340880.png" alt></p>
+<p>这种方式无疑会更加安全，存取也更加自由。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/10/09/122Objective—C语言的新魅力——Nullability、泛型集合与类型延拓/" class="pre-post btn btn-default" title='Objective—C语言的新魅力——Nullability、泛型集合与类型延拓'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Objective—C语言的新魅力——Nullability、泛型集合与类型延拓</span>
+        </a>
+    
+    
+        <a href="/2015/10/08/121iOS数据持久化之二——归档与设计可存储化的数据模型基类/" class="next-post btn btn-default" title='iOS数据持久化之二——归档与设计可存储化的数据模型基类'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS数据持久化之二——归档与设计可存储化的数据模型基类</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS数据持久化之一——plist文件"><span class="toc-text">iOS数据持久化之一——plist文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、何为plist"><span class="toc-text">一、何为plist</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、通过操作plist文件进行数据持久化的几种方式"><span class="toc-text">二、通过操作plist文件进行数据持久化的几种方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、操作系统为我们准备的用户配置文件——NSUserDefaults"><span class="toc-text">1、操作系统为我们准备的用户配置文件——NSUserDefaults</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、在项目包中手动创建一个plist文件，通过代码对其进行操作"><span class="toc-text">2、在项目包中手动创建一个plist文件，通过代码对其进行操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、在沙盒目录中创建和使用plist文件"><span class="toc-text">3、在沙盒目录中创建和使用plist文件</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

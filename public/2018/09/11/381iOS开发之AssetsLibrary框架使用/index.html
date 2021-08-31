@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发之AssetsLibrary框架使用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发之AssetsLibrary框架使用">
+            
+	            iOS开发之AssetsLibrary框架使用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/09/11</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发之AssetsLibrary框架使用"><a href="#iOS开发之AssetsLibrary框架使用" class="headerlink" title="iOS开发之AssetsLibrary框架使用"></a>iOS开发之AssetsLibrary框架使用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>AssetsLibrary框架是专门用来操作相册相关资源的一个框架，其是iOS4到iOS9之间常使用的一个框架，在iOS9之后，系统系统了Photos框架代替了AssetsLibrary框架，但是AssetsLibrary框架依然可以使用，并且其结构和设计思路依然值得我们进行分析学习。
+</code></pre><h3 id="二、概述"><a href="#二、概述" class="headerlink" title="二、概述"></a>二、概述</h3><pre><code>AssetsLibrary框架会操作系统的相册，因此首先需要进行权限的申请，在使用之前，首先需要在Info.plist文件中添加如下键值：
+</code></pre><p>Privacy - Photo Library Usage Description</p>
+<p>AssetsLibrary框架中核心的类关系如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/d6a95f1c782f0c09265fda33372c65ee032.jpg" alt></p>
+<h3 id="三、ALAssetsLibrary资源库对象"><a href="#三、ALAssetsLibrary资源库对象" class="headerlink" title="三、ALAssetsLibrary资源库对象"></a>三、ALAssetsLibrary资源库对象</h3><pre><code>ALAssetsLibrary类用来构建资源库对象，这个对象用来整体操作系统的相册资源，在使用它之前我们可以使用下面的方法来获取用户的授权情况：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">+ (ALAuthorizationStatus)authorizationStatus;</span><br></pre></td></tr></table></figure>
+<p>ALAuthorizationStatus枚举定义了用户的授权情况，定义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, ALAuthorizationStatus) &#123;</span><br><span class="line">    ALAuthorizationStatusNotDetermined, <span class="comment">// 用户尚未选择是否授权</span></span><br><span class="line">    ALAuthorizationStatusRestricted,    <span class="comment">//应用尚未授权</span></span><br><span class="line">    ALAuthorizationStatusDenied),       <span class="comment">// 用户拒绝授权</span></span><br><span class="line">    ALAuthorizationStatusAuthorized     <span class="comment">// 用户已经授权</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果用户尚未授权过，那么任何访问操作都将触发授权机制。</p>
+<pre><code>资源库中的资源数据是以组的方式进行存储，下面代码示例了获取资源组的方式：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">_library = [[ALAssetsLibrary alloc]init];</span><br><span class="line">[_library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, <span class="built_in">BOOL</span> *stop) &#123;</span><br><span class="line">    <span class="keyword">if</span> (group) &#123; <span class="comment">// 遍历相册还未结束</span></span><br><span class="line">        <span class="comment">// 设置过滤器</span></span><br><span class="line">        [group setAssetsFilter:[ALAssetsFilter allPhotos]];</span><br><span class="line">        <span class="keyword">if</span> (group.numberOfAssets) &#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,group);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 遍历结束（当group为空的时候就意味着结束）</span></span><br><span class="line">        </span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"没有相册列表了"</span>);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125; failureBlock:^(<span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"失败"</span>);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>上面示例的枚举函数用来根据参数类型获取资源组，ALAssetsGroupType参数决定获取组的类型，可选值枚举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> &#123;</span><br><span class="line">    ALAssetsGroupLibrary     ,<span class="comment">// 编辑库</span></span><br><span class="line">    ALAssetsGroupAlbum       ,<span class="comment">//相册库</span></span><br><span class="line">    ALAssetsGroupEvent       ,<span class="comment">//事件库  </span></span><br><span class="line">    ALAssetsGroupFaces       ,<span class="comment">// iTunes同步</span></span><br><span class="line">    ALAssetsGroupSavedPhotos ,<span class="comment">// 保存的相片</span></span><br><span class="line">    ALAssetsGroupPhotoStream ,<span class="comment">// The PhotoStream album.</span></span><br><span class="line">    ALAssetsGroupAll         ,<span class="comment">//所有库</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>枚举过程中，我们可以过去到ALAssetsGroup类型的对象，这个对象中封装了相片资源信息，后面会介绍。</p>
+<pre><code>下面列举了ALAssetsLibrary中其他常用的方法：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//直接通过URL来获取资源</span></span><br><span class="line">- (<span class="keyword">void</span>)assetForURL:(<span class="built_in">NSURL</span> *)assetURL resultBlock:(ALAssetsLibraryAssetForURLResultBlock)resultBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock;</span><br><span class="line"><span class="comment">//直接通过URL来获取资源组</span></span><br><span class="line">- (<span class="keyword">void</span>)groupForURL:(<span class="built_in">NSURL</span> *)groupURL resultBlock:(ALAssetsLibraryGroupResultBlock)resultBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock;</span><br><span class="line"><span class="comment">//向相册库中添加一个新的资源组 可以自定义名称</span></span><br><span class="line">- (<span class="keyword">void</span>)addAssetsGroupAlbumWithName:(<span class="built_in">NSString</span> *)name resultBlock:(ALAssetsLibraryGroupResultBlock)resultBlock failureBlock:(ALAssetsLibraryAccessFailureBlock)failureBlock;</span><br><span class="line"><span class="comment">//向相册中写入一张图片 orientation参数设置图片的方向</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, ALAssetOrientation) &#123;</span></span><br><span class="line"><span class="comment">    ALAssetOrientationUp ,            // 向上 默认的</span></span><br><span class="line"><span class="comment">    ALAssetOrientationDown ,          // 向下</span></span><br><span class="line"><span class="comment">    ALAssetOrientationLeft ,          // 向左</span></span><br><span class="line"><span class="comment">    ALAssetOrientationRight ,         // 向右</span></span><br><span class="line"><span class="comment">    ALAssetOrientationUpMirrored ,    //</span></span><br><span class="line"><span class="comment">    ALAssetOrientationDownMirrored ,  // horizontal flip</span></span><br><span class="line"><span class="comment">    ALAssetOrientationLeftMirrored ,  // vertical flip</span></span><br><span class="line"><span class="comment">    ALAssetOrientationRightMirrored , // vertical flip</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)writeImageToSavedPhotosAlbum:(<span class="built_in">CGImageRef</span>)imageRef orientation:(ALAssetOrientation)orientation completionBlock:(ALAssetsLibraryWriteImageCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//向相册中写入一张图片 并可以设置图片的元数据</span></span><br><span class="line">- (<span class="keyword">void</span>)writeImageToSavedPhotosAlbum:(<span class="built_in">CGImageRef</span>)imageRef metadata:(<span class="built_in">NSDictionary</span> *)metadata completionBlock:(ALAssetsLibraryWriteImageCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//向相册中写入图片数据 并可以设置元数据</span></span><br><span class="line">- (<span class="keyword">void</span>)writeImageDataToSavedPhotosAlbum:(<span class="built_in">NSData</span> *)imageData metadata:(<span class="built_in">NSDictionary</span> *)metadata completionBlock:(ALAssetsLibraryWriteImageCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//将某个路径的视频写入相册中</span></span><br><span class="line">- (<span class="keyword">void</span>)writeVideoAtPathToSavedPhotosAlbum:(<span class="built_in">NSURL</span> *)videoPathURL completionBlock:(ALAssetsLibraryWriteVideoCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//检查路径中的视频是否和相册相兼容</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)videoAtPathIsCompatibleWithSavedPhotosAlbum:(<span class="built_in">NSURL</span> *)videoPathURL;</span><br></pre></td></tr></table></figure>
+<p>当资源库改变时，系统会发出如下通知：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//资源库改变的通知</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetsLibraryChangedNotification;</span><br></pre></td></tr></table></figure>
+<p>通知中传递的信息中包含如下字段：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//资源库更新</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetLibraryUpdatedAssetsKey;</span><br><span class="line"><span class="comment">//插入组</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetLibraryInsertedAssetGroupsKey;</span><br><span class="line"><span class="comment">//更新组</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetLibraryUpdatedAssetGroupsKey;</span><br><span class="line"><span class="comment">//删除组</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetLibraryDeletedAssetGroupsKey;</span><br></pre></td></tr></table></figure>
+<p>下面列举了操作过程中的一些异常定义：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> &#123;</span><br><span class="line">    ALAssetsLibraryUnknownError =                 <span class="number">-1</span>,      <span class="comment">// 未知错误</span></span><br><span class="line">    ALAssetsLibraryWriteFailedError =           <span class="number">-3300</span>,      <span class="comment">//写入错误</span></span><br><span class="line">    ALAssetsLibraryWriteBusyError =             <span class="number">-3301</span>,      <span class="comment">// 写入繁忙 可以重试</span></span><br><span class="line">    ALAssetsLibraryWriteInvalidDataError =      <span class="number">-3302</span>,      <span class="comment">// 无效数据</span></span><br><span class="line">    ALAssetsLibraryWriteIncompatibleDataError = <span class="number">-3303</span>,      <span class="comment">// 不兼容的数据</span></span><br><span class="line">    ALAssetsLibraryWriteDataEncodingError =     <span class="number">-3304</span>,      <span class="comment">// 数据编码错误</span></span><br><span class="line">    ALAssetsLibraryWriteDiskSpaceError =        <span class="number">-3305</span>,      <span class="comment">// 内存不足</span></span><br><span class="line">    ALAssetsLibraryDataUnavailableError =       <span class="number">-3310</span>,      <span class="comment">// 数据不可用</span></span><br><span class="line">    ALAssetsLibraryAccessUserDeniedError =      <span class="number">-3311</span>,      <span class="comment">// 权限错误</span></span><br><span class="line">    ALAssetsLibraryAccessGloballyDeniedError =  <span class="number">-3312</span>,      <span class="comment">// 权限错误</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="四、ALAssetsGroup资源组对象"><a href="#四、ALAssetsGroup资源组对象" class="headerlink" title="四、ALAssetsGroup资源组对象"></a>四、ALAssetsGroup资源组对象</h3><pre><code>资源组其实就是对应与我们相册中的一组资源，我们可以通过如下的方便遍历出其中的所有资源：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">_library = [[ALAssetsLibrary alloc]init];</span><br><span class="line">[_library enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, <span class="built_in">BOOL</span> *stop) &#123;</span><br><span class="line">    <span class="keyword">if</span> (group) &#123; <span class="comment">// 遍历相册还未结束</span></span><br><span class="line">        <span class="comment">// 设置过滤器</span></span><br><span class="line">        [group setAssetsFilter:[ALAssetsFilter allPhotos]];</span><br><span class="line">        <span class="keyword">if</span> (group.numberOfAssets) &#123;</span><br><span class="line">            [group enumerateAssetsUsingBlock:^(ALAsset *result, <span class="built_in">NSUInteger</span> index, <span class="built_in">BOOL</span> *stop) &#123;</span><br><span class="line">                <span class="built_in">NSLog</span>(<span class="string">@"%d:%@"</span>,index,result);</span><br><span class="line">            &#125;];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123; <span class="comment">// 遍历结束（当group为空的时候就意味着结束）</span></span><br><span class="line"></span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"没有相册列表了"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125; failureBlock:^(<span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"失败"</span>);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<pre><code>ALAssetsGroup中相关方法解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取相关属性</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">extern NSString *const ALAssetsGroupPropertyName;//组名字</span></span><br><span class="line"><span class="comment">extern NSString *const ALAssetsGroupPropertyType;//组类型</span></span><br><span class="line"><span class="comment">extern NSString *const ALAssetsGroupPropertyPersistentID; //ID</span></span><br><span class="line"><span class="comment">extern NSString *const ALAssetsGroupPropertyURL;//组URL</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">id</span>)valueForProperty:(<span class="built_in">NSString</span> *)property;</span><br><span class="line"><span class="comment">//获取当前组的缩略图海报</span></span><br><span class="line">- (<span class="built_in">CGImageRef</span>)posterImage;</span><br><span class="line"><span class="comment">//设置过滤器</span></span><br><span class="line">- (<span class="keyword">void</span>)setAssetsFilter:(ALAssetsFilter *)filter;</span><br><span class="line"><span class="comment">//获取组中资源个数</span></span><br><span class="line">- (<span class="built_in">NSInteger</span>)numberOfAssets;</span><br><span class="line"><span class="comment">//进行资源枚举</span></span><br><span class="line">- (<span class="keyword">void</span>)enumerateAssetsUsingBlock:(ALAssetsGroupEnumerationResultsBlock)enumerationBlock;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_OPTIONS(NSUInteger, NSEnumerationOptions) &#123;</span></span><br><span class="line"><span class="comment">    NSEnumerationConcurrent = (1UL &lt;&lt; 0),//顺序枚举</span></span><br><span class="line"><span class="comment">    NSEnumerationReverse = (1UL &lt;&lt; 1),   //逆序枚举</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)enumerateAssetsWithOptions:(<span class="built_in">NSEnumerationOptions</span>)options usingBlock:(ALAssetsGroupEnumerationResultsBlock)enumerationBlock;</span><br><span class="line">- (<span class="keyword">void</span>)enumerateAssetsAtIndexes:(<span class="built_in">NSIndexSet</span> *)indexSet options:(<span class="built_in">NSEnumerationOptions</span>)options usingBlock:(ALAssetsGroupEnumerationResultsBlock)enumerationBlock;</span><br><span class="line"><span class="comment">//获取当前组是否允许编辑</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isEditable) <span class="built_in">BOOL</span> editable;</span><br><span class="line"><span class="comment">//向组中添加一个资源</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)addAsset:(ALAsset *)asset;</span><br></pre></td></tr></table></figure>
+<p>上面有提到资源过滤器，资源过滤器用来设置过滤组中的资源，有3个类方法可以直接获取系统提供的过滤器：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ALAssetsFilter</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line"><span class="comment">//所有图片资源</span></span><br><span class="line">+ (ALAssetsFilter *)allPhotos;</span><br><span class="line"><span class="comment">// 所有视频资源</span></span><br><span class="line">+ (ALAssetsFilter *)allVideos;</span><br><span class="line"><span class="comment">// 所有资源</span></span><br><span class="line">+ (ALAssetsFilter *)allAssets;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="五、ALAsset资源对象"><a href="#五、ALAsset资源对象" class="headerlink" title="五、ALAsset资源对象"></a>五、ALAsset资源对象</h3><pre><code>ALAsset是封装好的资源对象类，如下方法可以获取到资源中封装的属性：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)valueForProperty:(<span class="built_in">NSString</span> *)property;</span><br></pre></td></tr></table></figure>
+<p>属性名的定义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取资源类型</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这个属性将返回一个字符串</span></span><br><span class="line"><span class="comment">extern NSString *const ALAssetTypePhoto//照片类型</span></span><br><span class="line"><span class="comment">extern NSString *const ALAssetTypeVideo//视频类型</span></span><br><span class="line"><span class="comment">extern NSString *const ALAssetTypeUnknown//未知类型</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetPropertyType;</span><br><span class="line"><span class="comment">//会返回一个CLLocation对象 图片的地址信息</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetPropertyLocation;</span><br><span class="line"><span class="comment">//视频资源的时长 NSNumber对象</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetPropertyDuration;</span><br><span class="line"><span class="comment">//资源方向</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetPropertyOrientation;</span><br><span class="line"><span class="comment">//资源日期 会返回NSDate对象</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> ALAssetPropertyDate;</span><br></pre></td></tr></table></figure>
+<p>下面列举了ALAsset中常用方法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取默认的Representation对象</span></span><br><span class="line">- (ALAssetRepresentation *)defaultRepresentation;</span><br><span class="line"><span class="comment">//获取指定的Representation对象</span></span><br><span class="line">- (ALAssetRepresentation *)representationForUTI:(<span class="built_in">NSString</span> *)representationUTI;</span><br><span class="line"><span class="comment">//获取资源缩略图</span></span><br><span class="line">- (<span class="built_in">CGImageRef</span>)thumbnail;</span><br><span class="line">- (<span class="built_in">CGImageRef</span>)aspectRatioThumbnail;</span><br><span class="line"><span class="comment">//写入图片数据</span></span><br><span class="line">- (<span class="keyword">void</span>)writeModifiedImageDataToSavedPhotosAlbum:(<span class="built_in">NSData</span> *)imageData metadata:(<span class="built_in">NSDictionary</span> *)metadata completionBlock:(ALAssetsLibraryWriteImageCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//写入视频数据</span></span><br><span class="line">- (<span class="keyword">void</span>)writeModifiedVideoAtPathToSavedPhotosAlbum:(<span class="built_in">NSURL</span> *)videoPathURL completionBlock:(ALAssetsLibraryWriteVideoCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//原始资源对象</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) ALAsset *originalAsset;</span><br><span class="line"><span class="comment">//是否允许编辑</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isEditable) <span class="built_in">BOOL</span> editable;</span><br><span class="line"><span class="comment">//替换图片数据</span></span><br><span class="line">- (<span class="keyword">void</span>)setImageData:(<span class="built_in">NSData</span> *)imageData metadata:(<span class="built_in">NSDictionary</span> *)metadata completionBlock:(ALAssetsLibraryWriteImageCompletionBlock)completionBlock;</span><br><span class="line"><span class="comment">//替换视频数据</span></span><br><span class="line">- (<span class="keyword">void</span>)setVideoAtPath:(<span class="built_in">NSURL</span> *)videoPathURL completionBlock:(ALAssetsLibraryWriteVideoCompletionBlock)completionBlock;</span><br></pre></td></tr></table></figure>
+<h3 id="六、关于ALAssetRepresentation类"><a href="#六、关于ALAssetRepresentation类" class="headerlink" title="六、关于ALAssetRepresentation类"></a>六、关于ALAssetRepresentation类</h3><pre><code>每一个ALAsset对象中都封装了一个ALAssetRepresentation对象，这个对象的作用是获取资源的详细信息，解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取UTI</span></span><br><span class="line">- (<span class="built_in">NSString</span> *)UTI;</span><br><span class="line"><span class="comment">//获取资源的尺寸</span></span><br><span class="line">- (<span class="built_in">CGSize</span>)dimensions;</span><br><span class="line"><span class="comment">//获取资源的大小</span></span><br><span class="line">- (<span class="keyword">long</span> <span class="keyword">long</span>)size;</span><br><span class="line"><span class="comment">//读取数据</span></span><br><span class="line">- (<span class="built_in">NSUInteger</span>)getBytes:(uint8_t *)buffer fromOffset:(<span class="keyword">long</span> <span class="keyword">long</span>)offset length:(<span class="built_in">NSUInteger</span>)length error:(<span class="built_in">NSError</span> **)error;</span><br><span class="line"><span class="comment">//获取图片数据</span></span><br><span class="line">- (<span class="built_in">CGImageRef</span>)fullResolutionImage;</span><br><span class="line">- (<span class="built_in">CGImageRef</span>)<span class="built_in">CGImageWithOptions</span>:(<span class="built_in">NSDictionary</span> *)options;</span><br><span class="line"><span class="comment">//获取全屏图片</span></span><br><span class="line">- (<span class="built_in">CGImageRef</span>)fullScreenImage;</span><br><span class="line"><span class="comment">//获取资源URL</span></span><br><span class="line">- (<span class="built_in">NSURL</span> *)url;</span><br><span class="line"><span class="comment">//获取资源元数据</span></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)metadata;</span><br><span class="line"><span class="comment">//获取资源方向</span></span><br><span class="line">- (ALAssetOrientation)orientation;</span><br><span class="line"><span class="comment">//缩放比</span></span><br><span class="line">- (<span class="keyword">float</span>)scale;</span><br><span class="line"><span class="comment">//获取资源名称</span></span><br><span class="line">- (<span class="built_in">NSString</span> *)filename;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/10/11/382iOS开发之AVKit框架使用/" class="pre-post btn btn-default" title='iOS开发之AVKit框架使用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发之AVKit框架使用</span>
+        </a>
+    
+    
+        <a href="/2018/09/10/380 iOS开发之AdSupport框架使用/" class="next-post btn btn-default" title='iOS开发之AdSupport框架使用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发之AdSupport框架使用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发之AssetsLibrary框架使用"><span class="toc-text">iOS开发之AssetsLibrary框架使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、概述"><span class="toc-text">二、概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、ALAssetsLibrary资源库对象"><span class="toc-text">三、ALAssetsLibrary资源库对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、ALAssetsGroup资源组对象"><span class="toc-text">四、ALAssetsGroup资源组对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、ALAsset资源对象"><span class="toc-text">五、ALAsset资源对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、关于ALAssetRepresentation类"><span class="toc-text">六、关于ALAssetRepresentation类</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

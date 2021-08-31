@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展">
+            
+	            iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/代码灵魂">
+            代码灵魂
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/12/23</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展"><a href="#iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展" class="headerlink" title="iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展"></a>iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>iOS系统是一个十分注重用户体验的系统，在iOS系统中，用户交互的方案也十分多，然而要在label中的某部分字体中添加交互行为确实不容易的，如果使用其他类似Button的控件来模拟，文字的排版又将是一个解决十分困难的问题。这个问题的由来是项目中的一个界面中有一些广告位标签，而这些广告位的标签却是嵌在文本中的，当用户点击文字标签的位置时，会跳转到响应的广告页。
+
+CoreText框架和一些第三方库可以解决这个问题，但直接使用CoreText十分复杂，第三方库多注重于富文本的排版，对类似文字超链接的支持亦不是特别简洁，我们可以借助一些第三方的东西进行针对性更强，更易用的封装。
+
+RCLabel是一个第三方的将html字符串进行文本布局的工具，代码十分轻巧，并且其是基于CoreText框架的，其原生性和扩展性十分强。在以前的一篇博客中，我将RCLabel进行了一些改进，使其支持异步加载远程图片，并且提供了更加简洁的面向应用的方法，博客地址如下：
+</code></pre><p>扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计:<a href="http://my.oschina.net/u/2340880/blog/499311" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/499311</a> 。</p>
+<pre><code>本篇博文，将在其基础上，完成设计一个可以支持文本超链接的文字视图。
+</code></pre><h3 id="二、视图类与模型类的设计"><a href="#二、视图类与模型类的设计" class="headerlink" title="二、视图类与模型类的设计"></a>二、视图类与模型类的设计</h3><pre><code>RCLabel的核心之处在于将HTML文本转换为富文本布局视图，因此我们可以将要显示的文本编程html字符串，将其可以进行用户交互的部分进行html超链接关联，RCLabel就检测到我们点击的区域进行响应逻辑的回调。设计类如下：
+</code></pre><p>.h文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">//文本与超链接地址关联的model类 后面会说</span><br><span class="line">@class YHBaseLinkingLabelModel;</span><br><span class="line"></span><br><span class="line">@protocol YHBaseLinkingLabelProtocol &lt;NSObject&gt;</span><br><span class="line"></span><br><span class="line">@optional</span><br><span class="line">/**</span><br><span class="line"> *点击超链接后出发的代理方法 model中有链接地址和文字</span><br><span class="line"> */</span><br><span class="line">-(void)YHBaseLinkingLabelClickLinking:(YHBaseLinkingLabelModel *)model;</span><br><span class="line">/**</span><br><span class="line"> *尺寸改变后出发的方法</span><br><span class="line"> */</span><br><span class="line">-(void)YHBaseLinkingLabelSizeChange:(CGSize)size;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@interface YHBaseLinkingLabel : YHBaseView</span><br><span class="line">/**</span><br><span class="line"> *文字数组 里面存放这文字对应的超链接对象</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)NSArray&lt;YHBaseLinkingLabelModel *&gt; * textArray;</span><br><span class="line">@property(nonatomic,weak)id&lt;YHBaseLinkingLabelProtocol&gt;delegate;</span><br><span class="line">/**</span><br><span class="line"> *设置文字颜色</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIColor * textColor;</span><br><span class="line">/**</span><br><span class="line"> *设置超链接文字颜色</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)UIColor * linkColor;</span><br><span class="line">/**</span><br><span class="line"> *设置字体大小</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)NSUInteger fontSize;</span><br><span class="line">/**</span><br><span class="line"> *设置超链接字体大小</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)int linkingFontSize;</span><br><span class="line">/**</span><br><span class="line"> *设置是否显示下划线</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,assign)BOOL isShowUnderLine;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>.m文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line">@interface YHBaseLinkingLabel()&lt;YHBaseHtmlViewProcotop&gt;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation YHBaseLinkingLabel</span><br><span class="line">&#123;</span><br><span class="line">    //以前博客中 封装的显示HTML字符串富文本的视图</span><br><span class="line">    YHBaseHtmlView * _label;</span><br><span class="line">&#125;</span><br><span class="line">/*</span><br><span class="line">// 重载一些初始化方法</span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        _label = [[YHBaseHtmlView alloc]init];</span><br><span class="line">        [self addSubview:_label];</span><br><span class="line">        [_label mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">            make.leading.equalTo(@0);</span><br><span class="line">            make.trailing.equalTo(@0);</span><br><span class="line">            make.top.equalTo(@0);</span><br><span class="line">            make.bottom.equalTo(@0);</span><br><span class="line">        &#125;];</span><br><span class="line">         _label.delegate=self;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)coder</span><br><span class="line">&#123;</span><br><span class="line">    self = [super initWithCoder:coder];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        _label = [[YHBaseHtmlView alloc]init];</span><br><span class="line">        [self addSubview:_label];</span><br><span class="line">        [_label mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">            make.leading.equalTo(@0);</span><br><span class="line">            make.trailing.equalTo(@0);</span><br><span class="line">            make.top.equalTo(@0);</span><br><span class="line">            make.bottom.equalTo(@0);</span><br><span class="line">        &#125;];</span><br><span class="line">         _label.delegate=self;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line">- (instancetype)initWithFrame:(CGRect)frame</span><br><span class="line">&#123;</span><br><span class="line">    self = [super initWithFrame:frame];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        _label = [[YHBaseHtmlView alloc]init];</span><br><span class="line">        [self addSubview:_label];</span><br><span class="line">        [_label mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">            make.leading.equalTo(@0);</span><br><span class="line">            make.trailing.equalTo(@0);</span><br><span class="line">            make.top.equalTo(@0);</span><br><span class="line">            make.bottom.equalTo(@0);</span><br><span class="line">        &#125;];</span><br><span class="line">        _label.delegate=self;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line">//设置文本数组</span><br><span class="line">-(void)setTextArray:(NSArray&lt;YHBaseLinkingLabelModel *&gt; *)textArray&#123;</span><br><span class="line">    _textArray = textArray;</span><br><span class="line">    //进行html转换</span><br><span class="line">    NSString * htmlString = [self transLinkingDataToHtmlStr:textArray];</span><br><span class="line">    //进行布局</span><br><span class="line">    [_label reSetHtmlStr:htmlString];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">-(void)setTextColor:(UIColor *)textColor&#123;</span><br><span class="line">    _textColor = textColor;</span><br><span class="line">    _label.fontColor = textColor;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setLinkColor:(UIColor *)linkColor&#123;</span><br><span class="line">    _linkColor = linkColor;</span><br><span class="line">    _label.linkingColor = linkColor;</span><br><span class="line">&#125;</span><br><span class="line">-(void)setFontSize:(NSUInteger)fontSize&#123;</span><br><span class="line">    _fontSize = fontSize;</span><br><span class="line">    [_label setFontSize:(int)fontSize];</span><br><span class="line">&#125;</span><br><span class="line">-(void)setLinkingFontSize:(int)linkingFontSize&#123;</span><br><span class="line">    _linkingFontSize = linkingFontSize;</span><br><span class="line">    [_label setLinkingSize:linkingFontSize];</span><br><span class="line">&#125;</span><br><span class="line">-(void)setIsShowUnderLine:(BOOL)isShowUnderLine&#123;</span><br><span class="line">    _isShowUnderLine = isShowUnderLine;</span><br><span class="line">    [_label setShowUnderLine:isShowUnderLine];</span><br><span class="line">&#125;</span><br><span class="line">-(NSString *)transLinkingDataToHtmlStr:(NSArray&lt;YHBaseLinkingLabelModel *&gt; *)data&#123;</span><br><span class="line">    NSMutableString * mutStr = [[NSMutableString alloc]init];</span><br><span class="line">    for (int i=0; i&lt;data.count; i++) &#123;</span><br><span class="line">    //这个model中存放的是超链接部分的文字和对应的url</span><br><span class="line">        YHBaseLinkingLabelModel * model = data[i];</span><br><span class="line">        if (!model.linking) &#123;</span><br><span class="line">            [mutStr appendString:model.text];</span><br><span class="line">        &#125;else &#123;</span><br><span class="line">            [mutStr appendString:@&quot;&lt;a href=&quot;];</span><br><span class="line">            [mutStr appendString:model.linking];</span><br><span class="line">            [mutStr appendString:@&quot;&gt;&quot;];</span><br><span class="line">            [mutStr appendString:model.text];</span><br><span class="line">            [mutStr appendString:@&quot;&lt;/a&gt;&quot;];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return mutStr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark delegate</span><br><span class="line">//点击的回调</span><br><span class="line">-(void)YHBaseHtmlView:(YHBaseHtmlView *)htmlView ClickLink:(NSString *)url&#123;</span><br><span class="line">    for (YHBaseLinkingLabelModel * model in _textArray) &#123;</span><br><span class="line">        if ([model.linking isEqualToString:url]) &#123;</span><br><span class="line">            if ([self.delegate respondsToSelector:@selector(YHBaseLinkingLabelClickLinking:)]) &#123;</span><br><span class="line">                [self.delegate YHBaseLinkingLabelClickLinking:model];</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//布局尺寸改变的回调</span><br><span class="line">-(void)YHBaseHtmlView:(YHBaseHtmlView *)htmlView SizeChanged:(CGSize)size&#123;</span><br><span class="line">    if ([self.delegate respondsToSelector:@selector(YHBaseLinkingLabelSizeChange:)]) &#123;</span><br><span class="line">        [self.delegate YHBaseLinkingLabelSizeChange:size];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>上面我们有用到一个YHBaseLinkingLabelModel类，这个类进行了链接与字符的映射，设计如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@interface YHBaseLinkingLabelModel : YHBaseModel</span><br><span class="line">/**</span><br><span class="line"> *文字内容</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)NSString * text;</span><br><span class="line">/**</span><br><span class="line"> *超链接地址 nil则为无</span><br><span class="line"> */</span><br><span class="line">@property(nonatomic,strong)NSString * linking;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<pre><code>YHBaseHtmlView类是对RCLabel的一层封装，其中也对RCLabel进行了一些优化和改动，代码较多且在上篇博客中有介绍，这里不再多做解释了。
+
+在ViewController中写如下代码进行使用：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">   YHBaseLinkingLabel * label = [[YHBaseLinkingLabel alloc]initWithFrame:CGRectMake(100, 100, 200, 100)];</span><br><span class="line">    NSMutableArray * array = [[NSMutableArray alloc]init];</span><br><span class="line">    for (int i=0; i&lt;6; i++) &#123;</span><br><span class="line">        YHBaseLinkingLabelModel * model = [[YHBaseLinkingLabelModel alloc]init];</span><br><span class="line">        if (!(i%2)) &#123;</span><br><span class="line">            model.text =[NSString stringWithFormat:@&quot;第%d个标签&quot;,i];</span><br><span class="line">            model.linking = [NSString stringWithFormat:@&quot;第%d个标签&quot;,i];</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            model.text = @&quot;,不能点得文字,&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">        [array addObject:model];</span><br><span class="line">    &#125;</span><br><span class="line">    label.textColor = [UIColor blackColor];</span><br><span class="line">    label.linkColor = [UIColor purpleColor];</span><br><span class="line">    label.fontSize = 15;</span><br><span class="line">    label.linkingFontSize = 17;</span><br><span class="line">    label.isShowUnderLine=YES;</span><br><span class="line">    label.delegate=self;</span><br><span class="line">    label.textArray = array;</span><br><span class="line">    [self.view addSubview:label];</span><br><span class="line">   </span><br><span class="line">&#125;</span><br><span class="line">-(void)YHBaseLinkingLabelClickLinking:(YHBaseLinkingLabelModel *)model&#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,model.linking);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1223/224957_KSL8_2340880.png" alt></p>
+<p>效果不错，并且十分简单易用，对吧。</p>
+<pre><code>我将这部分的相关代码集成进了以前写的一个项目开发框架中，git地址是：[https://github.com/ZYHshao/YHBaseFoundationTest](https://github.com/ZYHshao/YHBaseFoundationTest) 。总体看来，这个框架并不是干货，只是我开发中的一些积累，如果可以帮到你，择优而用，如果需要和我交流，QQ316045346，对视欢迎。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/01/11/168SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用/" class="pre-post btn btn-default" title='SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SQLite数据库常用语句及MAC上的SQLite可视化工具MeasSQLlite使用</span>
+        </a>
+    
+    
+        <a href="/2015/12/20/166iOS开发之蓝牙通讯/" class="next-post btn btn-default" title='iOS开发之蓝牙通讯'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发之蓝牙通讯</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展"><span class="toc-text">iOS开发封装一个可以响应超链接的label——基于RCLabel的交互扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、视图类与模型类的设计"><span class="toc-text">二、视图类与模型类的设计</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

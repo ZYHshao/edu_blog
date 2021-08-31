@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS10通知框架UserNotification理解与应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS10通知框架UserNotification理解与应用">
+            
+	            iOS10通知框架UserNotification理解与应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS10专题">
+            iOS10专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/09/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS10通知框架UserNotification理解与应用"><a href="#iOS10通知框架UserNotification理解与应用" class="headerlink" title="iOS10通知框架UserNotification理解与应用"></a>iOS10通知框架UserNotification理解与应用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>关于通知，无论与远程Push还是本地通知，以往的iOS系统暴漏给开发者的接口都是十分有限的，开发者只能对标题和内容进行简单的定义，至于UI展示和用户交互行为相关的部分，开发者开发起来都十分困难。至于本地通知，iOS10之前采用的是UILocationNotification类，远程通知有苹果服务器进行转发，本地通知和远程通知其回调的处理都是通过AppDelegate中的几个回调方法来完成。iOS10系统中，通知功能的增强是一大优化之处，iOS10中将通知功能整合成了一个框架UserNotification，其结构十分类似于iOS8中的UIWebView向WebKit框架整合的思路。并且UserNotification相比之前的通知功能更加强大，主要表现在如下几点：
+</code></pre><p>1.通知处理代码可以从AppDelegate中剥离。</p>
+<p>2.通知的注册，设置，处理更加结构化，更易于模块化开发。</p>
+<p>3.UserNotification支持自定义通知音效和启动图。</p>
+<p>4.UserNotification支持向通知内容中添加媒体附件，例如音频，视频。</p>
+<p>5.UserNotification支持开发者定义多套通知模板。</p>
+<p>6.UserNotification支持完全自定义的通知界面。</p>
+<p>7.UserNotification支持自定义通知中的用户交互按钮。</p>
+<p>8.通知的触发更加容易管理。</p>
+<p>从上面列举的几点就可以看出，iOS10中的UsreNotification真的是一个大的改进，温故而知新，关于iOS之前版本本地通知和远程通知的相关内容请查看如下博客：</p>
+<p>本地推送：<a href="http://my.oschina.net/u/2340880/blog/405491" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/405491</a>。</p>
+<p>远程推送：<a href="http://my.oschina.net/u/2340880/blog/413584" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/413584</a>。</p>
+<h3 id="二、UserNotification概览"><a href="#二、UserNotification概览" class="headerlink" title="二、UserNotification概览"></a>二、UserNotification概览</h3><pre><code>学习一个新的框架或知识模块时，宏观上了解其体系，大体上掌握其结构是十分必要的，这更有利于我们对这个框架或模块的整体把握与理解。UserNotification框架中拆分定义了许多类、枚举和结构体，其中还定义了许多常量，类与类之间虽然关系复杂，但脉络十分清晰，把握住主线，层层分析，边很容易理解和应用UserNotification框架。
+
+下图中列举了UserNotification框架中所有核心的类：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/0917/211634_xIMM_2340880.png" alt></p>
+<p>如图中关系所示，UserNotification框架中的核心类列举如下：</p>
+<p>UNNotificationCenter：通知管理中心，单例，通知的注册，接收通知后的回调处理等，是UserNotification框架的核心。</p>
+<p>UNNotification：通知对象，其中封装了通知请求。</p>
+<p>UNNotificationSettings：通知相关设置。</p>
+<p>UNNotificationCategory：通知模板。</p>
+<p>UNNotificationAction：用于定义通知模板中的用户交互行为。</p>
+<p>UNNotificationRequest：注册通知请求，其中定义了通知的内容和触发方式。</p>
+<p>UNNotificationResponse：接收到通知后的回执。</p>
+<p>UNNotificationContent：通知的具体内容。</p>
+<p>UNNotificationTrigger：通知的触发器，由其子类具体定义。</p>
+<p>UNNotificationAttachment：通知附件类，为通知内容添加媒体附件。</p>
+<p>UNNotificationSound：定义通知音效。</p>
+<p>UNPushNotificationTrigger：远程通知的触发器，UNNotificationTrigger子类。</p>
+<p>UNTimeInervalNotificationTrigger：计时通知的触发器，UNNotificationTrigger子类。</p>
+<p>UNCalendarNotificationTrigger：周期通知的触发器，UNNotificationTrigger子类。</p>
+<p>UNLocationNotificationTrigger：地域通知的触发器，UNNotificationTrigger子类。</p>
+<p>UNNotificationCenterDelegate：协议，其中方法用于监听通知状态。</p>
+<h3 id="三、进行通知用户权限申请与创建普通的本地通知"><a href="#三、进行通知用户权限申请与创建普通的本地通知" class="headerlink" title="三、进行通知用户权限申请与创建普通的本地通知"></a>三、进行通知用户权限申请与创建普通的本地通知</h3><pre><code>要在iOS系统中使用通知，必须获取到用户权限，UserNotification框架中申请通知用户权限需要通过UNNotificationCenter来完成，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//进行用户权限的申请</span></span><br><span class="line">[[UNUserNotificationCenter currentNotificationCenter] requestAuthorizationWithOptions:UNAuthorizationOptionBadge|UNAuthorizationOptionSound|UNAuthorizationOptionAlert|UNAuthorizationOptionCarPlay completionHandler:^(<span class="built_in">BOOL</span> granted, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">      <span class="comment">//在block中会传入布尔值granted，表示用户是否同意</span></span><br><span class="line">      <span class="keyword">if</span> (granted) &#123;</span><br><span class="line">            <span class="comment">//如果用户权限申请成功，设置通知中心的代理</span></span><br><span class="line">            [UNUserNotificationCenter currentNotificationCenter].delegate = <span class="keyword">self</span>;</span><br><span class="line">      &#125;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>申请用户权限的方法中需要传入一个权限内容的参数，其枚举定义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_OPTIONS</span>(<span class="built_in">NSUInteger</span>, UNAuthorizationOptions) &#123;</span><br><span class="line">    <span class="comment">//允许更新app上的通知数字</span></span><br><span class="line">    UNAuthorizationOptionBadge   = (<span class="number">1</span> &lt;&lt; <span class="number">0</span>),</span><br><span class="line">    <span class="comment">//允许通知声音</span></span><br><span class="line">    UNAuthorizationOptionSound   = (<span class="number">1</span> &lt;&lt; <span class="number">1</span>),</span><br><span class="line">    <span class="comment">//允许通知弹出警告</span></span><br><span class="line">    UNAuthorizationOptionAlert   = (<span class="number">1</span> &lt;&lt; <span class="number">2</span>),</span><br><span class="line">    <span class="comment">//允许车载设备接收通知</span></span><br><span class="line">    UNAuthorizationOptionCarPlay = (<span class="number">1</span> &lt;&lt; <span class="number">3</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>获取到用户权限后，使用UserNotification创建普通的通知，示例代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通知内容类</span></span><br><span class="line">UNMutableNotificationContent * content = [UNMutableNotificationContent new];</span><br><span class="line"><span class="comment">//设置通知请求发送时 app图标上显示的数字</span></span><br><span class="line">content.badge = @<span class="number">2</span>;</span><br><span class="line"><span class="comment">//设置通知的内容</span></span><br><span class="line">content.body = <span class="string">@"这是iOS10的新通知内容：普通的iOS通知"</span>;</span><br><span class="line"><span class="comment">//默认的通知提示音</span></span><br><span class="line">content.sound = [UNNotificationSound defaultSound];</span><br><span class="line"><span class="comment">//设置通知的副标题</span></span><br><span class="line">content.subtitle = <span class="string">@"这里是副标题"</span>;</span><br><span class="line"><span class="comment">//设置通知的标题</span></span><br><span class="line">content.title = <span class="string">@"这里是通知的标题"</span>;</span><br><span class="line"><span class="comment">//设置从通知激活app时的launchImage图片</span></span><br><span class="line">content.launchImageName = <span class="string">@"lun"</span>;</span><br><span class="line"><span class="comment">//设置5S之后执行</span></span><br><span class="line">UNTimeIntervalNotificationTrigger * trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:<span class="number">5</span> repeats:<span class="literal">NO</span>];</span><br><span class="line">UNNotificationRequest * request = [UNNotificationRequest requestWithIdentifier:<span class="string">@"NotificationDefault"</span> content:content trigger:trigger];</span><br><span class="line"><span class="comment">//添加通知请求</span></span><br><span class="line">[[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(<span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>效果如下面图示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0917/221208_lU3E_2340880.png" alt>               <img src="https://static.oschina.net/uploads/space/2016/0917/221229_lWxR_2340880.png" alt></p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0917/221247_qDOi_2340880.png" alt></p>
+<h3 id="四、通知音效类UNNotificationSound"><a href="#四、通知音效类UNNotificationSound" class="headerlink" title="四、通知音效类UNNotificationSound"></a>四、通知音效类UNNotificationSound</h3><pre><code>通知可以进行自定义的音效设置，其中方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//系统默认的音效</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)defaultSound;</span><br><span class="line"><span class="comment">//自定义的音频音效</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">注意，音频文件必须在bundle中或者在Library/Sounds目录下</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)soundNamed:(<span class="built_in">NSString</span> *)name __WATCHOS_PROHIBITED;</span><br></pre></td></tr></table></figure>
+<h3 id="五、通知触发器UNNotificationTrigger"><a href="#五、通知触发器UNNotificationTrigger" class="headerlink" title="五、通知触发器UNNotificationTrigger"></a>五、通知触发器UNNotificationTrigger</h3><pre><code>通知触发器可以理解为定义通知的发送时间，UNNotificationTrigger是触发器的基类，具体的触发器由它的四个子类实现，实际上，开发者在代码中可能会用到的触发器只有三种，UNPushNotificationTrigger远程推送触发器开发者不需要创建使用，远程通知有远程服务器触发，开发者只需要创建与本地通知有关的触发器进行使用。
+</code></pre><h4 id="1-UNTimeIntervalNotificationTrigger"><a href="#1-UNTimeIntervalNotificationTrigger" class="headerlink" title="1.UNTimeIntervalNotificationTrigger"></a>1.UNTimeIntervalNotificationTrigger</h4><pre><code>UNTimeIntervalNotificationTrigger是计时触发器，开发者可以设置其在添加通知请求后一定时间发送。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建触发器 在timeInterval秒后触发 可以设置是否循环触发</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)triggerWithTimeInterval:(<span class="built_in">NSTimeInterval</span>)timeInterval repeats:(<span class="built_in">BOOL</span>)repeats;</span><br><span class="line"><span class="comment">//获取下次触发的时间点</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSDate</span> *)nextTriggerDate;</span><br></pre></td></tr></table></figure>
+<h4 id="2-UNCalendarNotificationTrigger"><a href="#2-UNCalendarNotificationTrigger" class="headerlink" title="2.UNCalendarNotificationTrigger"></a>2.UNCalendarNotificationTrigger</h4><pre><code>UNCalendarNotificationTrigger是日历触发器，开发者可以设置其在某个时间点触发。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建触发器 设置触发时间 可以设置是否循环触发</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)triggerWithDateMatchingComponents:(<span class="built_in">NSDateComponents</span> *)dateComponents repeats:(<span class="built_in">BOOL</span>)repeats;</span><br><span class="line"><span class="comment">//下一次触发的时间点</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSDate</span> *)nextTriggerDate;</span><br></pre></td></tr></table></figure>
+<h4 id="3-UNLocationNotificationTrigger"><a href="#3-UNLocationNotificationTrigger" class="headerlink" title="3.UNLocationNotificationTrigger"></a>3.UNLocationNotificationTrigger</h4><pre><code>UNLocationNotificationTrigger是地域触发器，开发者可以设置当用户进入某一区域时触发。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//地域信息</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">CLRegion</span> *region;</span><br><span class="line"><span class="comment">//创建触发器</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)triggerWithRegion:(<span class="built_in">CLRegion</span> *)region repeats:(<span class="built_in">BOOL</span>)repeats __WATCHOS_PROHIBITED;</span><br></pre></td></tr></table></figure>
+<h3 id="六、为通知内容添加附件"><a href="#六、为通知内容添加附件" class="headerlink" title="六、为通知内容添加附件"></a>六、为通知内容添加附件</h3><pre><code>附件主要指的是媒体附件，例如图片，音频和视频，为通知内容添加附件需要使用UNNotificationAttachment类。示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建图片附件</span></span><br><span class="line">UNNotificationAttachment * attach = [UNNotificationAttachment attachmentWithIdentifier:<span class="string">@"imageAttach"</span> URL:[<span class="built_in">NSURL</span> fileURLWithPath:[[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"2"</span> ofType:<span class="string">@"jpg"</span>]] options:<span class="literal">nil</span> error:<span class="literal">nil</span>];</span><br><span class="line">UNMutableNotificationContent * content = [UNMutableNotificationContent new];</span><br><span class="line"><span class="comment">//设置附件数组</span></span><br><span class="line">content.attachments = @[attach];</span><br><span class="line">content.badge = @<span class="number">1</span>;</span><br><span class="line">content.body = <span class="string">@"这是iOS10的新通知内容：普通的iOS通知"</span>;</span><br><span class="line"><span class="comment">//默认的通知提示音</span></span><br><span class="line">content.sound = [UNNotificationSound defaultSound];</span><br><span class="line">content.subtitle = <span class="string">@"这里是副标题"</span>;</span><br><span class="line">content.title = <span class="string">@"这里是通知的标题"</span>;</span><br><span class="line"><span class="comment">//设置5S之后执行</span></span><br><span class="line">UNTimeIntervalNotificationTrigger * trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:<span class="number">5</span> repeats:<span class="literal">NO</span>];</span><br><span class="line">UNNotificationRequest * request = [UNNotificationRequest requestWithIdentifier:<span class="string">@"NotificationDefaultImage"</span> content:content trigger:trigger];</span><br><span class="line">[[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(<span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>效果如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0917/224208_aCSY_2340880.png" alt>                 <img src="https://static.oschina.net/uploads/space/2016/0917/224247_CpEZ_2340880.png" alt></p>
+<p>需要注意，UNNotificationContent的附件数组虽然是一个数组，但是系统的通知模板只能展示其中的第一个附件，设置多个附件也不会有额外的效果，但是如果开发者进行通知模板UI的自定义，则此数组就可以派上用场了。音频附件界面如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0917/230851_6oc4_2340880.png" alt></p>
+<p>需要注意，添加附件的格式和大小都有一定的要求，如下表格所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0917/231006_q7Y8_2340880.png" alt></p>
+<p>创建通知内容附件UNNotificationAttachment实例的方法中有一个options配置字典，这个字典中可以进行配置的键值对如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//配置附件的类型的键 需要设置为NSString类型的值，如果不设置 则默认从扩展名中推断</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> UNNotificationAttachmentOptionsTypeHintKey __IOS_AVAILABLE(<span class="number">10.0</span>) __WATCHOS_AVAILABLE(<span class="number">3.0</span>);</span><br><span class="line"><span class="comment">//配置是否隐藏缩略图的键 需要配置为NSNumber 0或者1</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> UNNotificationAttachmentOptionsThumbnailHiddenKey __IOS_AVAILABLE(<span class="number">10.0</span>) __WATCHOS_AVAILABLE(<span class="number">3.0</span>);</span><br><span class="line"><span class="comment">//配置使用一个标准的矩形来对缩略图进行裁剪，需要配置为CGRectCreateDictionaryRepresentation(CGRect)创建的矩形引用</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> UNNotificationAttachmentOptionsThumbnailClippingRectKey __IOS_AVAILABLE(<span class="number">10.0</span>) __WATCHOS_AVAILABLE(<span class="number">3.0</span>);</span><br><span class="line"><span class="comment">//使用视频中的某一帧作为缩略图 配置为NSNumber时间</span></span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> UNNotificationAttachmentOptionsThumbnailTimeKey __IOS_AVAILABLE(<span class="number">10.0</span>) __WATCHOS_AVAILABLE(<span class="number">3.0</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="七、定义通知模板UNNotificationCategory"><a href="#七、定义通知模板UNNotificationCategory" class="headerlink" title="七、定义通知模板UNNotificationCategory"></a>七、定义通知模板UNNotificationCategory</h3><pre><code>聊天类软件在iOS系统中，常常采用后台推送的方式推送新消息，用户可以在不进入应用程序的情况下，直接在左面回复通知推送过来的信息，这种功能就是通过UNNotificationCategory模板与UNNotificationAction用户活动来实现的。关于文本回复框，UserNotification框架中提供了UNTextInputNotificationAction类，其是UNNotificationAction的子类。示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建用户活动</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">options参数可选如下：</span></span><br><span class="line"><span class="comment">//需要在解开锁屏下使用</span></span><br><span class="line"><span class="comment">UNNotificationActionOptionAuthenticationRequired</span></span><br><span class="line"><span class="comment">//是否指示有破坏性</span></span><br><span class="line"><span class="comment">UNNotificationActionOptionDestructive</span></span><br><span class="line"><span class="comment">//是否允许活动在后台启动app</span></span><br><span class="line"><span class="comment">UNNotificationActionOptionForeground</span></span><br><span class="line"><span class="comment">//无设置</span></span><br><span class="line"><span class="comment">UNNotificationActionOptionNone</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">UNTextInputNotificationAction * action = [UNTextInputNotificationAction actionWithIdentifier:<span class="string">@"action"</span> title:<span class="string">@"回复"</span> options:UNNotificationActionOptionAuthenticationRequired textInputButtonTitle:<span class="string">@"活动"</span> textInputPlaceholder:<span class="string">@"请输入回复内容"</span>];</span><br><span class="line"><span class="comment">//创建通知模板</span></span><br><span class="line">UNNotificationCategory * category = [UNNotificationCategory categoryWithIdentifier:<span class="string">@"myNotificationCategoryText"</span> actions:@[action] intentIdentifiers:@[] options:UNNotificationCategoryOptionCustomDismissAction];</span><br><span class="line">UNMutableNotificationContent * content = [UNMutableNotificationContent new];</span><br><span class="line">content.badge = @<span class="number">1</span>;</span><br><span class="line">content.body = <span class="string">@"这是iOS10的新通知内容：普通的iOS通知"</span>;</span><br><span class="line"><span class="comment">//默认的通知提示音</span></span><br><span class="line">content.sound = [UNNotificationSound defaultSound];</span><br><span class="line">content.subtitle = <span class="string">@"这里是副标题"</span>;</span><br><span class="line">content.title = <span class="string">@"这里是通知的标题"</span>;</span><br><span class="line"><span class="comment">//设置通知内容对应的模板 需要注意 这里的值要与对应模板id一致</span></span><br><span class="line">content.categoryIdentifier = <span class="string">@"myNotificationCategoryText"</span>;</span><br><span class="line"><span class="comment">//设置5S之后执行</span></span><br><span class="line">UNTimeIntervalNotificationTrigger * trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:<span class="number">5</span> repeats:<span class="literal">NO</span>];</span><br><span class="line">  [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[<span class="built_in">NSSet</span> setWithObjects:category, <span class="literal">nil</span>]];</span><br><span class="line">UNNotificationRequest * request = [UNNotificationRequest requestWithIdentifier:<span class="string">@"NotificationDefaultText"</span> content:content trigger:trigger];</span><br><span class="line">  </span><br><span class="line">[[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(<span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">    </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>需要注意，要使用模板，通知内容UNNotificationContent的categoryIdentifier要与UNNotificationCategory的id一致。效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0917/234551_6zOM_2340880.png" alt></p>
+<pre><code>也可以为通知模板添加多个自定义的用户交互按钮，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">UNNotificationAction * action = [UNNotificationAction actionWithIdentifier:<span class="string">@"action"</span> title:<span class="string">@"活动标题1"</span> options:UNNotificationActionOptionNone];</span><br><span class="line">    UNNotificationAction * action2 = [UNNotificationAction actionWithIdentifier:<span class="string">@"action"</span> title:<span class="string">@"活动标题2"</span> options:UNNotificationActionOptionNone];</span><br><span class="line">    UNNotificationAction * action3 = [UNNotificationAction actionWithIdentifier:<span class="string">@"action"</span> title:<span class="string">@"活动标题3"</span> options:UNNotificationActionOptionNone];</span><br><span class="line">    UNNotificationAction * action4 = [UNNotificationAction actionWithIdentifier:<span class="string">@"action"</span> title:<span class="string">@"活动标题4"</span> options:UNNotificationActionOptionNone];</span><br><span class="line">     UNNotificationCategory * category = [UNNotificationCategory categoryWithIdentifier:<span class="string">@"myNotificationCategoryBtn"</span> actions:@[action,action2,action3,action4] intentIdentifiers:@[] options:UNNotificationCategoryOptionCustomDismissAction];</span><br><span class="line">    UNMutableNotificationContent * content = [UNMutableNotificationContent new];</span><br><span class="line">    content.badge = @<span class="number">1</span>;</span><br><span class="line">    content.body = <span class="string">@"这是iOS10的新通知内容：普通的iOS通知"</span>;</span><br><span class="line">    <span class="comment">//默认的通知提示音</span></span><br><span class="line">    content.sound = [UNNotificationSound defaultSound];</span><br><span class="line">    content.subtitle = <span class="string">@"这里是副标题"</span>;</span><br><span class="line">    content.title = <span class="string">@"这里是通知的标题"</span>;</span><br><span class="line">    content.categoryIdentifier = <span class="string">@"myNotificationCategoryBtn"</span>;</span><br><span class="line">    <span class="comment">//设置5S之后执行</span></span><br><span class="line">    UNTimeIntervalNotificationTrigger * trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:<span class="number">5</span> repeats:<span class="literal">NO</span>];</span><br><span class="line">    UNNotificationRequest * request = [UNNotificationRequest requestWithIdentifier:<span class="string">@"NotificationDefault"</span> content:content trigger:trigger];</span><br><span class="line">    [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[<span class="built_in">NSSet</span> setWithObjects:category, <span class="literal">nil</span>]];</span><br><span class="line">    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(<span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>需要注意，系统模板最多支持添加4个用户交互按钮，如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0917/235115_49tT_2340880.png" alt></p>
+<h3 id="八、自定义通知模板UI"><a href="#八、自定义通知模板UI" class="headerlink" title="八、自定义通知模板UI"></a>八、自定义通知模板UI</h3><pre><code>通过前边的介绍，我们发现通过UserNotification框架开发者已经可以完成许多从来很难实现的效果。然而这都不是UserNotification框架最强大的地方，UserNotification框架最强大的地方在于其可以完全自定义通知的UI界面。
+
+完全自定义通知界面是通过iOS扩展来实现的，首先创建一个新的target，如下图：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/0917/235730_yGEj_2340880.png" alt></p>
+<p>选择Notification Content，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0917/235756_yYly_2340880.png" alt></p>
+<p>创建完成后，会发现工程中多了一个Notification Content的扩展，其中自带一个storyboard文件和一个NotificationViewController类，开发者可以在storyboard文件或者直接在Controller类中进行自定义界面的编写。</p>
+<pre><code>需要注意，NotificationViewController自动遵守了UNNotificationContentExtension协议，这个协议专门用来处理自定义通知UI的内容展示，其中方法列举如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//接收到通知时会被调用</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">开发者可以从notification对象中拿到附件等内容进行UI刷新</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)didReceiveNotification:(UNNotification *)notification;</span><br><span class="line"><span class="comment">//当用户点击了通知中的用户交互按钮时会被调用</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">response对象中有通知内容相关信息</span></span><br><span class="line"><span class="comment">在回调block块completion中，开发者可以传入一个UNNotificationContentExtensionResponseOption参数来告诉系统如何处理这次用户活动</span></span><br><span class="line"><span class="comment">UNNotificationContentExtensionResponseOption枚举中可选值如下：</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSUInteger, UNNotificationContentExtensionResponseOption) &#123;</span></span><br><span class="line"><span class="comment">    //不关闭当前通知界面</span></span><br><span class="line"><span class="comment">    UNNotificationContentExtensionResponseOptionDoNotDismiss,</span></span><br><span class="line"><span class="comment">    //关闭当前通知界面</span></span><br><span class="line"><span class="comment">    UNNotificationContentExtensionResponseOptionDismiss,</span></span><br><span class="line"><span class="comment">    //关闭当前通知界面并将用户活动传递给宿主app处理</span></span><br><span class="line"><span class="comment">    UNNotificationContentExtensionResponseOptionDismissAndForwardAction,</span></span><br><span class="line"><span class="comment">&#125; __IOS_AVAILABLE(10_0) __TVOS_UNAVAILABLE __WATCHOS_UNAVAILABLE __OSX_UNAVAILABLE;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)didReceiveNotificationResponse:(UNNotificationResponse *)response completionHandler:(<span class="keyword">void</span> (^)(UNNotificationContentExtensionResponseOption option))completion;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这个属性作为get方法进行实现 这个方法用来返回一个通知界面要显示的媒体按钮</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSUInteger, UNNotificationContentExtensionMediaPlayPauseButtonType) &#123;</span></span><br><span class="line"><span class="comment">    //不显示媒体按钮</span></span><br><span class="line"><span class="comment">    UNNotificationContentExtensionMediaPlayPauseButtonTypeNone,</span></span><br><span class="line"><span class="comment">    //默认的媒体按钮 当点击按钮后 进行播放与暂停的切换 按钮始终显示</span></span><br><span class="line"><span class="comment">    UNNotificationContentExtensionMediaPlayPauseButtonTypeDefault,</span></span><br><span class="line"><span class="comment">    //Overlay风格 当点击按钮后，媒体播放，按钮隐藏 点击媒体后，播放暂停，按钮显示。</span></span><br><span class="line"><span class="comment">    UNNotificationContentExtensionMediaPlayPauseButtonTypeOverlay,</span></span><br><span class="line"><span class="comment">&#125; __IOS_AVAILABLE(10_0) __TVOS_UNAVAILABLE __WATCHOS_UNAVAILABLE __OSX_UNAVAILABLE;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">assign</span>) UNNotificationContentExtensionMediaPlayPauseButtonType mediaPlayPauseButtonType;</span><br><span class="line"><span class="comment">//返回媒体按钮的位置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">assign</span>) <span class="built_in">CGRect</span> mediaPlayPauseButtonFrame;</span><br><span class="line"><span class="comment">//返回媒体按钮的颜色</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">UIColor</span> *mediaPlayPauseButtonTintColor;</span><br><span class="line"><span class="comment">//点击播放按钮的回调</span></span><br><span class="line">- (<span class="keyword">void</span>)mediaPlay;</span><br><span class="line"><span class="comment">//点击暂停按钮的回调</span></span><br><span class="line">- (<span class="keyword">void</span>)mediaPause;</span><br><span class="line"><span class="comment">//媒体开始播放的回调</span></span><br><span class="line">- (<span class="keyword">void</span>)mediaPlayingStarted __IOS_AVAILABLE(<span class="number">10</span>_0) __TVOS_UNAVAILABLE __WATCHOS_UNAVAILABLE __OSX_UNAVAILABLE;</span><br><span class="line"><span class="comment">//媒体开始暂停的回调</span></span><br><span class="line">- (<span class="keyword">void</span>)mediaPlayingPaused __IOS_AVAILABLE(<span class="number">10</span>_0) __TVOS_UNAVAILABLE __WATCHOS_UNAVAILABLE __OSX_UNAVAILABLE;</span><br></pre></td></tr></table></figure>
+<p>需要注意，自定义的通知界面上虽然可以放按钮，可以放任何UI控件，但是其不能进行用户交互，唯一可以进行用户交互的方式是通过协议中的媒体按钮及其回调方法。</p>
+<pre><code>定义好了通知UI模板，若要进行使用，还需要再Notification Content扩展中的info.plist文件的NSExtension字典的NSExtensionAttributes字典里进行一些配置，正常情况下，开发者需要进行配置的键有3个，分别如下：
+</code></pre><p>UNNotificationExtensionCategory：设置模板的categoryId，用于与UNNotificationContent对应。</p>
+<p>UNNotificationExtensionInitialContentSizeRatio：设置自定义通知界面的高度与宽度的比，宽度为固定宽度，在不同设备上有差别，开发者需要根据宽度计算出高度进行设置，系统根据这个比值来计算通知界面的高度。</p>
+<p>UNNotificationExtensionDefaultContentHidden：是有隐藏系统默认的通知界面。</p>
+<p>配置info.plist文件如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0918/002737_D9It_2340880.png" alt></p>
+<p>用如下的代码创建通知：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">UNNotificationAction * action = [UNNotificationAction actionWithIdentifier:<span class="string">@"action"</span> title:<span class="string">@"活动标题1"</span> options:UNNotificationActionOptionNone];</span><br><span class="line">    <span class="comment">//根据id拿到自定义UI的模板</span></span><br><span class="line">    UNNotificationCategory * category = [UNNotificationCategory categoryWithIdentifier:<span class="string">@"myNotificationCategoryH"</span> actions:@[action] intentIdentifiers:@[] options:UNNotificationCategoryOptionCustomDismissAction];</span><br><span class="line">    UNMutableNotificationContent * content = [UNMutableNotificationContent new];</span><br><span class="line">    content.badge = @<span class="number">1</span>;</span><br><span class="line">    content.body = <span class="string">@"这是iOS10的新通知内容：普通的iOS通知"</span>;</span><br><span class="line">    <span class="comment">//默认的通知提示音</span></span><br><span class="line">    content.sound = [UNNotificationSound defaultSound];</span><br><span class="line">    content.subtitle = <span class="string">@"这里是副标题"</span>;</span><br><span class="line">    content.title = <span class="string">@"这里是通知的标题"</span>;</span><br><span class="line">    content.categoryIdentifier = <span class="string">@"myNotificationCategoryH"</span>;</span><br><span class="line">    <span class="comment">//设置5S之后执行</span></span><br><span class="line">    UNTimeIntervalNotificationTrigger * trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:<span class="number">5</span> repeats:<span class="literal">NO</span>];</span><br><span class="line">    UNNotificationRequest * request = [UNNotificationRequest requestWithIdentifier:<span class="string">@"NotificationDefaultCustomUIH"</span> content:content trigger:trigger];</span><br><span class="line">    [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[<span class="built_in">NSSet</span> setWithObjects:category, <span class="literal">nil</span>]];</span><br><span class="line">    [[UNUserNotificationCenter currentNotificationCenter] addNotificationRequest:request withCompletionHandler:^(<span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>效果如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0918/003502_aSyA_2340880.png" alt></p>
+<p>如果将UNNotificationExtensionDefaultContentHidden键值设置为0或者不设置，则不会隐藏系统默认的UI，如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0918/003630_KpYF_2340880.png" alt></p>
+<h3 id="九、通知回调的处理"><a href="#九、通知回调的处理" class="headerlink" title="九、通知回调的处理"></a>九、通知回调的处理</h3><pre><code>UserNotification框架对于通知的回调处理，是通过UNUserNotificationCenterDelegate协议来实现的，这个协议中有两个方法，如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这个方法在应用在前台，并且将要弹出通知时被调用，后台状态下弹通知不会调用这个方法</span></span><br><span class="line"><span class="comment">这个方法中的block块completionHandler()可以传入一个UNNotificationPresentationOptions类型的枚举</span></span><br><span class="line"><span class="comment">有个这个参数，开发者可以设置在前台状态下，依然可以弹出通知消息，枚举如下：</span></span><br><span class="line"><span class="comment">typedef NS_OPTIONS(NSUInteger, UNNotificationPresentationOptions) &#123;</span></span><br><span class="line"><span class="comment">    //只修改app图标的消息数</span></span><br><span class="line"><span class="comment">    UNNotificationPresentationOptionBadge   = (1 &lt;&lt; 0),</span></span><br><span class="line"><span class="comment">    //只提示通知音效</span></span><br><span class="line"><span class="comment">    UNNotificationPresentationOptionSound   = (1 &lt;&lt; 1),</span></span><br><span class="line"><span class="comment">    //只弹出通知框</span></span><br><span class="line"><span class="comment">    UNNotificationPresentationOptionAlert   = (1 &lt;&lt; 2),</span></span><br><span class="line"><span class="comment">&#125; __IOS_AVAILABLE(10.0) __TVOS_AVAILABLE(10.0) __WATCHOS_AVAILABLE(3.0);</span></span><br><span class="line"><span class="comment">//什么都不做</span></span><br><span class="line"><span class="comment">static const UNNotificationPresentationOptions UNNotificationPresentationOptionNone </span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(<span class="keyword">void</span> (^)(UNNotificationPresentationOptions options))completionHandler __IOS_AVAILABLE(<span class="number">10.0</span>) __TVOS_AVAILABLE(<span class="number">10.0</span>) __WATCHOS_AVAILABLE(<span class="number">3.0</span>);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这个方法当接收到通知后，用户点击通知激活app时被调用，无论前台还是后台</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)userNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(<span class="keyword">void</span>(^)())completionHandler __IOS_AVAILABLE(<span class="number">10.0</span>) __WATCHOS_AVAILABLE(<span class="number">3.0</span>) __TVOS_PROHIBITED;</span><br></pre></td></tr></table></figure>
+<h3 id="十、UserNotification框架中其他零散知识"><a href="#十、UserNotification框架中其他零散知识" class="headerlink" title="十、UserNotification框架中其他零散知识"></a>十、UserNotification框架中其他零散知识</h3><pre><code>前面所介绍的内容基本涵盖了UserNotification框架中所有的内容，在以后的应用开发中，开发者可以在通知方面发挥更大的想象力与创造力，给用户更加友好的体验。除了前边所介绍过的核心内容外，UserNotification框架中还有一些零散的类、枚举等。
+</code></pre><h4 id="1-错误码描述"><a href="#1-错误码描述" class="headerlink" title="1.错误码描述"></a>1.错误码描述</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, UNErrorCode) &#123;</span><br><span class="line">    <span class="comment">//通知不被允许</span></span><br><span class="line">    UNErrorCodeNotificationsNotAllowed = <span class="number">1</span>,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//附件无效url</span></span><br><span class="line">    UNErrorCodeAttachmentInvalidURL = <span class="number">100</span>,</span><br><span class="line">    <span class="comment">//附件类型错误</span></span><br><span class="line">    UNErrorCodeAttachmentUnrecognizedType,</span><br><span class="line">    <span class="comment">//附件大小错误</span></span><br><span class="line">    UNErrorCodeAttachmentInvalidFileSize,</span><br><span class="line">    <span class="comment">//附件数据错误</span></span><br><span class="line">    UNErrorCodeAttachmentNotInDataStore,</span><br><span class="line">    UNErrorCodeAttachmentMoveIntoDataStoreFailed,</span><br><span class="line">    UNErrorCodeAttachmentCorrupt,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//时间无效</span></span><br><span class="line">    UNErrorCodeNotificationInvalidNoDate = <span class="number">1400</span>,</span><br><span class="line">    <span class="comment">//无内容</span></span><br><span class="line">    UNErrorCodeNotificationInvalidNoContent,</span><br><span class="line">&#125; __IOS_AVAILABLE(<span class="number">10.0</span>) __TVOS_AVAILABLE(<span class="number">10.0</span>) __WATCHOS_AVAILABLE(<span class="number">3.0</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="2-UNNotification类"><a href="#2-UNNotification类" class="headerlink" title="2.UNNotification类"></a>2.UNNotification类</h4><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UNNotification</span> : <span class="title">NSObject</span> &lt;<span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span>&gt;</span></span><br><span class="line"><span class="comment">//触发的时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSDate</span> *date;</span><br><span class="line"><span class="comment">//内置的通知请求对象</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) UNNotificationRequest *request;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">instancetype</span>)init <span class="built_in">NS_UNAVAILABLE</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-UNNotificationSettings类"><a href="#3-UNNotificationSettings类" class="headerlink" title="3.UNNotificationSettings类"></a>3.UNNotificationSettings类</h4><pre><code>UNNotificationSettings类主要用来获取与通知相关的信息。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">UNNotificationSettings</span> : <span class="title">NSObject</span> &lt;<span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span>&gt;</span></span><br><span class="line"><span class="comment">//用户权限状态</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>) UNAuthorizationStatus authorizationStatus;</span><br><span class="line"><span class="comment">//音效设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>) UNNotificationSetting soundSetting __TVOS_PROHIBITED;</span><br><span class="line"><span class="comment">//图标提醒设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>) UNNotificationSetting badgeSetting __WATCHOS_PROHIBITED;</span><br><span class="line"><span class="comment">//提醒框设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>) UNNotificationSetting alertSetting __TVOS_PROHIBITED;</span><br><span class="line"><span class="comment">//通知中心设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>) UNNotificationSetting notificationCenterSetting __TVOS_PROHIBITED;</span><br><span class="line"><span class="comment">//锁屏设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>) UNNotificationSetting lockScreenSetting __TVOS_PROHIBITED __WATCHOS_PROHIBITED;</span><br><span class="line"><span class="comment">//车载设备设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>) UNNotificationSetting carPlaySetting __TVOS_PROHIBITED __WATCHOS_PROHIBITED;</span><br><span class="line"><span class="comment">//提醒框风格</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="built_in">NS_NONATOMIC_IOSONLY</span>, <span class="keyword">readonly</span>) UNAlertStyle alertStyle __TVOS_PROHIBITED __WATCHOS_PROHIBITED;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>UNNotificationSetting枚举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, UNNotificationSetting) &#123;</span><br><span class="line">    <span class="comment">//不支持</span></span><br><span class="line">    UNNotificationSettingNotSupported  = <span class="number">0</span>,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//不可用</span></span><br><span class="line">    UNNotificationSettingDisabled,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//可用</span></span><br><span class="line">    UNNotificationSettingEnabled,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UNAuthorizationStatus枚举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, UNAuthorizationStatus) &#123;</span><br><span class="line">    <span class="comment">//为做选择</span></span><br><span class="line">    UNAuthorizationStatusNotDetermined = <span class="number">0</span>,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 用户拒绝</span></span><br><span class="line">    UNAuthorizationStatusDenied,</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 用户允许</span></span><br><span class="line">    UNAuthorizationStatusAuthorized</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>UNAlertStyle枚举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, UNAlertStyle) &#123;</span><br><span class="line">    <span class="comment">//无</span></span><br><span class="line">    UNAlertStyleNone = <span class="number">0</span>,</span><br><span class="line">    <span class="comment">//顶部Banner样式</span></span><br><span class="line">    UNAlertStyleBanner,</span><br><span class="line">    <span class="comment">//警告框样式</span></span><br><span class="line">    UNAlertStyleAlert,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/09/18/256iOS10中Messages独立应用与扩展插件详析/" class="pre-post btn btn-default" title='iOS10中Messages独立应用与扩展插件详析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS10中Messages独立应用与扩展插件详析</span>
+        </a>
+    
+    
+        <a href="/2016/09/10/254iOS文本布局探讨之三——使用TextKit框架进行富文本布局/" class="next-post btn btn-default" title='iOS文本布局探讨之三——使用TextKit框架进行富文本布局'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS文本布局探讨之三——使用TextKit框架进行富文本布局</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS10通知框架UserNotification理解与应用"><span class="toc-text">iOS10通知框架UserNotification理解与应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、UserNotification概览"><span class="toc-text">二、UserNotification概览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、进行通知用户权限申请与创建普通的本地通知"><span class="toc-text">三、进行通知用户权限申请与创建普通的本地通知</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、通知音效类UNNotificationSound"><span class="toc-text">四、通知音效类UNNotificationSound</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、通知触发器UNNotificationTrigger"><span class="toc-text">五、通知触发器UNNotificationTrigger</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-UNTimeIntervalNotificationTrigger"><span class="toc-text">1.UNTimeIntervalNotificationTrigger</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-UNCalendarNotificationTrigger"><span class="toc-text">2.UNCalendarNotificationTrigger</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-UNLocationNotificationTrigger"><span class="toc-text">3.UNLocationNotificationTrigger</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、为通知内容添加附件"><span class="toc-text">六、为通知内容添加附件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#七、定义通知模板UNNotificationCategory"><span class="toc-text">七、定义通知模板UNNotificationCategory</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#八、自定义通知模板UI"><span class="toc-text">八、自定义通知模板UI</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#九、通知回调的处理"><span class="toc-text">九、通知回调的处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#十、UserNotification框架中其他零散知识"><span class="toc-text">十、UserNotification框架中其他零散知识</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-错误码描述"><span class="toc-text">1.错误码描述</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-UNNotification类"><span class="toc-text">2.UNNotification类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-UNNotificationSettings类"><span class="toc-text">3.UNNotificationSettings类</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

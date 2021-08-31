@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发CoreGraphics核心图形框架之一——CGPath的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发CoreGraphics核心图形框架之一——CGPath的应用">
+            
+	            iOS开发CoreGraphics核心图形框架之一——CGPath的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/10/11</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发CoreGraphics核心图形框架之一——CGPath的应用"><a href="#iOS开发CoreGraphics核心图形框架之一——CGPath的应用" class="headerlink" title="iOS开发CoreGraphics核心图形框架之一——CGPath的应用"></a>iOS开发CoreGraphics核心图形框架之一——CGPath的应用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>CoreGraphics核心图形框架相较于UIKit框架更加偏于底层。在Objective-C工程中，CoreGraphics其中方法都是采用C语言风格进行编写的，同时其并不支持Objective-C的自动引用计数，在使用这个框架进行编程时，开发者要手动对内存进行管理。在Swift工程中，Apple使用Swift语言对CoreGraphics矿建进行了重构，将CGPath，CGMutablePaht等都重新定义为了类。CGPath可以理解为图形的路径，在Objective-C工程中，其实系统定义的一个内部结构体，开发者不可以直接使用，开发者CGPathRef和CGMutablePathRef别名作为CGPath的引用，实际上，CGPathRef和CGMutablePathRef都是CGPath结构体类型的指针，不同的是一个是const类型不可修改的，一个是可以修改的，系统定义如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="built_in">CGPath</span> *<span class="built_in">CGMutablePathRef</span>;</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">const</span> <span class="keyword">struct</span> <span class="built_in">CGPath</span> *<span class="built_in">CGPathRef</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="二、CGPath创建与内存管理的相关方法"><a href="#二、CGPath创建与内存管理的相关方法" class="headerlink" title="二、CGPath创建与内存管理的相关方法"></a>二、CGPath创建与内存管理的相关方法</h3><pre><code>关于CGPath的创建与内存管理的相关方法，列举如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个方法获取CGPath类在CoreGraphics框架中的唯一标识</span></span><br><span class="line"><span class="comment">//CFTypeID 实际上是无符号整型的别名 其为CoreGraphics框架中每个类都定义了一个标识 CGPath为280</span></span><br><span class="line"><span class="built_in">CFTypeID</span> <span class="built_in">CGPathGetTypeID</span>(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//这个方法创建一个srtuct CGPath * 指针 可以理解为可变的CGPath类</span></span><br><span class="line"><span class="built_in">CGMutablePathRef</span>  <span class="built_in">CGPathCreateMutable</span>(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//这个方法通过一个CGPathRef来创建CGPathRef </span></span><br><span class="line"><span class="built_in">CGPathRef</span>  <span class="built_in">CGPathCreateCopy</span>(<span class="built_in">CGPathRef</span>  path);</span><br><span class="line"><span class="comment">//这个方法在通过CGPathRef创建CGPathRef时会将得路径进行transform变换后返回</span></span><br><span class="line"><span class="built_in">CGPathRef</span>  <span class="built_in">CGPathCreateCopyByTransformingPath</span>(<span class="built_in">CGPathRef</span> path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * transform);</span><br><span class="line"><span class="comment">//这个方法通过CGPathRef创建可变的CGMutablePathRef</span></span><br><span class="line"><span class="built_in">CGMutablePathRef</span> <span class="built_in">CGPathCreateMutableCopy</span>(<span class="built_in">CGPathRef</span> path);</span><br><span class="line"><span class="comment">//意义同上，在创建的CGMutablePathRef基础上进行一次transform变换在返回</span></span><br><span class="line"><span class="built_in">CGMutablePathRef</span> <span class="built_in">CGPathCreateMutableCopyByTransformingPath</span>(<span class="built_in">CGPathRef</span> path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * transform)</span><br><span class="line"><span class="comment">//这个方法将创建矩形路径 第一个参数为要绘制的矩形区域 第2个参数为要进行的transform变换</span></span><br><span class="line"><span class="built_in">CGPathRef</span>  <span class="built_in">CGPathCreateWithRect</span>(<span class="built_in">CGRect</span> rect,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * transform);</span><br><span class="line"><span class="comment">//这个方法将创建椭圆形路径</span></span><br><span class="line"><span class="built_in">CGPathRef</span> <span class="built_in">CGPathCreateWithEllipseInRect</span>(<span class="built_in">CGRect</span> rect, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> *  transform);</span><br><span class="line"><span class="comment">//这个方法用于创建圆角矩形路径</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">rect :绘制的矩形区域</span></span><br><span class="line"><span class="comment">cornerWidth: 横向圆角尺寸</span></span><br><span class="line"><span class="comment">cornerHeight:纵向圆角尺寸</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGPathRef</span> <span class="built_in">CGPathCreateWithRoundedRect</span>(<span class="built_in">CGRect</span> rect, <span class="built_in">CGFloat</span> cornerWidth, <span class="built_in">CGFloat</span> cornerHeight,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * transform);</span><br><span class="line"><span class="comment">//这个方法用于创建虚线路径</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">这个方法略微有些复杂 其中参数意义如下：</span></span><br><span class="line"><span class="comment">path：要进行虚线化的路径</span></span><br><span class="line"><span class="comment">phase：从lengths数组的第几部分开始绘制虚线</span></span><br><span class="line"><span class="comment">lengths:C风格的数组 其中为CGFloat值 表示每段虚线的绘制长度 例如传入数组为&#123;10,5&#125;，则虚线的先绘制长度为10的实线 在绘制长度为5的空白 在进行循环</span></span><br><span class="line"><span class="comment">count：这个参数需要设置为lengths数组的长度</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGPathRef</span> <span class="built_in">CGPathCreateCopyByDashingPath</span>(<span class="built_in">CGPathRef</span>  path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> *  transform,<span class="built_in">CGFloat</span> phase, <span class="keyword">const</span> <span class="built_in">CGFloat</span> *lengths, size_t count);</span><br><span class="line"><span class="comment">//通过CGPathRef来创建斜线</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">lineWidth:设置线宽</span></span><br><span class="line"><span class="comment">lineCap:设置线帽风格 可选参数如下：</span></span><br><span class="line"><span class="comment">typedef CF_ENUM(int32_t, CGLineCap) &#123;</span></span><br><span class="line"><span class="comment">    kCGLineCapButt,  默认的风格 线的端点精确到点</span></span><br><span class="line"><span class="comment">    kCGLineCapRound, 圆滑的端点 线的端点为半径为线宽一半的圆弧</span></span><br><span class="line"><span class="comment">    kCGLineCapSquare 尖锐的过渡</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">lineJoin：设置连接线处的风格 可选参数如下：</span></span><br><span class="line"><span class="comment">typedef CF_ENUM(int32_t, CGLineJoin) &#123;</span></span><br><span class="line"><span class="comment">    kCGLineJoinMiter, //以锋利的角作为连接线的转折</span></span><br><span class="line"><span class="comment">    kCGLineJoinRound, //以圆角作为连接线的转折</span></span><br><span class="line"><span class="comment">    kCGLineJoinBevel  //贝塞尔风格的转折</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">miterLimit：这个值将决定线连接处角的锋利程度</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGPathRef</span> <span class="built_in">CGPathCreateCopyByStrokingPath</span>(<span class="built_in">CGPathRef</span> cg_nullable path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * __<span class="keyword">nullable</span> transform,<span class="built_in">CGFloat</span> lineWidth, <span class="built_in">CGLineCap</span> lineCap,<span class="built_in">CGLineJoin</span> lineJoin, <span class="built_in">CGFloat</span> miterLimit);</span><br><span class="line"><span class="comment">//手动使CGPathRef引用计数+1</span></span><br><span class="line"><span class="built_in">CGPathRef</span> <span class="built_in">CGPathRetain</span>(<span class="built_in">CGPathRef</span> cg_nullable path);</span><br><span class="line"><span class="comment">//手动使CGPathRef引用计数-1</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathRelease</span>(<span class="built_in">CGPathRef</span> cg_nullable path);</span><br></pre></td></tr></table></figure>
+<p>自定义一个View视图，在其drawRect方法中进行界面的绘制，示例代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect &#123;</span><br><span class="line">    <span class="comment">//获取当前绘图上下文</span></span><br><span class="line">    <span class="built_in">CGContextRef</span> contextRef = <span class="built_in">UIGraphicsGetCurrentContext</span>();</span><br><span class="line">    <span class="built_in">CGPoint</span> center = <span class="built_in">CGPointMake</span>(rect.size.width/<span class="number">2</span>, rect.size.height/<span class="number">2</span>);</span><br><span class="line">    <span class="comment">//创建圆角矩形路径</span></span><br><span class="line">    <span class="built_in">CGPathRef</span> pathRef = <span class="built_in">CGPathCreateWithRoundedRect</span>(<span class="built_in">CGRectMake</span>(center.x<span class="number">-50</span>, center.y<span class="number">-50</span>, <span class="number">100</span>, <span class="number">100</span>), <span class="number">30</span>, <span class="number">10</span>, <span class="literal">nil</span>);</span><br><span class="line">    <span class="comment">//将路径虚线化</span></span><br><span class="line">    <span class="built_in">CGFloat</span> floats[] = &#123;<span class="number">10</span>,<span class="number">5</span>&#125;;</span><br><span class="line">    pathRef = <span class="built_in">CGPathCreateCopyByDashingPath</span>(pathRef, <span class="literal">nil</span>, <span class="number">0</span>, floats, <span class="number">2</span>);</span><br><span class="line">    <span class="comment">//设置绘制颜色</span></span><br><span class="line">    [[<span class="built_in">UIColor</span> redColor] setStroke];</span><br><span class="line">    <span class="comment">//将路径添加到绘图上下文中</span></span><br><span class="line">    <span class="built_in">CGContextAddPath</span>(contextRef, pathRef);</span><br><span class="line">    <span class="comment">//进行绘制</span></span><br><span class="line">    <span class="built_in">CGContextDrawPath</span>(contextRef, kCGPathStroke);</span><br><span class="line">    <span class="comment">//内存释放</span></span><br><span class="line">    <span class="built_in">CGPathRelease</span>(pathRef);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行后效果如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1011/165512_mRDm_2340880.png" alt></p>
+<h3 id="三、CGPath的路径绘制相关方法"><a href="#三、CGPath的路径绘制相关方法" class="headerlink" title="三、CGPath的路径绘制相关方法"></a>三、CGPath的路径绘制相关方法</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将路径移动到一个点作为起点</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathMoveToPoint</span>(<span class="built_in">CGMutablePathRef</span>  path,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * m, <span class="built_in">CGFloat</span> x, <span class="built_in">CGFloat</span> y);</span><br><span class="line"><span class="comment">//将路径移动到某个点画出一条线</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddLineToPoint</span>(<span class="built_in">CGMutablePathRef</span>  path,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> *  m, <span class="built_in">CGFloat</span> x, <span class="built_in">CGFloat</span> y);</span><br><span class="line"><span class="comment">//向路径中添加一段二次贝塞尔曲线</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">cpx:控制点的x坐标</span></span><br><span class="line"><span class="comment">cpy:控制点的y坐标</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddQuadCurveToPoint</span>(<span class="built_in">CGMutablePathRef</span> path,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * m, <span class="built_in">CGFloat</span> cpx, <span class="built_in">CGFloat</span> cpy,<span class="built_in">CGFloat</span> x, <span class="built_in">CGFloat</span> y);</span><br><span class="line"><span class="comment">//添加一段三次贝塞尔曲线</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddCurveToPoint</span>(<span class="built_in">CGMutablePathRef</span> path,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * m, <span class="built_in">CGFloat</span> cp1x, <span class="built_in">CGFloat</span> cp1y,<span class="built_in">CGFloat</span> cp2x, <span class="built_in">CGFloat</span> cp2y, <span class="built_in">CGFloat</span> x, <span class="built_in">CGFloat</span> y);</span><br><span class="line"><span class="comment">//这个方法用于闭合路径 调用这个方法后 路径最后的端点将和起点闭合</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathCloseSubpath</span>(<span class="built_in">CGMutablePathRef</span> path);</span><br><span class="line"><span class="comment">//向路径中追加一个矩形</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddRect</span>(<span class="built_in">CGMutablePathRef</span>  path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * m, <span class="built_in">CGRect</span> rect);</span><br><span class="line"><span class="comment">//向路径中追加一组矩形</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddRects</span>(<span class="built_in">CGMutablePathRef</span> path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> *  m, <span class="keyword">const</span> <span class="built_in">CGRect</span> *  rects,size_t count);</span><br><span class="line"><span class="comment">//向路径中追加一组线条</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddLines</span>(<span class="built_in">CGMutablePathRef</span> path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> *  m, <span class="keyword">const</span> <span class="built_in">CGPoint</span> * __<span class="keyword">nullable</span> points, size_t count);</span><br><span class="line"><span class="comment">//添加一组椭圆</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddEllipseInRect</span>(<span class="built_in">CGMutablePathRef</span> cg_nullable path,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * m, <span class="built_in">CGRect</span> rect);</span><br><span class="line"><span class="comment">//向路径中追加一组圆弧</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">x:圆心x坐标</span></span><br><span class="line"><span class="comment">y:圆心y坐标</span></span><br><span class="line"><span class="comment">radius:弧线半径</span></span><br><span class="line"><span class="comment">startAngle:起始角度</span></span><br><span class="line"><span class="comment">endAngle:终止角度</span></span><br><span class="line"><span class="comment">clockwise:是否顺时针绘制</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddArc</span>(<span class="built_in">CGMutablePathRef</span>  path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * m, <span class="built_in">CGFloat</span> x, <span class="built_in">CGFloat</span> y, <span class="built_in">CGFloat</span> radius, <span class="built_in">CGFloat</span> startAngle, <span class="built_in">CGFloat</span> endAngle, <span class="keyword">bool</span> clockwise);</span><br><span class="line"><span class="comment">//向路径中追加一组圆弧</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">x:圆心x坐标</span></span><br><span class="line"><span class="comment">y:圆心y坐标</span></span><br><span class="line"><span class="comment">radius:弧线半径</span></span><br><span class="line"><span class="comment">startAngle:起始角度</span></span><br><span class="line"><span class="comment">delta:圆弧绘制的长度 为弧度制 2π为整个圆</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddRelativeArc</span>(<span class="built_in">CGMutablePathRef</span>  path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * __<span class="keyword">nullable</span> matrix, <span class="built_in">CGFloat</span> x, <span class="built_in">CGFloat</span> y, <span class="built_in">CGFloat</span> radius, <span class="built_in">CGFloat</span> startAngle, <span class="built_in">CGFloat</span> delta);</span><br><span class="line"><span class="comment">//向路径中追加一段圆弧 弧线是以(x1,y1)到(x2,y2)为切线的弧线</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddArcToPoint</span>(<span class="built_in">CGMutablePathRef</span> path,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> * m, <span class="built_in">CGFloat</span> x1, <span class="built_in">CGFloat</span> y1, <span class="built_in">CGFloat</span> x2, <span class="built_in">CGFloat</span> y2, <span class="built_in">CGFloat</span> radius);</span><br><span class="line"><span class="comment">//向路径中追加一段路径</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGPathAddPath</span>(<span class="built_in">CGMutablePathRef</span>  path1,<span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> *  m, <span class="built_in">CGPathRef</span> path2);</span><br></pre></td></tr></table></figure>
+<p>示例代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect &#123;</span><br><span class="line">    <span class="built_in">CGContextRef</span> contextRef = <span class="built_in">UIGraphicsGetCurrentContext</span>();</span><br><span class="line">    <span class="built_in">CGPoint</span> center = <span class="built_in">CGPointMake</span>(rect.size.width/<span class="number">2</span>, rect.size.height/<span class="number">2</span>);</span><br><span class="line">    <span class="built_in">CGMutablePathRef</span> pathRef = <span class="built_in">CGPathCreateMutable</span>();</span><br><span class="line">    <span class="built_in">CGPathMoveToPoint</span>(pathRef, <span class="literal">nil</span>, center.x, center.y<span class="number">-50</span>);</span><br><span class="line">    <span class="built_in">CGPathAddLineToPoint</span>(pathRef, <span class="literal">nil</span>, center.x+<span class="number">100</span>, center.y);</span><br><span class="line">    <span class="built_in">CGPathAddQuadCurveToPoint</span>(pathRef, <span class="literal">nil</span>, <span class="number">0</span>, <span class="number">0</span>, center.x+<span class="number">100</span>, center.y<span class="number">-100</span>);</span><br><span class="line">    <span class="built_in">CGPathAddRelativeArc</span>(pathRef, <span class="literal">nil</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">0</span>, M_PI);</span><br><span class="line">    <span class="built_in">CGPathCloseSubpath</span>(pathRef);</span><br><span class="line">    [[<span class="built_in">UIColor</span> redColor] setStroke];</span><br><span class="line">    <span class="built_in">CGContextAddPath</span>(contextRef, pathRef);</span><br><span class="line">    <span class="built_in">CGContextDrawPath</span>(contextRef, kCGPathStroke);</span><br><span class="line">    <span class="built_in">CGPathRelease</span>(pathRef);</span><br><span class="line">    <span class="built_in">CGContextRelease</span>(contextRef);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1011/175323_dBOM_2340880.png" alt></p>
+<h3 id="四、CGPath中的其他方法汇总"><a href="#四、CGPath中的其他方法汇总" class="headerlink" title="四、CGPath中的其他方法汇总"></a>四、CGPath中的其他方法汇总</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断某个路径是否为空</span></span><br><span class="line"><span class="keyword">bool</span> <span class="built_in">CGPathIsEmpty</span>(<span class="built_in">CGPathRef</span> path);</span><br><span class="line"><span class="comment">//判断某个路径是否为某个矩形</span></span><br><span class="line"><span class="keyword">bool</span> <span class="built_in">CGPathIsRect</span>(<span class="built_in">CGPathRef</span> cg_nullable path, <span class="built_in">CGRect</span> *  rect);</span><br><span class="line"><span class="comment">//获取某个路径当前绘制所在的点</span></span><br><span class="line"><span class="built_in">CGPoint</span> <span class="built_in">CGPathGetCurrentPoint</span>(<span class="built_in">CGPathRef</span> path);</span><br><span class="line"><span class="comment">//获取某个路径包含所有点的尺寸</span></span><br><span class="line"><span class="built_in">CGPathGetBoundingBox</span>(<span class="built_in">CGPathRef</span> cg_nullable path);</span><br><span class="line"><span class="comment">//获取某个路径的尺寸</span></span><br><span class="line"><span class="built_in">CGRect</span> <span class="built_in">CGPathGetPathBoundingBox</span>(<span class="built_in">CGPathRef</span> path);</span><br><span class="line"><span class="comment">//判断路径是否包含某个点</span></span><br><span class="line"><span class="keyword">bool</span> <span class="built_in">CGPathContainsPoint</span>(<span class="built_in">CGPathRef</span>  path, <span class="keyword">const</span> <span class="built_in">CGAffineTransform</span> *  m, <span class="built_in">CGPoint</span> point, <span class="keyword">bool</span> eoFill);</span><br></pre></td></tr></table></figure>
+<h3 id="五、关于CGPathElement结构体"><a href="#五、关于CGPathElement结构体" class="headerlink" title="五、关于CGPathElement结构体"></a>五、关于CGPathElement结构体</h3><pre><code>当每次向CGPath路径做操作时，操作的过程实际上都会被记录下来，每个操作行为节点都被封装为了CGPathElement结构体，开发者可以通过如下方法来获取所有操作行为：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGPathApply</span>(pathRef, <span class="literal">nil</span>, func);</span><br></pre></td></tr></table></figure>
+<p>CGPathApply()方法中的第3个参数为一个函数指针，示例C函数实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> func(<span class="keyword">void</span> * __<span class="keyword">nullable</span> info,</span><br><span class="line">      <span class="keyword">const</span> <span class="built_in">CGPathElement</span> *  element)&#123;</span><br><span class="line">    printf(<span class="string">"%d"</span>,(*element).type);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CGPathElement结构体的定义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="built_in">CGPathElement</span> &#123;</span><br><span class="line">  <span class="comment">//操作节点的类型</span></span><br><span class="line">  <span class="built_in">CGPathElementType</span> type;</span><br><span class="line">  <span class="comment">//对应的点集</span></span><br><span class="line">  <span class="built_in">CGPoint</span> *  points;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//CGPathElementType枚举定义如下</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">CF_ENUM</span>(int32_t, <span class="built_in">CGPathElementType</span>) &#123;</span><br><span class="line">  <span class="comment">//移动到点的操作行为</span></span><br><span class="line">  kCGPathElementMoveToPoint,</span><br><span class="line">  <span class="comment">//添加线的操作行为</span></span><br><span class="line">  kCGPathElementAddLineToPoint,</span><br><span class="line">  <span class="comment">//添加二次贝塞尔曲线的操作行为</span></span><br><span class="line">  kCGPathElementAddQuadCurveToPoint,</span><br><span class="line">  <span class="comment">//添加三次贝塞尔曲线的操作行为</span></span><br><span class="line">  kCGPathElementAddCurveToPoint,</span><br><span class="line">  <span class="comment">//闭合路径的操作行为</span></span><br><span class="line">  kCGPathElementCloseSubpath</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/10/16/260iOS开发CoreGraphics核心图形框架之二——深入理解图形上下文/" class="pre-post btn btn-default" title='iOS开发CoreGraphics核心图形框架之二——深入理解图形上下文'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发CoreGraphics核心图形框架之二——深入理解图形上下文</span>
+        </a>
+    
+    
+        <a href="/2016/10/09/258iOS10中更加灵活的色彩API/" class="next-post btn btn-default" title='iOS10中更加灵活的色彩API'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS10中更加灵活的色彩API</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发CoreGraphics核心图形框架之一——CGPath的应用"><span class="toc-text">iOS开发CoreGraphics核心图形框架之一——CGPath的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、CGPath创建与内存管理的相关方法"><span class="toc-text">二、CGPath创建与内存管理的相关方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、CGPath的路径绘制相关方法"><span class="toc-text">三、CGPath的路径绘制相关方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、CGPath中的其他方法汇总"><span class="toc-text">四、CGPath中的其他方法汇总</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、关于CGPathElement结构体"><span class="toc-text">五、关于CGPathElement结构体</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

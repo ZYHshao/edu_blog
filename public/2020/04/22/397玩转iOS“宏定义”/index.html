@@ -1,0 +1,418 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>玩转iOS“宏定义” | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="玩转iOS“宏定义”">
+            
+	            玩转iOS“宏定义”
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2020/04/22</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="玩转iOS“宏定义”"><a href="#玩转iOS“宏定义”" class="headerlink" title="玩转iOS“宏定义”"></a>玩转iOS“宏定义”</h1><pre><code>宏定义在C类语言中非常重要，因为宏是一种预编译时的功能，因此其可以比运行时更高层面的对程序流程进行控制。在初学宏定义的时候，大家可能都会有这样一种感觉：就是完全替换么，太简单了。但如果你真这么想，那你就太天真了，不说自己编写宏，在Foundation框架中内置定义的许多宏要看明白也要费一番脑筋。本篇博客，总结了前辈的经验，同时收集了一些编写非常巧妙的宏进行分析，希望可以帮助大家对宏定义有更加深刻的理解，并且可以将心得应用于实际开发中。
+</code></pre><h1 id="一、准备"><a href="#一、准备" class="headerlink" title="一、准备"></a>一、准备</h1><pre><code>宏的本质是预编译时的替换，在开始正文之前，我们需要先介绍一种观察宏替换后结果的方法，这样帮助我们更方便的对宏最终的结果进行验证与测试。Xcode开发工具自带查看预编译结果的功能，首先需要对工程编译一遍，之后选择工具栏中的Assistant选项，打开助手窗口，如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-170db8b7ba3e5c4382832e9834cfecc761a.png" alt></p>
+<p>之后选择窗口的Preprocess选项，即可打开预编译结果窗口，可以看到，宏被替换后的最终结果，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-dabc07858b6a4a683bcf9378381017d1991.png" alt></p>
+<p>后面，我们将使用这种方式来对编写的宏进行验证。</p>
+<h1 id="二、关于“宏定义”"><a href="#二、关于“宏定义”" class="headerlink" title="二、关于“宏定义”"></a>二、关于“宏定义”</h1><pre><code>宏使用#define来进行定义，宏定义分为两种，一种是对象式宏，一种是函数式宏。对象式宏通常对来定义量值，在预编译时，直接将宏名替换成对应的量值，函数式宏在定义时可以设置参数，其作用与函数很类似。
+</code></pre><p>例如，我们可以将π的值定义成一个对象式宏，在使用的时候，用有意义的宏名要比直接使用π的字面值方便很多，例如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#define PI 3.1415926</span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="built_in">CGFloat</span> res = PI * <span class="number">3</span>;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%f"</span>, res);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数式宏要更加灵活一些，例如对圆面积计算的方法，我们就可以将其定义成一个宏：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define PI 3.1415926</span></span><br><span class="line"><span class="meta">#define CircleArea(r) PI * r * r</span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="built_in">CGFloat</span> res = CircleArea(<span class="number">1</span>);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%f"</span>, res);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，有了这个面积计算宏我们可以更加方便的计算圆的面积了，看上去很完美，后面我们就使用这个函数式宏为例，来深入理解宏的原理。</p>
+<h1 id="三、从一个简单的函数式宏说起"><a href="#三、从一个简单的函数式宏说起" class="headerlink" title="三、从一个简单的函数式宏说起"></a>三、从一个简单的函数式宏说起</h1><pre><code>再来看下上面我们编写的计算面积的宏，正常情况下好像没什么问题，但是需要注意，归根结底宏并不是函数，如果完全把其作为函数使用，我们就可能会陷入一系列的陷阱中，比如这样使用：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define PI 3.1415926</span></span><br><span class="line"><span class="meta">#define CircleArea(r) PI * r * r</span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="built_in">CGFloat</span> res = CircleArea(<span class="number">1</span> + <span class="number">1</span>);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%f"</span>, res);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码，运算的结果并不是半径为2个圆的面积，哪里出了问题呢，我们还是先看下宏预编译后的结果：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGFloat</span> res = <span class="number">3.1415926</span> * <span class="number">1</span> + <span class="number">1</span> * <span class="number">1</span> + <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>一目了然了，由于运算符的优先级问题导致了运算顺序错误，在编程中，所有运算符优先级产生的问题都可以使用一种方式解决：用小括号。对CircleArea宏进行一下改造，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define CircleArea(r) (PI * (r) * (r))</span></span><br></pre></td></tr></table></figure>
+<p>对执行顺序进行了强制的控制，代码执行又恢复了正常，看上去好像是没有问题了，现在就满意了还为时过早，例如下面这样使用这个宏：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#define PI 3.1415926</span></span><br><span class="line"><span class="meta">#define CircleArea(r) PI * (r) * (r)</span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="keyword">int</span> r = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">CGFloat</span> res = CircleArea(r++);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%f, %d"</span>, res, r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行，发现结果又错了，不仅计算结果与我们的预期不符，变量自加的的结果也不对了，我们检查其展开的结果：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CGFloat</span> res = <span class="number">3.1415926</span> * (r++) * (r++);</span><br></pre></td></tr></table></figure>
+<p>原来问题出在这里，宏在展开的时候，将参数替换了两次，由于参数本身是一个自加表达式，所以被自加了两次，产生了问题，那么这个问题怎么解决呢，C语言中有一种很有用的语法，即使用大括号定义代码块，代码块会将最后一条语句的执行结果返回，修改上面宏定义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#define PI 3.1415926</span></span><br><span class="line"><span class="meta">#define CircleArea(r)   \</span></span><br><span class="line">(&#123;                      \</span><br><span class="line">    <span class="keyword">typeof</span>(r) _r = r;   \</span><br><span class="line">    (PI * (_r) * (_r)); \</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> r = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">CGFloat</span> res = CircleArea(r++);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%f, %d"</span>, res, r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这次程序又恢复的了正常。但是，如果如果在调用宏是变量的名字与宏内的临时变量产生了重名，灾难就又发生了，例如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#define PI 3.1415926</span></span><br><span class="line"><span class="meta">#define CircleArea(r)   \</span></span><br><span class="line">(&#123;                      \</span><br><span class="line">    <span class="keyword">typeof</span>(r) _r = r;   \</span><br><span class="line">    (PI * (_r) * (_r)); \</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> _r = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">CGFloat</span> res = CircleArea(_r);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%f, %d"</span>, res, _r);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行上面代码，会发现宏内的临时变量没有被初始化成功。这确实难受，我们在进一步，比如对临时变量的名字做一些手脚，将其命名为极其不容易重复的名字，其实系统内置的一个宏就是专门用来构造唯一性变量名的：__COUNTER__，这个宏是一个计数器，在编译的时候会自动进行累加，再次对我们编写的宏进行改造，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#define PI 3.1415926</span></span><br><span class="line"><span class="meta">#define PAST(A, B) A##B</span></span><br><span class="line"><span class="meta">#define CircleArea(r)   __CircleArea(r, __COUNTER__)</span></span><br><span class="line"><span class="meta">#define __CircleArea(r, v)      \</span></span><br><span class="line">(&#123;                              \</span><br><span class="line">    <span class="keyword">typeof</span>(r) PAST(_r, v) = r;         \</span><br><span class="line">    (PI * PAST(_r, v) * PAST(_r, v));     \</span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> _r = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">CGFloat</span> res = CircleArea(_r);</span><br><span class="line">        <span class="built_in">CGFloat</span> res2 = CircleArea(_r);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%f, %f"</span>, res, res2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里改造后，我们的宏就没有那么容易理解了，首先__COUNTER__在每次宏替换时都会进行自增，##是一种宏中专用的特殊符号，用来将参数拼接到一起，但是需要注意，使用##符号拼接的如果是另外一个宏，则其会阻止宏的展开，因此我们定义了一个转换宏PAST(A, B)来处理拼接。如果你一下子不能理解为什么这样就可以解决宏展开的问题，你只需要记住这样一条宏展开的原则：如果形参有使用#或##这种处理符号，则不会进行宏参数的展开，否则先展开宏参数，在展开当前宏。上面代码最终预编译的结果如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> _r = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">CGFloat</span> res = (&#123; <span class="keyword">typeof</span>(_r) _r0 = _r; (<span class="number">3.1415926</span> * _r0 * _r0); &#125;);</span><br><span class="line">        <span class="built_in">CGFloat</span> res2 = (&#123; <span class="keyword">typeof</span>(_r) _r1 = _r; (<span class="number">3.1415926</span> * _r1 * _r1); &#125;);</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%f, %f"</span>, res, res2);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个简单的计算圆面积的宏，为了安全，我们就进行了这么多的处理，看来要用好宏，的确不容易。</p>
+<h1 id="四、编写宏时的好习惯"><a href="#四、编写宏时的好习惯" class="headerlink" title="四、编写宏时的好习惯"></a>四、编写宏时的好习惯</h1><pre><code>通过前面的介绍，我们知道，如果随随意意的编写一个宏是非常不负责任的，看上去好像没问题与在任何场景下使用都没有问题是完全不同的。在编写宏时，我们可以刻意的去培养这样几个编码习惯：
+</code></pre><ul>
+<li><p>参数与计算结果要加小括号</p>
+<p>  这条原则应该不必多说了，前面的示例中就有演示，完整的添加小括号可以避免很多由于运算符优先级造成的异常问题。</p>
+</li>
+<li><p>多语句功能性宏，要使用do-while包裹</p>
+<p>  这条原则看上去有些莫名其妙，但是其非常重要，例如，我们需要编写一个自定义的LOG宏，在进行打印时添加一些自定义的信息，你或许会这样写：</p>
+</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define LOG(string)     \</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>);   \</span><br><span class="line"><span class="built_in">NSLog</span>(string);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        LOG(<span class="string">@"info"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码，目前貌似没有问题，但是如果其和if语句进行结合，可能问题就来了：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="literal">NO</span>)</span><br><span class="line">            LOG(<span class="string">@"info"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码，还是有一行LOG信息被输出了，看下其预编译后的结果如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (__objc_no)</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>); <span class="built_in">NSLog</span>(<span class="string">@"info"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>找到问题了，由于if结构如果不加大括号进行规范，其默认作用域只有一句代码，多写大括号是不会出问题，因此编写多语句宏时，加上大括号是一个好习惯，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define LOG(string)     \</span></span><br><span class="line">&#123;<span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>);   \</span><br><span class="line"><span class="built_in">NSLog</span>(string);&#125;</span><br></pre></td></tr></table></figure>
+<p>这样解决了问题，但是并不完美，假设在使用时这样写：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="literal">NO</span>)</span><br><span class="line">            LOG(<span class="string">@"NO"</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            LOG(<span class="string">@"YES"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果发现还是会报错，是由于分号捣的鬼，预编译结果如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (__objc_no)</span><br><span class="line">            &#123;<span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>); <span class="built_in">NSLog</span>(<span class="string">@"NO"</span>);&#125;;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            &#123;<span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>); <span class="built_in">NSLog</span>(<span class="string">@"YES"</span>);&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们知道，像if，while，for这种语法结构块的大括号后是不需要分号的，我们为了兼容单行if语句由于宏的原因被展开成多行的问题强行加了一个大括号上去，就产生这样的问题了，解决它的一个好方法是真的将多行的宏转化成单语句，do-whlie结构就可以实现这种效果，修改宏如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define LOG(string)     \</span></span><br><span class="line"><span class="keyword">do</span> &#123;<span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>);   \</span><br><span class="line"><span class="built_in">NSLog</span>(string);&#125; <span class="keyword">while</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="literal">NO</span>)</span><br><span class="line">            LOG(<span class="string">@"NO"</span>)</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            LOG(<span class="string">@"YES"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>预编译后：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (__objc_no)</span><br><span class="line">            <span class="keyword">do</span> &#123;<span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>); <span class="built_in">NSLog</span>(<span class="string">@"NO"</span>);&#125; <span class="keyword">while</span>(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">do</span> &#123;<span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>); <span class="built_in">NSLog</span>(<span class="string">@"YES"</span>);&#125; <span class="keyword">while</span>(<span class="number">0</span>);;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，无论外面怎么使用，这个宏都可以正常工作了。</p>
+<ul>
+<li><p>对于不定参数的宏，借助##符号来拼接参数</p>
+<p>  在定义函数时，我们可以定义函数的参数为不定个数参数，定义函数式宏时也类似，使用符号”…”可以指定不定个数参数，例如对LOG宏进行调整，如下：</p>
+</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define LOG(format, ...)     \</span></span><br><span class="line"><span class="keyword">do</span> &#123;<span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>);   \</span><br><span class="line"><span class="built_in">NSLog</span>(format, __VA_ARGS__);&#125; <span class="keyword">while</span>(<span class="number">0</span>);</span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="literal">NO</span>)</span><br><span class="line">            LOG(<span class="string">@"%d"</span>, <span class="literal">NO</span>)</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            LOG(<span class="string">@"%d"</span>, <span class="literal">YES</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>__VA_ARGS__也是一个内置的宏符号，则作用是代表宏定义中的可变参数“…”，需要注意，如果按照上面的写法，如果我们传入的可变参数为0个，会产生问题，其原因也是由于多了一个逗号，例如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="literal">NO</span>)</span><br><span class="line">            LOG(<span class="string">@"%d"</span>) <span class="comment">// 这里会被预编译成NSLog(@"%d", )</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            LOG(<span class="string">@"%d"</span>, <span class="literal">YES</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>解决方案是对可变参数进行一次##拼接，宏在使用##符号进行参数拼接时，如果后面的参数为空，其会自动将前面的逗号去掉，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define LOG(format, ...)     \</span></span><br><span class="line"><span class="keyword">do</span> &#123;<span class="built_in">NSLog</span>(<span class="string">@"自定义的信息"</span>);   \</span><br><span class="line"><span class="built_in">NSLog</span>(format, <span class="meta">##__VA_ARGS__);&#125; while(0);</span></span><br></pre></td></tr></table></figure>
+<h1 id="五、特殊的宏符号与常用内置宏"><a href="#五、特殊的宏符号与常用内置宏" class="headerlink" title="五、特殊的宏符号与常用内置宏"></a>五、特殊的宏符号与常用内置宏</h1><pre><code>有几个特殊的符号可以让宏定义变得非常灵活，常用的特殊符号和特殊宏列举如下：
+</code></pre><ul>
+<li><p>#</p>
+<p>  井号的作用是将参数字符串化，例如：</p>
+</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define Test(p) #p</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        Test(abc); <span class="comment">// 预编译后成为  "abc";</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>##</p>
+<p>  双井号我们前面有使用过，其作用是对参数进行拼接，例如：</p>
+</li>
+</ul>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define Test(a,b) a##b</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        Test(<span class="number">1</span>,<span class="number">2</span>); <span class="comment">// 预编译后成为  12;</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>__VA_ATGS__</p>
+<p>  可变参数宏中专用，表示所有传入的可变参数。</p>
+</li>
+<li><p>__COUNTER__</p>
+<p>  一个累加计数宏，常用来构造唯一变量名。</p>
+</li>
+<li><p>__LINE__</p>
+<p>  记录LOG信息时，常用的一个内置宏，预编译时会将其替换为当前的行号。</p>
+</li>
+<li><p>__FILE__</p>
+<p>  记录LOG信息时，常用的一个内置宏，预编译时会将其替换为当前文件的全路径。</p>
+</li>
+<li><p>__FILE_NAME__</p>
+<p>  记录LOG信息时，常用的一个内置宏，预编译时会将其替换为当前的文件名。</p>
+</li>
+<li><p>__DATE__</p>
+<p>  记录LOG信息时，常用的一个内置宏，预编译时会将其替换为当前日期。</p>
+</li>
+<li><p>__TIME__</p>
+<p>  记录LOG信息时，常用的一个内置宏，预编译时会将其替换为当前时间。</p>
+</li>
+</ul>
+<h1 id="六、宏的展开规则"><a href="#六、宏的展开规则" class="headerlink" title="六、宏的展开规则"></a>六、宏的展开规则</h1><pre><code>通过前面的介绍，对于应用宏我们已经没有太大的问题，并且也了解了很多宏的使用技巧。这一小节将更深入的对宏的替换规则进行讨论。宏本身是支持嵌套的，例如：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define M1(A) M2(A)</span></span><br><span class="line"><span class="meta">#define M2(A) A</span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        M1(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中定义的两个宏基本上是没有意义的，M1宏替换后的结果是M2宏，M2宏最终被替换为参数本身，从这个例子可以看出，宏是可以嵌套递归展开的，但是递归展开是有原则，不会出现无限递归，例如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define M1(A) M2(A)</span></span><br><span class="line"><span class="meta">#define M2(A) M1(A)</span></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        M1(<span class="number">1</span>); <span class="comment">// 最终展开为 M1(1)</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>宏的展开需要符合下面原则：</p>
+<ol>
+<li>在展开宏的过程中会先将参数进行展开，如果使用##对参数进行了拼接或使用#进行了处理，则此参数不会被展开。</li>
+<li>在宏的展开过程中，如果替换列表中出现了要被展开的宏，则此宏不会被展开。</li>
+</ol>
+<p>上面的展开原则提到了替换列表，宏在展开过程中会维护一个替换列表，展开的过程中需要从参数到宏本身，从外层宏到内层宏一层一层的替换，每次替换的时候都会将被替换的宏名放入维护的替换列表中，再下一轮替换中，如果再次出现替换列表中出现过的宏名，则不会被再次替换。以我们上面的代码为例进行分析：</p>
+<ol>
+<li>首先M1宏在第一轮替换后，被替换成了M2，此时替换列表中放入宏名M1。</li>
+<li>M2依然是一个宏名，第二轮对M2进行替换，将其替换为M1，再次将M2放入替换列表，此时替换列表中有宏名M1和M2。</li>
+<li>M1依然是宏名，但是替换列表中已经存在M1，此宏名不再展开。</li>
+</ol>
+<h1 id="七、宏的妙用"><a href="#七、宏的妙用" class="headerlink" title="七、宏的妙用"></a>七、宏的妙用</h1><pre><code>这一小节，我们要转身成为鉴赏家，来对很多实用的宏的巧妙案例进行分析与鉴赏。从这些优秀的使用案例中，可以扩宽我们对宏使用的思路。
+</code></pre><ol>
+<li><p>MIN与MAX</p>
+<p>  Foundataion内置了一些常用的运算宏，如获取两个数的最大值、最小值、绝对值等等。以MAX宏为例，这个宏的编写基本涵盖了函数式宏所有要注意的点，如下：</p>
+</li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define __NSX_PASTE__(A,B) A##B</span></span><br><span class="line"><span class="meta">#if !defined(MAX)</span></span><br><span class="line">    <span class="meta">#define __NSMAX_IMPL__(A,B,L) (&#123; __typeof__(A) __NSX_PASTE__(__a,L) = (A); __typeof__(B) __NSX_PASTE__(__b,L) = (B); (__NSX_PASTE__(__a,L) <span class="meta-string">&lt; __NSX_PASTE__(__b,L)) ? __NSX_PASTE__(__b,L) : __NSX_PASTE__(__a,L); &#125;)</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">    #define MAX(A,B) __NSMAX_IMPL__(A,B,__COUNTER__)</span></span></span><br><span class="line"><span class="meta"><span class="meta-string">#endif</span></span></span><br></pre></td></tr></table></figure>
+<p>其中__NSMAX_IMPL__宏借助计数__COUNTER__和拼接__NSX_PASTE__宏来构造唯一的内部变量名，我们前面提供的示例宏的写法也基本是参照这个系统宏来的。后面大家在编写函数式宏的时候，都可以参照下这个宏的实现。</p>
+<ol start="2">
+<li><p>NSAssert等</p>
+<p>   NSAssert是断言宏，在开发调试中经常会使用断言来进行安全保障，这个宏的定义如下：</p>
+</li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define NSAssert(condition, desc, ...)    \</span></span><br><span class="line">    <span class="keyword">do</span> &#123;                \</span><br><span class="line">    __PRAGMA_PUSH_NO_EXTRA_ARG_WARNINGS \</span><br><span class="line">    <span class="keyword">if</span> (__builtin_expect(!(condition), <span class="number">0</span>)) &#123;        \</span><br><span class="line">            <span class="built_in">NSString</span> *__assert_file__ = [<span class="built_in">NSString</span> stringWithUTF8String:__FILE__]; \</span><br><span class="line">            __assert_file__ = __assert_file__ ? __assert_file__ : <span class="string">@"&lt;Unknown File&gt;"</span>; \</span><br><span class="line">        [[<span class="built_in">NSAssertionHandler</span> currentHandler] handleFailureInMethod:_cmd \</span><br><span class="line">        object:<span class="keyword">self</span> file:__assert_file__ \</span><br><span class="line">            lineNumber:__LINE__ description:(desc), <span class="meta">##__VA_ARGS__]; \</span></span><br><span class="line">    &#125;                \</span><br><span class="line">        __PRAGMA_POP_NO_EXTRA_ARG_WARNINGS \</span><br><span class="line">    &#125; <span class="keyword">while</span>(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>NSAssert宏定义中使用到了不定参数拼接消除逗号的技巧，并且是多行宏语句使用do-while进行优化的一个实践。</p>
+<ol start="3">
+<li><p>@weakify与@strongify</p>
+<pre><code>weakify与strongify是ReactCocoa中常用的两个宏，用来处理循环引用问题。这两个宏的定义非常巧妙，以weakify宏为例，要看懂这个宏并不是十分简单，首先与这个宏相关的宏定义列举如下：
+</code></pre></li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#if DEBUG</span></span><br><span class="line"><span class="meta">#define rac_keywordify autoreleasepool &#123;&#125;</span></span><br><span class="line"><span class="meta">#else</span></span><br><span class="line"><span class="meta">#define rac_keywordify try &#123;&#125; @catch (...) &#123;&#125;</span></span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#define rac_weakify_(INDEX, CONTEXT, VAR) \</span></span><br><span class="line">CONTEXT __typeof__(VAR) metamacro_concat(VAR, _weak_) = (VAR);</span><br><span class="line"></span><br><span class="line"><span class="meta">#define weakify(...) \</span></span><br><span class="line">rac_keywordify \</span><br><span class="line">metamacro_foreach_cxt(rac_weakify_,, __<span class="keyword">weak</span>, __VA_ARGS__)</span><br><span class="line"></span><br><span class="line"><span class="meta">#define metamacro_foreach_cxt(MACRO, SEP, CONTEXT, ...) \</span></span><br><span class="line">metamacro_concat(metamacro_foreach_cxt, metamacro_argcount(__VA_ARGS__))(MACRO, SEP, CONTEXT, __VA_ARGS__)</span><br><span class="line"></span><br><span class="line"><span class="meta">#define metamacro_argcount(...) \</span></span><br><span class="line">metamacro_at(<span class="number">20</span>, __VA_ARGS__, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>)</span><br><span class="line"><span class="meta">#define metamacro_at20(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, ...) metamacro_head(__VA_ARGS__)</span></span><br><span class="line"><span class="meta">#define metamacro_at(N, ...) \</span></span><br><span class="line">metamacro_concat(metamacro_at, N)(__VA_ARGS__)</span><br><span class="line"></span><br><span class="line"><span class="meta">#define metamacro_concat(A, B) \</span></span><br><span class="line">metamacro_concat_(A, B)</span><br><span class="line"></span><br><span class="line"><span class="meta">#define metamacro_concat_(A, B) A ## B</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#define metamacro_head(...) \</span></span><br><span class="line">metamacro_head_(__VA_ARGS__, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">#define metamacro_foreach_cxt1(MACRO, SEP, CONTEXT, _0) MACRO(0, CONTEXT, _0)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#define metamacro_head_(FIRST, ...) FIRST</span></span><br></pre></td></tr></table></figure>
+<p>其中rac_keywordify区分DEBUG和RELEASE环境，在DEBUG环境下，其实际上是创建了一个无用的autoreleasepool，消除前面的<a href="https://my.oschina.net/uancn" target="_blank" rel="noopener">@符号</a>，在RELEASE环境下，其会创建一个try-catch结构，用来消除参数警告。metamacro_foreach_cxt宏比较复杂，其展开过程如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 第一步： 原始宏</span></span><br><span class="line">metamacro_foreach_cxt(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第二步： 展开metamacro_foreach_cxt</span></span><br><span class="line">metamacro_concat(metamacro_foreach_cxt, metamacro_argcount(obj))(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第三步： 展开metamacro_argcount      </span></span><br><span class="line">metamacro_concat(metamacro_foreach_cxt, metamacro_at(<span class="number">20</span>, obj, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>))(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第四步： 展开metamacro_at       </span></span><br><span class="line">metamacro_concat(metamacro_foreach_cxt,metamacro_concat(metamacro_at, <span class="number">20</span>)(obj, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>))(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第五步：展开metamacro_concat       </span></span><br><span class="line">metamacro_concat(metamacro_foreach_cxt,metamacro_at20(obj, <span class="number">20</span>, <span class="number">19</span>, <span class="number">18</span>, <span class="number">17</span>, <span class="number">16</span>, <span class="number">15</span>, <span class="number">14</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">11</span>, <span class="number">10</span>, <span class="number">9</span>, <span class="number">8</span>, <span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>))(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第六步：展开metamacro_at20        </span></span><br><span class="line">metamacro_concat(metamacro_foreach_cxt,metamacro_head(<span class="number">1</span>))(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第七步：展开metamacro_head        </span></span><br><span class="line">metamacro_concat(metamacro_foreach_cxt,metamacro_head_(<span class="number">1</span>, <span class="number">0</span>))(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第八步：展开metamacro_head_      </span></span><br><span class="line">metamacro_concat(metamacro_foreach_cxt,<span class="number">1</span>)(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第九步：展开metamacro_concat        </span></span><br><span class="line">metamacro_foreach_cxt1(rac_weakify_,, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第十步：展开metamacro_foreach_cxt1</span></span><br><span class="line">rac_weakify_(<span class="number">0</span>, __<span class="keyword">weak</span>, obj)</span><br><span class="line"><span class="comment">// 第十一步：展开rac_weakify_</span></span><br><span class="line">__<span class="keyword">weak</span> __typeof__(obj) metamacro_concat(obj, _weak_) = (obj);</span><br><span class="line"><span class="comment">// 第十二步：展开metamacro_concat        </span></span><br><span class="line">__<span class="keyword">weak</span> __typeof__(obj) obj_weak_ = (obj);</span><br></pre></td></tr></table></figure>
+<p>strongify宏的展开与之类似。</p>
+<ol start="4">
+<li><p>ParagraphStyleSet宏</p>
+<p>   ParagraphStyleSet宏是YYLabel中提供的一个设置属性字符串ParagraphStyle相关属性的快捷方法，其中使用到的一个技巧是直接使用宏的形参作为属性名进行使用，使得各种属性的设置都使用同一个宏即可完成，其定义如下：</p>
+</li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#define ParagraphStyleSet(_attr_) \</span></span><br><span class="line">[<span class="keyword">self</span> enumerateAttribute:<span class="built_in">NSParagraphStyleAttributeName</span> \</span><br><span class="line">                 inRange:range \</span><br><span class="line">                 options:kNilOptions \</span><br><span class="line">              usingBlock: ^(<span class="built_in">NSParagraphStyle</span> *value, <span class="built_in">NSRange</span> subRange, <span class="built_in">BOOL</span> *stop) &#123; \</span><br><span class="line">                  <span class="built_in">NSMutableParagraphStyle</span> *style = <span class="literal">nil</span>; \</span><br><span class="line">                  <span class="keyword">if</span> (value) &#123; \</span><br><span class="line">                      <span class="keyword">if</span> (<span class="built_in">CFGetTypeID</span>((__bridge <span class="built_in">CFTypeRef</span>)(value)) == <span class="built_in">CTParagraphStyleGetTypeID</span>()) &#123; \</span><br><span class="line">                          value = [<span class="built_in">NSParagraphStyle</span> yy_styleWithCTStyle:(__bridge <span class="built_in">CTParagraphStyleRef</span>)(value)]; \</span><br><span class="line">                      &#125; \</span><br><span class="line">                      <span class="keyword">if</span> (value. _attr_ == _attr_) <span class="keyword">return</span>; \</span><br><span class="line">                      <span class="keyword">if</span> ([value isKindOfClass:[<span class="built_in">NSMutableParagraphStyle</span> <span class="keyword">class</span>]]) &#123; \</span><br><span class="line">                          style = (<span class="keyword">id</span>)value; \</span><br><span class="line">                      &#125; <span class="keyword">else</span> &#123; \</span><br><span class="line">                          style = value.mutableCopy; \</span><br><span class="line">                      &#125; \</span><br><span class="line">                  &#125; <span class="keyword">else</span> &#123; \</span><br><span class="line">                      <span class="keyword">if</span> ([<span class="built_in">NSParagraphStyle</span> defaultParagraphStyle]. _attr_ == _attr_) <span class="keyword">return</span>; \</span><br><span class="line">                      style = [<span class="built_in">NSParagraphStyle</span> defaultParagraphStyle].mutableCopy; \</span><br><span class="line">                  &#125; \</span><br><span class="line">                  style. _attr_ = _attr_; \</span><br><span class="line">                  [<span class="keyword">self</span> yy_setParagraphStyle:style range:subRange]; \</span><br><span class="line">              &#125;];</span><br></pre></td></tr></table></figure>
+<h1 id="八、结语"><a href="#八、结语" class="headerlink" title="八、结语"></a>八、结语</h1><pre><code>宏看上去简单，但是真的用好用巧却并不容易，我想，最好的学习方式就是在实际应用中不断的使用，不断的琢磨与优化。如果能将宏的使用驾轻就熟，一定会为你的代码能力带来质的提升。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：805263726</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2020/04/27/398属性“__attribute__”在Objective-C中的应用/" class="pre-post btn btn-default" title='属性“__attribute__”在Objective-C中的应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">属性“__attribute__”在Objective-C中的应用</span>
+        </a>
+    
+    
+        <a href="/2019/10/31/396网络杂谈——聊聊NDS解析/" class="next-post btn btn-default" title='网络杂谈——聊聊NDS解析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">网络杂谈——聊聊NDS解析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#玩转iOS“宏定义”"><span class="toc-text">玩转iOS“宏定义”</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一、准备"><span class="toc-text">一、准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#二、关于“宏定义”"><span class="toc-text">二、关于“宏定义”</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#三、从一个简单的函数式宏说起"><span class="toc-text">三、从一个简单的函数式宏说起</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#四、编写宏时的好习惯"><span class="toc-text">四、编写宏时的好习惯</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#五、特殊的宏符号与常用内置宏"><span class="toc-text">五、特殊的宏符号与常用内置宏</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#六、宏的展开规则"><span class="toc-text">六、宏的展开规则</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#七、宏的妙用"><span class="toc-text">七、宏的妙用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#八、结语"><span class="toc-text">八、结语</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

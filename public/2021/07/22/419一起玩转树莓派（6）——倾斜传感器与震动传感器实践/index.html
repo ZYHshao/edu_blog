@@ -1,0 +1,290 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（6）——倾斜传感器与震动传感器实践 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（6）——倾斜传感器与震动传感器实践">
+            
+	            一起玩转树莓派（6）——倾斜传感器与震动传感器实践
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/07/22</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（6）——倾斜传感器与震动传感器实践"><a href="#一起玩转树莓派（6）——倾斜传感器与震动传感器实践" class="headerlink" title="一起玩转树莓派（6）——倾斜传感器与震动传感器实践"></a>一起玩转树莓派（6）——倾斜传感器与震动传感器实践</h1><p>通过本系列博客的前几篇文章，我们已经掌握了树莓派应用开发的基本方法。很多时候，树莓派可以做什么更多的取决于我们的创造力。本篇博客，我们将通过实践来学习在树莓派开发中常用的两个开关元件：倾斜传感器与震动传感器。</p>
+<p>倾斜传感器和震动传感器都是一种开关元件，其可以通过外界的物理变化来改变状态。在生活中的很多报警系统中都有应用。试想一下，如果我们使用到的某个设备需要避免倾斜和震动，就可以使用这两种传感器做报警电路。</p>
+<h2 id="一、传感器工作原理"><a href="#一、传感器工作原理" class="headerlink" title="一、传感器工作原理"></a>一、传感器工作原理</h2><p>本次实验本身的逻辑代码没有什么难度，所需要使用到的知识都是之前有涉及过的。在开始编写代码和进行实验之前，我们先来了解下倾斜传感器与震动传感器的工作原理。</p>
+<h3 id="1-倾斜传感器"><a href="#1-倾斜传感器" class="headerlink" title="1.倾斜传感器"></a>1.倾斜传感器</h3><p>倾斜传感器又称为倾斜开关，其可以对元件相对与重力方向的倾角做出感应。早期的倾斜传感器多采用贡倾斜传感器，其管体内部使用汞作为导电介质，当有倾斜发生时，金属汞会流动到管体末端，从而接通电路。汞倾斜传感器的优点是耐用寿命长，但其对环境有害，目前已经很少使用。</p>
+<p>当下比较流行的是球形倾斜传感器，这种传感器设计简单，管体内放入金属球，当发生倾斜时，金属球滚动接通电路。本次实验，我们采用SW520D型号的倾斜传感器，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a45d80a0e27227f6012078d5e53e2155c1f.png" alt></p>
+<p>其头部的管体就是倾斜开关，其搭载的功能板子分解如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e6a48bb29adce3c84957734634c2faa115c.png" alt></p>
+<p>此传感器有3个引脚，其中VCC需要接3.3-5V的电压，中间引脚接地，DO引脚是信号输出引脚，我们通过其进行倾斜感应。如上图所示，此传感器自带电源和开关两个LED灯，接通电源后，电源LED灯发光，当传感器触发倾斜时，开关LED灯发光。对于DO引脚，当开关LED发光时，其输出低电平，表示开关打开，当开关LED灯不亮时，其输出高电平，表示开关断开。用其我们可以很方便的实现倾斜断电保护功能。如上图中，此传感器还提供了一个灵敏度的电位调节单元，其工作原理电路图如下所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-2ed40bcc19a9ac940fc584a7e9d8f02e20f.png" alt></p>
+<h3 id="2-震动传感器"><a href="#2-震动传感器" class="headerlink" title="2.震动传感器"></a>2.震动传感器</h3><p>震动传感器与倾斜传感器的工作原理基本一致，不同的地方只在于开关的触发方式，震动传感器感应外界的震动从而触发电路的导通。常用的震动开关有滚珠式和弹簧式两种，以弹簧式为例，当发生震动时，弹簧与电极接触，从而导通电路，本次实验我们使用的震动传感器如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0827fc0c58a70c552c50d42a1b1c6513f48.png" alt></p>
+<p>可以看到，其搭载的功能板与上面介绍的倾斜传感器完全一致，这里我们就不再赘述。</p>
+<h2 id="二、开始试验"><a href="#二、开始试验" class="headerlink" title="二、开始试验"></a>二、开始试验</h2><h3 id="1-动手连线"><a href="#1-动手连线" class="headerlink" title="1.动手连线"></a>1.动手连线</h3><p>对于本次实验，我们将倾斜传感器与震动传感器作为模拟警告开关来使用，当设备发生震动或倾斜时，通过输出Log信息来做提示。首先我们先确认要使用到的GPIO引脚，对于电源和负极直接连接即可，我们暂定使用BCM编号为GPIO5和GPIO6的两个引脚，其对应的物理引脚分别为29和31。物理29引脚我们接震动传感器的信号引脚，物理31引脚我们接倾斜传感器的信号引脚。笔者这里使用扩展板连线如下图所示。如果不使用扩展板，直接连接物理引脚即可。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8f2ac764562a3fc4ff5d75a1946194694a9.JPEG" alt><img src="https://oscimg.oschina.net/oscnet/up-99cba85dc7b2cc2062a61df69c1e31ca41d.JPEG" alt></p>
+<p>温馨提示：可以通过线的颜色参考示意图中的连线。</p>
+<h3 id="2-编写代码"><a href="#2-编写代码" class="headerlink" title="2.编写代码"></a>2.编写代码</h3><p>我们使用GPIO引脚的INPUT功能来监听传感器的状态，示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入GPIO控制薄块</span></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="comment"># 设置使用的引脚编码模式</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line"><span class="comment"># 定义震动开关引脚 BCM5</span></span><br><span class="line">swi_shake = <span class="number">29</span></span><br><span class="line"><span class="comment"># 定义倾斜开关引脚 BCM6</span></span><br><span class="line">swi_slop = <span class="number">31</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行开关引脚的初始化，设置为输入引脚，且默认为高电平</span></span><br><span class="line">GPIO.setup(swi_shake, GPIO.IN, pull_up_down=GPIO.PUD_UP)</span><br><span class="line">GPIO.setup(swi_slop, GPIO.IN, pull_up_down=GPIO.PUD_UP)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义状态变化的回调函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">switch_shake</span><span class="params">(channel)</span>:</span></span><br><span class="line">    <span class="comment"># 低电平为开关打开状态</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> GPIO.input(channel):</span><br><span class="line">        print(<span class="string">"注意，发生了震动！"</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">switch_slop</span><span class="params">(channel)</span>:</span></span><br><span class="line">    <span class="comment"># 低电平为开关打开状态</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> GPIO.input(channel):</span><br><span class="line">        print(<span class="string">"注意，发生了倾斜！"</span>)    </span><br><span class="line">    </span><br><span class="line"><span class="comment"># 添加输入引脚电平变化的回调函数</span></span><br><span class="line">GPIO.add_event_detect(swi_shake, GPIO.FALLING, callback=switch_shake, bouncetime=<span class="number">200</span>)</span><br><span class="line">GPIO.add_event_detect(swi_slop, GPIO.FALLING, callback=switch_slop, bouncetime=<span class="number">200</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码比较简单，运行上面代码，通过触发传感器的震动与倾斜，可以观察程序的打印输出信息，同时传感器上的开关指示灯也可以提示传感器的接通状态。</p>
+<h2 id="三、休息一下"><a href="#三、休息一下" class="headerlink" title="三、休息一下"></a>三、休息一下</h2><p>本次实验非常简单，但是我们可以发挥创造力，通过这两个传感器做出一些有意思的东西，尽情想象吧！</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/07/24/420一起玩转树莓派（7）——树莓派模数:数模转换实践/" class="pre-post btn btn-default" title='一起玩转树莓派（7）——树莓派模数/数模转换实践'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（7）——树莓派模数/数模转换实践</span>
+        </a>
+    
+    
+        <a href="/2021/07/18/418一起玩转树莓派（5）——让蜂鸣器播放音乐/" class="next-post btn btn-default" title='一起玩转树莓派（5）——让蜂鸣器播放音乐'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（5）——让蜂鸣器播放音乐</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（6）——倾斜传感器与震动传感器实践"><span class="toc-text">一起玩转树莓派（6）——倾斜传感器与震动传感器实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、传感器工作原理"><span class="toc-text">一、传感器工作原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-倾斜传感器"><span class="toc-text">1.倾斜传感器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-震动传感器"><span class="toc-text">2.震动传感器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、开始试验"><span class="toc-text">二、开始试验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-动手连线"><span class="toc-text">1.动手连线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-编写代码"><span class="toc-text">2.编写代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、休息一下"><span class="toc-text">三、休息一下</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

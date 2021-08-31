@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（10）——触控激光灯 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（10）——触控激光灯">
+            
+	            一起玩转树莓派（10）——触控激光灯
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/08/12</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（10）——触控激光灯"><a href="#一起玩转树莓派（10）——触控激光灯" class="headerlink" title="一起玩转树莓派（10）——触控激光灯"></a>一起玩转树莓派（10）——触控激光灯</h1><pre><code>如果你已经阅读并且练习了本系列博客前面实验，那么我相信你已经能够使用树莓派做很多有趣的事情。本博客将要介绍的内容就是一个例子。
+
+你在小时候有玩过激光灯么？其模样类似于一个小型的手电筒，只是其光线十分集中，亮度强，并且通过不同的滤片，可以在墙上或地上打射出不同的图案，十分有趣。本实验，我们将找回童趣，使用触摸传感器和激光灯传感器来实现一个简易的触控激光灯。
+
+本实验的原理非常简单，无非是通过树莓派的GPIO引脚来读取触摸传感器的数据，之后将其用于操作激光传感器的开关控制上。本次实验使用的触摸传感器如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-de3b60f57a9d66a1b18f9efcb78faa075c9.png" alt></p>
+<p>此触摸传感器有3个引脚，除了正负极引脚外，最外侧的引脚用来输出信号，当手指触摸传感器上的圆形区域时，其信号引脚会输出高电平，否则输出低电平。对于这种类型的传感器，我们可以直接使用GPIO的下拉电阻功能，将其默认设置为低电平，轮询等待高电平信号。</p>
+<pre><code>首先，先来体验下触摸传感器的应用，连线如下：
+</code></pre><table>
+<thead>
+<tr>
+<th>触摸传感器</th>
+<th>树莓派</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>VCC</td>
+<td>3.3V</td>
+</tr>
+<tr>
+<td>SIG</td>
+<td>BCM编码17的引脚(对应物理引脚为11)</td>
+</tr>
+</tbody>
+</table>
+<p>编写如下测试代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">touchPin = <span class="number">11</span></span><br><span class="line"></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line">GPIO.setup(touchPin,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    swi = GPIO.input(touchPin)</span><br><span class="line">    print(swi)</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
+<p>在树莓派上运行上面代码。通过触摸传感器，可以看到控制台上打印出对应的电平信息。</p>
+<pre><code>下面，我们再来看一下本次实验所使用的激光模块，如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-a48f353ba2ea8ac81a1852492561b98bfa7.png" alt></p>
+<p>此激光模块也有3个引脚，其中“-”号一侧的引脚接地，中间引脚接3.3V电压，“S”一侧引脚接GPIO信号引脚。当S信号引脚输入高电平时，激光模块被激活发射激光，当S信号引脚输入低电平时，激光发射关闭。激光模块的接线如下：</p>
+<table>
+<thead>
+<tr>
+<th>激光模块</th>
+<th>树莓派</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>中间引脚</td>
+<td>3.3V</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+<tr>
+<td>S</td>
+<td>BCM编码18的引脚(对应物理引脚为12)</td>
+</tr>
+<tr>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p> 修改上面的示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 触摸传感器的信号引脚</span></span><br><span class="line">touchPin = <span class="number">11</span></span><br><span class="line"><span class="comment"># 激光模块的信号引脚</span></span><br><span class="line">lightPin = <span class="number">12</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置采用物理编码</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line"><span class="comment"># 对触摸传感器的引脚进行初始化</span></span><br><span class="line">GPIO.setup(touchPin,GPIO.IN, pull_up_down=GPIO.PUD_DOWN)</span><br><span class="line"><span class="comment"># 对激光传感器的引脚进行初始化</span></span><br><span class="line">GPIO.setup(lightPin,GPIO.OUT)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    swi = GPIO.input(touchPin)</span><br><span class="line">    <span class="comment"># 当触摸发生时，触摸传感器的引脚输入高电平 </span></span><br><span class="line">    <span class="keyword">if</span> swi == <span class="number">1</span>:</span><br><span class="line">        <span class="comment"># 向激光模块的引脚输出高电平，发射激光</span></span><br><span class="line">        GPIO.output(lightPin, GPIO.HIGH)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 与上面相反，关闭激光</span></span><br><span class="line">        GPIO.output(lightPin, GPIO.LOW)</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br></pre></td></tr></table></figure>
+<p>在树莓派上运行上面代码，体验下这个自制的激光灯玩具吧！</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/08/28/424一起玩转树莓派（11）——使用LCD屏/" class="pre-post btn btn-default" title='一起玩转树莓派（11）——使用LCD屏'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（11）——使用LCD屏</span>
+        </a>
+    
+    
+        <a href="/2021/08/09/422一起玩转树莓派（9）——DS18B20测温模块应用/" class="next-post btn btn-default" title='一起玩转树莓派（9）——DS18B20测温模块应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（9）——DS18B20测温模块应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（10）——触控激光灯"><span class="toc-text">一起玩转树莓派（10）——触控激光灯</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

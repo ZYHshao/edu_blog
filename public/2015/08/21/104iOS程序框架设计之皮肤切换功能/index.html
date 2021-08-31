@@ -1,0 +1,300 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS程序框架设计之皮肤切换功能 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS程序框架设计之皮肤切换功能">
+            
+	            iOS程序框架设计之皮肤切换功能
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/代码灵魂">
+            代码灵魂
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/08/21</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS程序框架设计之皮肤切换功能"><a href="#iOS程序框架设计之皮肤切换功能" class="headerlink" title="iOS程序框架设计之皮肤切换功能"></a>iOS程序框架设计之皮肤切换功能</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>移动应用的开发中，有时我们会需要例如更换皮肤此类的功能，andorid采用xml配置UI的方式，这个问题或许还容易解决些，iOS的主要UI逻辑则是在代码中控制的，如果没有一个强大的框架方案，这个问题将变得非常棘手。网上也有很多诸如此类功能的优秀案例与框架，在这篇博客中，我与大家分享下我的解决方案，其中如果有不恰或者糟糕之处，希望与高人一起交流。
+</code></pre><h3 id="二、设计思路与框架"><a href="#二、设计思路与框架" class="headerlink" title="二、设计思路与框架"></a>二、设计思路与框架</h3><pre><code>首先我的设计思路是采用通知的方式，原理可以如下理解为以下几步：
+
+1、在系统的通知中心注册一个通知
+
+2、所有需要更改皮肤功能的controller作为这个通知的监听者
+
+3、设计一个皮肤的model类
+
+4、将controller中有关皮肤设置的属性从model中取
+
+5、在切换皮肤前更改皮肤model
+
+6、发送更改皮肤的通知
+</code></pre><p>上面的6个步骤是这整个框架的基本逻辑，框架无非是将这些逻辑进行优化与封装。下面这张图很烂，但是思路很清晰：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0821/231645_MTZj_2340880.png" alt></p>
+<pre><code>首先最上面是我设计的一个切换主题的manager，我这里的设计有个缺陷，我将manager和主题配置相关的model混合在了一起，写的时候简单了些，可这给框架的逻辑上带来了混乱，所以我在图中使用曲线和虚椭圆将其分离，manager来控制切换model的属性，我们在controller中取model的属性进行配置，这个manager的逻辑位置是交互时间与通知中心的桥梁。manager中的核心代码如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">//单例方法</span><br><span class="line">+(instancetype)sharedTheSingletion&#123;</span><br><span class="line">    static YHTopicColorManager * sharedModel = nil;</span><br><span class="line">    static dispatch_once_t predicate;</span><br><span class="line">    dispatch_once(&amp;predicate, ^&#123;</span><br><span class="line">        sharedModel = [[YHTopicColorManager alloc] init];</span><br><span class="line">    &#125;);</span><br><span class="line">    return sharedModel;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">//这个方法应该分离在model中，从本地读取当前的主题模式，更改后我们只需要更改本地数据 然后重新调用这个方法即可</span><br><span class="line">-(void)getTopicModel&#123;</span><br><span class="line">    //从本地读取</span><br><span class="line">    int  tp = [YHSASystemSettingManager sharedTheSingletion].topic;</span><br><span class="line">    if (tp==0) &#123;</span><br><span class="line">        //默认为白天主题</span><br><span class="line">        tp=dayTime;</span><br><span class="line">        [YHSASystemSettingManager sharedTheSingletion].topic = tp;</span><br><span class="line">    &#125;</span><br><span class="line">    switch (tp) &#123;</span><br><span class="line">    //这里是我定义的一些枚举，拿白天和夜间模式示范</span><br><span class="line">        case dayTime://白天模式</span><br><span class="line">        &#123;</span><br><span class="line">        //这里面定义一些白天模式下 控件的颜色属性 也可以定义其他</span><br><span class="line">            _navColor=[UIColor colorWithRed:10/255.0 green:85/255.0 blue:160/255.0 alpha:1];</span><br><span class="line">            _bgColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:1];</span><br><span class="line">            _btnColor=[UIColor colorWithRed:10/255.0 green:85/255.0 blue:160/255.0 alpha:1];</span><br><span class="line">            _textColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:1];</span><br><span class="line">            _btnTextColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:1];</span><br><span class="line">            _navTextColor= [UIColor whiteColor];</span><br><span class="line">        &#125;</span><br><span class="line">            break;</span><br><span class="line">        case nightTime://夜间模式</span><br><span class="line">        &#123;</span><br><span class="line">        //这里面定义夜间模式下的相关控件的颜色属性</span><br><span class="line">            _navColor=[UIColor colorWithRed:10/255.0 green:85/255.0 blue:160/255.0 alpha:1];</span><br><span class="line">            _bgColor=[UIColor colorWithRed:0 green:0 blue:0 alpha:1];</span><br><span class="line">            _btnColor=[UIColor colorWithRed:10/255.0 green:85/255.0 blue:160/255.0 alpha:1];</span><br><span class="line">            _textColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:1];</span><br><span class="line">            _btnTextColor=[UIColor colorWithRed:1 green:1 blue:1 alpha:1];</span><br><span class="line">            _navTextColor= [UIColor whiteColor];</span><br><span class="line">        &#125;</span><br><span class="line">            break;</span><br><span class="line">        default:</span><br><span class="line">            break;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//发送更改主题的消息</span><br><span class="line">+(void)postTopicChangeMessage&#123;</span><br><span class="line">    [[NSNotificationCenter defaultCenter]postNotificationName:YHTopicChangeTopicNotication object:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>在manager调用通知中心发送通知后，我们要让所有需要改变主题的视图控制器都接收到通知，最简便的做法是，我们设计一个父类，让父类监听通知，所有需要有主题更改功能的控制器继承于它即可，这个father controller的核心代码如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//移除监听</span><br><span class="line">-(void)dealloc&#123;</span><br><span class="line">    [[NSNotificationCenter defaultCenter]removeObserver:self];</span><br><span class="line">&#125;</span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view.</span><br><span class="line">    //添加监听主题更换的通知</span><br><span class="line">    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(useYHTopicToCreatViewWithModel) name:YHTopicChangeTopicNotication object:nil];</span><br><span class="line">    </span><br><span class="line">    //协议中的方法，加载主题 一会再说</span><br><span class="line">    [self useYHTopicToCreatViewWithModel];</span><br><span class="line">&#125;</span><br><span class="line">//子类实现如下方法</span><br><span class="line">-(void)useYHTopicToCreatViewWithModel&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>到目前，我们已经可以顺利接收到主题切换的通知，可是要所有子类都步伐一致的执行相同一个操作，我们可以通过一个协议来约定，这就是图中的主框架的protocol，这个协议中规定一个特定的方法，我们在父类中调用，子类中实现，当收到通知时，所有子类都将重新加载这个方法，如果我们将皮肤设置部分在这个方法中实现，那么正是我们想要的效果，所有皮肤设置都被重新加载了。协议如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *这里定义主题的风格</span><br><span class="line"> */</span><br><span class="line">typedef enum &#123;</span><br><span class="line">    dayTime=1,//白天</span><br><span class="line">    nightTime//夜间</span><br><span class="line">&#125;YHTopicModel;</span><br><span class="line">@protocol YHTopicProcotol &lt;NSObject&gt;</span><br><span class="line">//所有可以更换主题的界面必须遵守这个协议调用并实现如下方法</span><br><span class="line">//将视图中控件的颜色摄住部分全部放在这个方法中</span><br><span class="line">@required</span><br><span class="line">-(void)useYHTopicToCreatViewWithModel;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<pre><code>这时，就剩下我们这套逻辑的最后一步了，我们只需要将控件的颜色设置写在子类的协议方法中，并且，这些设置的数据来源于model这个模型，整个体系就完成了，子类实现方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">-(void)useYHTopicToCreatViewWithModel&#123;</span><br><span class="line">//获取到模型</span><br><span class="line">    YHTopicColorManager * model = [YHTopicColorManager sharedTheSingletion];</span><br><span class="line">    //加载模型数据</span><br><span class="line">    [model getTopicModel];</span><br><span class="line">    //进行设置</span><br><span class="line">    self.view.backgroundColor = model.bgColor;</span><br><span class="line">    _schoolLabel.textColor = model.textColor;</span><br><span class="line">    _phoneLabel.textColor = model.textColor;</span><br><span class="line">    _secertLabel.textColor = model.textColor;</span><br><span class="line">    _reWriteSecretLabel.textColor = model.textColor;</span><br><span class="line">    _questionLabel.textColor = model.textColor;</span><br><span class="line">    _answerLabel.textColor = model.textColor;</span><br><span class="line">    _registBtn.backgroundColor = model.btnColor;</span><br><span class="line">    [_registBtn setTitleColor:model.btnTextColor forState:UIControlStateNormal];</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我简单写了一些界面，不论任何地方切换皮肤，所有界面效果都会改变：</p>
+<p>切换夜间模式前：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0821/234825_BJCc_2340880.png" alt>                  <img src="http://static.oschina.net/uploads/space/2015/0821/234825_4TqZ_2340880.png" alt>                 <img src="http://static.oschina.net/uploads/space/2015/0821/234825_vmVd_2340880.png" alt></p>
+<p>开启夜间模式后：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0821/234935_C4PS_2340880.png" alt>          <img src="http://static.oschina.net/uploads/space/2015/0821/234936_Gpok_2340880.png" alt>             <img src="http://static.oschina.net/uploads/space/2015/0821/234936_8DY1_2340880.png" alt></p>
+<h3 id="三、补充"><a href="#三、补充" class="headerlink" title="三、补充"></a>三、补充</h3><pre><code>自己的思路实现更换主题的一种方法，真诚的想与志同道合的朋友交流开发经验，如果你想批评，点拨，交流或者是借鉴我的代码，Q316045346随时欢迎。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/08/30/105扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计/" class="pre-post btn btn-default" title='扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">扩展于RCLabel的支持异步加载网络图片的富文本引擎的设计</span>
+        </a>
+    
+    
+        <a href="/2015/08/13/102Xcode创建可复用的代码块/" class="next-post btn btn-default" title='Xcode创建可复用的代码块'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Xcode创建可复用的代码块</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS程序框架设计之皮肤切换功能"><span class="toc-text">iOS程序框架设计之皮肤切换功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、设计思路与框架"><span class="toc-text">二、设计思路与框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、补充"><span class="toc-text">三、补充</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>深入理解JavaScript函数 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="深入理解JavaScript函数">
+            
+	            深入理解JavaScript函数
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/前后端">
+            前后端
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/02/15</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="深入理解JavaScript函数"><a href="#深入理解JavaScript函数" class="headerlink" title="深入理解JavaScript函数"></a>深入理解JavaScript函数</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>从功能上理解，函数是一组可以随时运行的语句，是一段代码块，也是所谓的子程序。在JavaScript中，函数实质上也是一种对象，是Function对象。函数通常会有参数与返回值(不是必须)，在JavaScript中，函数的应用十分灵活，也有多种定义函数的方法。
+</code></pre><h3 id="二、几种定义函数的方式"><a href="#二、几种定义函数的方式" class="headerlink" title="二、几种定义函数的方式"></a>二、几种定义函数的方式</h3><pre><code>在JavaScript中，可以通过函数语句来声明和定义函数、可以通过函数表达式来将创建函数，也可以使用Function构造方法来创建函数对象。
+</code></pre><h4 id="1、使用函数语句来定义函数"><a href="#1、使用函数语句来定义函数" class="headerlink" title="1、使用函数语句来定义函数"></a>1、使用函数语句来定义函数</h4><pre><code>JavaScript中有一种特殊的语法来直接定义函数，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用函数语句定义函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outputName</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Jaki"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>函数语句有这样的结构：function name(param…){}。其中function为函数语句的关键字，name为自定义的函数名称，小括号中定义函数的形参，大括号中可以进行代码的编写。</p>
+<p>如果仅仅对上面的代码进行运行，你会发现程序并没有执行任何行为，函数必须在调用时才会被执行，调用函数示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用函数语句定义函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outputName</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Jaki"</span>);</span><br><span class="line">&#125;</span><br><span class="line">outputName();<span class="comment">//将打印Jaki</span></span><br></pre></td></tr></table></figure>
+<p>上面的定义的函数是最简单的函数形式，函数也可以通过传入参数的差异来做不同的功能，例如修改上面的函数，使其传入姓名并且进行打印输出：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用函数语句定义函数</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">outputName</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(name);</span><br><span class="line">&#125;</span><br><span class="line">outputName(<span class="string">"张三"</span>);<span class="comment">//将打印张三</span></span><br></pre></td></tr></table></figure>
+<p>函数也可以提供一个返回值，例如一个简单的加法运算函数，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> res = add(<span class="number">3</span>,<span class="number">4</span>);</span><br><span class="line"><span class="built_in">console</span>.log(res);<span class="comment">//7</span></span><br></pre></td></tr></table></figure>
+<p>在JavaScript中，函数的返回值类型不需要特殊指定，直接使用return语句返回即可。需要注意，实际上任何函数都是有返回值的，如果函数体中没有使用return语句显式的进行返回，则默认会返回undefined。</p>
+<pre><code>JavaScript中函数的定义与使用不一定非要按照顺序进行，实际上也可以将函数的定义写在使用之后(解释器会在与处理阶段解释定义的函数)，如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> res = add(<span class="number">3</span>,<span class="number">4</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">add</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(res);<span class="comment">//7</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-使用函数表达式来定义函数"><a href="#2-使用函数表达式来定义函数" class="headerlink" title="2.使用函数表达式来定义函数"></a>2.使用函数表达式来定义函数</h3><pre><code>使用函数表达式来定义函数与函数语句的语法十分相似，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用函数表达式来定义函数</span></span><br><span class="line">var addFunc = function(a,b)&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;    </span><br><span class="line">&#125;;</span><br><span class="line">var res = addFunc(<span class="number">3</span>,<span class="number">3</span>);</span><br><span class="line">console.log(res);<span class="comment">//6</span></span><br></pre></td></tr></table></figure>
+<p>这种方式定义的函数实际上是创建了一个函数对象，之后将这个对象的引用赋值给了一个变量，通过变量开发者可以访问和调用函数。需要注意，函数表达式与函数语句的最大区别在于其可以省略函数名，即可以定义匿名函数，但是这种方式定义的函数在函数定义之前是不能够被调用的，这也很好理解，JavaScript解释器在预处理期间只是解析除了addFunc变量，但是并没有对其表达式进行运算，这时函数并没有被定义，例如下面的代码将报错：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> res = addFunc(<span class="number">3</span>,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//使用函数表达式来定义函数</span></span><br><span class="line"><span class="keyword">var</span> addFunc = <span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其实函数语句与函数表达式定义的函数还有一点重大区别，函数语句定义后函数名实际上是无法修改的，而使用函数表达式定义的函数是将引用赋值给了变量，变量可以重新赋值，也可以将两个变量赋值为同一个函数对象的引用，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//使用函数表达式来定义函数</span></span><br><span class="line"><span class="keyword">var</span> addFunc = <span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;    </span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//将addFunc的值赋值给另一个变量</span></span><br><span class="line"><span class="keyword">var</span> addFunc2 = addFunc;</span><br><span class="line"><span class="comment">//将addFunc变量修改为整型值</span></span><br><span class="line">addFunc = <span class="number">3</span>;</span><br><span class="line"><span class="keyword">var</span> res = addFunc2(<span class="number">3</span>,<span class="number">3</span>);</span><br><span class="line"><span class="built_in">console</span>.log(res);<span class="comment">//6</span></span><br></pre></td></tr></table></figure>
+<p>如果需要在函数内部调用函数本身，即需要定义递归函数时，函数表达式也可以进行函数命名，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//定义一个递归阶乘函数</span></span><br><span class="line"><span class="keyword">var</span> mathFunc = <span class="function"><span class="keyword">function</span> <span class="title">mathF</span>(<span class="params">a</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> res = a;</span><br><span class="line">    a--;</span><br><span class="line">    <span class="keyword">if</span> (a&gt;<span class="number">0</span>) &#123;</span><br><span class="line">        res *= mathFunc(a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> mathRes = mathFunc(<span class="number">5</span>);</span><br><span class="line"><span class="built_in">console</span>.log(mathRes);<span class="comment">//120</span></span><br></pre></td></tr></table></figure>
+<p>需要注意，函数表达式定义的函数名只能作用于函数内部。</p>
+<h3 id="3-使用Function构造函数"><a href="#3-使用Function构造函数" class="headerlink" title="3.使用Function构造函数"></a>3.使用Function构造函数</h3><pre><code>前面有提到，函数在JavaScript中实际上也是一种对象，因此可以使用new关键字来进行函数对象的构造，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Function构造器</span></span><br><span class="line"><span class="keyword">var</span> myFunc = <span class="keyword">new</span> <span class="built_in">Function</span>(<span class="string">"name"</span>,<span class="string">"console.log(name)"</span>);</span><br><span class="line">myFunc(<span class="string">"Jaki"</span>);<span class="comment">//Jaki</span></span><br></pre></td></tr></table></figure>
+<p>Function构造其的格式如下：Function(param,param…,funcbody)。其中参数个数不固定，最后一个参数为创建的函数的函数体字符串，前面的参数全部都将作为函数的形参传入函数体内。</p>
+<pre><code>实际上，无论通过哪种方式创建的函数，其实质上都是Function对象，Function对象中也有一些内置的属性，其中最长用的为arguments属性。arguments属性是实际传入函数的参数数组，其length属性为函数所传入的参数个数，也就是说，开发者在定义函数的时候实际上可以不定义形参，在调用函数的时候直接进行实参的传入，函数内部还是可以获取到参数，JavaScript函数的对象特性使得其十分灵活，形参并不能决定函数的参数个数与类型，实参、函数体和返回值这些都可以在运行时决定！示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testFunc</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>.length);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">3</span></span><br><span class="line"><span class="comment">&#123; '0': '1', '1': 2, '2': 3 &#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">testFunc(<span class="string">'1'</span>,<span class="number">2</span>,<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p>函数是功能完整的对象，实际上函数对象本身也有一个length属性，这个属性将获取到函数预期形参的个数，即可以方便的获取到函数预期需要传入的参数的个数，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testFunc</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>.length);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">textFunc2</span>(<span class="params">name</span>)</span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(testFunc.length); <span class="comment">//0</span></span><br><span class="line"><span class="built_in">console</span>.log(textFunc2.length); <span class="comment">//1</span></span><br></pre></td></tr></table></figure>
+<h3 id="三、理解函数语句与函数表达式"><a href="#三、理解函数语句与函数表达式" class="headerlink" title="三、理解函数语句与函数表达式"></a>三、理解函数语句与函数表达式</h3><pre><code>函数语句是定义函数的一种语法，而函数表达式实际上就是返回一个函数对象，因此函数表达式可以直接进行调用，请看如下代码：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> addFuncS = <span class="function"><span class="keyword">function</span>(<span class="params">a,b</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(a+b);    </span><br><span class="line">&#125;(<span class="number">1</span>,<span class="number">2</span>);<span class="comment">//3</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码中的addFuncS已经不再是一个函数对象的引用，而是数值3。在函数表达式后面可以直接跟小括号传参进行函数的调用，但是如下的写法将会报错：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">addFuncE</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"hello"</span>);</span><br><span class="line">&#125;();</span><br></pre></td></tr></table></figure>
+<p>在JavaScript中函数表达式十分容易被误认为是函数定义的语法，区分了上面两种情况，你会发现这是在编程过程中十分危险，JavaScript中的函数语法有如下两条规则：</p>
+<p>1.当函数语法成为表达式的一部分时，其会被转换成为函数表达式。</p>
+<p>2.内嵌于非函数的其他代码块中时，函数语法会被转换成函数表达式。</p>
+<p>例子如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//函数语法被转换成函数表达式</span></span><br><span class="line"><span class="comment">//1.函数语法成为表达式的一部分</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>)</span>&#123;<span class="built_in">console</span>.log(<span class="string">"f1"</span>)&#125;)();</span><br><span class="line"><span class="comment">//2.函数语法内嵌于非函数的代码块汇总</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    (<span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"f2"</span>);</span><br><span class="line">    &#125;)();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/02/17/306Git命令集之一——配置参数/" class="pre-post btn btn-default" title='Git命令集之一——配置参数'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Git命令集之一——配置参数</span>
+        </a>
+    
+    
+        <a href="/2017/02/14/304 iOS中ImageIO框架详解与应用分析/" class="next-post btn btn-default" title='iOS中ImageIO框架详解与应用分析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中ImageIO框架详解与应用分析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#深入理解JavaScript函数"><span class="toc-text">深入理解JavaScript函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、几种定义函数的方式"><span class="toc-text">二、几种定义函数的方式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、使用函数语句来定义函数"><span class="toc-text">1、使用函数语句来定义函数</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-使用函数表达式来定义函数"><span class="toc-text">2.使用函数表达式来定义函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-使用Function构造函数"><span class="toc-text">3.使用Function构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、理解函数语句与函数表达式"><span class="toc-text">三、理解函数语句与函数表达式</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（11）——使用LCD屏 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（11）——使用LCD屏">
+            
+	            一起玩转树莓派（11）——使用LCD屏
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/08/28</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（11）——使用LCD屏"><a href="#一起玩转树莓派（11）——使用LCD屏" class="headerlink" title="一起玩转树莓派（11）——使用LCD屏"></a>一起玩转树莓派（11）——使用LCD屏</h1><p>通过本系列博客前几篇文章的介绍，我们已经体验过了许多传感器元件，它们大多非常简单，可以直接对其进行数据读取或写入，无需复杂的指令配置。本篇博客，我们将介绍一个相对复杂的元件：LCD屏。当今大多数常见的电子设备为了便于用户操作，都会配备一块LCD液晶显示屏，用户通过屏幕可以获取到设备的相关信息方便使用。下面，我们将尝试使用树莓派来在LCD屏上展示信息。</p>
+<h2 id="一、LCD-1602"><a href="#一、LCD-1602" class="headerlink" title="一、LCD 1602"></a>一、LCD 1602</h2><p>LCD屏是Liquid Crystal Display的简称，即液晶显示屏。LCD 1602是一种点阵式的给付型液晶显示屏，其型号为1602本身也是有意义的，表示其可以显示2行信息，每行可以显示16个字符。LCD1602最多可以显示32个字符，价格上也并不昂贵，十几元钱即可买到。LCD1602有16个引脚，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-02826ace82498ecc21d7be7f8dca64b72b4.png" alt></p>
+<p>LCD1602的16个引脚看上去很多，但实际上使用起来并不复杂，我们首先将上图这些引脚的功能来介绍一下。</p>
+<ul>
+<li>引脚1：接地引脚</li>
+<li>引脚2：接5V电压</li>
+<li>引脚3：VE引脚为屏幕对比度调整引脚，接地时对比度最大，接正极电源时对比度最小。</li>
+<li>引脚4：RS引脚为功能模式引脚(也被称为寄存器选择引脚)，为其加高电平时为数据模式(存取屏幕展示的数据)，为其加低电平时为指令模式(读取指令)。</li>
+<li>引脚5：RW引脚为读写模式引脚，为其加高电平时为读操作，为其加低电平时为写操作。</li>
+<li>引脚6：Enable引脚，此引脚用来触发动作，负跳变时进行数据处理或指令的执行。</li>
+<li>引脚7-引脚14：这8个引脚为数据引脚，用来进行数据传输。</li>
+<li>引脚15：背光电源引脚。</li>
+<li>引脚16：背光接地引脚。</li>
+</ul>
+<p>上面所介绍的引脚中，引脚1，引脚2，引脚15和引脚16比较好理解，其都是作为供电功能，无需编程操作。引脚3是一个单独调增对比度功能的引脚，作用也相对独立，无需复杂的指令操作。引脚4和引脚5是比较核心的两个引脚，这两个引脚的高低电平状态组合共有4种，分别会将LCD1602设置为读指令模式，写指令模式，读数据模式和写数据模式。引脚6可以理解为一个触发引脚，通过操作这个引脚的电平跳变来让LCD1602执行具体的功能。引脚7-引脚14用来进行数据的存取或指令的存取。</p>
+<p>现在请你务必将上面所介绍的内容完全理解，否则后面的内容可能会更加令你迷惑。对于LCD1206的读数据模式和写数据模式你应该没有什么疑惑，只要通过引脚4和引脚5设置正确的模式后，再通过GPIO来写和读引脚7到引脚14的电平数据，即可得到一个8位的数据。我们核心需要理解的是指令模式，LCD1602的指令集如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-55de817ef26fa39d7dc916c55dd8096b838.JPEG" alt></p>
+<p>上图中的RS和R/W就是引脚4和引脚5，其控制模式，与指令本身无关，我们可以先不关心。从DB7到DB0是真正的指令部分。我们下面来逐一介绍。</p>
+<p>1. 指令一：0000 0001</p>
+<p>清屏指令，响应时间为1.53ms。</p>
+<p>2.指令二：0000 001- (最后一位’-‘表示0和1都可以，不被关心)</p>
+<p>光标归位指令，执行后光标的位置会回到起点，但是数据寄存器中的数据不会清空。</p>
+<p>3.指令三：0000 01[I/D][SH]</p>
+<p>光标移动模式设置指令，I/D和SH两个控制为光标或屏幕移动模式。</p>
+<p>I/D设置为0：每次读取一个字符后光标左移。</p>
+<p>I/D设置为1：每次读取一个字符后光标右移。</p>
+<p>SH设置为0：屏幕不移动。</p>
+<p>SH设置为1：屏幕移动，方向与I/D的设置一致。</p>
+<p>4.指令四：0000 1[D][C][B]</p>
+<p>显示模式设置指令，D，C，B这三个位分别设置主显示功能，光标显示功能，光标闪烁功能。</p>
+<p>D：设置为0则关闭屏幕，设置为1开启屏幕。</p>
+<p>C：设置为0关闭光标，设置为1显示光标。</p>
+<p>B：设置为0光标不闪烁，设置为1光标闪烁。</p>
+<p>5.指令五：0001  [S/C][R/L]–</p>
+<p>设置光标和显示屏移动方向。</p>
+<p>S/C设置为0时，R/L设置为0则光标左移，RL设置为1时光标右移。</p>
+<p>S/C设置为1时，R/L设置为0则显示内容左移，R/L设置为1则显示内容右移。</p>
+<p>6.指令六：001[DL] [N][F]–</p>
+<p>功能模式设置指令。</p>
+<p>DL：设置为1时采用8位总线读数据，设置为0时采用4位总线读数据。</p>
+<p>N：设置为0时是单行显示模式，设置为1时是双行显示模式。</p>
+<p>F：设置为0时为5*8的点阵字符，设置为1时为5*11的点阵字符。</p>
+<p>7.指令七：01[A5][A4] [A3][A2][A1][A0]</p>
+<p>设置下一个字符要显示的位置。A5位设置要定位到的行，A0到A4位定位要显示的位置，取值为0-16之间。</p>
+<p>8.指令八：1[A6][A5][A4] [A3][A2][A1][A0]</p>
+<p>数据寄存器地址设置。</p>
+<p>了解了LD1602显示屏上面的指令用法，我们就可以编程来控制显示屏显示的内容了。</p>
+<h2 id="二、带I2C模块的LCD-1602"><a href="#二、带I2C模块的LCD-1602" class="headerlink" title="二、带I2C模块的LCD 1602"></a>二、带I2C模块的LCD 1602</h2><p>前面我们说过，LCD1602有16个引脚。原则上我们已经可以使用树莓派来控制显示屏的显示了，但是16个引脚全部连接到树莓派会使接线十分的复杂，而且程序代码的编写也非常繁琐，要对太多的GPIO引脚进行操作，十分不便。本次实验，我们采用的是带I2C模块的LCD元件，I2C模块本身将一些独立的功能进行了封装，通过I2C模块，我们可以以8位数据为标准来传输任何我们想要执行的指令或让LCD显示的字符，非常方便。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8b603c27efbd2da76656324817c5ba2b268.png" alt></p>
+<p>如上图所示，有了IC2模块的LCD1602元件，只需要4个引脚即可实现显示功能。下面我们来分析下如何使用此I2C模块。</p>
+<p>首先关于I2C通信的相关内容，之前博客已经有详细的介绍，这里不再赘述。我们先来介绍下为何通过4个引脚通过I2C总线传输8位的数据集合实现所有功能。</p>
+<p>LCD引脚1与引脚2：用I2C模块的电源引脚和接地引脚代替。</p>
+<p>LCD引脚15和引脚16：LCD的这两个引脚功能为控制背光，此逻辑被封装进了I2C模块中，I2C模块每次写入的8位数据中的第4位用来控制背光。</p>
+<p>LCD的引脚3：LCD的此引脚用来设置显示的对比度，在I2C模块中，通过一个可调节的电阻来实现此功能，在后面的实验中如果发现屏幕显示不清，可以尝试调节此电阻器。</p>
+<p>LCD的引脚4，引脚5和引脚6：这几个功能引脚也被封装进了I2C模块中，I2C模块每次写入的8位数据中的第1位，的2位和第3位分别用来控制这些引脚。</p>
+<p>LCD剩下的数据引脚的数据由I2C传输的8位数据中的高4位来对应，在LCD的8位数据模式下，I2C分两次传输一次完整的数据，前传输的4位为LCD所需数据的低4位，后传输的数据为LCD所需数据的高4位。在LCD的4位数据模式下，因为LCD需要获取到完整的8位数据，因此也需要通过两次数据传输，只是此时先传输的数据为LCD所需数据的高4位，后传输的数据为LCD所需数据的低4位，这点需要特别注意。</p>
+<p>下面总结了I2C在传输数据时每一位的意义：</p>
+<table>
+<thead>
+<tr>
+<th>第8位</th>
+<th>第7位</th>
+<th>第6位</th>
+<th>第5位</th>
+<th>第4位</th>
+<th>第3位</th>
+<th>第2位</th>
+<th>第1位</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>数据/指令</td>
+<td>数据/指令</td>
+<td>数据/指令</td>
+<td>数据/指令</td>
+<td>背光控制位</td>
+<td>Enable控制位</td>
+<td>RW控制位</td>
+<td>RS控制位</td>
+</tr>
+</tbody>
+</table>
+<h2 id="三、编码实验"><a href="#三、编码实验" class="headerlink" title="三、编码实验"></a>三、编码实验</h2><pre><code>使用I2C模块封装的LCD1602只有4个引脚，接线非常简单，如下：
+</code></pre><table>
+<thead>
+<tr>
+<th>LCD</th>
+<th>树莓派</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>VCC</td>
+<td>+5V</td>
+</tr>
+<tr>
+<td>SDA</td>
+<td>树莓派SDA功能引脚</td>
+</tr>
+<tr>
+<td>SCL</td>
+<td>树莓派SCL功能引脚</td>
+</tr>
+</tbody>
+</table>
+<p>将LCD1602与树莓派连接完成后，在树莓派的终端执行如下指令查看I2C设备：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo i2cdetect -y 1</span><br></pre></td></tr></table></figure>
+<p>输出入下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-2814db1aaab761885adbdfb4cd32b1b9b62.png" alt></p>
+<p>可以看到，目前我们只连接了一个I2C设备，设备号为27。</p>
+<pre><code>由于背光的控制位相对独立，我们封装单独的函数来处理，如下：
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否开启背光 由PCF8574T的低4位中的第4位决定</span></span><br><span class="line">BLEN = <span class="number">1</span> </span><br><span class="line"><span class="comment"># 补充背光控制位</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addBlenControl</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> BLEN</span><br><span class="line">    tmpData = data</span><br><span class="line">    <span class="keyword">if</span> BLEN:</span><br><span class="line">        <span class="comment"># 将第4位背光控制位强制设置1</span></span><br><span class="line">        tmpData = data | <span class="number">0b00001000</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 将第4位背光控制位强制设置为0</span></span><br><span class="line">        tmpData = data &amp; <span class="number">0b11110111</span></span><br><span class="line">    <span class="keyword">return</span> tmpData</span><br></pre></td></tr></table></figure>
+<p>同理，可以将Enable位的控制，RS位的控制都封装成函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 补充Enable控制位</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addEnableControl</span><span class="params">(data, high)</span>:</span></span><br><span class="line">    tempData = data</span><br><span class="line">    <span class="comment"># 第3位控制Enable</span></span><br><span class="line">    <span class="keyword">if</span> high:</span><br><span class="line">        tempData |= <span class="number">0b00000100</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        tempData &amp;= <span class="number">0b11111011</span></span><br><span class="line">    <span class="keyword">return</span> tempData</span><br><span class="line"></span><br><span class="line"><span class="comment"># 补充RS控制位</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addRSControl</span><span class="params">(data, high)</span>:</span></span><br><span class="line">    tempData = data</span><br><span class="line">    <span class="comment"># 第1位控制RS</span></span><br><span class="line">    <span class="keyword">if</span> high:</span><br><span class="line">        tempData |= <span class="number">0b00000001</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        tempData &amp;= <span class="number">0b11111110</span></span><br><span class="line">    <span class="keyword">return</span> tempData</span><br></pre></td></tr></table></figure>
+<p>在向I2C发送数据前，根据配置的背光设置来决定背光控制位的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过I2C总线写入数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">writeI2C</span><span class="params">(addr, data)</span>:</span></span><br><span class="line">    <span class="comment"># 添加背光控制</span></span><br><span class="line">    temp = addBlenControl(data)</span><br><span class="line">    <span class="comment"># 写数据到I2C总线</span></span><br><span class="line">    BUS.write_byte(addr ,temp)</span><br></pre></td></tr></table></figure>
+<p>准备好了这些工具函数，我们只需要根据LCD1602的指令手册来设置具体的功能，发送要展示的数据即可，完整的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> smbus</span><br><span class="line">BUS = smbus.SMBus(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># LCD屏幕的硬件地址</span></span><br><span class="line">LCD_ADDR = <span class="number">0x27</span></span><br><span class="line"><span class="comment"># 是否开启背光 由PCF8574T的低4位中的第4位决定</span></span><br><span class="line">BLEN = <span class="number">1</span> </span><br><span class="line"></span><br><span class="line"><span class="comment"># 补充背光控制位</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addBlenControl</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> BLEN</span><br><span class="line">    tmpData = data</span><br><span class="line">    <span class="keyword">if</span> BLEN:</span><br><span class="line">        <span class="comment"># 将第4位背光控制位强制设置1</span></span><br><span class="line">        tmpData = data | <span class="number">0b00001000</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="comment"># 将第4位背光控制位强制设置为0</span></span><br><span class="line">        tmpData = data &amp; <span class="number">0b11110111</span></span><br><span class="line">    <span class="keyword">return</span> tmpData    </span><br><span class="line"></span><br><span class="line"><span class="comment"># 补充Enable控制位</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addEnableControl</span><span class="params">(data, high)</span>:</span></span><br><span class="line">    tempData = data</span><br><span class="line">    <span class="comment"># 第3位控制Enable</span></span><br><span class="line">    <span class="keyword">if</span> high:</span><br><span class="line">        tempData |= <span class="number">0b00000100</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        tempData &amp;= <span class="number">0b11111011</span></span><br><span class="line">    <span class="keyword">return</span> tempData</span><br><span class="line"></span><br><span class="line"><span class="comment"># 补充RS控制位</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">addRSControl</span><span class="params">(data, high)</span>:</span></span><br><span class="line">    tempData = data</span><br><span class="line">    <span class="comment"># 第1位控制RS</span></span><br><span class="line">    <span class="keyword">if</span> high:</span><br><span class="line">        tempData |= <span class="number">0b00000001</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        tempData &amp;= <span class="number">0b11111110</span></span><br><span class="line">    <span class="keyword">return</span> tempData</span><br><span class="line"></span><br><span class="line"><span class="comment"># 通过I2C总线写入数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">writeI2C</span><span class="params">(addr, data)</span>:</span></span><br><span class="line">    <span class="comment"># 添加背光控制</span></span><br><span class="line">    temp = addBlenControl(data)</span><br><span class="line">    <span class="comment"># 写数据到I2C总线</span></span><br><span class="line">    BUS.write_byte(addr ,temp)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送指令到LCD1602</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sendCommand</span><span class="params">(comm)</span>:</span></span><br><span class="line">    <span class="comment"># comm高4位数据传输</span></span><br><span class="line">    <span class="comment"># 低4位先清空</span></span><br><span class="line">    buf = comm &amp; <span class="number">0b11110000</span></span><br><span class="line">    <span class="comment"># 先将Enable置为高电平</span></span><br><span class="line">    buf = addEnableControl(buf, <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 设置为指令模式</span></span><br><span class="line">    buf = addRSControl(buf, <span class="number">0</span>)</span><br><span class="line">    <span class="comment"># 写入指令</span></span><br><span class="line">    writeI2C(LCD_ADDR ,buf)</span><br><span class="line">    time.sleep(<span class="number">0.002</span>)</span><br><span class="line">    <span class="comment"># 将Enable置为低电平 使产生低电平跳变来执行指令</span></span><br><span class="line">    buf = addEnableControl(buf, <span class="number">0</span>)          </span><br><span class="line">    writeI2C(LCD_ADDR ,buf)</span><br><span class="line">     </span><br><span class="line">    <span class="comment"># comm低4位数据传输</span></span><br><span class="line">    <span class="comment"># 高4位先清空 并将低4位的数据移动到高4位</span></span><br><span class="line">    buf = (comm &amp; <span class="number">0b00001111</span>) &lt;&lt; <span class="number">4</span></span><br><span class="line">    <span class="comment"># 当次指令的低4位用来 做enable re rew的控制</span></span><br><span class="line">    <span class="comment"># 先将Enable置为高电平</span></span><br><span class="line">    buf = addEnableControl(buf, <span class="number">1</span>)</span><br><span class="line">    writeI2C(LCD_ADDR ,buf)</span><br><span class="line">    time.sleep(<span class="number">0.002</span>)</span><br><span class="line">    <span class="comment"># 将Enable置为低电平 使产生低电平跳变来执行指令</span></span><br><span class="line">    buf = addEnableControl(buf, <span class="number">0</span>)     </span><br><span class="line">    writeI2C(LCD_ADDR ,buf)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送数据到LCD </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sendData</span><span class="params">(data)</span>:</span></span><br><span class="line">    <span class="comment"># data高4位数据传输</span></span><br><span class="line">    <span class="comment"># 低4位先清空</span></span><br><span class="line">    buf = data &amp; <span class="number">0b11110000</span></span><br><span class="line">    <span class="comment"># 先将Enable置为高电平</span></span><br><span class="line">    buf = addEnableControl(buf, <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 设置为数据模式</span></span><br><span class="line">    buf = addRSControl(buf, <span class="number">1</span>)   </span><br><span class="line">    writeI2C(LCD_ADDR ,buf)</span><br><span class="line">    time.sleep(<span class="number">0.002</span>)</span><br><span class="line">    <span class="comment"># 将Enable置为低电平 使产生低电平跳变来执行指令</span></span><br><span class="line">    buf = addEnableControl(buf, <span class="number">0</span>)  </span><br><span class="line">    writeI2C(LCD_ADDR ,buf)</span><br><span class="line">     </span><br><span class="line">    <span class="comment"># data低4位数据传输</span></span><br><span class="line">    buf = (data &amp; <span class="number">0b00001111</span>) &lt;&lt; <span class="number">4</span></span><br><span class="line">    <span class="comment"># 先将Enable置为高电平</span></span><br><span class="line">    buf = addEnableControl(buf, <span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 设置为数据模式</span></span><br><span class="line">    buf = addRSControl(buf, <span class="number">1</span>) </span><br><span class="line">    writeI2C(LCD_ADDR ,buf)</span><br><span class="line">    time.sleep(<span class="number">0.002</span>)</span><br><span class="line">    <span class="comment"># 将Enable置为低电平 使产生低电平跳变来执行指令</span></span><br><span class="line">    buf = addEnableControl(buf, <span class="number">0</span>)  </span><br><span class="line">    writeI2C(LCD_ADDR ,buf)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">initLCD</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 启动时，LCD1602为8位模式 I2C传输数据时先传输的为低位数据</span></span><br><span class="line">    <span class="comment"># 因此实际上的指令为 0b00100011</span></span><br><span class="line">    <span class="comment"># 为指令6 将LCD1602设置为4位总线模式</span></span><br><span class="line">    sendCommand(<span class="number">0b00110010</span>) </span><br><span class="line">    time.sleep(<span class="number">0.005</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 之后的指令都是4位总线模式</span></span><br><span class="line">    sendCommand(<span class="number">0b00110010</span>) </span><br><span class="line">    time.sleep(<span class="number">0.005</span>)</span><br><span class="line">    <span class="comment"># 指令4 设置屏幕开启，无光标，无闪烁</span></span><br><span class="line">    sendCommand(<span class="number">0b00001100</span>)</span><br><span class="line">    time.sleep(<span class="number">0.005</span>)</span><br><span class="line">    <span class="comment"># 指令1 清屏</span></span><br><span class="line">    sendCommand(<span class="number">0b00000001</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置屏幕要展示的文案 x，y确定位置</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">printLCD</span><span class="params">(x, y, str)</span>:</span></span><br><span class="line">    <span class="comment"># 2行 16 列</span></span><br><span class="line">    <span class="keyword">if</span> x &lt; <span class="number">0</span>:</span><br><span class="line">        x = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> x &gt; <span class="number">15</span>:</span><br><span class="line">        x = <span class="number">15</span></span><br><span class="line">    <span class="keyword">if</span> y &lt;<span class="number">0</span>:</span><br><span class="line">        y = <span class="number">0</span></span><br><span class="line">    <span class="keyword">if</span> y &gt; <span class="number">1</span>:</span><br><span class="line">        y = <span class="number">1</span></span><br><span class="line">    <span class="comment"># 指令7 设置数据要展示的位置</span></span><br><span class="line">    addr = <span class="number">0b10000000</span> + <span class="number">0b00000100</span> * y + x</span><br><span class="line">    sendCommand(addr)</span><br><span class="line">    <span class="comment"># 开始发送字符数据到LCD1602的数据寄存器</span></span><br><span class="line">    <span class="keyword">for</span> chr <span class="keyword">in</span> str:</span><br><span class="line">        <span class="comment"># ord函数可以获取字符的ascil</span></span><br><span class="line">        sendData(ord(chr))</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 主程序</span></span><br><span class="line">initLCD()</span><br><span class="line">printLCD(<span class="number">0</span>, <span class="number">0</span>, <span class="string">'Hello, world!'</span>)</span><br><span class="line">time.sleep(<span class="number">2</span>)</span><br><span class="line">sendCommand(<span class="number">0b00000001</span>)</span><br><span class="line">time.sleep(<span class="number">0.002</span>)</span><br><span class="line">printLCD(<span class="number">0</span>, <span class="number">0</span>, <span class="string">'Love China!'</span>)</span><br><span class="line">time.sleep(<span class="number">2</span>)</span><br><span class="line">sendCommand(<span class="number">0b00000001</span>)</span><br><span class="line">time.sleep(<span class="number">0.002</span>)</span><br><span class="line">printLCD(<span class="number">0</span>, <span class="number">0</span>, <span class="string">'Great Raspberry!'</span>)</span><br></pre></td></tr></table></figure>
+<p>如上代码所示，所有的指令都采用的二进制的方式，便于对比指令手册进行理解。更多时候我们会采用十六进制数字来编写指令，这样会使代码看的干净很多。上面的示例代码是一个简单的应用程序，运行后可以直接在LCD屏幕上展示3句话：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Hello World!</span><br><span class="line">Love China!</span><br><span class="line">Great Raspberry!</span><br></pre></td></tr></table></figure>
+<p>其实此程序也是一个完整的LCD1602驱动，初始化完成后，我们可以通过其提供额sendData方法来实现各种各样的显示需求。效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-fc119cc6c0ae47fca3e6d107082f1d96b3b.jpg" alt></p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2021/08/12/423一起玩转树莓派（10）——触控激光灯/" class="next-post btn btn-default" title='一起玩转树莓派（10）——触控激光灯'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（10）——触控激光灯</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（11）——使用LCD屏"><span class="toc-text">一起玩转树莓派（11）——使用LCD屏</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、LCD-1602"><span class="toc-text">一、LCD 1602</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、带I2C模块的LCD-1602"><span class="toc-text">二、带I2C模块的LCD 1602</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、编码实验"><span class="toc-text">三、编码实验</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

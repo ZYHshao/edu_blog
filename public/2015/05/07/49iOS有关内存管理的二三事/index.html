@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS有关内存管理的二三事 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS有关内存管理的二三事">
+            
+	            iOS有关内存管理的二三事
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/05/07</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS有关内存管理的二三事"><a href="#iOS有关内存管理的二三事" class="headerlink" title="iOS有关内存管理的二三事"></a>iOS有关内存管理的二三事</h2><h3 id="一、前引"><a href="#一、前引" class="headerlink" title="一、前引"></a>一、前引</h3><p>随着移动设备的内存越来越大，程序员也已经度过了为了那一两M的内存在系统的抽丝剥茧的年代，对于JAVA的开发者，对内存更是伸手即取，并且从不关心什么时候还回去。但是，程序的掌控度对程序员来说是至关重要的，任何语言的内存管理机制的初衷也是在有限的空间里完成最精致的逻辑。</p>
+<h3 id="二、Xcode工程设置ARC"><a href="#二、Xcode工程设置ARC" class="headerlink" title="二、Xcode工程设置ARC"></a>二、Xcode工程设置ARC</h3><p>ARC是xcode5中引入的自动引用计数，其原理与MRC是一样，只是系统帮助我们添加了retain和release。现在在xcode中新建的项目默认都是ARC的环境，我们可以通过设置其为MRC。</p>
+<p>在BuildSettings中搜索ARC：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0507/153334_Re2r_2340880.png" alt></p>
+<p>将下面的参数设置为NO，默认是YES。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0507/153856_Zv78_2340880.png" alt></p>
+<p>这时项目工程的环境就变成了MRC。</p>
+<h3 id="三、项目中实现MRC和ARC混编"><a href="#三、项目中实现MRC和ARC混编" class="headerlink" title="三、项目中实现MRC和ARC混编"></a>三、项目中实现MRC和ARC混编</h3><p>现实中的许多旧的项目，还有一些比较老的第三方库，可能都是采用MRC环境编写的，我们在对其进行扩展或者做新项目的兼容的时候，可以在xcode中对其进行混编。</p>
+<p>选择：target-&gt;build phases-&gt;compile sources</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0507/154531_TE2R_2340880.png" alt></p>
+<p>如果工程是ARC，要混编MRC的文件，我们选中compiler flags，后面设置为-fno-objc-arc</p>
+<p>如果工程是MRC，要混编ARC文件，我们在后面设置-fobjc-arc</p>
+<h3 id="四、IOS内存管理机制基本原理"><a href="#四、IOS内存管理机制基本原理" class="headerlink" title="四、IOS内存管理机制基本原理"></a>四、IOS内存管理机制基本原理</h3><p>无论你是只注重于代码逻辑，将内存交给ARC的新时代程序员，还是依然对apple的信任不足，依然事必躬亲的MRC古板程序员，我想你都应该了解IOS中内存管理的机制，尽管ARC机制很成熟也很可靠，可是依然会有很多应用存在循环应用，内存泄露等问题，要知道，ARC不是万能的，它仅仅只是帮你省去写一些繁琐的代码。</p>
+<p>首先，在Object-C中创建对象返回的并不是对象本身，而是一个指针。比如我们使用alloc申请空间，会经常这样做：</p>
+<p>UIImage * image = [[UIImage alloc]init];</p>
+<p>这里，调用的alloc时，系统将给我们创建的类分配一块内存空间，并返回一个指向这个空间的指针。调用init时对对象进行初始化。如果此时，我们将image这个指针置为nil：image=nil;那样将造成内存泄露，系统分配给image的空间永远无法回收。所以，在我们不需要image这个对象时，我们会使用dealloc方法将其交还给系统：[image dealloc];然而这里，有将产生一个严重的问题，如果我们此时打印image的指针，会发现它现在成了一个危险东西，因为它指向的东西不存在了，而它却依然指向那个地方，这便是很多程序员的噩梦：野指针。为此，我们应该养成一个好习惯，不用的指针置为nil，所有对空指针进行的操作都被认为是安全的。</p>
+<p>通过上面的理解，我们发现了一个非常麻烦的地方，我申请了一块内存空间，如果我将指针置空了而没有释放对象，则会内存泄露，如果我提前释放了对象，又很可能会有野指针的出现。并且如果有很多类都引用了这个对象，我甚至的不知道我应该什么时候释放它。因此，Object-C为我们引入了引用计数这种管理内存的方法，任何引用这个对象的地方，都应该让这个对象的引用计数加1。同样，任何不再需要这个对象的地方，也应该使它的引用计数减1，如此一来，对象内存便被统一的管理了起来。</p>
+<h3 id="五、内存管理的黄金法则"><a href="#五、内存管理的黄金法则" class="headerlink" title="五、内存管理的黄金法则"></a>五、内存管理的黄金法则</h3><p>引用计数内存管理的机制是对象的计数，每个对象至少会有一个引用者，如果没有了引用者，对象会被释放。</p>
+<p>黄金法则：</p>
+<p>1、当你使用alloc,new,copy,mutableCopy创建对象时，你才需要管理他们。</p>
+<p>2、你可以使用retain给一个对象增加引用计数。</p>
+<p>3、当你不再需要一个对象时，你必须调用release减少其引用计数。</p>
+<p>4、你不能释放不属于你的对象的所有权。</p>
+<p>上面就是黄金法则的所有内容，我译的可能不到位，总结为一点，也是至关重要的一点就是：谁创建了对象，谁释放掉对象。谁增加了引用计数，谁就在不用时减少计数。alloc，new，copy，mutableCopy，retain这些方法会使引用计数增加，release会使引用计数减少，当计数为0时，系统会调用dealloc释放内存。</p>
+<h3 id="六、自动释放池"><a href="#六、自动释放池" class="headerlink" title="六、自动释放池"></a>六、自动释放池</h3><p>为了方便内存管理，避免我们频繁的调用release方法，Object-C中还为我们引用了一种机制：自动释放池。自动释放池的原理其实只是延时释放，它并没有帮我们做太多的工作。自动释放池的使用方式有两种：</p>
+<p>1、MRC时：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc]init];//创建一个自动释放池，系统默认会为我们创建一个，我们也可以创建自己的。</span><br><span class="line">    UIImage * image = [[[UIImage alloc]init] autorelease];//在池内创建一些对象，会和最近的自动释放池匹配</span><br><span class="line">    [pool release];//这时自动释放池会向池子中的每一个对象发送release消息</span><br></pre></td></tr></table></figure>
+<p>2、ARC时：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  @autoreleasepool &#123;</span><br><span class="line">        UIImage * image = [[[UIImage alloc]init] autorelease];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>疏漏之处 欢迎指正</p>
+<p>学习使用 欢迎转载</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/05/08/50标签之美二——文本标签/" class="pre-post btn btn-default" title='标签之美二——文本标签'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">标签之美二——文本标签</span>
+        </a>
+    
+    
+        <a href="/2015/05/07/48iOS开发遇到的屏幕上下闪出黑边的解决方法/" class="next-post btn btn-default" title='iOS开发遇到的屏幕上下闪出黑边的解决方法'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发遇到的屏幕上下闪出黑边的解决方法</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS有关内存管理的二三事"><span class="toc-text">iOS有关内存管理的二三事</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、前引"><span class="toc-text">一、前引</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、Xcode工程设置ARC"><span class="toc-text">二、Xcode工程设置ARC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、项目中实现MRC和ARC混编"><span class="toc-text">三、项目中实现MRC和ARC混编</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、IOS内存管理机制基本原理"><span class="toc-text">四、IOS内存管理机制基本原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、内存管理的黄金法则"><span class="toc-text">五、内存管理的黄金法则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、自动释放池"><span class="toc-text">六、自动释放池</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

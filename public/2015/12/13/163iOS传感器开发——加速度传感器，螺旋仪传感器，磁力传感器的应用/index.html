@@ -1,0 +1,303 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用">
+            
+	            iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/12/13</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用"><a href="#iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用" class="headerlink" title="﻿iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用"></a>﻿iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>通过加速度传感器，螺旋仪传感器和磁力传感，我们可以获取到手机在当前三维空间中的形态，加速度传感器也被称作重力感应。在一些赛车游戏中可以广泛得到应用。在iOS5之前，iPhone支持的传感器有限，关于加速度传感器的管理用UIAccelerometer这个类负责，iOS5之后，有关设备空间信息的管理交由了CoreMotion这个框架，CoreMotion将多种传感器统一进行管理计算。
+</code></pre><h3 id="二、使用UIAccelerometer获取设备空间位置"><a href="#二、使用UIAccelerometer获取设备空间位置" class="headerlink" title="二、使用UIAccelerometer获取设备空间位置"></a>二、使用UIAccelerometer获取设备空间位置</h3><pre><code>虽然在iOS5之后这个类被弃用了，但是和其他大多被弃用的方法类似，在新的iOS版本中，是兼容旧方法的，我们依然可以使用这个类来获取简单的设备空间信息。
+
+我们主要使用到的类和代理方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">//设备信息对象类</span><br><span class="line">@interface UIAcceleration : NSObject</span><br><span class="line">//加速度传感器的时间戳</span><br><span class="line">@property(nonatomic,readonly) NSTimeInterval timestamp;</span><br><span class="line">//x方向值</span><br><span class="line">@property(nonatomic,readonly) UIAccelerationValue x;</span><br><span class="line">//y方向值</span><br><span class="line">@property(nonatomic,readonly) UIAccelerationValue y;</span><br><span class="line">//z方向值</span><br><span class="line">@property(nonatomic,readonly) UIAccelerationValue z;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>上面的UIAccelerationValue就是double类型。</p>
+<p>加速度传感器获取的属性是设备在三维空间的角度属性，借用下面这张图：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1213/104612_9dg5_2340880.png" alt></p>
+<p>如果将设备这样立在桌面上，设备的三维坐标器如图，我们将设备已Z轴移动的时候，向右x为正，向左为负，其他两轴类似。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//加速度管理类</span><br><span class="line">@interface UIAccelerometer : NSObject </span><br><span class="line">//获取单例对象</span><br><span class="line">+ (UIAccelerometer *)sharedAccelerometer;</span><br><span class="line">//刷新频率</span><br><span class="line">@property(nonatomic) NSTimeInterval updateInterval;</span><br><span class="line">//代理</span><br><span class="line">@property(nullable,nonatomic,weak) id&lt;UIAccelerometerDelegate&gt; delegate;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>UIAccelerometer是管理类，通过单例方法获取到实例对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@protocol UIAccelerometerDelegate&lt;NSObject&gt;</span><br><span class="line">@optional</span><br><span class="line"></span><br><span class="line">- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration NS_DEPRECATED_IOS(2_0, 5_0)  __TVOS_PROHIBITED;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>这个代理方法是刷新信息的回调，会以我们设置的帧率刷新。</p>
+<p>举例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@interface ViewController ()&lt;UIAccelerometerDelegate&gt;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    [UIAccelerometer sharedAccelerometer].delegate=self;</span><br><span class="line">    [UIAccelerometer sharedAccelerometer].updateInterval=1/60.0;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration&#123;</span><br><span class="line">    NSLog(@&quot;\n%f\n%f\n%f&quot;,acceleration.x,acceleration.y,acceleration.z);</span><br><span class="line">   // NSLog(@&quot;%f&quot;,acceleration.timestamp);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h3 id="三、CoreMotion框架的使用"><a href="#三、CoreMotion框架的使用" class="headerlink" title="三、CoreMotion框架的使用"></a>三、CoreMotion框架的使用</h3><pre><code>CoreMotion框架十分强大，它不仅将加速度传感器和螺旋仪传感器进行了统一配置和管理，还为我们封装了许多算法，我们可以直接获取到设备的运动状态信息。
+</code></pre><h4 id="1、CoreMotion负责处理的数据"><a href="#1、CoreMotion负责处理的数据" class="headerlink" title="1、CoreMotion负责处理的数据"></a>1、CoreMotion负责处理的数据</h4><pre><code>CoreMotion负责处理四种数据，一种是加速度数据，一种是螺旋仪数据，一种是磁感应数据，还有一种是前三种数据通过复杂运算得到的设备的运动数据。几个主要的类如下：
+</code></pre><p>CMAccelerommterData:设备的加速度数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">    double x;</span><br><span class="line">    double y;</span><br><span class="line">    double z;</span><br><span class="line">&#125; CMAcceleration;</span><br><span class="line">@interface CMAccelerometerData : CMLogItem</span><br><span class="line">&#123;</span><br><span class="line">@private</span><br><span class="line">    id _internal;</span><br><span class="line">&#125;</span><br><span class="line">//加速度的数据对象</span><br><span class="line">@property(readonly, nonatomic) CMAcceleration acceleration;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>CMGyroData:设备的螺旋仪数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">    double x;</span><br><span class="line">    double y;</span><br><span class="line">    double z;    </span><br><span class="line">&#125; CMRotationRate;</span><br><span class="line">@interface CMGyroData : CMLogItem</span><br><span class="line">&#123;</span><br><span class="line">@private</span><br><span class="line">    id _internal;</span><br><span class="line">&#125;</span><br><span class="line">//螺旋仪数据对象</span><br><span class="line">@property(readonly, nonatomic) CMRotationRate rotationRate;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>CMMagnetometerData：磁感应信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">    double x;</span><br><span class="line">    double y;</span><br><span class="line">    double z;</span><br><span class="line">&#125; CMMagneticField;</span><br><span class="line"></span><br><span class="line">@interface CMMagnetometerData : CMLogItem</span><br><span class="line">&#123;</span><br><span class="line">@private</span><br><span class="line">    id _internal;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//磁力对象</span><br><span class="line">@property(readonly, nonatomic) CMMagneticField magneticField;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>CMDeviceMotion:设备的运动状态数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@interface CMDeviceMotion : CMLogItem</span><br><span class="line">&#123;</span><br><span class="line">@private</span><br><span class="line">    id _internal;</span><br><span class="line">&#125;</span><br><span class="line">//设备的状态对象</span><br><span class="line">@property(readonly, nonatomic) CMAttitude *attitude;</span><br><span class="line">//设备的角速度</span><br><span class="line">@property(readonly, nonatomic) CMRotationRate rotationRate;</span><br><span class="line">//设备的重力加速度</span><br><span class="line">@property(readonly, nonatomic) CMAcceleration gravity;</span><br><span class="line">//用户嫁给设备的加速度 设备的总加速度为重力加速度叫上用户给的加速度</span><br><span class="line">@property(readonly, nonatomic) CMAcceleration userAcceleration;</span><br><span class="line">//设备的磁场矢量对象</span><br><span class="line">@property(readonly, nonatomic) CMCalibratedMagneticField magneticField NS_AVAILABLE(NA,5_0);</span><br></pre></td></tr></table></figure>
+<p>相比之前两个类，这个就比较复杂了，attitude对象中又封装了许多设备的状态属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@interface CMAttitude : NSObject &lt;NSCopying, NSSecureCoding&gt;</span><br><span class="line">&#123;</span><br><span class="line">@private</span><br><span class="line">    id _internal;</span><br><span class="line">&#125;</span><br><span class="line">//设备的欧拉角roll</span><br><span class="line">@property(readonly, nonatomic) double roll;</span><br><span class="line">//设备的欧拉角pitch</span><br><span class="line">@property(readonly, nonatomic) double pitch;</span><br><span class="line">//设备的欧拉角yaw</span><br><span class="line">@property(readonly, nonatomic) double yaw;</span><br><span class="line">//设备状态的旋转矩阵</span><br><span class="line">@property(readonly, nonatomic) CMRotationMatrix rotationMatrix;</span><br><span class="line">//设备状态的四元数</span><br><span class="line">@property(readonly, nonatomic) CMQuaternion quaternion;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h4 id="2、CoreMotion的使用"><a href="#2、CoreMotion的使用" class="headerlink" title="2、CoreMotion的使用"></a>2、CoreMotion的使用</h4><pre><code>CoreMotion有两种使用方式，一种是我们主动向manager索取数据，一种是通过回调让manager将数据传给回调给我们，这两种方式分别称作pull方式和push方式。
+</code></pre><p>pull方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    //创建管理对象</span><br><span class="line">    manager= [[CMMotionManager alloc]init];</span><br><span class="line">    //开启加速度更新</span><br><span class="line">    [manager startAccelerometerUpdates];</span><br><span class="line">    //开启螺旋仪更新</span><br><span class="line">    [manager startGyroUpdates];</span><br><span class="line">    //开启状态更新</span><br><span class="line">    [manager startMagnetometerUpdates];</span><br><span class="line">    //创建定时器</span><br><span class="line">    NSTimer * time = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(updata) userInfo:nil repeats:YES];</span><br><span class="line">    time.fireDate = [NSDate distantPast];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(void)updata&#123;</span><br><span class="line">//获取数据</span><br><span class="line">    NSLog(@&quot;%f,%f,%f\n%f,%f,%f&quot;,manager.accelerometerData.acceleration.x,manager.accelerometerData.acceleration.y,manager.accelerometerData.acceleration.z,manager.gyroData.rotationRate.x,manager.gyroData.rotationRate.y,manager.gyroData.rotationRate.z);</span><br><span class="line">   </span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>push方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">   //创建管理对象</span><br><span class="line">    manager= [[CMMotionManager alloc]init];</span><br><span class="line">    //在当前线程中回调</span><br><span class="line">    [manager startAccelerometerUpdatesToQueue:[NSOperationQueue currentQueue] withHandler:^(CMAccelerometerData * _Nullable accelerometerData, NSError * _Nullable error) &#123;</span><br><span class="line">         NSLog(@&quot;%f,%f,%f\n%f,%f,%f&quot;,manager.accelerometerData.acceleration.x,manager.accelerometerData.acceleration.y,manager.accelerometerData.acceleration.z,manager.gyroData.rotationRate.x,manager.gyroData.rotationRate.y,manager.gyroData.rotationRate.z);</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="3、CoreMotion的更多属性和方法"><a href="#3、CoreMotion的更多属性和方法" class="headerlink" title="3、CoreMotion的更多属性和方法"></a>3、CoreMotion的更多属性和方法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">@interface CMMotionManager : NSObject</span><br><span class="line">&#123;</span><br><span class="line">@private</span><br><span class="line">    id _internal;</span><br><span class="line">&#125;</span><br><span class="line">//设置加速度传感器更新帧率</span><br><span class="line">@property(assign, nonatomic) NSTimeInterval accelerometerUpdateInterval __TVOS_PROHIBITED;</span><br><span class="line">//加速度传感器是否可用</span><br><span class="line">@property(readonly, nonatomic, getter=isAccelerometerAvailable) BOOL accelerometerAvailable __TVOS_PROHIBITED;</span><br><span class="line">//加速度传感器是否激活</span><br><span class="line">@property(readonly, nonatomic, getter=isAccelerometerActive) BOOL accelerometerActive __TVOS_PROHIBITED;</span><br><span class="line">//加速度传感器数据对象</span><br><span class="line">@property(readonly, nullable) CMAccelerometerData *accelerometerData __TVOS_PROHIBITED;</span><br><span class="line">//pull方式开始更新加速度数据</span><br><span class="line">- (void)startAccelerometerUpdates __TVOS_PROHIBITED;</span><br><span class="line">//push方式更新加速度数据</span><br><span class="line">- (void)startAccelerometerUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMAccelerometerHandler)handler __TVOS_PROHIBITED;</span><br><span class="line">//停止更新加速度数据</span><br><span class="line">- (void)stopAccelerometerUpdates __TVOS_PROHIBITED;</span><br><span class="line">//螺旋仪传感器刷新帧率</span><br><span class="line">@property(assign, nonatomic) NSTimeInterval gyroUpdateInterval __TVOS_PROHIBITED;</span><br><span class="line">//螺旋仪是否可用</span><br><span class="line">@property(readonly, nonatomic, getter=isGyroAvailable) BOOL gyroAvailable __TVOS_PROHIBITED;</span><br><span class="line">//螺旋仪是否激活</span><br><span class="line">@property(readonly, nonatomic, getter=isGyroActive) BOOL gyroActive __TVOS_PROHIBITED;</span><br><span class="line">//螺旋仪数据</span><br><span class="line">@property(readonly, nullable) CMGyroData *gyroData __TVOS_PROHIBITED;</span><br><span class="line">//pull方式开始更新螺旋仪</span><br><span class="line">- (void)startGyroUpdates __TVOS_PROHIBITED;</span><br><span class="line">//push方式开始更新螺旋仪</span><br><span class="line">- (void)startGyroUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMGyroHandler)handler __TVOS_PROHIBITED;</span><br><span class="line">//停止更新螺旋仪</span><br><span class="line">- (void)stopGyroUpdates __TVOS_PROHIBITED;</span><br><span class="line">//磁力传感更新帧率</span><br><span class="line">@property(assign, nonatomic) NSTimeInterval magnetometerUpdateInterval NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//设备磁力传感器是否可用</span><br><span class="line">@property(readonly, nonatomic, getter=isMagnetometerAvailable) BOOL magnetometerAvailable NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//设备磁力传感器是否激活</span><br><span class="line">@property(readonly, nonatomic, getter=isMagnetometerActive) BOOL magnetometerActive NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//设备磁力状态数据</span><br><span class="line">@property(readonly, nullable) CMMagnetometerData *magnetometerData NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//pull方式更新设备磁力状态</span><br><span class="line">- (void)startMagnetometerUpdates NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//push方式更新设备磁力状态</span><br><span class="line">- (void)startMagnetometerUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMMagnetometerHandler)handler NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//停止更新设备状态</span><br><span class="line">- (void)stopMagnetometerUpdates NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//设备状态更新帧率</span><br><span class="line">@property(assign, nonatomic) NSTimeInterval deviceMotionUpdateInterval __TVOS_PROHIBITED;</span><br><span class="line">//参考器枚举</span><br><span class="line">+ (CMAttitudeReferenceFrame)availableAttitudeReferenceFrames NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">@property(readonly, nonatomic) CMAttitudeReferenceFrame attitudeReferenceFrame NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//设备运动信息是否可用</span><br><span class="line">@property(readonly, nonatomic, getter=isDeviceMotionAvailable) BOOL deviceMotionAvailable __TVOS_PROHIBITED;</span><br><span class="line">//设备运动信息是否激活</span><br><span class="line">@property(readonly, nonatomic, getter=isDeviceMotionActive) BOOL deviceMotionActive __TVOS_PROHIBITED;</span><br><span class="line">//设备运动信息对象</span><br><span class="line">@property(readonly, nullable) CMDeviceMotion *deviceMotion __TVOS_PROHIBITED;</span><br><span class="line">//pull方式开始刷新运动信息</span><br><span class="line">- (void)startDeviceMotionUpdates __TVOS_PROHIBITED;</span><br><span class="line">//push方式开始刷新运动信息</span><br><span class="line">- (void)startDeviceMotionUpdatesToQueue:(NSOperationQueue *)queue withHandler:(CMDeviceMotionHandler)handler __TVOS_PROHIBITED;</span><br><span class="line">//使用某个参考系</span><br><span class="line">- (void)startDeviceMotionUpdatesUsingReferenceFrame:(CMAttitudeReferenceFrame)referenceFrame NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//push方式开始刷新设备运动信息</span><br><span class="line">- (void)startDeviceMotionUpdatesUsingReferenceFrame:(CMAttitudeReferenceFrame)referenceFrame toQueue:(NSOperationQueue *)queue withHandler:(CMDeviceMotionHandler)handler NS_AVAILABLE(NA,5_0) __TVOS_PROHIBITED;</span><br><span class="line">//停止刷新设备运动信息</span><br><span class="line">- (void)stopDeviceMotionUpdates __TVOS_PROHIBITED;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/12/14/164iOS传感器开发——距离传感器的应用/" class="pre-post btn btn-default" title='iOS传感器开发——距离传感器的应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS传感器开发——距离传感器的应用</span>
+        </a>
+    
+    
+        <a href="/2015/12/10/162iOS传感器开发——为APP添加手机密码、指纹进行安全验证/" class="next-post btn btn-default" title='iOS传感器开发——为APP添加手机密码、指纹进行安全验证'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS传感器开发——为APP添加手机密码、指纹进行安全验证</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用"><span class="toc-text">﻿iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、使用UIAccelerometer获取设备空间位置"><span class="toc-text">二、使用UIAccelerometer获取设备空间位置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、CoreMotion框架的使用"><span class="toc-text">三、CoreMotion框架的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、CoreMotion负责处理的数据"><span class="toc-text">1、CoreMotion负责处理的数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、CoreMotion的使用"><span class="toc-text">2、CoreMotion的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、CoreMotion的更多属性和方法"><span class="toc-text">3、CoreMotion的更多属性和方法</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift3.0带来的变化汇总系列一——字符串与基本运算符中的变化 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift3.0带来的变化汇总系列一——字符串与基本运算符中的变化">
+            
+	            Swift3.0带来的变化汇总系列一——字符串与基本运算符中的变化
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/06/16</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift3-0带来的变化汇总系列一——字符串与基本运算符中的变化"><a href="#Swift3-0带来的变化汇总系列一——字符串与基本运算符中的变化" class="headerlink" title="Swift3.0带来的变化汇总系列一——字符串与基本运算符中的变化"></a>Swift3.0带来的变化汇总系列一——字符串与基本运算符中的变化</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>Apple与今年6月13日正式发布了Swift3.0的第一个预览版本，并且相应推出了Xcode8的第一个bate版本。开发者已经可以在Xcode8bate版上来体验Swift3.0的新特性。首先，Swift3.0确实带来了很大改变，许多Swift中的结构体API都进行了更新，例如String，Array等，Swift3.0版本将许多类Objective-C风格的API都更换成了Swift风格的，其目的使开发者可以使用Swift更加惬意有趣的编程。本系列博客，是我观看WWDC视频中介绍的内容以及Swift3.0的开发者帮助文档整理总结而来，在期间，我也参考对比了Swift2.2中的实现方式，希望可以帮助需要的朋友尽快熟悉和上手Swift3.0。
+</code></pre><h3 id="二、String类中的API变化"><a href="#二、String类中的API变化" class="headerlink" title="二、String类中的API变化"></a>二、String类中的API变化</h3><pre><code>除了Swift版的Cocoa框架中的API有了大范围的修改外，Swift的一些核心库也有了很大的改动。
+
+Swift3.0中的字符串类型String在方法API上更加简洁，其中变动较大的是与下标相关的方法，列举如下：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> string = <span class="string">"Hello-Swift"</span></span><br><span class="line"><span class="comment">//获取某个下标后一个下标对应的字符 char="e"</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//var char = string[startIndex.successor()]</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line"><span class="keyword">var</span> char = string[string.index(after: startIndex)]</span><br><span class="line"><span class="comment">//获取某个下标前一个下标对应的字符 char2 = "t"</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//var char2 = string[endIndex.predecessor()]</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line"><span class="keyword">var</span> char2 = string[string.index(before: string.endIndex)]</span><br><span class="line"><span class="comment">//通过范围获取字符串中的一个子串 Hello</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//var subString = string[startIndex...startIndex.advancedBy(4)]</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line"><span class="keyword">var</span> subString = string[startIndex...string.index(startIndex, offsetBy: <span class="number">4</span>)]</span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//var subString2 = string[endIndex.advancedBy(-5)...endIndex.predecessor()]</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line"><span class="keyword">var</span> subString2 = string[string.index(endIndex, offsetBy: -<span class="number">5</span>)..&lt;endIndex]</span><br><span class="line"><span class="comment">//获取某个子串在父串中的范围</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//var range =  string.rangeOfString("Hello")</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line"><span class="keyword">var</span> range = string.range(of: <span class="string">"Hello"</span>)</span><br><span class="line"><span class="comment">//追加字符串操作 此时string = "Hello-Swift! Hello-World"</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//string.appendContentsOf(" Hello-World")</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line">string.append(<span class="string">" Hello-World"</span>)</span><br><span class="line"><span class="comment">//在指定位置插入一个字符 此时string = "Hello-Swift!~ Hello-World"</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//string.insert("~", atIndex: string.startIndex.advancedBy(12))</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line">string.insert(<span class="string">"~"</span>, at: string.index(string.startIndex, offsetBy: <span class="number">12</span>))</span><br><span class="line"><span class="comment">//在指定位置插入一组字符 此时string = "Hello-Swift!~~~~ Hello-World"</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//string.insertContentsOf(["~","~","~"], at: string.startIndex.advancedBy(12))</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line">string.insert(contentsOf: [<span class="string">"~"</span>,<span class="string">"~"</span>,<span class="string">"~"</span>], at: string.index(string.startIndex, offsetBy: <span class="number">12</span>))</span><br><span class="line"><span class="comment">//在指定范围替换一个字符串 此时string = "Hi-Swift!~~~~ Hello-World"</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//string.replaceRange(string.startIndex...string.startIndex.advancedBy(4), with: "Hi")</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line">string.replaceSubrange(string.startIndex...string.index(string.startIndex, offsetBy: <span class="number">4</span>), with: <span class="string">"Hi"</span>)</span><br><span class="line"><span class="comment">//在指定位置删除一个字符 此时string = "Hi-Swift!~~~~ Hello-Worl"</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//string.removeAtIndex(string.endIndex.predecessor())</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line">string.remove(at: string.index(before:string.endIndex))</span><br><span class="line"><span class="comment">//删除指定范围的字符 此时string = "Swift!~~~~ Hello-Worl"</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//string.removeRange(string.startIndex...string.startIndex.advancedBy(2))</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line">string.removeSubrange(string.startIndex...string.index(string.startIndex, offsetBy: <span class="number">2</span>))</span><br><span class="line"><span class="keyword">var</span> string2 = <span class="string">"My name is Jaki"</span></span><br><span class="line"><span class="comment">//全部转换为大写</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//string2 = string2.uppercaseString</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line">string2 = string2.uppercased()</span><br><span class="line"><span class="comment">//全部转换为小写</span></span><br><span class="line"><span class="comment">//swift2.2</span></span><br><span class="line"><span class="comment">//string2 = string2.lowercaseString</span></span><br><span class="line"><span class="comment">//swift3.0</span></span><br><span class="line">string2 = string2.lowercased()</span><br></pre></td></tr></table></figure>
+<p>需要注意，在Swift3.0中Range结构体被划分成了两种类型，Range和ClosedRange，分别用来描述左闭右开区间和闭区间，对应到运算符为0..&lt;10和0…10。</p>
+<pre><code>从上面的示例代码中可以看出，String类型中的很多方法命名进行了Swift风格的简化，改动较大的一个点是关于下标index的改变，移除了两个Index下标移动的方法，使用String类型的index()方法来进行下标的移动操作，编程更加安全。
+</code></pre><h3 id="三-基础运算符中的改变"><a href="#三-基础运算符中的改变" class="headerlink" title="三.基础运算符中的改变"></a>三.基础运算符中的改变</h3><pre><code>Swift3.0中的基础运算符并无太大改动，只是移除了取余运算符的浮点数取余功能，取余运算符可以进行浮点运算本是Swift独有的一个特点，3.0版本的改变后，Swift中的&quot;%&quot;运算符功能将与Objective-C与C语言中的取余运算符保持一致。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/06/18/226Swift3.0带来的变化汇总系列二——集合类型中的变化/" class="pre-post btn btn-default" title='Swift3.0带来的变化汇总系列二——集合类型中的变化'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift3.0带来的变化汇总系列二——集合类型中的变化</span>
+        </a>
+    
+    
+        <a href="/2016/05/31/224Swift专题讲解二十三——高级运算符/" class="next-post btn btn-default" title='Swift专题讲解二十三——高级运算符'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift专题讲解二十三——高级运算符</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift3-0带来的变化汇总系列一——字符串与基本运算符中的变化"><span class="toc-text">Swift3.0带来的变化汇总系列一——字符串与基本运算符中的变化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、String类中的API变化"><span class="toc-text">二、String类中的API变化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三-基础运算符中的改变"><span class="toc-text">三.基础运算符中的改变</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

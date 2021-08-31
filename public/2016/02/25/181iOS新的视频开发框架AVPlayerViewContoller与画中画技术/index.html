@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS新的视频开发框架AVPlayerViewContoller与画中画技术 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS新的视频开发框架AVPlayerViewContoller与画中画技术">
+            
+	            iOS新的视频开发框架AVPlayerViewContoller与画中画技术
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/02/25</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS新的视频开发框架AVPlayerViewContoller与画中画技术"><a href="#iOS新的视频开发框架AVPlayerViewContoller与画中画技术" class="headerlink" title="iOS新的视频开发框架AVPlayerViewContoller与画中画技术"></a>iOS新的视频开发框架AVPlayerViewContoller与画中画技术</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>前面有一篇博客探讨了iOS中视频播放的开发相关类和方法，那篇博客中主要讲解的是MeidaPlayer框架中的MPMoviePlayerController类和MPMoviePlayerViewController类。在iOS8中，iOS开发框架中引入了一个新的视频框架AVKit，其中提供了视频开发类AVPlayerViewController用于在应用中嵌入播放视频的控件。在iOS8中，这两个框架中的视频播放功能并无太大差异，基本都可以满足开发者的需求。iOS9系统后，iPad Air正式开始支持多任务与画中画的分屏功能，所谓画中画，即是用户可以将当前播放的视频缩小放在屏幕上同时进行其他应用程序的使用。这个革命性的功能将极大的方便用户的使用。于此同时，在iOS9中，MPMoviePlayerController与MPMoviePlayerViewController类也被完全易用，开发者使用AVPlayerViewController可以十分方便的实现视频播放的功能并在一些型号的iPad上集成画中画的功能。
+</code></pre><h3 id="二、AVPlayerViewController的使用与其中方法属性解析"><a href="#二、AVPlayerViewController的使用与其中方法属性解析" class="headerlink" title="二、AVPlayerViewController的使用与其中方法属性解析"></a>二、AVPlayerViewController的使用与其中方法属性解析</h3><pre><code>使用AVPlayerViewController首先需要引入两个框架，如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;AVKit/AVKit.h&gt;</span><br><span class="line">#import &lt;AVFoundation/AVFoundation.h&gt;</span><br></pre></td></tr></table></figure>
+<p>使用如下代码进行视频的播放：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    NSString * path = [[NSBundle mainBundle]pathForResource:@&quot;iphone&quot; ofType:@&quot;mp4&quot;];</span><br><span class="line">    NSURL *url = [NSURL fileURLWithPath:path];</span><br><span class="line">    AVPlayerViewController * play = [[AVPlayerViewController alloc]init];</span><br><span class="line">    play.player = [[AVPlayer alloc]initWithURL:url];</span><br><span class="line">    [self presentViewController:play animated:YES completion:nil];</span><br></pre></td></tr></table></figure>
+<p>运行工程，可以看到如下图所示的视频播放界面：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0225/233200_WFeE_2340880.png" alt></p>
+<p>AVPlayerViewController中还有如下属性和方法提供给开发者使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">//是否显示视频播放控制控件</span><br><span class="line">@property (nonatomic) BOOL showsPlaybackControls;</span><br><span class="line">//设置视频播放界面的尺寸缩放选项</span><br><span class="line">/*</span><br><span class="line">可以设置的值及意义如下：</span><br><span class="line">AVLayerVideoGravityResizeAspect   不进行比例缩放 以宽高中长的一边充满为基准</span><br><span class="line">AVLayerVideoGravityResizeAspectFill 不进行比例缩放 以宽高中短的一边充满为基准</span><br><span class="line">AVLayerVideoGravityResize     进行缩放充满屏幕</span><br><span class="line">*/</span><br><span class="line">@property (nonatomic, copy) NSString *videoGravity;</span><br><span class="line">//获取是否已经准备好开始播放</span><br><span class="line">@property (nonatomic, readonly, getter = isReadyForDisplay) BOOL readyForDisplay;</span><br><span class="line">//获取视频播放界面的尺寸</span><br><span class="line">@property (nonatomic, readonly) CGRect videoBounds;</span><br><span class="line">//视频播放器的视图 自定义的控件可以添加在其上</span><br><span class="line">@property (nonatomic, readonly, nullable) UIView *contentOverlayView;</span><br><span class="line">//画中画代理 iOS9后可用</span><br><span class="line">@property (nonatomic, weak, nullable) id &lt;AVPlayerViewControllerDelegate&gt; delegate NS_AVAILABLE_IOS(9_0);</span><br><span class="line">//是否支持画中画 iOS9后可用 默认支持</span><br><span class="line">@property (nonatomic) BOOL allowsPictureInPicturePlayback NS_AVAILABLE_IOS(9_0);</span><br></pre></td></tr></table></figure>
+<h3 id="三、画中画编程技术应用"><a href="#三、画中画编程技术应用" class="headerlink" title="三、画中画编程技术应用"></a>三、画中画编程技术应用</h3><pre><code>AVPlayerViewController是默认支持画中画操作的，如上图所示，视频的播放界面右下角出现一个画中画的按钮，点击这个按钮当前播放的视频界面会缩小显示在屏幕角落，这时点击Home键回到主界面，或者切换到其他应用程序，视频播放不会中断。如下图所示：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0225/234351_ETN2_2340880.png" alt></p>
+<p>两指的捏合操作可以将缩小的视频播放窗口进行任意尺寸的放大，如果将视频窗口拖进屏幕的边界，视频窗口会被吸进边界，用户可以通过拖拽手势将其拉出，如下图：<img src="http://static.oschina.net/uploads/space/2016/0225/234744_bYsu_2340880.png" alt></p>
+<p>AVPlayerViewControllerDelegate中的方法可以对用户画中画的操作进行监听：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//将要开始画中画时调用的方法</span><br><span class="line">- (void)playerViewControllerWillStartPictureInPicture:(AVPlayerViewController *)playerViewController&#123;</span><br><span class="line">&#125;</span><br><span class="line">//已经开始画中画时调用的方法</span><br><span class="line">- (void)playerViewControllerDidStartPictureInPicture:(AVPlayerViewController *)playerViewController&#123;</span><br><span class="line">&#125;</span><br><span class="line">//开始画中画失败调用的方法</span><br><span class="line">- (void)playerViewController:(AVPlayerViewController *)playerViewController failedToStartPictureInPictureWithError:(NSError *)error&#123;</span><br><span class="line">&#125;</span><br><span class="line">//将要停止画中画时调用的方法</span><br><span class="line">- (void)playerViewControllerWillStopPictureInPicture:(AVPlayerViewController *)playerViewController&#123;</span><br><span class="line">&#125;</span><br><span class="line">//已经停止画中画时调用的方法</span><br><span class="line">- (void)playerViewControllerDidStopPictureInPicture:(AVPlayerViewController *)playerViewController&#123;</span><br><span class="line">&#125;</span><br><span class="line">//是否在开始画中画时自动将当前的播放界面dismiss掉 返回YES则自动dismiss 返回NO则不会自动dismiss</span><br><span class="line">- (BOOL)playerViewControllerShouldAutomaticallyDismissAtPictureInPictureStart:(AVPlayerViewController *)playerViewController&#123;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br><span class="line">//用户点击还原按钮 从画中画模式还原回app内嵌模式时调用的方法</span><br><span class="line">- (void)playerViewController:(AVPlayerViewController *)playerViewController restoreUserInterfaceForPictureInPictureStopWithCompletionHandler:(void (^)(BOOL restored))completionHandler&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/02/26/182iOS网络编程之六——数据缓存类NSURLCache使用解析/" class="pre-post btn btn-default" title='iOS网络编程之六——数据缓存类NSURLCache使用解析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS网络编程之六——数据缓存类NSURLCache使用解析</span>
+        </a>
+    
+    
+        <a href="/2016/02/25/180iOS网络编程之五——请求回执类NSURLResponse属性简介/" class="next-post btn btn-default" title='iOS网络编程之五——请求回执类NSURLResponse属性简介'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS网络编程之五——请求回执类NSURLResponse属性简介</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS新的视频开发框架AVPlayerViewContoller与画中画技术"><span class="toc-text">iOS新的视频开发框架AVPlayerViewContoller与画中画技术</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、AVPlayerViewController的使用与其中方法属性解析"><span class="toc-text">二、AVPlayerViewController的使用与其中方法属性解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、画中画编程技术应用"><span class="toc-text">三、画中画编程技术应用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

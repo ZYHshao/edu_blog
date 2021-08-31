@@ -1,0 +1,276 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Java开发GUI之可编辑区域 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Java开发GUI之可编辑区域">
+            
+	            Java开发GUI之可编辑区域
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Java">
+            Java
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/06/15</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Java开发GUI之可编辑区域"><a href="#Java开发GUI之可编辑区域" class="headerlink" title="Java开发GUI之可编辑区域"></a>Java开发GUI之可编辑区域</h2><pre><code>Java的awt包中提供了单行的文本编辑组件TextField与多行的文本编辑区TextArea，这两个组件都是继承自TextComponent类。
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">TextTest</span><span class="params">()</span></span>&#123;</span><br><span class="line">        Frame frame = <span class="keyword">new</span> Frame(<span class="string">"Label"</span>);</span><br><span class="line">        Panel pannel = <span class="keyword">new</span> Panel();</span><br><span class="line">        TextField textField = <span class="keyword">new</span> TextField(<span class="string">"请开始你的表演"</span>,<span class="number">16</span>);</span><br><span class="line">        <span class="comment">//设置密文输入</span></span><br><span class="line"><span class="comment">//        textField.setEchoChar('*');</span></span><br><span class="line">        textField.addTextListener(<span class="keyword">new</span> TextFieldListener());</span><br><span class="line">        pannel.add(textField);</span><br><span class="line">        TextArea textArea = <span class="keyword">new</span> TextArea(<span class="string">"是时候表演真正的技术了···"</span>,<span class="number">5</span>,<span class="number">20</span>);</span><br><span class="line">        pannel.add(textArea);</span><br><span class="line">        frame.add(pannel);</span><br><span class="line">        frame.pack();</span><br><span class="line">        frame.show();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0615/163622_Rlcc_2340880.png" alt></p>
+<p>TextComponent类中提供了可编辑组件的基本方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置是否支持切换输入法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">enableInputMethods</span><span class="params">(<span class="keyword">boolean</span> enable)</span></span>;</span><br><span class="line"><span class="comment">//设置文本</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setText</span><span class="params">(String t)</span></span>;</span><br><span class="line"><span class="comment">//获取文本</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> String <span class="title">getText</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取选中的文案</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> String <span class="title">getSelectedText</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取是否可编辑</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEditable</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置是否可编辑</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setEditable</span><span class="params">(<span class="keyword">boolean</span> b)</span></span>;</span><br><span class="line"><span class="comment">//获取背景色</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Color <span class="title">getBackground</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置背景色</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBackground</span><span class="params">(Color c)</span></span>;</span><br><span class="line"><span class="comment">//获取选中文案的起点</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">int</span> <span class="title">getSelectionStart</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置选中文案的起点</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setSelectionStart</span><span class="params">(<span class="keyword">int</span> selectionStart)</span></span>;</span><br><span class="line"><span class="comment">//设置选中文案终点</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">int</span> <span class="title">getSelectionEnd</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置选中文案终点</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setSelectionEnd</span><span class="params">(<span class="keyword">int</span> selectionEnd)</span></span>;</span><br><span class="line"><span class="comment">//设置选中文案</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">select</span><span class="params">(<span class="keyword">int</span> selectionStart, <span class="keyword">int</span> selectionEnd)</span></span>;</span><br><span class="line"><span class="comment">//选中全部文案</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">selectAll</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置文案变化的监听</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addTextListener</span><span class="params">(TextListener l)</span></span>;</span><br><span class="line"><span class="comment">//移除监听</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeTextListener</span><span class="params">(TextListener l)</span></span>;</span><br><span class="line"><span class="comment">//获取监听者</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> TextListener[] getTextListeners();</span><br></pre></td></tr></table></figure>
+<p>TextField用于单行的文本输入，并且可以设置密文输入，对登录框十分适用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextField</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//text参数设置文本</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextField</span><span class="params">(String text)</span></span>;</span><br><span class="line"><span class="comment">//columns参数设置列数 会影响宽度</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextField</span><span class="params">(<span class="keyword">int</span> columns)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextField</span><span class="params">(String text, <span class="keyword">int</span> columns)</span></span>;</span><br><span class="line"><span class="comment">//获取输入文本被替换成的密文字符</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">char</span> <span class="title">getEchoChar</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置输入文本被替换成的密文字符</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setEchoChar</span><span class="params">(<span class="keyword">char</span> c)</span></span>;</span><br><span class="line"><span class="comment">//设置密文字符 已经弃用 适用上面的方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">setEchoCharacter</span><span class="params">(<span class="keyword">char</span> c)</span></span>;</span><br><span class="line"><span class="comment">//设置文案</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setText</span><span class="params">(String t)</span></span>;</span><br><span class="line"><span class="comment">//获取是否设置密文输入</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">echoCharIsSet</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取列数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getColumns</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置列数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setColumns</span><span class="params">(<span class="keyword">int</span> columns)</span> </span>;</span><br><span class="line"><span class="comment">//添加动作监听</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">addActionListener</span><span class="params">(ActionListener l)</span></span>;</span><br><span class="line"><span class="comment">//移除动作监听</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">removeActionListener</span><span class="params">(ActionListener l)</span></span>;</span><br><span class="line"><span class="comment">//获取监听者</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> ActionListener[] getActionListeners();</span><br></pre></td></tr></table></figure>
+<p>TextArea类中的方法总结如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextArea</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//text参数设置文本</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextArea</span><span class="params">(String text)</span></span>;</span><br><span class="line"><span class="comment">//设置行数与列数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextArea</span><span class="params">(<span class="keyword">int</span> rows, <span class="keyword">int</span> columns)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextArea</span><span class="params">(String text, <span class="keyword">int</span> rows, <span class="keyword">int</span> columns)</span></span>;</span><br><span class="line"><span class="comment">//scrollbars设置滚动条模式</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">public static final int SCROLLBARS_BOTH = 0;//水平和竖直都显示滚动条</span></span><br><span class="line"><span class="comment">public static final int SCROLLBARS_VERTICAL_ONLY = 1;//仅仅显示竖直滚动条</span></span><br><span class="line"><span class="comment">public static final int SCROLLBARS_HORIZONTAL_ONLY = 2;//仅仅显示水平滚动条</span></span><br><span class="line"><span class="comment">public static final int SCROLLBARS_NONE = 3; //不显示滚动条</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">TextArea</span><span class="params">(String text, <span class="keyword">int</span> rows, <span class="keyword">int</span> columns, <span class="keyword">int</span> scrollbars)</span></span>;</span><br><span class="line"><span class="comment">//在指定位置插入字符串</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(String str, <span class="keyword">int</span> pos)</span></span>;</span><br><span class="line"><span class="comment">//同上 已经弃用 使用上面的方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">insertText</span><span class="params">(String str, <span class="keyword">int</span> pos)</span></span>;</span><br><span class="line"><span class="comment">//在已有文本后追加字符串</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">append</span><span class="params">(String str)</span></span>;</span><br><span class="line"><span class="comment">//同上，已经弃用 使用上面方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">appendText</span><span class="params">(String str)</span></span>;</span><br><span class="line"><span class="comment">//替换某个范围内的字符串</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">replaceRange</span><span class="params">(String str, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span></span>;</span><br><span class="line"><span class="comment">//同上，已经弃用 使用上面方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title">replaceText</span><span class="params">(String str, <span class="keyword">int</span> start, <span class="keyword">int</span> end)</span></span>;</span><br><span class="line"><span class="comment">//获取行数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getRows</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置行数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRows</span><span class="params">(<span class="keyword">int</span> rows)</span></span>;</span><br><span class="line"><span class="comment">//获取列数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getColumns</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置列数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setColumns</span><span class="params">(<span class="keyword">int</span> columns)</span></span>;</span><br><span class="line"><span class="comment">//获取滚动条模式</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getScrollbarVisibility</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/06/16/338Java开发GUI之BorderLayout边界布局/" class="pre-post btn btn-default" title='Java开发GUI之BorderLayout边界布局'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Java开发GUI之BorderLayout边界布局</span>
+        </a>
+    
+    
+        <a href="/2017/06/14/336Java开发GUI之滚动条/" class="next-post btn btn-default" title='Java开发GUI之滚动条'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Java开发GUI之滚动条</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java开发GUI之可编辑区域"><span class="toc-text">Java开发GUI之可编辑区域</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

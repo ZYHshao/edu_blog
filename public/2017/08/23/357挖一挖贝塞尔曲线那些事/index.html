@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>挖一挖贝塞尔曲线那些事 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="挖一挖贝塞尔曲线那些事">
+            
+	            挖一挖贝塞尔曲线那些事
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/编程珠玑">
+            编程珠玑
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/08/23</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="挖一挖贝塞尔曲线那些事"><a href="#挖一挖贝塞尔曲线那些事" class="headerlink" title="挖一挖贝塞尔曲线那些事"></a>挖一挖贝塞尔曲线那些事</h2><h3 id="一、前世今生"><a href="#一、前世今生" class="headerlink" title="一、前世今生"></a>一、前世今生</h3><pre><code>贝塞尔曲线的最初设计是服务于工业设计，尤其应用与汽车曲线设计。随着计算机画图的应用广泛，若想在计算机上画出平滑精准的曲线并不是一件容易的事，贝塞尔曲线解决了这样的问题，贝塞尔虚线通过起始点与结束点来确定曲线的首尾，通过若干个控制点来确定曲线的走向。由于其由法国工程师皮埃尔·贝塞尔广泛推广，因此这种曲线被命名为贝塞尔曲线。
+</code></pre><h3 id="二、数学基础"><a href="#二、数学基础" class="headerlink" title="二、数学基础"></a>二、数学基础</h3><pre><code>平面上的任意连续曲线可以通过伯恩斯坦多项式来进行逼近拟合，因此，当我们想在平面中画一条曲线的时候，如果可以模拟出此曲线的函数，则可以十分精准的控制计算机来描绘一系列曲线上的点来绘制曲线。贝塞尔曲线就是基于这样的数学基础。
+
+首先，对于一条贝塞尔曲线，其3要素分别是：起始点，结束点和控制点。其中曲线的起点在起始点，终点在结束点，曲线并不穿过控制点，控制点来掌握曲线的走向，控制点个数可以不定。
+</code></pre><h4 id="1、一阶贝塞尔曲线"><a href="#1、一阶贝塞尔曲线" class="headerlink" title="1、一阶贝塞尔曲线"></a>1、一阶贝塞尔曲线</h4><pre><code>一阶贝塞尔曲线控制点的个数为0，只有起始点与结束点。其实一阶贝塞尔曲线就是一条从起始点到结束点的直线段。其公式如下：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2017/0823/161338_3Hm8_2340880.png" alt></p>
+<p>上面公式中，P为曲线上的点，P0为起始点，P1为结束点。(对于平面上的点，分别用上面公式计算x，y坐标即可)。由于其公式为线性公式，所有这种贝塞尔曲线也被称为一阶贝塞尔曲线。下图可以很好的描述当t从0到1变化时，线段的绘制过程：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0823/161854_7W39_2340880.gif" alt></p>
+<h4 id="2、二阶贝塞尔曲线"><a href="#2、二阶贝塞尔曲线" class="headerlink" title="2、二阶贝塞尔曲线"></a>2、二阶贝塞尔曲线</h4><pre><code>二阶贝塞尔曲线有一个控制点，假设起始点，控制点和结束点分别为P0、P1、P2。连接P0P1，P1P2，在区间0-1之间，在P0P1线段上取点M，在P1P2线段上取点N，使得P0M/P0P1=P1N/P1P2，找到线段MN上一点Q，同时使得MQ/QN=P0M/P0P1=P1N/P1P2，所有Q点的集合即为所求贝塞尔曲线。上面的描述有些抽象，使用数学推导就义一目了然了，公式推导如下：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2017/0823/165403_vcDt_2340880.png" alt></p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0823/165451_YEuq_2340880.png" alt></p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0823/165507_h09C_2340880.png" alt></p>
+<p>绘图过程如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0823/171537_1C19_2340880.gif" alt></p>
+<h4 id="3-高阶贝塞尔曲线"><a href="#3-高阶贝塞尔曲线" class="headerlink" title="3.高阶贝塞尔曲线"></a>3.高阶贝塞尔曲线</h4><pre><code>有了一阶与二阶的基础，高阶贝塞尔曲线也是通过相同的方式来推导，一个通用的递推公式如下：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2017/0823/173049_jvFa_2340880.png" alt></p>
+<p>三阶和四阶的绘制过程演示如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0823/174532_Rjoh_2340880.gif" alt></p>
+<h3 id="三、iOS中的贝塞尔曲线的应用"><a href="#三、iOS中的贝塞尔曲线的应用" class="headerlink" title="三、iOS中的贝塞尔曲线的应用"></a>三、iOS中的贝塞尔曲线的应用</h3><pre><code>虽然贝塞尔曲线在很多开发领域都十分容易实现，由于我对iOS开发比较熟，并且上面的曲线绘制示例也是我通过iOS程序实现的。这里就对在iOS中应用贝塞尔曲线进行简单的讨论，首先CoreGraphics核心图形框架中提供了CGPath可以直接创建贝塞尔曲线，系统支持的贝塞尔曲线函数有二阶与三阶。前面有博客专门讨论，这里就不再赘述，地址如下：
+</code></pre><p><a href="https://my.oschina.net/u/2340880/blog/757072" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/757072</a>。</p>
+<p>这里主要列举UIKit框架中的UIBezierPath类。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造方法</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)bezierPath;</span><br><span class="line"><span class="comment">//使用矩形进行构造</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)bezierPathWithRect:(<span class="built_in">CGRect</span>)rect;</span><br><span class="line"><span class="comment">//使用圆角矩形进行构造</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)bezierPathWithOvalInRect:(<span class="built_in">CGRect</span>)rect;</span><br><span class="line"><span class="comment">//创建圆角矩形贝塞尔路径 并设置圆角半径</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)bezierPathWithRoundedRect:(<span class="built_in">CGRect</span>)rect cornerRadius:(<span class="built_in">CGFloat</span>)cornerRadius; </span><br><span class="line">+ (<span class="keyword">instancetype</span>)bezierPathWithRoundedRect:(<span class="built_in">CGRect</span>)rect byRoundingCorners:(<span class="built_in">UIRectCorner</span>)corners cornerRadii:(<span class="built_in">CGSize</span>)cornerRadii;</span><br><span class="line"><span class="comment">//使用圆弧创建</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)bezierPathWithArcCenter:(<span class="built_in">CGPoint</span>)center radius:(<span class="built_in">CGFloat</span>)radius startAngle:(<span class="built_in">CGFloat</span>)startAngle endAngle:(<span class="built_in">CGFloat</span>)endAngle clockwise:(<span class="built_in">BOOL</span>)clockwise;</span><br><span class="line"><span class="comment">//使用CGPath创建</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)bezierPathWithCGPath:(<span class="built_in">CGPathRef</span>)<span class="built_in">CGPath</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//CGPath对象</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">CGPathRef</span> <span class="built_in">CGPath</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//将路径移动到某个点</span></span><br><span class="line">- (<span class="keyword">void</span>)moveToPoint:(<span class="built_in">CGPoint</span>)point;</span><br><span class="line"><span class="comment">//添加一天线</span></span><br><span class="line">- (<span class="keyword">void</span>)addLineToPoint:(<span class="built_in">CGPoint</span>)point;</span><br><span class="line"><span class="comment">//添加一个二阶贝塞尔曲线段</span></span><br><span class="line">- (<span class="keyword">void</span>)addCurveToPoint:(<span class="built_in">CGPoint</span>)endPoint controlPoint1:(<span class="built_in">CGPoint</span>)controlPoint1 controlPoint2:(<span class="built_in">CGPoint</span>)controlPoint2;</span><br><span class="line"><span class="comment">//添加一个三阶贝塞尔曲线段</span></span><br><span class="line">- (<span class="keyword">void</span>)addQuadCurveToPoint:(<span class="built_in">CGPoint</span>)endPoint controlPoint:(<span class="built_in">CGPoint</span>)controlPoint;</span><br><span class="line"><span class="comment">//添加圆弧</span></span><br><span class="line">- (<span class="keyword">void</span>)addArcWithCenter:(<span class="built_in">CGPoint</span>)center radius:(<span class="built_in">CGFloat</span>)radius startAngle:(<span class="built_in">CGFloat</span>)startAngle endAngle:(<span class="built_in">CGFloat</span>)endAngle clockwise:(<span class="built_in">BOOL</span>)clockwise;</span><br><span class="line"><span class="comment">//关闭路径</span></span><br><span class="line">- (<span class="keyword">void</span>)closePath;</span><br><span class="line"><span class="comment">//移除所有点</span></span><br><span class="line">- (<span class="keyword">void</span>)removeAllPoints;</span><br><span class="line"><span class="comment">//添加一段路径</span></span><br><span class="line">- (<span class="keyword">void</span>)appendPath:(<span class="built_in">UIBezierPath</span> *)bezierPath;</span><br><span class="line"><span class="comment">//对路径进行逆向</span></span><br><span class="line">- (<span class="built_in">UIBezierPath</span> *)bezierPathByReversingPath;</span><br><span class="line"><span class="comment">//进行transform变换</span></span><br><span class="line">- (<span class="keyword">void</span>)applyTransform:(<span class="built_in">CGAffineTransform</span>)transform;</span><br><span class="line"><span class="comment">//路径是否为空</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>,<span class="keyword">getter</span>=isEmpty) <span class="built_in">BOOL</span> empty;</span><br><span class="line"><span class="comment">//尺寸</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readonly</span>) <span class="built_in">CGRect</span> bounds;</span><br><span class="line"><span class="comment">//当前点</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readonly</span>) <span class="built_in">CGPoint</span> currentPoint;</span><br><span class="line"><span class="comment">//判断是否包含某个点</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)containsPoint:(<span class="built_in">CGPoint</span>)point;</span><br><span class="line"></span><br><span class="line"><span class="comment">//设置线宽</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> lineWidth;</span><br><span class="line"><span class="comment">//设置线帽风格</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">CGLineCap</span> lineCapStyle;</span><br><span class="line"><span class="comment">//设置折点风格</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">CGLineJoin</span> lineJoinStyle;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> miterLimit;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">CGFloat</span> flatness;</span><br><span class="line"><span class="comment">//奇偶规则</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> usesEvenOddFillRule;</span><br><span class="line"><span class="comment">//进行虚线设置</span></span><br><span class="line">- (<span class="keyword">void</span>)setLineDash:(<span class="keyword">nullable</span> <span class="keyword">const</span> <span class="built_in">CGFloat</span> *)pattern count:(<span class="built_in">NSInteger</span>)count phase:(<span class="built_in">CGFloat</span>)phase;</span><br><span class="line">- (<span class="keyword">void</span>)getLineDash:(<span class="keyword">nullable</span> <span class="built_in">CGFloat</span> *)pattern count:(<span class="keyword">nullable</span> <span class="built_in">NSInteger</span> *)count phase:(<span class="keyword">nullable</span> <span class="built_in">CGFloat</span> *)phase;</span><br><span class="line"><span class="comment">//进行填充绘制</span></span><br><span class="line">- (<span class="keyword">void</span>)fill;</span><br><span class="line"><span class="comment">//进行路径绘制</span></span><br><span class="line">- (<span class="keyword">void</span>)stroke;</span><br></pre></td></tr></table></figure>
+<h3 id="四、示例程序"><a href="#四、示例程序" class="headerlink" title="四、示例程序"></a>四、示例程序</h3><pre><code>下面是一个iOS平台的演示小Demo，使用它可以动态进行贝塞尔曲线的绘制并观察到辅助线与绘制过程，可以灵活的配置绘制的速度和控制点：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2017/0823/181804_zsgX_2340880.png" alt></p>
+<p>Github地址如下：</p>
+<p><a href="https://github.com/ZYHshao/Bezel" target="_blank" rel="noopener">https://github.com/ZYHshao/Bezel</a>。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/08/24/358Swift4语法新特性/" class="pre-post btn btn-default" title='Swift4语法新特性'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift4语法新特性</span>
+        </a>
+    
+    
+        <a href="/2017/08/21/356iOS应用内评价与购买三方APP组件/" class="next-post btn btn-default" title='iOS应用内评价与购买三方APP组件'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS应用内评价与购买三方APP组件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#挖一挖贝塞尔曲线那些事"><span class="toc-text">挖一挖贝塞尔曲线那些事</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、前世今生"><span class="toc-text">一、前世今生</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、数学基础"><span class="toc-text">二、数学基础</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、一阶贝塞尔曲线"><span class="toc-text">1、一阶贝塞尔曲线</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、二阶贝塞尔曲线"><span class="toc-text">2、二阶贝塞尔曲线</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-高阶贝塞尔曲线"><span class="toc-text">3.高阶贝塞尔曲线</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、iOS中的贝塞尔曲线的应用"><span class="toc-text">三、iOS中的贝塞尔曲线的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、示例程序"><span class="toc-text">四、示例程序</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

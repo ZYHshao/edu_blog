@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS中调用系统拨打电话与发送短信 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中调用系统拨打电话与发送短信">
+            
+	            iOS中调用系统拨打电话与发送短信
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/29</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="IOS中调用系统拨打电话发送短信"><a href="#IOS中调用系统拨打电话发送短信" class="headerlink" title="IOS中调用系统拨打电话发送短信"></a>IOS中调用系统拨打电话发送短信</h2><h3 id="一、调用打电话界面"><a href="#一、调用打电话界面" class="headerlink" title="一、调用打电话界面"></a>一、调用打电话界面</h3><p>[[UIApplication  sharedApplication] openURL:[NSURL  URLWithString:[NSString  stringWithFormat:@”tel://%@”,_phoneNumber]]];</p>
+<h3 id="二、发送短消息界面"><a href="#二、发送短消息界面" class="headerlink" title="二、发送短消息界面"></a>二、发送短消息界面</h3><p>调用系统的发送短信的界面，需要引入以下头文件：</p>
+<p>#import &lt;MessageUI/MessageUI.h&gt;</p>
+<p>系统短信界面的调用很简单，只需下面几句代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">         MFMessageComposeViewController * con = [[MFMessageComposeViewController alloc]init];</span><br><span class="line">            if ([MFMessageComposeViewController canSendText]) &#123;</span><br><span class="line">                con.recipients=@[_phoneNumber];//电话数组</span><br><span class="line">                con.messageComposeDelegate=self;</span><br><span class="line">                [self presentViewController:con animated:YES completion:nil];</span><br></pre></td></tr></table></figure>
+<p>下面将MessageUI的一些常用方法总结如下：</p>
+<p>+ (BOOL)canSendText</p>
+<p>判断是否支持发送文字</p>
+<p>+ (BOOL)canSendSubject;</p>
+<p>判断是否支持发送主题信息</p>
+<p>+ (BOOL)canSendAttachments;</p>
+<p>判断是否支持发送附件</p>
+<p>+ (BOOL)isSupportedAttachmentUTI:(NSString *)uti;</p>
+<p>判断是否支持统一标示附件</p>
+<p>- (void)disableUserAttachments;</p>
+<p>禁止发送附件</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,copy) NSArray *recipients;</p>
+<p>联系人数组，会显示在发送人列表里</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,copy) NSString *body;</p>
+<p>信息主体内容</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,copy) NSString *subject;</p>
+<p>信息标题</p>
+<p>@property(nonatomic,copy, readonly) NSArray *attachments;</p>
+<p>信息附件数组 只读的 里面是字典</p>
+<p>- (BOOL)addAttachmentURL:(NSURL <em>)attachmentURL withAlternateFilename:(NSString </em>)alternateFilename;</p>
+<p>根据URL路径和添加附件，返回YES表示添加成功</p>
+<p>- (BOOL)addAttachmentData:(NSData <em>)attachmentData typeIdentifier:(NSString </em>)uti filename:(NSString *)filename;</p>
+<p>根据Data数据添加附件</p>
+<p>- (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result;</p>
+<p>MFMessageComposeViewControllerDelegate的代理方法，result会传回来一个结果，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">enum MessageComposeResult &#123;</span><br><span class="line">    //取消发送</span><br><span class="line">    MessageComposeResultCancelled,</span><br><span class="line">    //发送成功</span><br><span class="line">    MessageComposeResultSent,</span><br><span class="line">    //发送失败</span><br><span class="line">    MessageComposeResultFailed</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/29/39iOS调用系统通讯录/" class="pre-post btn btn-default" title='iOS调用系统通讯录'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS调用系统通讯录</span>
+        </a>
+    
+    
+        <a href="/2015/04/28/38iOS获取通讯录联系人信息/" class="next-post btn btn-default" title='iOS获取通讯录联系人信息'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS获取通讯录联系人信息</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#IOS中调用系统拨打电话发送短信"><span class="toc-text">IOS中调用系统拨打电话发送短信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、调用打电话界面"><span class="toc-text">一、调用打电话界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、发送短消息界面"><span class="toc-text">二、发送短消息界面</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发CoreGraphics核心图形框架之六——梯度渐变 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发CoreGraphics核心图形框架之六——梯度渐变">
+            
+	            iOS开发CoreGraphics核心图形框架之六——梯度渐变
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/11/15</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发CoreGraphics核心图形框架之六——梯度渐变"><a href="#iOS开发CoreGraphics核心图形框架之六——梯度渐变" class="headerlink" title="iOS开发CoreGraphics核心图形框架之六——梯度渐变"></a>iOS开发CoreGraphics核心图形框架之六——梯度渐变</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><p>   关于颜色梯度渐变视图的创建，CoreGraphics框架中提供了两个类型CGShadingRef与CGGradientRef。CoreGraphics框架在绘制梯度渐变时，有两种绘制方式，分别为轴向绘制与径向绘制。轴向绘制是指确定两个点，起点与终点连接的直线作为梯度渐变的轴，垂直于此轴的线共享相同的颜色，由起点向终点进行颜色渐变。径向渐变是指由两个圆连接成圆台，在同一圆周上的所有点共享相同的颜色，由起始圆向终点圆进行颜色渐变。</p>
+<p>轴向渐变：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/1115/153216_b6Jh_2340880.png" alt></p>
+<p>径向渐变：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/1115/153501_IJmc_2340880.png" alt></p>
+<pre><code>前面说到，CGShadingRef与CGGradientRef都可以用于创建梯度渐变视图，这两个类型在使用使又有一些不同，CGShadingRef在使用使需要开发者为其提供一个颜色计算方法，CGGradientRef则不需要，相比之下，CGGradientRef更像是为了方便开发者使用而从CGShadingRef中扩展出的一个类型。
+</code></pre><h3 id="二、使用CGGradientRef创建梯度渐变视图"><a href="#二、使用CGGradientRef创建梯度渐变视图" class="headerlink" title="二、使用CGGradientRef创建梯度渐变视图"></a>二、使用CGGradientRef创建梯度渐变视图</h3><pre><code>创建一个UIView子类，在其drawRect:方法中编写如下测试代码：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect&#123;</span><br><span class="line">    <span class="built_in">CGGradientRef</span> gradientRef;</span><br><span class="line">    <span class="built_in">CGColorSpaceRef</span> colorSpaceRef;</span><br><span class="line">    <span class="built_in">CGFloat</span> locs[<span class="number">2</span>] = &#123;<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">    <span class="built_in">CGFloat</span> colors[<span class="number">8</span>] = &#123; <span class="number">1.0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>,  <span class="comment">// 前4个为起始颜色的rgba</span></span><br><span class="line">        <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1.0</span> &#125;; <span class="comment">// 后4个为结束颜色的rgba</span></span><br><span class="line">    colorSpaceRef = <span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB);</span><br><span class="line">    gradientRef = <span class="built_in">CGGradientCreateWithColorComponents</span> (colorSpaceRef, colors,</span><br><span class="line">                                                       locs, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">CGContextRef</span> contextRef = <span class="built_in">UIGraphicsGetCurrentContext</span>();</span><br><span class="line">    <span class="comment">//这个方法用于创建轴向渐变</span></span><br><span class="line"><span class="comment">//    CGContextDrawLinearGradient(contextRef, gradientRef, rect.origin, CGPointMake(rect.origin.x+rect.size.width, rect.origin.y+rect.size.height), 0);</span></span><br><span class="line">    <span class="comment">//这个方法用于创建径向渐变</span></span><br><span class="line">    <span class="built_in">CGContextDrawRadialGradient</span>(contextRef, gradientRef, <span class="built_in">CGPointMake</span>(rect.origin.x+rect.size.width/<span class="number">2</span>, rect.origin.y+rect.size.height/<span class="number">2</span>), rect.size.width/<span class="number">2</span>, <span class="built_in">CGPointMake</span>(rect.origin.x+rect.size.width/<span class="number">2</span>, rect.origin.y+rect.size.height/<span class="number">2</span>), rect.size.width/<span class="number">4</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>CGContextDrawRadiaGradient()方法中的参数解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">c:绘图上下文</span></span><br><span class="line"><span class="comment">gradieent:渐变对象</span></span><br><span class="line"><span class="comment">startCenter:渐变起始圆心</span></span><br><span class="line"><span class="comment">startRadius:渐变起始圆半径</span></span><br><span class="line"><span class="comment">endCenter:渐变终止圆心</span></span><br><span class="line"><span class="comment">endRadius:渐变终止圆半径</span></span><br><span class="line"><span class="comment">options:渐变的填充风格 设置为0则不进行填充</span></span><br><span class="line"><span class="comment">typedef CF_OPTIONS (uint32_t, CGGradientDrawingOptions) &#123;</span></span><br><span class="line"><span class="comment">  kCGGradientDrawsBeforeStartLocation = (1 &lt;&lt; 0), //起点以前也进行填充</span></span><br><span class="line"><span class="comment">  kCGGradientDrawsAfterEndLocation = (1 &lt;&lt; 1)    //终点之后也进行填充</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span>    </span><br><span class="line"><span class="built_in">CG_EXTERN</span> <span class="keyword">void</span> <span class="built_in">CGContextDrawRadialGradient</span>(<span class="built_in">CGContextRef</span> cg_nullable c,</span><br><span class="line">    <span class="built_in">CGGradientRef</span> cg_nullable gradient, <span class="built_in">CGPoint</span> startCenter, <span class="built_in">CGFloat</span> startRadius,</span><br><span class="line">    <span class="built_in">CGPoint</span> endCenter, <span class="built_in">CGFloat</span> endRadius, <span class="built_in">CGGradientDrawingOptions</span> options)</span><br><span class="line">    <span class="built_in">CG_AVAILABLE_STARTING</span>(__MAC_10_5, __IPHONE_2_0);</span><br></pre></td></tr></table></figure>
+<p>CGGradient中定义的方法解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取CGGradient类在CoreGraphics框架中的id</span></span><br><span class="line"><span class="built_in">CFTypeID</span> <span class="built_in">CGGradientGetTypeID</span>(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//创建CGGradientRef</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">space:色彩空间</span></span><br><span class="line"><span class="comment">components:色值数组</span></span><br><span class="line"><span class="comment">locations:渐变临界点</span></span><br><span class="line"><span class="comment">count:locations数组中元素个数</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGGradientRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGGradientCreateWithColorComponents</span>(</span><br><span class="line">    <span class="built_in">CGColorSpaceRef</span> cg_nullable space, <span class="keyword">const</span> <span class="built_in">CGFloat</span> * cg_nullable components,</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">CGFloat</span> * __<span class="keyword">nullable</span> locations, size_t count);</span><br><span class="line"><span class="comment">//创建CGGradientRef 这个方法locations中的元素个数需要与colors中的对应</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">space:色彩空间</span></span><br><span class="line"><span class="comment">colors:颜色数组</span></span><br><span class="line"><span class="comment">locations:渐变临界点</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGGradientRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGGradientCreateWithColors</span>(</span><br><span class="line">    <span class="built_in">CGColorSpaceRef</span> __<span class="keyword">nullable</span> space, <span class="built_in">CFArrayRef</span> cg_nullable colors,</span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">CGFloat</span> * __<span class="keyword">nullable</span> locations);</span><br><span class="line"><span class="comment">//进行引用计数+1</span></span><br><span class="line"><span class="built_in">CGGradientRef</span> cg_nullable <span class="built_in">CGGradientRetain</span>(</span><br><span class="line">    <span class="built_in">CGGradientRef</span> cg_nullable gradient);</span><br><span class="line"><span class="comment">//进行引用计数-1</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGGradientRelease</span>(<span class="built_in">CGGradientRef</span> cg_nullable gradient);</span><br></pre></td></tr></table></figure>
+<h3 id="三、CGShadingRef的应用"><a href="#三、CGShadingRef的应用" class="headerlink" title="三、CGShadingRef的应用"></a>三、CGShadingRef的应用</h3><pre><code>CGShadingRef的使用就不像CGGradientRef那么方便，其中方法解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取CGShadingRef在CoreGraphics框架中的id</span></span><br><span class="line"><span class="built_in">CFTypeID</span> <span class="built_in">CGShadingGetTypeID</span>(<span class="keyword">void</span>);</span><br><span class="line"><span class="comment">//创建轴向渐变的CGShadingRef对象</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">space:色彩空间</span></span><br><span class="line"><span class="comment">start:起始点</span></span><br><span class="line"><span class="comment">end:结束点</span></span><br><span class="line"><span class="comment">function:颜色计算函数</span></span><br><span class="line"><span class="comment">extendStart:是否填充起始点以前</span></span><br><span class="line"><span class="comment">extendEnd:是否填充结束点之后</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="built_in">CGShadingRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGShadingCreateAxial</span>(</span><br><span class="line">    <span class="built_in">CGColorSpaceRef</span> cg_nullable space, <span class="built_in">CGPoint</span> start, <span class="built_in">CGPoint</span> end,</span><br><span class="line">    <span class="built_in">CGFunctionRef</span> cg_nullable function, <span class="keyword">bool</span> extendStart, <span class="keyword">bool</span> extendEnd);</span><br><span class="line"><span class="comment">//创建径向渐变的CGShadingRef对象 参数同上</span></span><br><span class="line"><span class="built_in">CGShadingRef</span> __<span class="keyword">nullable</span> <span class="built_in">CGShadingCreateRadial</span>(</span><br><span class="line">    <span class="built_in">CGColorSpaceRef</span> cg_nullable space,</span><br><span class="line">    <span class="built_in">CGPoint</span> start, <span class="built_in">CGFloat</span> startRadius, <span class="built_in">CGPoint</span> end, <span class="built_in">CGFloat</span> endRadius,</span><br><span class="line">    <span class="built_in">CGFunctionRef</span> cg_nullable function, <span class="keyword">bool</span> extendStart, <span class="keyword">bool</span> extendEnd);</span><br><span class="line"><span class="comment">//引用计数+1</span></span><br><span class="line"><span class="built_in">CGShadingRef</span> cg_nullable <span class="built_in">CGShadingRetain</span>(<span class="built_in">CGShadingRef</span> cg_nullable shading);</span><br><span class="line"><span class="comment">//引用计数-1</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">CGShadingRelease</span>(<span class="built_in">CGShadingRef</span> cg_nullable shading);</span><br></pre></td></tr></table></figure>
+<p>示例代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//颜色计算函数</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">info 是开发者后面将传入的色彩空间的参数个数</span></span><br><span class="line"><span class="comment">in 为输入参数 对应0-1之间</span></span><br><span class="line"><span class="comment">out 为输出参数 为所对应颜色空间的每个色值</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span>  myCalculateShadingValues (<span class="keyword">void</span> *info,</span><br><span class="line">                                       <span class="keyword">const</span> <span class="built_in">CGFloat</span> *<span class="keyword">in</span>,</span><br><span class="line">                                       <span class="built_in">CGFloat</span> *<span class="keyword">out</span>)</span><br><span class="line">&#123;</span><br><span class="line">    size_t k, components;</span><br><span class="line">    <span class="keyword">double</span> frequency[<span class="number">4</span>] = &#123; <span class="number">55</span>, <span class="number">220</span>, <span class="number">110</span>, <span class="number">0</span> &#125;;</span><br><span class="line">    <span class="comment">//获取色彩空间的色值数</span></span><br><span class="line">    components = (size_t)info;</span><br><span class="line">    <span class="keyword">for</span> (k = <span class="number">0</span>; k &lt; components - <span class="number">1</span>; k++)</span><br><span class="line">        <span class="comment">//*out++ 的作用是指针右移 out指针可以理解为数组 右移作用和数组赋值一致</span></span><br><span class="line">        *<span class="keyword">out</span>++ = (<span class="number">1</span> + sin(*<span class="keyword">in</span> * frequency[k]))/<span class="number">2</span>;</span><br><span class="line">   <span class="comment">//最后追加上透明度值</span></span><br><span class="line">    *<span class="keyword">out</span>++ = <span class="number">1</span>; <span class="comment">// alpha</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect&#123;</span><br><span class="line">    size_t numComponents;</span><br><span class="line">    <span class="comment">//输入参数的范围 其中元素个数是 输入参数个数的两倍</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">CGFloat</span> input_value_range [<span class="number">2</span>] = &#123; <span class="number">0</span>, <span class="number">1</span> &#125;;</span><br><span class="line">    <span class="comment">//输出参数的范围 其中元素个数是 输出参数个数的两倍</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">CGFloat</span> output_value_ranges [<span class="number">8</span>] = &#123; <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span> &#125;;</span><br><span class="line">    <span class="comment">//组合回调函数</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">const</span> <span class="built_in">CGFunctionCallbacks</span> callbacks = &#123; <span class="number">0</span>,</span><br><span class="line">        &amp;myCalculateShadingValues,</span><br><span class="line">        <span class="literal">NULL</span> &#125;;</span><br><span class="line">    <span class="comment">//获取色彩空间的色值数</span></span><br><span class="line">    numComponents = <span class="number">1</span> + <span class="built_in">CGColorSpaceGetNumberOfComponents</span> (<span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB));</span><br><span class="line">    <span class="comment">//创建CGFunctionRef</span></span><br><span class="line">    <span class="built_in">CGFunctionRef</span> func =  <span class="built_in">CGFunctionCreate</span> ((<span class="keyword">void</span> *) numComponents,</span><br><span class="line">                             <span class="number">1</span>,</span><br><span class="line">                             input_value_range,</span><br><span class="line">                             numComponents,</span><br><span class="line">                             output_value_ranges,</span><br><span class="line">                             &amp;callbacks);</span><br><span class="line">   </span><br><span class="line">     </span><br><span class="line">    <span class="built_in">CGPoint</span> startPoint, endPoint;</span><br><span class="line">    <span class="built_in">CGFloat</span> startRadius, endRadius;</span><br><span class="line">    <span class="built_in">CGAffineTransform</span> myTransform;</span><br><span class="line">    <span class="comment">//起始圆位置</span></span><br><span class="line">    startPoint = <span class="built_in">CGPointMake</span>(<span class="number">0.25</span>,<span class="number">0.3</span>);</span><br><span class="line">    <span class="comment">//半径</span></span><br><span class="line">    startRadius = <span class="number">.1</span>;</span><br><span class="line">    <span class="comment">//终止圆位置</span></span><br><span class="line">    endPoint = <span class="built_in">CGPointMake</span>(<span class="number">.7</span>,<span class="number">0.7</span>);</span><br><span class="line">    <span class="comment">//半径</span></span><br><span class="line">    endRadius = <span class="number">.25</span>;</span><br><span class="line">    <span class="comment">//创建CGShadingRef</span></span><br><span class="line">    <span class="built_in">CGShadingRef</span> myShading =  <span class="built_in">CGShadingCreateRadial</span> (<span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB),</span><br><span class="line">                           startPoint,</span><br><span class="line">                           startRadius,</span><br><span class="line">                           endPoint,</span><br><span class="line">                           endRadius,</span><br><span class="line">                           func,</span><br><span class="line">                           <span class="literal">false</span>,</span><br><span class="line">                           <span class="literal">false</span>);</span><br><span class="line">    <span class="built_in">CGContextRef</span> context = <span class="built_in">UIGraphicsGetCurrentContext</span>();</span><br><span class="line">    <span class="comment">//进行transform的映射</span></span><br><span class="line">    myTransform = <span class="built_in">CGAffineTransformMakeScale</span>(<span class="number">320</span>, <span class="number">568</span>);</span><br><span class="line">    <span class="built_in">CGContextConcatCTM</span>(context, myTransform);</span><br><span class="line">    <span class="built_in">CGContextSaveGState</span>(context);</span><br><span class="line">    <span class="comment">//进行绘制</span></span><br><span class="line">    <span class="built_in">CGContextDrawShading</span>(context, myShading);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的示例代码效果如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1115/173719_U5jh_2340880.png" alt></p>
+<h3 id="四、一些小技巧"><a href="#四、一些小技巧" class="headerlink" title="四、一些小技巧"></a>四、一些小技巧</h3><pre><code>灵活的应用CGContextDrawRadialGradient()方法可以创建出伪立体效果的图形，例如如下代码：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect&#123;</span><br><span class="line">    <span class="built_in">CGGradientRef</span> gradientRef;</span><br><span class="line">    <span class="built_in">CGColorSpaceRef</span> colorSpaceRef;</span><br><span class="line">    <span class="built_in">CGFloat</span> locs[<span class="number">2</span>] = &#123;<span class="number">0</span>,<span class="number">1</span>&#125;;</span><br><span class="line">    <span class="built_in">CGFloat</span> colors[<span class="number">8</span>] = &#123; <span class="number">1.0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>,  <span class="comment">// 前4个为起始颜色的rgba</span></span><br><span class="line">        <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1.0</span> &#125;; <span class="comment">// 后4个为结束颜色的rgba</span></span><br><span class="line">    colorSpaceRef = <span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB);</span><br><span class="line">    gradientRef = <span class="built_in">CGGradientCreateWithColorComponents</span> (colorSpaceRef, colors,</span><br><span class="line">                                                       locs, <span class="number">2</span>);</span><br><span class="line">    <span class="built_in">CGContextRef</span> contextRef = <span class="built_in">UIGraphicsGetCurrentContext</span>();</span><br><span class="line">    <span class="built_in">CGContextDrawRadialGradient</span>(contextRef, gradientRef, <span class="built_in">CGPointMake</span>(rect.origin.x+rect.size.width/<span class="number">2</span>, rect.origin.y+rect.size.height/<span class="number">2</span>), rect.size.width/<span class="number">2</span>, <span class="built_in">CGPointMake</span>(rect.origin.x+rect.size.width/<span class="number">2</span>, rect.origin.y+rect.size.height/<span class="number">2</span><span class="number">-100</span>), <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过调整内圆的位置和半径，可以做到光影的移动，效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1115/174620_59ci_2340880.png" alt>           <img src="https://static.oschina.net/uploads/space/2016/1115/174657_ZUU4_2340880.png" alt></p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//模拟金属原子</span></span><br><span class="line">-(<span class="keyword">void</span>)drawRect:(<span class="built_in">CGRect</span>)rect&#123;</span><br><span class="line">    <span class="built_in">CGGradientRef</span> gradientRef;</span><br><span class="line">    <span class="built_in">CGColorSpaceRef</span> colorSpaceRef;</span><br><span class="line">    <span class="built_in">CGFloat</span> locs[<span class="number">8</span>] = &#123;<span class="number">0</span>,<span class="number">0.2</span>,<span class="number">0.4</span>,<span class="number">0.5</span>,<span class="number">0.6</span>,<span class="number">0.8</span>,<span class="number">0.9</span>,<span class="number">1.0</span>&#125;;</span><br><span class="line">    <span class="built_in">CGFloat</span> colors[<span class="number">64</span>] = &#123; <span class="number">1.0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>,  <span class="comment">// 前4个为起始颜色的rgba</span></span><br><span class="line">        <span class="number">0.0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1.0</span>,</span><br><span class="line">        <span class="number">0.0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1.0</span>,</span><br><span class="line">        <span class="number">1.0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>,</span><br><span class="line">        <span class="number">0.0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1.0</span>,</span><br><span class="line">        <span class="number">1.0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1.0</span>,</span><br><span class="line">        <span class="number">1.0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">1.0</span>,</span><br><span class="line">        <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1.0</span> &#125;; <span class="comment">// 后4个为结束颜色的rgba</span></span><br><span class="line">    colorSpaceRef = <span class="built_in">CGColorSpaceCreateWithName</span>(kCGColorSpaceGenericRGB);</span><br><span class="line">    gradientRef = <span class="built_in">CGGradientCreateWithColorComponents</span> (colorSpaceRef, colors,</span><br><span class="line">                                                       locs, <span class="number">8</span>);</span><br><span class="line">    <span class="built_in">CGContextRef</span> contextRef = <span class="built_in">UIGraphicsGetCurrentContext</span>();</span><br><span class="line"><span class="comment">//    CGContextDrawLinearGradient(contextRef, gradientRef, rect.origin, CGPointMake(rect.origin.x+rect.size.width, rect.origin.y+rect.size.height), 0);</span></span><br><span class="line">    <span class="built_in">CGContextDrawRadialGradient</span>(contextRef, gradientRef, <span class="built_in">CGPointMake</span>(rect.origin.x+rect.size.width/<span class="number">2</span>, rect.origin.y+rect.size.height/<span class="number">2</span>), rect.size.width/<span class="number">2</span>, <span class="built_in">CGPointMake</span>(rect.origin.x+rect.size.width/<span class="number">2</span>, rect.origin.y+rect.size.height/<span class="number">2</span><span class="number">-100</span>), <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://static.oschina.net/uploads/space/2016/1115/181702_xIDM_2340880.png" alt></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/11/27/265使用Express快速搭建前端项目框架/" class="pre-post btn btn-default" title='使用Express快速搭建前端项目框架'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">使用Express快速搭建前端项目框架</span>
+        </a>
+    
+    
+        <a href="/2016/11/02/263iOS开发CoreGraphics核心图形框架之五——Patterns模型的应用/" class="next-post btn btn-default" title='iOS开发CoreGraphics核心图形框架之四——变换函数'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发CoreGraphics核心图形框架之四——变换函数</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发CoreGraphics核心图形框架之六——梯度渐变"><span class="toc-text">iOS开发CoreGraphics核心图形框架之六——梯度渐变</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、使用CGGradientRef创建梯度渐变视图"><span class="toc-text">二、使用CGGradientRef创建梯度渐变视图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、CGShadingRef的应用"><span class="toc-text">三、CGShadingRef的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、一些小技巧"><span class="toc-text">四、一些小技巧</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

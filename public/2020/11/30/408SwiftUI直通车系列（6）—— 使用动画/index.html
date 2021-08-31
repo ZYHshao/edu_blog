@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>SwiftUI直通车系列（6）—— 使用动画 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SwiftUI直通车系列（6）—— 使用动画">
+            
+	            SwiftUI直通车系列（6）—— 使用动画
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/SwiftUI">
+            SwiftUI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2020/11/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="SwiftUI直通车系列（6）——-使用动画"><a href="#SwiftUI直通车系列（6）——-使用动画" class="headerlink" title="SwiftUI直通车系列（6）—— 使用动画"></a>SwiftUI直通车系列（6）—— 使用动画</h1><pre><code>本系列博客是针对SwiftUI开发框架的快速入门介绍，之前系列博客地址：
+</code></pre><p><a href="https://my.oschina.net/u/2340880/blog/4529951" target="_blank" rel="noopener">SwiftUI直通车系列（1）—— 视图的布局与组织</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/4534222" target="_blank" rel="noopener">SwiftUI直通车系列（2）—— 列表视图</a></p>
+<p><a href="http://xn--swiftui%283%29%20-5n6ga9439p5gfhqnmm1cjh7gx4h5r8ao6y1m4etxd/" target="_blank" rel="noopener">SwiftUI直通车系列三（3）—— 使用导航</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/4654523" target="_blank" rel="noopener">SwiftUI直通车系列（4）—— 处理用户交互</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/4698216" target="_blank" rel="noopener">SwiftUI直通车系列（5）—— 自定义绘制</a></p>
+<p>前面的博客整体对使用SwiftUI进行页面布局与简单的用户交互做了介绍。我们知道，作为一个优秀的UI框架，其很重要的一点是对动画的支持，动画是提升用户体验的重要方式，在SwiftUI中，实现动画效果将变得非常容易。</p>
+<h2 id="一、使用属性动画"><a href="#一、使用属性动画" class="headerlink" title="一、使用属性动画"></a>一、使用属性动画</h2><pre><code>属性动画是指当组件的属性发生变化时所展示动画效果，例如组件的颜色、位置、尺寸、旋转角度等。在SwiftUI中，我们知道要动态的对组件样式进行更改，需要使用状态来控制。我们也可以使用状态来控制动画动作。
+
+ 例如，我们定义一个按钮组件，当点击时，让其旋转180度，并略微放大，代码如下：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DrawContent</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    @<span class="type">State</span> <span class="keyword">private</span> <span class="keyword">var</span> begin = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span>(alignment: .center, spacing: <span class="number">20</span>) &#123;</span><br><span class="line">            <span class="type">Button</span>(action: &#123;</span><br><span class="line">                <span class="keyword">self</span>.begin.toggle()</span><br><span class="line">            &#125;) &#123;</span><br><span class="line">                <span class="type">Text</span>(<span class="string">"开始"</span>)</span><br><span class="line">                    .font(<span class="type">Font</span>.system(size: <span class="number">30</span>))</span><br><span class="line">                    .rotationEffect(.degrees(<span class="keyword">self</span>.begin ? <span class="number">180</span> : <span class="number">0</span>))</span><br><span class="line">                    .scaleEffect(<span class="keyword">self</span>.begin ? <span class="number">2</span> : <span class="number">1</span>)</span><br><span class="line">                    .animation(.easeInOut(duration: <span class="number">3</span>))</span><br><span class="line">                                        </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，begin状态属性用来记录动画的状态，当一次点击此按钮时，会将当前按钮放大一倍，并旋转180度，再次点击按钮会动画还原。</p>
+<pre><code>rotationEffect用来定义组件的旋转角度，scaleEffect用来定义组件缩放的比例，与之类似，大部分用来渲染视图样式的属性都支持进行动画。animation用来设置动画的执行方式，如上代码所示，设置的为easeInOut表示动画执行的过程采用渐入渐出的方式，且动画执行的时长为3秒。
+</code></pre><h2 id="二、使用转场动画"><a href="#二、使用转场动画" class="headerlink" title="二、使用转场动画"></a>二、使用转场动画</h2><pre><code>属性动画用在组件的某些属性发生变化的场景，转场动画会影响组件的切换动作。当对组件进行展示或隐藏时，通常可以采用转场动画来处理。我们以上一篇博客自定义的图形组件为例，我们可以为其出现时加一个滑动动画，示例代码如下：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Animation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">custom</span><span class="params">()</span></span> -&gt; <span class="type">Animation</span> &#123;</span><br><span class="line">        <span class="type">Animation</span>.spring(response: <span class="number">1.5</span>, dampingFraction: <span class="number">0.5</span>, blendDuration: <span class="number">0.5</span>)</span><br><span class="line">            .speed(<span class="number">2</span>)</span><br><span class="line">            .delay(<span class="number">0.03</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DrawContent</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    @<span class="type">State</span> <span class="keyword">private</span> <span class="keyword">var</span> begin = <span class="literal">false</span></span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span>(alignment: <span class="comment">/*@START_MENU_TOKEN@*/</span>.center<span class="comment">/*@END_MENU_TOKEN@*/</span>, spacing: <span class="number">20</span>) &#123;</span><br><span class="line">            <span class="type">Button</span>(action: &#123;</span><br><span class="line">                withAnimation &#123;</span><br><span class="line">                    <span class="keyword">self</span>.begin.toggle()</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;) &#123;</span><br><span class="line">                <span class="type">Text</span>(<span class="string">"开始"</span>)</span><br><span class="line">                    .font(<span class="type">Font</span>.system(size: <span class="number">30</span>))</span><br><span class="line">                    .rotationEffect(.degrees(<span class="keyword">self</span>.begin ? <span class="number">180</span> : <span class="number">0</span>))</span><br><span class="line">                    .scaleEffect(<span class="keyword">self</span>.begin ? <span class="number">2</span> : <span class="number">1</span>)</span><br><span class="line">                    .animation(.easeInOut(duration: <span class="number">3</span>))</span><br><span class="line">                                        </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">self</span>.begin &#123;</span><br><span class="line">                <span class="type">ZStack</span>&#123;</span><br><span class="line">                    <span class="type">ForEach</span>(<span class="number">0</span> ..&lt; <span class="number">10</span>) &#123; i <span class="keyword">in</span></span><br><span class="line">                        <span class="type">DrawTestView</span>(angle: <span class="type">Angle</span>(degrees:<span class="type">Double</span>(<span class="number">36</span>*i))).opacity( <span class="number">0.3</span>)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;.animation(.custom())</span><br><span class="line">                .transition(.slide)</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上代码所示，其中custom是我们自定义的一种动画模式，上面采用了阻尼动画，并自定义了动画的阻尼参数，速度，延时等属性。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/02/18/409iOS原理分析之从源码看load与initialize方法/" class="pre-post btn btn-default" title='iOS原理分析之从源码看load与initialize方法'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS原理分析之从源码看load与initialize方法</span>
+        </a>
+    
+    
+        <a href="/2020/11/01/407SwiftUI直通车系列（5）—— 自定义绘制/" class="next-post btn btn-default" title='SwiftUI直通车系列（5）—— 自定义绘制'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SwiftUI直通车系列（5）—— 自定义绘制</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SwiftUI直通车系列（6）——-使用动画"><span class="toc-text">SwiftUI直通车系列（6）—— 使用动画</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、使用属性动画"><span class="toc-text">一、使用属性动画</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、使用转场动画"><span class="toc-text">二、使用转场动画</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

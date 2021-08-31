@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS中UIPopoverController使用详解 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中UIPopoverController使用详解">
+            
+	            iOS中UIPopoverController使用详解
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/07/13</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中UIPopoverController使用详解"><a href="#iOS中UIPopoverController使用详解" class="headerlink" title="iOS中UIPopoverController使用详解"></a>iOS中UIPopoverController使用详解</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>UIPopoverController是Pad设备中常用的一种视图控制器，其在UI表现上为在当前视图控制器上面弹出一个子视图控制器，通常用来展示交互列表。示例如下图：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0713/114232_Wju6_2340880.png" alt></p>
+<p>UIPopoverController只能用于iPad，在要兼容iPad和iPhone的项目中，需要根据设备类型使用两套代码。在iOS8之后，系统提供了UIPresentationController来代替她，UIPresentationController可以兼容iPhone与iPad。</p>
+<h3 id="二、UIPopoverController的使用详解"><a href="#二、UIPopoverController的使用详解" class="headerlink" title="二、UIPopoverController的使用详解"></a>二、UIPopoverController的使用详解</h3><pre><code>首先UIPopoverController是一个容器控制器，其中需要承载一个ViewControler作为内容视图。UIPopoverController使用如下初始化方法创建：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建视图控制器的方法 通过一个内容视图控制器创建</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithContentViewController:(<span class="built_in">UIViewController</span> *)viewController;</span><br></pre></td></tr></table></figure>
+<p>创建出控制器后，调用如下方法可以将控制器弹出：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个方法将控制器以一个CGRect区域为基准弹出</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">UIPopoverArrowDirection为箭头出现的方向</span></span><br><span class="line"><span class="comment">typedef NS_OPTIONS(NSUInteger, UIPopoverArrowDirection) &#123;</span></span><br><span class="line"><span class="comment">    UIPopoverArrowDirectionUp = 1UL &lt;&lt; 0,//上</span></span><br><span class="line"><span class="comment">    UIPopoverArrowDirectionDown = 1UL &lt;&lt; 1,//下</span></span><br><span class="line"><span class="comment">    UIPopoverArrowDirectionLeft = 1UL &lt;&lt; 2,//左</span></span><br><span class="line"><span class="comment">    UIPopoverArrowDirectionRight = 1UL &lt;&lt; 3,//右</span></span><br><span class="line"><span class="comment">    UIPopoverArrowDirectionAny = UIPopoverArrowDirectionUp | UIPopoverArrowDirectionDown | UIPopoverArrowDirectionLeft | UIPopoverArrowDirectionRight,//任意方向</span></span><br><span class="line"><span class="comment">    UIPopoverArrowDirectionUnknown = NSUIntegerMax//未知</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">//view参数为选择要在那个View视图上弹出 animated参数设置是否带动画</span></span><br><span class="line">- (<span class="keyword">void</span>)presentPopoverFromRect:(<span class="built_in">CGRect</span>)rect inView:(<span class="built_in">UIView</span> *)view permittedArrowDirections:(<span class="built_in">UIPopoverArrowDirection</span>)arrowDirections animated:(<span class="built_in">BOOL</span>)animated;</span><br><span class="line"><span class="comment">//以一个BarButtonItem为基准弹出 其余参数意义同上</span></span><br><span class="line">- (<span class="keyword">void</span>)presentPopoverFromBarButtonItem:(<span class="built_in">UIBarButtonItem</span> *)item permittedArrowDirections:(<span class="built_in">UIPopoverArrowDirection</span>)arrowDirections animated:(<span class="built_in">BOOL</span>)animated;</span><br></pre></td></tr></table></figure>
+<p>UIPopoverController的相关设置方法如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置代理</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">id</span> &lt;<span class="built_in">UIPopoverControllerDelegate</span>&gt; delegate;</span><br><span class="line"><span class="comment">//设置内容视图控制器</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">UIViewController</span> *contentViewController;</span><br><span class="line">- (<span class="keyword">void</span>)setContentViewController:(<span class="built_in">UIViewController</span> *)viewController animated:(<span class="built_in">BOOL</span>)animated;</span><br><span class="line"><span class="comment">//设置界面展示尺寸</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) <span class="built_in">CGSize</span> popoverContentSize;</span><br><span class="line">- (<span class="keyword">void</span>)setPopoverContentSize:(<span class="built_in">CGSize</span>)size animated:(<span class="built_in">BOOL</span>)animated;</span><br><span class="line"><span class="comment">//获取控制器当前是否正在展示</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isPopoverVisible) <span class="built_in">BOOL</span> popoverVisible;</span><br><span class="line"><span class="comment">//获取控制器箭头方向</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UIPopoverArrowDirection</span> popoverArrowDirection;</span><br><span class="line"><span class="comment">//这个属性可以增强控制器的交互能力</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">默认情况下，当视图控制器弹出时，点击界面上的其他位置，视图控制器会被隐藏 如果需要当视图控制爱弹出时界面上的其他控件依然可以进行用户交互，则需要将这些UI控件设置进这个数组中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;__kindof <span class="built_in">UIView</span> *&gt; *passthroughViews;</span><br><span class="line"><span class="comment">//隐藏视图控制器的方法</span></span><br><span class="line">- (<span class="keyword">void</span>)dismissPopoverAnimated:(<span class="built_in">BOOL</span>)animated;</span><br><span class="line"><span class="comment">//设置视图控制器的背景颜色</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">UIColor</span> *backgroundColor <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">7</span>_0);</span><br><span class="line"><span class="comment">//设置视图Margin</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readwrite</span>) <span class="built_in">UIEdgeInsets</span> popoverLayoutMargins <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">5</span>_0);</span><br><span class="line"><span class="comment">//这个属性用于自定义PopoverController的UI展现 传入自定义的背景视图类</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readwrite</span>, <span class="keyword">strong</span>) Class popoverBackgroundViewClass <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">5</span>_0);</span><br></pre></td></tr></table></figure>
+<h3 id="三、自定义UI展现的UIPopoverController"><a href="#三、自定义UI展现的UIPopoverController" class="headerlink" title="三、自定义UI展现的UIPopoverController"></a>三、自定义UI展现的UIPopoverController</h3><pre><code>通过设置UIPopoverController对象的popoverBacjgroundViewClass属性可以将一个自定义的类作为控制器的背景视图，需要注意，此自定义的类必须继承自UIPopoverBackgroundView，并且子类必须覆写父类中的一些列方法，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyView</span> : <span class="title">UIPopoverBackgroundView</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyView</span></span></span><br><span class="line"><span class="comment">//这个方法返回箭头宽度</span></span><br><span class="line">+ (<span class="built_in">CGFloat</span>)arrowBase&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">20</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个方法中返回内容视图的偏移</span></span><br><span class="line">+(<span class="built_in">UIEdgeInsets</span>)contentViewInsets&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">UIEdgeInsetsMake</span>(<span class="number">20</span>, <span class="number">20</span>, <span class="number">20</span>, <span class="number">20</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个方法返回箭头高度</span></span><br><span class="line">+(<span class="built_in">CGFloat</span>)arrowHeight&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">30</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个方法返回箭头的方向</span></span><br><span class="line">-(<span class="built_in">UIPopoverArrowDirection</span>)arrowDirection&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">UIPopoverArrowDirectionUp</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个在设置箭头方向时被调用 可以监听做处理</span></span><br><span class="line">-(<span class="keyword">void</span>)setArrowDirection:(<span class="built_in">UIPopoverArrowDirection</span>)arrowDirection&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个方法在设置箭头偏移量时被调用 可以监听做处理</span></span><br><span class="line">-(<span class="keyword">void</span>)setArrowOffset:(<span class="built_in">CGFloat</span>)arrowOffset&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//重写layout方法来来定义箭头样式</span></span><br><span class="line">- (<span class="keyword">void</span>)layoutSubviews</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">super</span> layoutSubviews];</span><br><span class="line">    <span class="built_in">CGSize</span> arrowSize = <span class="built_in">CGSizeMake</span>([[<span class="keyword">self</span> <span class="keyword">class</span>] arrowBase], [[<span class="keyword">self</span> <span class="keyword">class</span>] arrowHeight]);</span><br><span class="line">    <span class="built_in">UIImage</span> * image  = [<span class="keyword">self</span> drawArrowImage:arrowSize];</span><br><span class="line">    <span class="built_in">UIImageView</span> * imageView = [[<span class="built_in">UIImageView</span> alloc]initWithImage:image];</span><br><span class="line">    imageView.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0.0</span>f, arrowSize.width, arrowSize.height);</span><br><span class="line">    [<span class="keyword">self</span> addSubview:imageView];</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个方法中进行背景色的设置</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithFrame:(<span class="built_in">CGRect</span>)frame</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> initWithFrame:frame];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.backgroundColor = [<span class="built_in">UIColor</span> redColor];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">instancetype</span>)init</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">self</span> = [<span class="keyword">super</span> init];</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>) &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//返回值决定是否渲染阴影</span></span><br><span class="line">+(<span class="built_in">BOOL</span>)wantsDefaultContentAppearance&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//画箭头方法</span></span><br><span class="line">- (<span class="built_in">UIImage</span> *)drawArrowImage:(<span class="built_in">CGSize</span>)size</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">UIGraphicsBeginImageContextWithOptions</span>(size, <span class="literal">NO</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="built_in">CGContextRef</span> ctx = <span class="built_in">UIGraphicsGetCurrentContext</span>();</span><br><span class="line">    [[<span class="built_in">UIColor</span> clearColor] setFill];</span><br><span class="line">    <span class="built_in">CGContextFillRect</span>(ctx, <span class="built_in">CGRectMake</span>(<span class="number">0.0</span>f, <span class="number">0.0</span>f, size.width, size.height));</span><br><span class="line">    <span class="built_in">CGMutablePathRef</span> arrowPath = <span class="built_in">CGPathCreateMutable</span>();</span><br><span class="line">    <span class="built_in">CGPathMoveToPoint</span>(arrowPath, <span class="literal">NULL</span>, (size.width/<span class="number">2.0</span>f), <span class="number">0.0</span>f);</span><br><span class="line">    <span class="built_in">CGPathAddLineToPoint</span>(arrowPath, <span class="literal">NULL</span>, size.width, size.height);</span><br><span class="line">    <span class="built_in">CGPathAddLineToPoint</span>(arrowPath, <span class="literal">NULL</span>, <span class="number">0.0</span>f, size.height);</span><br><span class="line">    <span class="built_in">CGPathCloseSubpath</span>(arrowPath);</span><br><span class="line">    <span class="built_in">CGContextAddPath</span>(ctx, arrowPath);</span><br><span class="line">    <span class="built_in">CGPathRelease</span>(arrowPath);</span><br><span class="line">    <span class="built_in">UIColor</span> *fillColor = [<span class="built_in">UIColor</span> yellowColor];</span><br><span class="line">    <span class="built_in">CGContextSetFillColorWithColor</span>(ctx, fillColor.CGColor);</span><br><span class="line">    <span class="built_in">CGContextDrawPath</span>(ctx, kCGPathFill);</span><br><span class="line">    <span class="built_in">UIImage</span> *image = <span class="built_in">UIGraphicsGetImageFromCurrentImageContext</span>();</span><br><span class="line">    <span class="built_in">UIGraphicsEndImageContext</span>();</span><br><span class="line">    <span class="keyword">return</span> image;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="四、UIPopoverPresentationController应用解析"><a href="#四、UIPopoverPresentationController应用解析" class="headerlink" title="四、UIPopoverPresentationController应用解析"></a>四、UIPopoverPresentationController应用解析</h3><pre><code>UIPopoverPresentationController是iOS8后系统新引入的控制器，其可以很好的兼容iPhone与iPad。UIPopoverPresentationContriller的使用需要和UIViewController结合进行，使用过程示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UITableViewController</span> tabCon = [[<span class="built_in">UITableViewController</span> alloc]initWithStyle:<span class="built_in">UITableViewStylePlain</span>];</span><br><span class="line"><span class="comment">//设置跳转模式为popover模式</span></span><br><span class="line">tabCon.modalPresentationStyle = <span class="built_in">UIModalPresentationPopover</span>;</span><br><span class="line"><span class="comment">//获取到UIPopoverPresentationController对象</span></span><br><span class="line"><span class="built_in">UIPopoverPresentationController</span>* con = tabCon.popoverPresentationController;</span><br><span class="line"><span class="comment">//设置弹出的基准视图</span></span><br><span class="line">con.sourceView = <span class="keyword">self</span>.view;</span><br><span class="line">[<span class="keyword">self</span> presentViewController:tabCon animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br></pre></td></tr></table></figure>
+<p>UIPopoverPresentationController中属性如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置代理</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">id</span> &lt;<span class="built_in">UIPopoverPresentationControllerDelegate</span>&gt; delegate;</span><br><span class="line"><span class="comment">//设置允许的箭头方向</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">UIPopoverArrowDirection</span> permittedArrowDirections;</span><br><span class="line"><span class="comment">//设置基准视图或者区域</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">UIView</span> *sourceView;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGRect</span> sourceRect;</span><br><span class="line"><span class="comment">//设置是否覆盖基准视图区域</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">BOOL</span> canOverlapSourceViewRect <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">9</span>_0);</span><br><span class="line"><span class="comment">//设置基准BarButtonItem</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">UIBarButtonItem</span> *barButtonItem;</span><br><span class="line"><span class="comment">//设置可以进行用户交互的视图</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">UIView</span> *&gt; *passthroughViews;</span><br><span class="line"><span class="comment">//设置背景颜色</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">UIColor</span> *backgroundColor;</span><br><span class="line"><span class="comment">//设置Margin</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readwrite</span>) <span class="built_in">UIEdgeInsets</span> popoverLayoutMargins;</span><br><span class="line"><span class="comment">//设置自定义视图</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readwrite</span>, <span class="keyword">strong</span>) Class &lt;<span class="built_in">UIPopoverBackgroundViewMethods</span>&gt; popoverBackgroundViewClass;</span><br></pre></td></tr></table></figure>
+<p>UIPopoverPresentationControllerDelegate中的方法如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//控制器将要弹出时调用</span></span><br><span class="line">- (<span class="keyword">void</span>)prepareForPopoverPresentation:(<span class="built_in">UIPopoverPresentationController</span> *)popoverPresentationController;</span><br><span class="line"><span class="comment">//控制器将要消失时调用</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)popoverPresentationControllerShouldDismissPopover:(<span class="built_in">UIPopoverPresentationController</span> *)popoverPresentationController;</span><br><span class="line"><span class="comment">//控制器已经消失时调用</span></span><br><span class="line">- (<span class="keyword">void</span>)popoverPresentationControllerDidDismissPopover:(<span class="built_in">UIPopoverPresentationController</span> *)popoverPresentationController;</span><br><span class="line"><span class="comment">//控制器接收到弹出消息时调用</span></span><br><span class="line">- (<span class="keyword">void</span>)popoverPresentationController:(<span class="built_in">UIPopoverPresentationController</span> *)popoverPresentationController willRepositionPopoverToRect:(<span class="keyword">inout</span> <span class="built_in">CGRect</span> *)rect inView:(<span class="keyword">inout</span> <span class="built_in">UIView</span>  * __<span class="keyword">nonnull</span> * __<span class="keyword">nonnull</span>)view;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/07/14/240iOS中Today扩展插件与宿主APP的交互/" class="pre-post btn btn-default" title='iOS中Today扩展插件与宿主APP的交互'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS中Today扩展插件与宿主APP的交互</span>
+        </a>
+    
+    
+        <a href="/2016/07/12/238 iOS使用UIImagePickerController调用系统相机、相册与图库/" class="next-post btn btn-default" title='iOS使用UIImagePickerController调用系统相机、相册与图库'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS使用UIImagePickerController调用系统相机、相册与图库</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中UIPopoverController使用详解"><span class="toc-text">iOS中UIPopoverController使用详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、UIPopoverController的使用详解"><span class="toc-text">二、UIPopoverController的使用详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、自定义UI展现的UIPopoverController"><span class="toc-text">三、自定义UI展现的UIPopoverController</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、UIPopoverPresentationController应用解析"><span class="toc-text">四、UIPopoverPresentationController应用解析</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

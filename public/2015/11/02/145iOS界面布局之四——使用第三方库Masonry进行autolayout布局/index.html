@@ -1,0 +1,306 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS界面布局之四——使用第三方库Masonry进行autolayout布局 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS界面布局之四——使用第三方库Masonry进行autolayout布局">
+            
+	            iOS界面布局之四——使用第三方库Masonry进行autolayout布局
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/11/02</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS界面布局之四——使用第三方库Masonry进行autolayout布局"><a href="#iOS界面布局之四——使用第三方库Masonry进行autolayout布局" class="headerlink" title="iOS界面布局之四——使用第三方库Masonry进行autolayout布局"></a>iOS界面布局之四——使用第三方库Masonry进行autolayout布局</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在前面博客，我们讨论了使用iOS原生的框架代码来进行autolayout布局。在使用中，我们会发现，无论是代码量还是结构的清晰度，都十分不能让我们满意，在storyBoard中只需要几条线就可以搞定的事情，用代码缺要写冗余的一大堆。并且有些时候，故事版并不能解决所有问题，某些控件必须我们手写，这样的话，我们就不得不进行代码的autolayout布局，幸运的是，Masonry可以帮助我们轻松愉快的完成这一任务。
+</code></pre><p>使用代码进行autolayout布局：<a href="http://my.oschina.net/u/2340880/blog" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog </a>。</p>
+<h3 id="二、使用Masonry"><a href="#二、使用Masonry" class="headerlink" title="二、使用Masonry"></a>二、使用Masonry</h3><pre><code>这里说的大部分内容均来自Masonry和官方gitHub，将其内容进行了翻译和解释，源地址如下：[https://github.com/SnapKit/Masonry](https://github.com/SnapKit/Masonry)。
+</code></pre><h4 id="1、布局的控件属性对照"><a href="#1、布局的控件属性对照" class="headerlink" title="1、布局的控件属性对照"></a>1、布局的控件属性对照</h4><pre><code>无论是用storyBoard还是代码，在设置控件之间layout关系的时候，我们都需要设置控件的位置属性。在下面的方法中，这个位置属性就是NSLayoutAttribute对象，他决定的控件对象的参照位置：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+(instancetype)constraintWithItem:(id)view1 attribute:(NSLayoutAttribute)attr1 </span><br><span class="line">                                            relatedBy:(NSLayoutRelation)relation </span><br><span class="line">                                            toItem:(nullable id)view2 </span><br><span class="line">                                            attribute:(NSLayoutAttribute)attr2 </span><br><span class="line">                                            multiplier:(CGFloat)multiplier constant:(CGFloat)c;</span><br></pre></td></tr></table></figure>
+<p>在Masonry中，有一系列的属性与之成对应关系，对照如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1102/105457_YEgT_2340880.png" alt></p>
+<h4 id="2、3个方法让你玩转Masonry约束操作"><a href="#2、3个方法让你玩转Masonry约束操作" class="headerlink" title="2、3个方法让你玩转Masonry约束操作"></a>2、3个方法让你玩转Masonry约束操作</h4><pre><code>Masonry在UIView的类别中，有3个全局的操作约束的方法，通过他们我们可以自由的进行autolayout的设置。
+</code></pre><p>添加约束：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (NSArray *)mas_makeConstraints:(void(^)(MASConstraintMaker *make))block;</span><br></pre></td></tr></table></figure>
+<p>这个方法用于我们在最开始时为控件设置的约束，在block中进行约束条件的设置，例如我们创建一个label，将其尺寸设置为50*50，放在屏幕中间，使用如下代码：</p>
+<p>注意：在添加约束前，必须将视图添加到其父视图上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    UILabel * label = [[UILabel alloc]init];</span><br><span class="line">    [self.view addSubview:label];</span><br><span class="line">    [label mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.center.equalTo(self.view);</span><br><span class="line">        make.height.equalTo(@50);</span><br><span class="line">        make.width.equalTo(@50);</span><br><span class="line">    &#125;];</span><br><span class="line">    label.backgroundColor = [UIColor redColor];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1102/111959_GF0u_2340880.png" alt></p>
+<p>更新约束：</p>
+<p>当我们需要配合布局改变或者动画效果的时候，我们可能需要将已经添加的约束进行更新操作，使用如下的方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[label mas_updateConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.height.equalTo(@100);</span><br><span class="line">        make.width.equalTo(@100);</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>更新约束的作用在于更新已经添加的某些约束，并不会移除掉原有的约束，如果我们需要添加新的约束，可以使用下面的重设约束的方法。</p>
+<p>重设约束：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[label mas_remakeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.left.equalTo(self.view.mas_left).offset(10);</span><br><span class="line">        make.top.equalTo(self.view.mas_top).offset(100);</span><br><span class="line">        make.height.equalTo(@100);</span><br><span class="line">        make.width.equalTo(@100);</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="3、约束值相关"><a href="#3、约束值相关" class="headerlink" title="3、约束值相关"></a>3、约束值相关</h4><pre><code>在添加具体约束的时候，我们不仅可以将约束值设置为绝对的相等关系，也可以设置一些值域的关系，在Masonry中，有如下三种：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//绝对相等</span><br><span class="line">- (MASConstraint * (^)(id attr))equalTo;</span><br><span class="line">//大于等于</span><br><span class="line">- (MASConstraint * (^)(id attr))greaterThanOrEqualTo;</span><br><span class="line">//小于等于</span><br><span class="line">- (MASConstraint * (^)(id attr))lessThanOrEqualTo;</span><br></pre></td></tr></table></figure>
+<p>对于约束的优先级，使用如下几个量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//手动设置一个优先级参数</span><br><span class="line">- (MASConstraint * (^)(MASLayoutPriority priority))priority;</span><br><span class="line">//优先级低</span><br><span class="line">- (MASConstraint * (^)())priorityLow;</span><br><span class="line">//优先级中等</span><br><span class="line">- (MASConstraint * (^)())priorityMedium;</span><br><span class="line">//优先级高</span><br><span class="line">- (MASConstraint * (^)())priorityHigh;</span><br></pre></td></tr></table></figure>
+<p>写法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[label mas_remakeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.left.equalTo(self.view.mas_left).offset(10);</span><br><span class="line">        make.top.equalTo(self.view.mas_top).offset(100);</span><br><span class="line">        make.height.equalTo(@100).priority(1000);</span><br><span class="line">        make.width.equalTo(@100).priorityHigh();</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<h3 id="三、Masonry设置约束的几个示例"><a href="#三、Masonry设置约束的几个示例" class="headerlink" title="三、Masonry设置约束的几个示例"></a>三、Masonry设置约束的几个示例</h3><h4 id="1、设置视图与其父视图的边距约束"><a href="#1、设置视图与其父视图的边距约束" class="headerlink" title="1、设置视图与其父视图的边距约束"></a>1、设置视图与其父视图的边距约束</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    label = [[UILabel alloc]init];</span><br><span class="line">    [self.view addSubview:label];</span><br><span class="line">    [label mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.edges.equalTo(self.view).insets(UIEdgeInsetsMake(20, 20, 20, 20));</span><br><span class="line">    &#125;];</span><br><span class="line">    label.backgroundColor = [UIColor redColor];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>设置上下左右与其父视图边距为20px，效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1102/115707_bisI_2340880.png" alt> </p>
+<h4 id="2、约束控件的尺寸为固定值"><a href="#2、约束控件的尺寸为固定值" class="headerlink" title="2、约束控件的尺寸为固定值"></a>2、约束控件的尺寸为固定值</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[label mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.height.equalTo(@200);</span><br><span class="line">        make.width.equalTo(@200);</span><br><span class="line">        make.center.equalTo(self.view);</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>位置约束设置在了屏幕的中间，效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1102/134638_e4Db_2340880.png" alt></p>
+<h4 id="3、约束控件之间的尺寸"><a href="#3、约束控件之间的尺寸" class="headerlink" title="3、约束控件之间的尺寸"></a>3、约束控件之间的尺寸</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">  [label mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.height.equalTo(@100);</span><br><span class="line">        make.width.equalTo(label2);</span><br><span class="line">        make.right.equalTo(label2.mas_left).offset(-100);</span><br><span class="line">        make.leading.equalTo(self.view.mas_leading).offset(20);</span><br><span class="line">        make.centerY.equalTo(self.view);</span><br><span class="line">    &#125;];</span><br><span class="line">    [label2 mas_makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.height.equalTo(@100);</span><br><span class="line">        make.centerY.equalTo(label);</span><br><span class="line">        make.trailing.equalTo(self.view.mas_trailing).offset(-20);</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>设置了两个label宽度一致，相距100px,分别距离左右边距20px，效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1102/141825_m5VX_2340880.png" alt></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/11/05/146iOS中UITableViewController自带的刷新控件/" class="pre-post btn btn-default" title='iOS中UITableViewController自带的刷新控件'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS中UITableViewController自带的刷新控件</span>
+        </a>
+    
+    
+        <a href="/2015/11/01/144iOS对UIViewController生命周期和属性方法的解析/" class="next-post btn btn-default" title='iOS对UIViewController生命周期和属性方法的解析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS对UIViewController生命周期和属性方法的解析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS界面布局之四——使用第三方库Masonry进行autolayout布局"><span class="toc-text">iOS界面布局之四——使用第三方库Masonry进行autolayout布局</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、使用Masonry"><span class="toc-text">二、使用Masonry</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、布局的控件属性对照"><span class="toc-text">1、布局的控件属性对照</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、3个方法让你玩转Masonry约束操作"><span class="toc-text">2、3个方法让你玩转Masonry约束操作</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、约束值相关"><span class="toc-text">3、约束值相关</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、Masonry设置约束的几个示例"><span class="toc-text">三、Masonry设置约束的几个示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、设置视图与其父视图的边距约束"><span class="toc-text">1、设置视图与其父视图的边距约束</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、约束控件的尺寸为固定值"><span class="toc-text">2、约束控件的尺寸为固定值</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、约束控件之间的尺寸"><span class="toc-text">3、约束控件之间的尺寸</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

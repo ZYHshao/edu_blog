@@ -1,0 +1,321 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS中UITextView方法解读 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中UITextView方法解读">
+            
+	            iOS中UITextView方法解读
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/06/04</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中UITextView方法解读"><a href="#iOS中UITextView方法解读" class="headerlink" title="iOS中UITextView方法解读"></a>iOS中UITextView方法解读</h2><p>常用属性解读：</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,assign) id&lt;UITextViewDelegate> delegate;</p>
+<p>设置代理属性</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,copy) NSString *text;</p>
+<p>textView上的文本</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,retain) UIFont *font;</p>
+<p>设置文本字体</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic,retain) UIColor *textColor;</p>
+<p>设置文本颜色</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(nonatomic) NSTextAlignment textAlignment; </p>
+<p>设置文本对齐模式</p>
+<p>@property(nonatomic) NSRange selectedRange;</p>
+<p>设置选中的文本范围(只有当textView是第一响应时才有效)</p>
+<p>@property(nonatomic,getter=isEditable) BOOL editable;</p>
+<p>设置是否可以编辑</p>
+<p>@property(nonatomic,getter=isSelectable) BOOL selectable;</p>
+<p>设置是否可以选中</p>
+<p>@property(nonatomic) UIDataDetectorTypes dataDetectorTypes;</p>
+<p>这个属性可以将本文中的电话，邮件等变为链接，长按会调用响应响应的程序(textView必须为不可编辑状态)，属性的枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, UIDataDetectorTypes) &#123;</span><br><span class="line">    UIDataDetectorTypePhoneNumber   = 1 &lt;&lt; 0,          // 电话变为链接</span><br><span class="line">    UIDataDetectorTypeLink          = 1 &lt;&lt; 1,          // 网址变为链接   </span><br><span class="line">    UIDataDetectorTypeAddress       = 1 &lt;&lt; 2,          // 地址变为链接</span><br><span class="line">    UIDataDetectorTypeCalendarEvent = 1 &lt;&lt; 3,          // 日历变为链接</span><br><span class="line">    UIDataDetectorTypeNone          = 0,               // 无连接</span><br><span class="line">    UIDataDetectorTypeAll           = NSUIntegerMax    // 所有类型链接</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>@property(nonatomic) BOOL allowsEditingTextAttributes;</p>
+<p>设置是否允许编辑属性字符串文本</p>
+<p>@property(nonatomic,copy) NSAttributedString *attributedText;</p>
+<p>设置属性字符串文本</p>
+<p>@property(nonatomic,copy) NSDictionary *typingAttributes;</p>
+<p>设置属性字符串文本属性字典</p>
+<p>- (void)scrollRangeToVisible:(NSRange)range;</p>
+<p>滚动textView使其显示在本一段文本</p>
+<p>@property (readwrite, retain) UIView *inputView;</p>
+<p>设置成为第一响应时弹出的视图，键盘视图</p>
+<p>@property (readwrite, retain) UIView *inputAccessoryView;</p>
+<p>设置成为第一响应时弹出的副视图，副键盘视图</p>
+<p>@property(nonatomic) BOOL clearsOnInsertion;</p>
+<p>设置是否显示删除按钮</p>
+<p>UITextViewDelegate中的方法</p>
+<p>- (BOOL)textViewShouldBeginEditing:(UITextView *)textView;</p>
+<p>是否开始编辑</p>
+<p>- (BOOL)textViewShouldEndEditing:(UITextView *)textView;</p>
+<p>是否结束编辑</p>
+<p>- (void)textViewDidBeginEditing:(UITextView *)textView;</p>
+<p>开始编辑时触发的方法</p>
+<p>- (void)textViewDidEndEditing:(UITextView *)textView;</p>
+<p>结束编辑时触发的方法</p>
+<p>- (BOOL)textView:(UITextView <em>)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString </em>)text;</p>
+<p>是否允许字符改变</p>
+<p>- (void)textViewDidChange:(UITextView *)textView;</p>
+<p>字符内容改变触发的方法</p>
+<p>- (void)textViewDidChangeSelection:(UITextView *)textView;</p>
+<p>选中内容改变触发的方法</p>
+<p>- (BOOL)textView:(UITextView <em>)textView shouldInteractWithURL:(NSURL </em>)URL inRange:(NSRange)characterRange;</p>
+<p>当文本中的URL进行链接时触发的方法</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/06/04/74iOS开发UIScrollView使用详解/" class="pre-post btn btn-default" title='iOS开发UIScrollView使用详解'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发UIScrollView使用详解</span>
+        </a>
+    
+    
+        <a href="/2015/06/03/72iOS中UIImageView用法总结/" class="next-post btn btn-default" title='iOS中UIImageView用法总结'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中UIImageView用法总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中UITextView方法解读"><span class="toc-text">iOS中UITextView方法解读</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

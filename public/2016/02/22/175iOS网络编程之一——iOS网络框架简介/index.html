@@ -1,0 +1,279 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS网络编程之一——iOS网络框架简介 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS网络编程之一——iOS网络框架简介">
+            
+	            iOS网络编程之一——iOS网络框架简介
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/02/22</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS网络编程之一——iOS网络框架简介"><a href="#iOS网络编程之一——iOS网络框架简介" class="headerlink" title="iOS网络编程之一——iOS网络框架简介"></a>iOS网络编程之一——iOS网络框架简介</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>通过网络，一款应用才能够内容丰富，才能够完成用户操作与后台数据的交互。网络编程是移动应用或游戏开发开发中不可缺少的技术。iOS原生的网络框架也十分完善，其中涉及到的许多类和协议用于处理网络开发中的各种需求
+</code></pre><h3 id="二、URL加载框架"><a href="#二、URL加载框架" class="headerlink" title="二、URL加载框架"></a>二、URL加载框架</h3><pre><code>iOS的URL加载系统包含许多类与协议，这些类和协议相互协作完成URL加载的信息配置，协议支持，身份验证，cookie和缓存等功能。APPLE开发文档中有如下图表示他们之间的关系：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0222/102510_ve8P_2340880.png" alt></p>
+<pre><code>关于URL加载系统，在iOS7之后，NSURLSession是首选的API框架，在iOS9中NSURLConnection相关的方法被弃用，如果需要兼容十分旧的版本，依然需要使用NSURLConnection。
+</code></pre><h3 id="三、一些辅助类"><a href="#三、一些辅助类" class="headerlink" title="三、一些辅助类"></a>三、一些辅助类</h3><h4 id="1-NSURLRequest"><a href="#1-NSURLRequest" class="headerlink" title="1.NSURLRequest"></a>1.NSURLRequest</h4><pre><code>NSURLRequest类负责一个具体的网络请求，其内部封装一个请求路径NSURL对象。如果需要对请求参数进行配置，可以使用NSMutableURLRequest。
+</code></pre><h4 id="2-NSURLResponse"><a href="#2-NSURLResponse" class="headerlink" title="2.NSURLResponse"></a>2.NSURLResponse</h4><pre><code>NSURLResponse类封装了相应数据，相应数据包括两部分，一部分是返回数据的状态码，数据长度、编码等信息，另一部分是内容数据本身。
+</code></pre><h4 id="3-NSURLCredential、NSURLProtectionSpace、NSURLCredentialStorage、NSURLAuthenticatioChallenge"><a href="#3-NSURLCredential、NSURLProtectionSpace、NSURLCredentialStorage、NSURLAuthenticatioChallenge" class="headerlink" title="3.NSURLCredential、NSURLProtectionSpace、NSURLCredentialStorage、NSURLAuthenticatioChallenge"></a>3.NSURLCredential、NSURLProtectionSpace、NSURLCredentialStorage、NSURLAuthenticatioChallenge</h4><pre><code>一些访问请求需要证书或者身份凭证进行验证，上面4个类对请求凭证进行相关设置。
+</code></pre><h4 id="4-NSURLCache"><a href="#4-NSURLCache" class="headerlink" title="4.NSURLCache"></a>4.NSURLCache</h4><pre><code>在应用程序的开发中，为了减小对网络的依赖，提高程序性能，常常会对一些非实时性的数据进行缓存处理，NSURLCache类用于管理NSURLRequest请求缓存。
+</code></pre><h4 id="5-NSHTTPCookieStorage、NSHTTPCookie"><a href="#5-NSHTTPCookieStorage、NSHTTPCookie" class="headerlink" title="5.NSHTTPCookieStorage、NSHTTPCookie"></a>5.NSHTTPCookieStorage、NSHTTPCookie</h4><pre><code>NSHTTPCookieStorage与NSHTTPCookie用于持久化的存储HTTP请求的Cookie数据。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/02/22/176iOS网络编程之二——NSURLSession的简单使用/" class="pre-post btn btn-default" title='iOS网络编程之二——NSURLSession的简单使用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS网络编程之二——NSURLSession的简单使用</span>
+        </a>
+    
+    
+        <a href="/2016/02/01/174iOS中CoreData数据管理系列四——进行数据与页面的绑定/" class="next-post btn btn-default" title='iOS中CoreData数据管理系列四——进行数据与页面的绑定'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中CoreData数据管理系列四——进行数据与页面的绑定</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS网络编程之一——iOS网络框架简介"><span class="toc-text">iOS网络编程之一——iOS网络框架简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、URL加载框架"><span class="toc-text">二、URL加载框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、一些辅助类"><span class="toc-text">三、一些辅助类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-NSURLRequest"><span class="toc-text">1.NSURLRequest</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-NSURLResponse"><span class="toc-text">2.NSURLResponse</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-NSURLCredential、NSURLProtectionSpace、NSURLCredentialStorage、NSURLAuthenticatioChallenge"><span class="toc-text">3.NSURLCredential、NSURLProtectionSpace、NSURLCredentialStorage、NSURLAuthenticatioChallenge</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-NSURLCache"><span class="toc-text">4.NSURLCache</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-NSHTTPCookieStorage、NSHTTPCookie"><span class="toc-text">5.NSHTTPCookieStorage、NSHTTPCookie</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>30分钟摸透iOS中谓词NSPredicate的来龙去脉 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="30分钟摸透iOS中谓词NSPredicate的来龙去脉">
+            
+	            30分钟摸透iOS中谓词NSPredicate的来龙去脉
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/03/12</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="30分钟摸透iOS中谓词NSPredicate的来龙去脉"><a href="#30分钟摸透iOS中谓词NSPredicate的来龙去脉" class="headerlink" title="30分钟摸透iOS中谓词NSPredicate的来龙去脉"></a>30分钟摸透iOS中谓词NSPredicate的来龙去脉</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在现代汉语的解释中，谓词是用来描述或判断客体性质、特征或者客体之间关系的词项。通俗的说，它是描述事物属性的。在iOS开发Cocoa框架中，有提供NSPredicate类，这个类通常也被成为谓词类，其主要的作用是在Cocoa中帮助查询和检索，但是需要注意，实质上谓词并不是提供查询和检索的支持，它是一种描述查询检索条件的方式，就像更加标准通用的正则表达式一样。
+
+NSPredicate提供的谓词可以分为两类：比较谓词和复合谓词。
+</code></pre><ul>
+<li>比较谓词：比较谓词通过使用比较运算符来描述所符合条件的属性状态。</li>
+<li>复合谓词：复合谓词用来组合多个比较谓词的结果，取交集，并集或补集。</li>
+</ul>
+<p>对于比较谓词，可以描述精准的比较也可以通过范围或者包含等进行模糊比较。需要注意，任何Cocoa类对象都可以支持谓词，但是此类需要实现键值编码(key-value-coding)协议。</p>
+<h3 id="二、NSPredicate类的应用解析"><a href="#二、NSPredicate类的应用解析" class="headerlink" title="二、NSPredicate类的应用解析"></a>二、NSPredicate类的应用解析</h3><pre><code>NSPredicate提供创建谓词对象和解析谓词对象的方法，它也是Cocoa中有关谓词的类中的基类。我们在日常开发中，NSPredicate类的应用频率也最高。
+
+创建谓词对象有3种方式，分别是通过格式化字符串创建谓词，直接通过代码创建谓词，通过模板创建谓词。NSPredicate提供了如下函数来进行初始化：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过格式化字符串来进行谓词对象的初始化</span></span><br><span class="line">+ (<span class="built_in">NSPredicate</span> *)predicateWithFormat:(<span class="built_in">NSString</span> *)predicateFormat argumentArray:(<span class="keyword">nullable</span> <span class="built_in">NSArray</span> *)arguments;</span><br><span class="line">+ (<span class="built_in">NSPredicate</span> *)predicateWithFormat:(<span class="built_in">NSString</span> *)predicateFormat, ...;</span><br><span class="line">+ (<span class="built_in">NSPredicate</span> *)predicateWithFormat:(<span class="built_in">NSString</span> *)predicateFormat arguments:(va_list)argList;</span><br></pre></td></tr></table></figure>
+<p>使用格式化字符串进行谓词的初始化十分灵活，但是需要注意，其谓词字符串的语法和正则表达式并不一样，后面会有具体的介绍，下面是一个谓词检索示例：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//检索属性length为5的对象</span></span><br><span class="line"><span class="built_in">NSPredicate</span> *  predicate = [<span class="built_in">NSPredicate</span> predicateWithFormat:<span class="string">@"length = 5"</span>];</span><br><span class="line"><span class="comment">//对于这个数组中的字符串，即是检索字符串长度为5的元素</span></span><br><span class="line"><span class="built_in">NSArray</span> * test = @[<span class="string">@"sda"</span>,<span class="string">@"321"</span>,<span class="string">@"sf12"</span>,<span class="string">@"dsdwq1"</span>,<span class="string">@"swfas"</span>];</span><br><span class="line"><span class="built_in">NSArray</span> * result = [test filteredArrayUsingPredicate:predicate];</span><br><span class="line"><span class="comment">//将打印@[@"swfas"]</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,result);</span><br></pre></td></tr></table></figure>
+<p>其实，你也可以像使用NSLog函数一样来进行格式化字符串的构造，可以使用%@,%d等等格式化字符来在运行时替换为变量的实际值。同时也需要注意，这种格式化字符串创建的谓词语句并不会进行语法检查，错误的语法会产生运行时错误，要格外小心。有一个小细节需要注意，在进行格式化时，如果使用的是变量则不需要添加引号，解析器会帮助你添加，如果使用到常量，则要用转义字符进行转义，例如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSPredicate</span> *  predicate = [<span class="built_in">NSPredicate</span> predicateWithFormat:<span class="string">@"name = %@ &amp;&amp; age = \"25\""</span>,name];</span><br></pre></td></tr></table></figure>
+<p>对于属性名，如果也需要进行格式化，需要注意不能使用%<a href="https://my.oschina.net/uancn" target="_blank" rel="noopener">@符号</a>，这个符号在解析时会被解析器自动添加上引号，可以使用%K，示例如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * key = <span class="string">@"length"</span>;</span><br><span class="line"><span class="built_in">NSPredicate</span> *  predicate = [<span class="built_in">NSPredicate</span> predicateWithFormat:<span class="string">@"%K = 5"</span>,key];</span><br><span class="line"><span class="built_in">NSArray</span> * test = @[<span class="string">@"sda"</span>,<span class="string">@"321"</span>,<span class="string">@"sf12"</span>,<span class="string">@"dsdwq1"</span>,<span class="string">@"swfas"</span>];</span><br><span class="line"><span class="built_in">NSArray</span> * result = [test filteredArrayUsingPredicate:predicate];</span><br><span class="line"><span class="comment">//将打印@[@"swfas"]</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,result);</span><br></pre></td></tr></table></figure>
+<pre><code>通过模板来创建谓词对象也是一种十分常用的方式，和格式化字符串不同的是，谓词模板中只有键名，没有键值，键值需要在字典中进行提供，例如：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSPredicate</span> *  predicate = [<span class="built_in">NSPredicate</span> predicateWithFormat:<span class="string">@"length = $LENGTH"</span>];</span><br><span class="line">predicate = [predicate predicateWithSubstitutionVariables:@&#123;<span class="string">@"LENGTH"</span>:@<span class="number">5</span>&#125;];</span><br><span class="line"><span class="built_in">NSArray</span> * test = @[<span class="string">@"sda"</span>,<span class="string">@"321"</span>,<span class="string">@"sf12"</span>,<span class="string">@"dsdwq1"</span>,<span class="string">@"swfas"</span>];</span><br><span class="line"><span class="built_in">NSArray</span> * result = [test filteredArrayUsingPredicate:predicate];</span><br><span class="line"><span class="comment">//将打印@[@"swfas"]</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,result);</span><br></pre></td></tr></table></figure>
+<p>NSPredicate中其他属性与方法解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建一个总是验证通过(YES)或不通过(NO)的谓词对象</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">如果创建的是验证通过的，则任何检索都会成功进行返回，否则任何检索都会失败不返回任何对象</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">+ (<span class="built_in">NSPredicate</span> *)predicateWithValue:(<span class="built_in">BOOL</span>)value;</span><br><span class="line"><span class="comment">//自定义实现检索函数</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">例如前面的示例也可以这样写</span></span><br><span class="line"><span class="comment">NSPredicate * predicate = [NSPredicate predicateWithBlock:^BOOL(id  _Nullable evaluatedObject, NSDictionary&lt;NSString *,id&gt; * _Nullable bindings) &#123;</span></span><br><span class="line"><span class="comment">        if ([evaluatedObject length]==5) &#123;</span></span><br><span class="line"><span class="comment">            return YES;</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">        return NO;</span></span><br><span class="line"><span class="comment">    &#125;];</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">+ (<span class="built_in">NSPredicate</span>*)predicateWithBlock:(<span class="built_in">BOOL</span> (^)(<span class="keyword">id</span> _Nullable evaluatedObject, <span class="built_in">NSDictionary</span>&lt;<span class="built_in">NSString</span> *, <span class="keyword">id</span>&gt; * _Nullable bindings))block;</span><br><span class="line"><span class="comment">//格式化字符串属性</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *predicateFormat;  </span><br><span class="line"><span class="comment">//当使用谓词模板来进行对象创建时，这个函数用来设置谓词模板中变量替换</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)predicateWithSubstitutionVariables:(<span class="built_in">NSDictionary</span>&lt;<span class="built_in">NSString</span> *, <span class="keyword">id</span>&gt; *)variables;</span><br><span class="line"><span class="comment">//检查一个Object对象是否可以通过验证</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)evaluateWithObject:(<span class="keyword">nullable</span> <span class="keyword">id</span>)object; </span><br><span class="line"><span class="comment">//用谓词模板进行对象的验证</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)evaluateWithObject:(<span class="keyword">nullable</span> <span class="keyword">id</span>)object substitutionVariables:(<span class="keyword">nullable</span> <span class="built_in">NSDictionary</span>&lt;<span class="built_in">NSString</span> *, <span class="keyword">id</span>&gt; *)bindings;</span><br></pre></td></tr></table></figure>
+<h3 id="三、通过代码来创建谓词对象"><a href="#三、通过代码来创建谓词对象" class="headerlink" title="三、通过代码来创建谓词对象"></a>三、通过代码来创建谓词对象</h3><pre><code>前面我们说有3种创建谓词对象的方式，有两种我们已经有介绍，通过代码直接创建谓词对象是最复杂的一种。通过代码来创建谓词对象十分类似通过代码来创建Autolayout约束。通过前面我们的介绍，谓词实际是用表达式来验证对象，用代码来创建谓词实际就是用代码来创建表达式。
+</code></pre><h4 id="1-先来看NSComparisonPredicate类"><a href="#1-先来看NSComparisonPredicate类" class="headerlink" title="1.先来看NSComparisonPredicate类"></a>1.先来看NSComparisonPredicate类</h4><pre><code>这个类是NSPredicate的子类，其用来创建比较类型的谓词。例如使用下面的代码来改写上面的例子：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建左侧表达式对象 对应为键</span></span><br><span class="line"><span class="built_in">NSExpression</span> * left = [<span class="built_in">NSExpression</span> expressionForKeyPath:<span class="string">@"length"</span>];</span><br><span class="line"><span class="comment">//创建右侧表达式对象 对应为值</span></span><br><span class="line"><span class="built_in">NSExpression</span> * right = [<span class="built_in">NSExpression</span> expressionForConstantValue:[<span class="built_in">NSNumber</span> numberWithInt:<span class="number">5</span>]];</span><br><span class="line"><span class="comment">//创建比较谓词对象 这里设置为严格等于</span></span><br><span class="line"><span class="built_in">NSComparisonPredicate</span> * pre = [<span class="built_in">NSComparisonPredicate</span> predicateWithLeftExpression:left rightExpression:right modifier:<span class="built_in">NSDirectPredicateModifier</span> type:<span class="built_in">NSEqualToPredicateOperatorType</span> options:<span class="built_in">NSCaseInsensitivePredicateOption</span>];</span><br><span class="line"><span class="built_in">NSArray</span> * test = @[<span class="string">@"sda"</span>,<span class="string">@"321"</span>,<span class="string">@"sf12"</span>,<span class="string">@"dsdwq1"</span>,<span class="string">@"swfas"</span>];</span><br><span class="line"><span class="built_in">NSArray</span> * result = [test filteredArrayUsingPredicate:pre];</span><br><span class="line"><span class="comment">//将打印@[@"swfas"]</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,result);</span><br></pre></td></tr></table></figure>
+<p>NSComparisonPredicateModifier用来进行条件的修饰设置，枚举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSUInteger</span>, <span class="built_in">NSComparisonPredicateModifier</span>) &#123;</span><br><span class="line">    <span class="built_in">NSDirectPredicateModifier</span> = <span class="number">0</span>, <span class="comment">//直接进行比较操作</span></span><br><span class="line">    <span class="built_in">NSAllPredicateModifier</span>,  <span class="comment">//用于数组或集合 只有当内部所有元素都通过验证时 集合才算通过</span></span><br><span class="line">    <span class="built_in">NSAnyPredicateModifier</span>  <span class="comment">//同于数组或集合 当内部有一个元素满足时 集合算通过验证</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>关于NSAllPredicateModifier和NSAnyPredicateModifier，这两个枚举专门用于数组或集合类型对象的验证，ALL会验证其中所有元素，全部通过后数组或集合才算验证通过，ANY则只要有一个元素验证通过，数组或集合就算验证通过，例如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSPredicate</span> *  pre = [<span class="built_in">NSPredicate</span> predicateWithFormat:<span class="string">@"ALL length = 5"</span>];</span><br><span class="line"><span class="built_in">NSArray</span> * test = @[@[<span class="string">@"aaa"</span>,<span class="string">@"aa"</span>],@[<span class="string">@"bbbb"</span>,<span class="string">@"bbbbb"</span>],@[<span class="string">@"ccccc"</span>,<span class="string">@"ccccc"</span>]];</span><br><span class="line">   <span class="built_in">NSArray</span> * result = [test filteredArrayUsingPredicate:pre];</span><br><span class="line">   <span class="comment">//将打印@[@[@"ccccc",@"ccccc"]]</span></span><br><span class="line">   <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,result);</span><br></pre></td></tr></table></figure>
+<p>NSPredicateOperatorType枚举用来设置运算符类型，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSUInteger</span>, <span class="built_in">NSPredicateOperatorType</span>) &#123;</span><br><span class="line">    <span class="built_in">NSLessThanPredicateOperatorType</span> = <span class="number">0</span>, <span class="comment">// 小于</span></span><br><span class="line">    <span class="built_in">NSLessThanOrEqualToPredicateOperatorType</span>, <span class="comment">// 小于等于</span></span><br><span class="line">    <span class="built_in">NSGreaterThanPredicateOperatorType</span>, <span class="comment">// 大于</span></span><br><span class="line">    <span class="built_in">NSGreaterThanOrEqualToPredicateOperatorType</span>, <span class="comment">// 大于等于</span></span><br><span class="line">    <span class="built_in">NSEqualToPredicateOperatorType</span>, <span class="comment">// 等于</span></span><br><span class="line">    <span class="built_in">NSNotEqualToPredicateOperatorType</span>, <span class="comment">//不等于</span></span><br><span class="line">    <span class="built_in">NSMatchesPredicateOperatorType</span>, <span class="comment">//正则比配</span></span><br><span class="line">    <span class="built_in">NSLikePredicateOperatorType</span>,  <span class="comment">//Like匹配 与SQL类似</span></span><br><span class="line">    <span class="built_in">NSBeginsWithPredicateOperatorType</span>, <span class="comment">//左边的表达式 以右边的表达式作为开头</span></span><br><span class="line">    <span class="built_in">NSEndsWithPredicateOperatorType</span>,<span class="comment">//左边的表达式 以右边的表达式作为结尾</span></span><br><span class="line">    <span class="built_in">NSInPredicateOperatorType</span>, <span class="comment">// 左边的表达式 出现在右边的集合中 </span></span><br><span class="line">    <span class="built_in">NSCustomSelectorPredicateOperatorType</span>,<span class="comment">//使用自定义的函数来进行 验证</span></span><br><span class="line">    <span class="built_in">NSContainsPredicateOperatorType</span>, <span class="comment">//左边的集合包括右边的元素</span></span><br><span class="line">    <span class="built_in">NSBetweenPredicateOperatorType</span> <span class="comment">//左边表达式的值在右边的范围中 例如 1 BETWEEN &#123; 0 , 33 &#125;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>NSComparisonPredicateOptions枚举用来设置比较的方式，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//如果不需要特殊指定  这个枚举值也可以传0</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_OPTIONS</span>(<span class="built_in">NSUInteger</span>, <span class="built_in">NSComparisonPredicateOptions</span>) &#123;</span><br><span class="line">    <span class="built_in">NSCaseInsensitivePredicateOption</span> = <span class="number">0x01</span>, <span class="comment">//不区分大小写</span></span><br><span class="line">    <span class="built_in">NSDiacriticInsensitivePredicateOption</span> = <span class="number">0x02</span>,<span class="comment">//不区分读音符号</span></span><br><span class="line">    <span class="built_in">NSNormalizedPredicateOption</span> <span class="comment">//比较前进行预处理 代替上面两个选项</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="2-NSExpression类"><a href="#2-NSExpression类" class="headerlink" title="2.NSExpression类"></a>2.NSExpression类</h4><pre><code>NSExpression类则是提供创建表达式，下面列出了其中一些方便理解的方法：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过格式化字符串创建表达式</span></span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionWithFormat:(<span class="built_in">NSString</span> *)expressionFormat argumentArray:(<span class="built_in">NSArray</span> *)arguments;</span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionWithFormat:(<span class="built_in">NSString</span> *)expressionFormat, ...;</span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionWithFormat:(<span class="built_in">NSString</span> *)expressionFormat arguments:(va_list)argList;</span><br><span class="line"><span class="comment">//直接通过对象创建常亮的表达式</span></span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionForConstantValue:(<span class="keyword">nullable</span> <span class="keyword">id</span>)obj; </span><br><span class="line"><span class="comment">//创建变量表达式  验证时将从binding字典中进行替换</span></span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionForVariable:(<span class="built_in">NSString</span> *)string; </span><br><span class="line"><span class="comment">//将多个表达式组合成一个</span></span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionForAggregate:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSExpression</span> *&gt; *)subexpressions;</span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionForUnionSet:(<span class="built_in">NSExpression</span> *)left with:(<span class="built_in">NSExpression</span> *)right;</span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionForIntersectSet:(<span class="built_in">NSExpression</span> *)left with:(<span class="built_in">NSExpression</span> *)right;</span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionForMinusSet:(<span class="built_in">NSExpression</span> *)left with:(<span class="built_in">NSExpression</span> *)right;</span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionForSubquery:(<span class="built_in">NSExpression</span> *)expression usingIteratorVariable:(<span class="built_in">NSString</span> *)variable predicate:(<span class="built_in">NSPredicate</span> *)predicate;</span><br><span class="line"><span class="comment">//通过预定义的函数和参数数组来构建表达式对象  预定义的函数 可见dev开发文档</span></span><br><span class="line">+ (<span class="built_in">NSExpression</span> *)expressionForFunction:(<span class="built_in">NSString</span> *)name arguments:(<span class="built_in">NSArray</span> *)parameters;</span><br></pre></td></tr></table></figure>
+<h4 id="3-NSCompoundPredicate类"><a href="#3-NSCompoundPredicate类" class="headerlink" title="3.NSCompoundPredicate类"></a>3.NSCompoundPredicate类</h4><pre><code>这个类也是NSPredicate类的子类，其使用逻辑关系来组合多个谓词对象，解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//进行对象初始化</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSUInteger, NSCompoundPredicateType) &#123;</span></span><br><span class="line"><span class="comment">    NSNotPredicateType = 0,   //取非</span></span><br><span class="line"><span class="comment">    NSAndPredicateType,  //与运算 </span></span><br><span class="line"><span class="comment">    NSOrPredicateType,   //或运算</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithType:(<span class="built_in">NSCompoundPredicateType</span>)type subpredicates:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSPredicate</span> *&gt; *)subpredicates;</span><br><span class="line"><span class="comment">//快速创建与运算</span></span><br><span class="line">+ (<span class="built_in">NSCompoundPredicate</span> *)andPredicateWithSubpredicates:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSPredicate</span> *&gt; *)subpredicates;</span><br><span class="line"><span class="comment">//快速创建或运算</span></span><br><span class="line">+ (<span class="built_in">NSCompoundPredicate</span> *)orPredicateWithSubpredicates:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSPredicate</span> *&gt; *)subpredicates;</span><br><span class="line"><span class="comment">//快速创建非运算</span></span><br><span class="line">+ (<span class="built_in">NSCompoundPredicate</span> *)notPredicateWithSubpredicate:(<span class="built_in">NSPredicate</span> *)predicate;</span><br></pre></td></tr></table></figure>
+<h3 id="四、谓词的几种使用场景"><a href="#四、谓词的几种使用场景" class="headerlink" title="四、谓词的几种使用场景"></a>四、谓词的几种使用场景</h3><pre><code>谓词主要用在验证对象，数组和集合的过滤。对象的验证前面有介绍，关于数据和集合的过滤函数，类别如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSArray</span>&lt;<span class="title">ObjectType</span>&gt; (<span class="title">NSPredicateSupport</span>)</span></span><br><span class="line"><span class="comment">//不可变数组使用过滤器后返回新数组</span></span><br><span class="line">- (<span class="built_in">NSArray</span>&lt;ObjectType&gt; *)filteredArrayUsingPredicate:(<span class="built_in">NSPredicate</span> *)predicate; </span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSMutableArray</span>&lt;<span class="title">ObjectType</span>&gt; (<span class="title">NSPredicateSupport</span>)</span></span><br><span class="line"><span class="comment">//可变数组可以直接进行过滤操作</span></span><br><span class="line">- (<span class="keyword">void</span>)filterUsingPredicate:(<span class="built_in">NSPredicate</span> *)predicate;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSSet</span>&lt;<span class="title">ObjectType</span>&gt; (<span class="title">NSPredicateSupport</span>)</span></span><br><span class="line"><span class="comment">//不可变集合过滤后返回新集合</span></span><br><span class="line">- (<span class="built_in">NSSet</span>&lt;ObjectType&gt; *)filteredSetUsingPredicate:(<span class="built_in">NSPredicate</span> *)predicate;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSMutableSet</span>&lt;<span class="title">ObjectType</span>&gt; (<span class="title">NSPredicateSupport</span>)</span></span><br><span class="line"><span class="comment">//可变集合可以直接进行过滤操作</span></span><br><span class="line">- (<span class="keyword">void</span>)filterUsingPredicate:(<span class="built_in">NSPredicate</span> *)predicate;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSOrderedSet</span>&lt;<span class="title">ObjectType</span>&gt; (<span class="title">NSPredicateSupport</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSOrderedSet</span>&lt;ObjectType&gt; *)filteredOrderedSetUsingPredicate:(<span class="built_in">NSPredicate</span> *)p;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSMutableOrderedSet</span>&lt;<span class="title">ObjectType</span>&gt; (<span class="title">NSPredicateSupport</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)filterUsingPredicate:(<span class="built_in">NSPredicate</span> *)p;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="五、谓词的格式化语法总览"><a href="#五、谓词的格式化语法总览" class="headerlink" title="五、谓词的格式化语法总览"></a>五、谓词的格式化语法总览</h3><pre><code>下面列出了在谓词的格式化字符串规则语法。
+</code></pre><p>| 语法规则 | 意义 |<br>| = | 左侧等于右侧 |<br>| ==     | 左侧等于右侧，与=一致  |<br>| &gt;=     | 左侧大于等于右侧 |<br>| =&gt; | 左侧大于等于右侧 与 &gt;=一致 |<br>| &lt;= | 左侧小于等于右侧 |<br>| =&lt;     | 左侧小于等于右侧 与&lt;=一致 |<br>| &gt; | 左侧大于右侧 |<br>| &lt; | 左侧小于右侧 |<br>| != | 左侧不等于右侧 |<br>| &lt;&gt; | 左侧不等于右侧 与!=一致 |<br>| BETWEEN    | 左侧在右侧的集合中 key BETWEEN @[<a href="https://my.oschina.net/u/1198" target="_blank" rel="noopener">@1</a>,@2] |<br>| TRUEPREDICATE | 总是返回YES的谓词 |<br>| FALSEPREDICATE | 总是返回NO的谓词 |<br>| AND | 逻辑与 |<br>| &amp;&amp; | 逻辑与 与AND一致 |<br>| OR | 逻辑或 |<br>| || | 逻辑或 与OR一致 |<br>| NOT | 逻辑非 |<br>| !     | 逻辑非 与NOT一致 |<br>| BEGINWITH | 左侧以右侧字符串开头 |<br>| ENDWITH | 左侧以右侧字符串结尾 |<br>| CONTAINS | 左侧集合包含右侧元素 |<br>| LIKE     | 左侧等于右侧 并且 *和?等通配符可以使用 |<br>| MATCHES | 正则匹配 |<br>| ANY | 对于数组集合类，验证其中任一元素 |<br>| SOME | 同ANY一致 |<br>| ALL | 对于数组集合类，验证其中所有元素 |<br>| NONE | 作用等同于NOT (ANY) |<br>| IN     | 左侧在右侧集合中 |<br>| SELF | 被验证的对象本身 |</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/03/15/367iOS开发中Log模块的解决方案/" class="pre-post btn btn-default" title='iOS开发中Log模块的解决方案'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发中Log模块的解决方案</span>
+        </a>
+    
+    
+        <a href="/2018/02/11/365iOS高质量的动画实现解决方案——Lottie/" class="next-post btn btn-default" title='iOS高质量的动画实现解决方案——Lottie'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS高质量的动画实现解决方案——Lottie</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#30分钟摸透iOS中谓词NSPredicate的来龙去脉"><span class="toc-text">30分钟摸透iOS中谓词NSPredicate的来龙去脉</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、NSPredicate类的应用解析"><span class="toc-text">二、NSPredicate类的应用解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、通过代码来创建谓词对象"><span class="toc-text">三、通过代码来创建谓词对象</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-先来看NSComparisonPredicate类"><span class="toc-text">1.先来看NSComparisonPredicate类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-NSExpression类"><span class="toc-text">2.NSExpression类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-NSCompoundPredicate类"><span class="toc-text">3.NSCompoundPredicate类</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、谓词的几种使用场景"><span class="toc-text">四、谓词的几种使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、谓词的格式化语法总览"><span class="toc-text">五、谓词的格式化语法总览</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

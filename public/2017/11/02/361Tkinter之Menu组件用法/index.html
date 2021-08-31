@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Tkinter之Menu组件用法 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Tkinter之Menu组件用法">
+            
+	            Tkinter之Menu组件用法
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Python">
+            Python
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/11/02</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Tkinter之Menu组件用法"><a href="#Tkinter之Menu组件用法" class="headerlink" title="Tkinter之Menu组件用法"></a>Tkinter之Menu组件用法</h2><pre><code>开发工具类桌面应用使用Python、Java这类语言是一种不错的选择，他们的GUI库都可以很好的支持跨平台特性。本系列博客主要总结Tkinter库中提供的UI组件，关于Java的GUI开发，感兴趣的可以在如下系列博客中找到：
+</code></pre><p><a href="https://my.oschina.net/u/2340880/blog?catalog=5647945&amp;temp=1509528194945" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog?catalog=5647945&amp;temp=1509528194945</a>。</p>
+<pre><code>Tkinter中有提供Menu菜单组件中可以添加如下几种组件:
+</code></pre><p>1_动作项：简单的行为按钮，用户点击后会执行相应的方法。</p>
+<p>2_子菜单：行为完整的子菜单项。</p>
+<p>3_控制按钮：可有选中与非选中状态，用来做开关。</p>
+<p>4_单选列表：一组单选按钮。</p>
+<pre><code>为一个窗口添加菜单十分容易，示例代码如下：
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root = Tk()</span><br><span class="line">rootMenu = Menu(root)</span><br><span class="line">root.config(menu=rootMenu)</span><br><span class="line"></span><br><span class="line">item = Menu(master=rootMenu,postcommand=call,tearoff=<span class="number">1</span>)</span><br><span class="line">rootMenu.add_cascade(menu=item,label=<span class="string">"File"</span>)</span><br><span class="line">item.add_command(label=<span class="string">'new File'</span>)</span><br><span class="line">subItem = Menu(item)</span><br><span class="line">subItem.add_command(label=<span class="string">"Open in noew window"</span>)</span><br><span class="line">item.add_cascade(menu=subItem,label=<span class="string">"Open"</span>)</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/1102/140508_9k3P_2340880.png" alt></p>
+<p>Menu构造函数中第1个参数可以传入菜单所属的窗口或者父菜单，后面可以添加一些菜单配置，例如：</p>
+<p>| 属性 | 意义 |<br>| activebackground | 活跃时的背景色 |<br>| activeborderwidth | 活跃时的边框宽度 |<br>| activeforeground | 活跃时的前景色 |<br>| bg 或者 background | 正常状态背景色 |<br>| bd 或者 borderwidth | 正常状态变宽宽度 |<br>| cursor | 鼠标样式 |<br>| disabledforeground | 无效状态的前景色 |<br>| font | 菜单字体 |<br>| fg 或者 foreground | 正常状态的前景色 |<br>| postcommand | 设置菜单被唤出时的回调 |<br>| relief | 设置菜单浮雕效果 |<br>| selectcolor | 设置菜单选中颜色 |<br>| tearoff | 可以设置为0和1，表示此菜单是否可以独立出来 |<br>| tearoffcommand | 菜单独立被触发时的回调 |<br>| title | 可设置独立菜单的标题 |</p>
+<p>需要注意，在MacOS系统上，菜单的样式是由系统维护的，上面的大多属性都将没有效果。</p>
+<pre><code>下面这些方法用来进行菜单配置：
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#添加一个子菜单 coption为配置选项</span></span><br><span class="line">add_cascade(coption...)</span><br><span class="line"><span class="comment">#添加一个切换按钮 coption为配置选项</span></span><br><span class="line">add_checkbutton(coption...)</span><br><span class="line"><span class="comment">#添加一个功能按钮 coption为配置选项</span></span><br><span class="line">add_command(coption...)</span><br><span class="line"><span class="comment">#添加一个单选按钮 coption为配置选项</span></span><br><span class="line">add_radiobutton(coption...)</span><br><span class="line"><span class="comment">#添加一个分割线</span></span><br><span class="line">add_separator()</span><br><span class="line"><span class="comment">#删除index1 到 index2之间的选项</span></span><br><span class="line">delete(index1,index2)</span><br><span class="line"><span class="comment">#获取菜单某一项的属性值</span></span><br><span class="line">entrycget(index,coption)</span><br><span class="line"><span class="comment">#重新配置菜单中某项的属性</span></span><br><span class="line">entryconfigure(index,coption...)</span><br><span class="line"><span class="comment">#返回参数位置对应的选项索引</span></span><br><span class="line">index(i)</span><br><span class="line"><span class="comment">#在指定位置插入一个子菜单</span></span><br><span class="line">insert_cascade(index,coption...)</span><br><span class="line"><span class="comment">#在指定位置插入一个切换按钮</span></span><br><span class="line">insert_checkbutton(index,coption...)</span><br><span class="line"><span class="comment">#在指定位置插入一个功能按钮</span></span><br><span class="line">insert_command(index,coption...)</span><br><span class="line"><span class="comment">#在指定位置插入一个单选按钮</span></span><br><span class="line">insert_radiobutton(index,coption...)</span><br><span class="line"><span class="comment">#在指定位置插入一个分割线</span></span><br><span class="line">insert_separator(index)</span><br><span class="line"><span class="comment">#代码手动调用一次某个选项</span></span><br><span class="line">invoke(index)</span><br><span class="line"><span class="comment">#在窗口指定位置弹出菜单</span></span><br><span class="line">post(x,y)</span><br><span class="line"><span class="comment">#获取个选项的类型</span></span><br><span class="line">type(index)</span><br><span class="line"><span class="comment">#获取某个选项距离菜单顶部的偏移量</span></span><br><span class="line">yposition(n)</span><br><span class="line"><span class="comment">#添加一个选项 可以是功能按钮，切换按钮，单选按钮或子菜单，由类型确认</span></span><br><span class="line"><span class="comment">#类型可选 cascade checkbutton command radiobutton separator</span></span><br><span class="line">add(kind,coption)</span><br></pre></td></tr></table></figure>
+<p>上面列举方法中的coption用来进行一些配置项的设置，可选配置项如下：</p>
+<p>| 属性名 | 意义 |<br>| accelerator | 设置快捷键 |<br>| activebackground | 激活状态背景色 |<br>| activeforeground | 激活状态前景色 |<br>| background | 正常状态背景色 |<br>| bitmap | 设置bitmap图标 |<br>| columnbreak | 设置分列 |<br>| command | 设置激活时的回调函数 |<br>| compound | 设置展示文本和图标是的布局方式 |<br>| font | 设置字体 |<br>| foreground | 设置正常状态的前景色 |<br>| hidemargin | 设置是否隐藏外边距 设置True或False |<br>| image | 设置图片 gif格式 |<br>| label   | 设置显示的文本  |<br>| menu | 这个选项只用在添加子菜单中 |<br>| offvalue | 设置checkbutton关闭时的值 |<br>| onvalue | 设置checkbutton开启时的值 |<br>| selectcolor | 设置选中状态的颜色 |<br>| selectimage | 设置选中状态的图像 |<br>| state    | 设置选项状态，DISABLED或ACTIVE |<br>| underline  | 设置下划线 |<br>| value | 选项的值 |<br>| variable | 用于单选按钮或切换按钮 |</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/11/24/362从AFNetworking源码分析到应用全解/" class="pre-post btn btn-default" title='从AFNetworking源码分析到应用全解'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">从AFNetworking源码分析到应用全解</span>
+        </a>
+    
+    
+        <a href="/2017/10/20/360iOS11新特性：新增拖拽交互体验/" class="next-post btn btn-default" title='iOS11新特性：新增拖拽交互体验'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS11新特性：新增拖拽交互体验</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Tkinter之Menu组件用法"><span class="toc-text">Tkinter之Menu组件用法</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

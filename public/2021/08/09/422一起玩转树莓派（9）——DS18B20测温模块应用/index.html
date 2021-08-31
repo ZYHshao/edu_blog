@@ -1,0 +1,325 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（9）——DS18B20测温模块应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（9）——DS18B20测温模块应用">
+            
+	            一起玩转树莓派（9）——DS18B20测温模块应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/08/09</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（9）——DS18B20测温模块应用"><a href="#一起玩转树莓派（9）——DS18B20测温模块应用" class="headerlink" title="一起玩转树莓派（9）——DS18B20测温模块应用"></a>一起玩转树莓派（9）——DS18B20测温模块应用</h1><p>关于使用树莓派测量温度，我们之前在学习模数转换的相关博客中已经有过应用。其实除了使用传统的AD采集温度数据外，我们也可以通过树莓派中的单总线技术结合DS18B20传感器来更加方便精准的测量环境温度。</p>
+<h2 id="一、认识DS18B20模块与单总线通信"><a href="#一、认识DS18B20模块与单总线通信" class="headerlink" title="一、认识DS18B20模块与单总线通信"></a>一、认识DS18B20模块与单总线通信</h2><p>DS18B20是一种改进型的智能温度传感器。与传统的热敏电阻相比，其可以直接读出被测量的温度，并且能够根据实际应用场景中的要求进行简单的编程。无论是读取数据还是写入数据，DS18B20都只需要一条接口线，因此其使用的是单总线的通讯协议。DS18B20模块的主要优势在于其抗干扰能力强，精度高，无需复杂的软件处理可以直接输出温度数据。本次实验，我们使用的DS18B20模块如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-c03079928af26b96c751850964d4bacf2cf.png" alt></p>
+<p>可以看到此模块有3个引脚，除了电源引脚和接地引脚外，剩下的一个就是用来输出温度数据的引脚。</p>
+<p>单总线通信被称为one-wire通信，因此又常常被简称为1w总线通信。首先我们需要先开始树莓派的1w总线通信功能，打开树莓派的Raspberry Configuration菜单，在Interfaces选项中将1-Wire功能开启，如下图所示。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a1a3c7267e240e4c3247e15f29a42ad0c58.png" alt></p>
+<p>如果我们是通过无交互页面的终端登录的树莓派，也可以通过修改配置文件来开启1-Wire功能，在树莓派Linux系统的根目录下，找到如下路径的文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/boot/config.txt</span><br></pre></td></tr></table></figure>
+<p>在其中添加如下一行文本即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dtoverlay=w1-gpio</span><br></pre></td></tr></table></figure>
+<p>需要注意，添加之后需要重启树莓派。需要注意，1-Wire功能默认将使用树莓派的BCM编码为GPIO4的引脚作为通信引脚，如何我们要进行自定义，可以在刚才的配置文件中进行指定，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dtoverlay=w1-gpio,gpiopin=18</span><br></pre></td></tr></table></figure>
+<p>其表示要使用BCM编码为GPIO18的引脚作为通信引脚。</p>
+<p>做完了上面的操作后，我们可以在树莓派终端中使用如下指令查看单总线是否启动成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ lsmod</span><br></pre></td></tr></table></figure>
+<p>终端输出效果如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-f124c15fb73a284b64fe0ecb3dc832f0f95.png" alt></p>
+<p>可以看到，如果有显示w1_gpio和wire两个部分，则表示单总线已经启动成功，分别在终端执行如下两条命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ modprobe w1-gpio</span><br><span class="line">$ modprobe w1-therm</span><br></pre></td></tr></table></figure>
+<p>如果终端没有输出任何信息，则表示单总线已经初始化完成，此时实际上我们已经可以让DS18B20进行工作了。</p>
+<h2 id="二、通过DS18B20模块获取环境温度"><a href="#二、通过DS18B20模块获取环境温度" class="headerlink" title="二、通过DS18B20模块获取环境温度"></a>二、通过DS18B20模块获取环境温度</h2><p>通过前面的操作，我们已经完成了基本的准备工作，将DS18B20连接到树莓派，引脚对应如下：</p>
+<table>
+<thead>
+<tr>
+<th>DS18B20</th>
+<th>树莓派</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+</td>
+<td>3.3V</td>
+</tr>
+<tr>
+<td>-</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>out</td>
+<td>BCM编码为GPIO4的引脚</td>
+</tr>
+</tbody>
+</table>
+<p>之后我们从树莓派的终端进入如下目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sys/bus/w1/devices</span><br></pre></td></tr></table></figure>
+<p>在此目录下，我们可以看到有两个文件，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-edc73e4d80909a507b30de09cbebea32b22.png" alt></p>
+<p>其中以28-xxx开头的文件夹中的文件记录的就是1w单总线输入的数据，需要注意，读者操作时，此文件夹的名称和笔者可能并不完全一样，其表示传感器设备的编号，大家这里只需要找到28-xx开头的文件夹即可。在此文件夹中，有一个名为w1_slave的文件，此文件中记录的就是传感器的温度数据，我们可以打开看看，内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">d2 01 55 05 7f 7e 81 66 59 : crc=59 YES</span><br><span class="line">d2 01 55 05 7f 7e 81 66 59 t=29125</span><br></pre></td></tr></table></figure>
+<p>其中，大部分数据我们都无需关心，其最后的t=29125就是当前的环境温度，将其转换为摄氏温度，直接除以1000即可，例如上面的数据表明当前的环境温度是29.125摄氏度。</p>
+<p>目前为止，我们已经可以非常轻松的获取DS18B20模块提供的温度数据了，但是查看的方式非常不智能，其实我们可以通过Python程序来不停的读取此数据文件，解析出其中的温度数据，之后无论是做记录还是进行其他元件控制都会非常方便。编写示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os,time</span><br><span class="line"><span class="comment"># 传感器编号</span></span><br><span class="line">name = <span class="string">"28-020692455d61"</span></span><br><span class="line"><span class="comment"># 设备记录数据的文件地址</span></span><br><span class="line">device_file =<span class="string">'/sys/bus/w1/devices/'</span> + name + <span class="string">'/w1_slave'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取文件数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_temp_raw</span><span class="params">()</span>:</span></span><br><span class="line">    f = open(device_file,<span class="string">'r'</span>)</span><br><span class="line">    lines = f.readlines()</span><br><span class="line">    f.close()</span><br><span class="line">    <span class="keyword">return</span> lines</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析温度数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">read_temp</span><span class="params">()</span>:</span></span><br><span class="line">    lines = read_temp_raw()</span><br><span class="line">    <span class="comment"># 此行默认不是'YES' 表明未读取到有效数据</span></span><br><span class="line">    <span class="keyword">while</span> lines[<span class="number">0</span>].strip()[<span class="number">-3</span>:] != <span class="string">'YES'</span>:</span><br><span class="line">        time.sleep(<span class="number">0.2</span>)</span><br><span class="line">        <span class="comment"># 循环继续读</span></span><br><span class="line">        lines = read_temp_raw()</span><br><span class="line">    <span class="comment"># 找到第2行的't='的位置</span></span><br><span class="line">    equals_pos = lines[<span class="number">1</span>].find(<span class="string">'t='</span>)</span><br><span class="line">    <span class="comment"># 将温度数据取出</span></span><br><span class="line">    <span class="keyword">if</span> equals_pos != <span class="number">-1</span>:</span><br><span class="line">        temp_string = lines[<span class="number">1</span>][equals_pos+<span class="number">2</span>:]</span><br><span class="line">        temp_c = float(temp_string)/<span class="number">1000.0</span></span><br><span class="line">    <span class="keyword">return</span> temp_c</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    print(<span class="string">'%fC'</span>%read_temp())</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>在树莓派中运行上面代码，可以看到控制台输出的当前温度数据，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0b5f82046d5977f91b2ab4305c3ceb1756c.png" alt></p>
+<h3 id="三、讲在后面"><a href="#三、讲在后面" class="headerlink" title="三、讲在后面"></a>三、讲在后面</h3><p>本篇博客，我们介绍了如何使用one-wire单总线进行外设数据的读取，DS18B20只是作为示例，抛砖引玉，通过树莓派的1w总线，我们还可以连接更多的外设实现更加有创意的东西，大家开动脑筋，尽情玩耍吧！</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/08/12/423一起玩转树莓派（10）——触控激光灯/" class="pre-post btn btn-default" title='一起玩转树莓派（10）——触控激光灯'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（10）——触控激光灯</span>
+        </a>
+    
+    
+        <a href="/2021/08/03/421一起玩转树莓派（8）——树莓派模数:数模转换实践(2)/" class="next-post btn btn-default" title='一起玩转树莓派（8）——树莓派模数/数模转换实践(2)'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（8）——树莓派模数/数模转换实践(2)</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（9）——DS18B20测温模块应用"><span class="toc-text">一起玩转树莓派（9）——DS18B20测温模块应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、认识DS18B20模块与单总线通信"><span class="toc-text">一、认识DS18B20模块与单总线通信</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、通过DS18B20模块获取环境温度"><span class="toc-text">二、通过DS18B20模块获取环境温度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#三、讲在后面"><span class="toc-text">三、讲在后面</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

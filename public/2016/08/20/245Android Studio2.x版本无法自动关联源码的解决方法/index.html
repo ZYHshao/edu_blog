@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Android Studio2.x版本无法自动关联源码的解决方法 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android Studio2.x版本无法自动关联源码的解决方法">
+            
+	            Android Studio2.x版本无法自动关联源码的解决方法
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Android小记">
+            Android小记
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/08/20</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Android-Studio2-x版本无法自动关联源码的解决方法"><a href="#Android-Studio2-x版本无法自动关联源码的解决方法" class="headerlink" title="Android Studio2.x版本无法自动关联源码的解决方法"></a>Android Studio2.x版本无法自动关联源码的解决方法</h2><pre><code>在学习android开发过程中，对于一个不熟悉的类，阅读源码是一个很好的学习方式，使用andorid studio开发工具的SDK Manager管理工具可以十分方便的下载SDK源码，打开SDK Manager工具，下载源码界面如下图所示：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0820/101700_jPjx_2340880.png" alt></p>
+<p>在对应的SDK版本中可以下载SDK源码。</p>
+<pre><code>安卓源码下载完成后，在类名上按住command键，点击鼠标左键会跳转进对应源码文件，如果是Windows系统，使用按住control键点击鼠标左键。如果android studio的版本为2.0以上，需要注意，尽管下载了源码文件，可以在跳转源码的时候，会报错误找不到源码 Sources for &apos;Android API 23 Platform&apos; not found，并且会跳转类对应的class文件。如下图：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0820/104706_KdRI_2340880.png" alt></p>
+<p>我猜想出现这样的原因是android studio2.x工具的一个小bug，下载源码后，它没有自动对源码路径进行关联，我们可以手段添加源码路径来解决这个问题。</p>
+<pre><code>1.检查andriod sdk源码是否下载成功：首先进入andorid sdk路径下的sources目录，如果其中有源码文件，说明andorid sdk的源码文件已经下载成功。在OS系统中，这个路径一般是：~/Library/Android/sdk/sources。
+
+2.在android studio偏好设置jdk.table.xml文件中添加源码路径，这个文件在android studio开发工具的配置目录中，路径如下：
+</code></pre><p>在Windows系统中，一般为：系统盘:\Users\username\.你的android studio名称及版本\config\options</p>
+<p>在OS系统中，一般为：~/Library/Preferences/你的android studio名称及版本/options</p>
+<p>打开jdk.table.xml文件后，找到对应SDK版本的源码路径配置标签，将第一步中检查的源码文件路径添加进入，如下图：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0820/104248_Sodz_2340880.png" alt></p>
+<pre><code>3.完全关闭android studio开发工具，重新启动，这次可以成功跳进源码了，Have fun。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：435043639</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/08/27/246iOS开发中行高灵活可变的UITableView的性能优化/" class="pre-post btn btn-default" title='iOS开发中行高灵活可变的UITableView的性能优化'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发中行高灵活可变的UITableView的性能优化</span>
+        </a>
+    
+    
+        <a href="/2016/08/17/244Android开发中基础动画技巧的应用/" class="next-post btn btn-default" title='Android开发中基础动画技巧的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Android开发中基础动画技巧的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android-Studio2-x版本无法自动关联源码的解决方法"><span class="toc-text">Android Studio2.x版本无法自动关联源码的解决方法</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

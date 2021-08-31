@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift专题讲解十五——类型构造 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift专题讲解十五——类型构造">
+            
+	            Swift专题讲解十五——类型构造
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/19</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift专题讲解十五——类型构造"><a href="#Swift专题讲解十五——类型构造" class="headerlink" title="Swift专题讲解十五——类型构造"></a>Swift专题讲解十五——类型构造</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>构造是类、结构体、枚举在实例化中必须执行的过程，在构造过程中，类、结构体必须完成其中存储属性的构造。Swift中的构造通过构造方法来完成，和Objective-C中的init初始化系列方法不同，Swift中的构造方法并不会也无需返回值，它的任务即是完成实例化过程。
+</code></pre><h3 id="二、属性的构造"><a href="#二、属性的构造" class="headerlink" title="二、属性的构造"></a>二、属性的构造</h3><pre><code>类和结构体的存储属性必须在实例化完成前被构造完成，因此，有两种方式来这么做：
+</code></pre><p>1.类或者结构体中声明存储属性时直接为其设置默认值。</p>
+<p>2.在类或者结构体的构造方法中对存储属性进行构造。</p>
+<p>这里有一点需要注意：在存储属性设置默认值或者在构造方法中进行构造时，并不会触发属性监听器willSet、didSet方法。示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class MyClass &#123;</span><br><span class="line">    var count:Int=0&#123;</span><br><span class="line">        willSet&#123;</span><br><span class="line">            print(&quot;willset&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    var name:String</span><br><span class="line">    init()&#123;</span><br><span class="line">        //必须进行构造或者设置值</span><br><span class="line">        count=5</span><br><span class="line">        count=6</span><br><span class="line">        name = &quot;HS&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>init()方法为不带参数的构造方法，所有构造方法都需要用init()来标识，开发者可以使用函数重载的方式来创建不同的构造方法。官方推荐，如果一个类的大多实例的某个存储属性都需要相同的值，强烈推荐开发者设置此存储属性的默认值，这样可以很好的应用Swift语言的类型推断功能并且可以使代码结构更加紧凑。</p>
+<pre><code>如果一个属性在逻辑上是允许为nil的，则开发者可以将其声明称Optional值类型，在进行类的实例化时，Optional类型的属性如果没有赋值会被自动赋值为nil。
+
+注意，常量也需要在构造完成之前进行赋值，一旦赋值或构造完成，常量将不能被修改。
+</code></pre><h3 id="三、构造方法"><a href="#三、构造方法" class="headerlink" title="三、构造方法"></a>三、构造方法</h3><pre><code>首先，如果类或者结构体中的所有存储属性都有默认值，那个如果开发者不提供构造方法，Swift也会自动生成一个默认构造方法，无参的init()，在进行类型的实例化时，将默认构造所有存储属性都是默认值的实例。示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class MyClassTwo &#123;</span><br><span class="line">    var count = 10</span><br><span class="line">    var name = &quot;HS&quot;</span><br><span class="line">&#125;</span><br><span class="line">//默认的init()构造方法</span><br><span class="line">var obj = MyClassTwo()</span><br><span class="line">print(obj.count,obj.name)</span><br></pre></td></tr></table></figure>
+<p>结构体会比较特殊，就算没有为其存储属性设置初值，它也会自动生成构造方法，这个构造方法中会自带所有没有赋默认值的属性名作为参数，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct Shape &#123;</span><br><span class="line">    var center:(Int,Int)</span><br><span class="line">    var name:String</span><br><span class="line">&#125;</span><br><span class="line">var shape = Shape(center: (1,1), name: &quot;circle&quot;)</span><br></pre></td></tr></table></figure>
+<p>还有一点需要注意，对于值类型(结构体，枚举)，如果开发者自定义了一个构造方法，则默认的构造方法将会失效，这样设计是为了安全性考虑，防止误用到系统的默认构造方法。并且，对于值类型(结构体，枚举)的构造方法，是支持嵌套调用的，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">struct Shape &#123;</span><br><span class="line">    var center:(Int,Int)</span><br><span class="line">    var name:String</span><br><span class="line">    init() &#123;</span><br><span class="line">        center = (0,0)</span><br><span class="line">        name = &quot;HS&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    init(param:String)&#123;</span><br><span class="line">        self.init()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">var shape = Shape(param: &quot;&quot;)</span><br></pre></td></tr></table></figure>
+<h3 id="四、类的Designated构造方法与Convenience构造方法"><a href="#四、类的Designated构造方法与Convenience构造方法" class="headerlink" title="四、类的Designated构造方法与Convenience构造方法"></a>四、类的Designated构造方法与Convenience构造方法</h3><pre><code>在前面的一篇博客中，我曾经专门讨论过Swift中的构造方法，博客地址如下，可供参考：
+</code></pre><p>Swift中的构造方法解析：<a href="http://my.oschina.net/u/2340880/blog/660134" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/660134</a>。</p>
+<pre><code>Designated构造方法也被称为指定构造方法，它是类的核心构造方法，指定构造方法将完成类中所有需要构造或赋值过程。如果一个类继承于另一个类而来，则指定构造方法需要调用父类的构造方法来完成父类中属性的初始。Convenience工作方法也被称为便利构造方法，其主要作为辅助的构造方法存在，便利构造方法需要调用类中的指定构造方法来完成构造，从这一点看，实际上类是通过便利构造方法来实现类似值类型的构造方法的嵌套使用。指定构造方法不需要多余关键字来修饰，其默认就是Designated类型的，便利构造方法需要使用convenience关键字类修饰，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClassTwo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> count = <span class="number">10</span></span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">"HS"</span></span><br><span class="line">    init(name:<span class="built_in">String</span>)&#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    convenience init(count:Int)&#123;</span><br><span class="line">        self.init(name:<span class="string">"HS"</span>)</span><br><span class="line">        self.count = count</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = MyClassTwo(count:<span class="number">5</span>)</span><br><span class="line">print(obj.count,obj.name)</span><br></pre></td></tr></table></figure>
+<p>类的构造方法需要遵守下面3条规则：</p>
+<p>1.指定构造方法必须调用其父类的指定构造方法。</p>
+<p>2.便利构造方法必须调用同类中的其他构造方法。</p>
+<p>3.便利构造方法调用到最上层必须调用一个指定构造方法。</p>
+<p>语言文档中提供如下示例图来结束指定构造方法和便利构造方法的关系：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0519/105709_YBME_2340880.png" alt></p>
+<h3 id="五、构造方法的安全特性"><a href="#五、构造方法的安全特性" class="headerlink" title="五、构造方法的安全特性"></a>五、构造方法的安全特性</h3><pre><code>Swift是一种十分注重类型安全的语言，这种语言特性的优势在于类在实例化后，所有的属性都是开发者明确可控的。Swift的编译器在类的构造方法中会进行4中安全性检查：
+</code></pre><p>检查1：指定构造器中必须完成所有存储属性的赋值后才能调用父类的指定构造方法，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">class MyClassThree: MyClassTwo &#123;</span><br><span class="line">    <span class="keyword">var</span> param:Int</span><br><span class="line">    init()&#123;</span><br><span class="line">        param = <span class="number">100</span></span><br><span class="line">        <span class="keyword">super</span>.init(name: <span class="string">"HS"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>检查2：子类如果要自定义父类中存储属性的值，必须要调用父类的构造方法之后设置，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class MyClassThree: MyClassTwo &#123;</span><br><span class="line">    <span class="keyword">var</span> param:Int</span><br><span class="line">    init()&#123;</span><br><span class="line">        param = <span class="number">100</span></span><br><span class="line">        <span class="keyword">super</span>.init(name: <span class="string">"HS"</span>)</span><br><span class="line">        <span class="comment">//重设继承父类属性的name值</span></span><br><span class="line">        self.name = <span class="string">"New"</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>检查3：如果便利构造方法中需要重新设置某些属性的值，必须在调用指定构造方法之后设置，否则会被覆盖。</p>
+<p>检查4：在完成父类构造方法之前，不能使用self来引用属性。</p>
+<h3 id="六、构造方法的继承"><a href="#六、构造方法的继承" class="headerlink" title="六、构造方法的继承"></a>六、构造方法的继承</h3><pre><code>Swift和Objective-C有很大不同，其构造方法不会被子类无条件的继承。Swift中类的构造方法的继承遵守下面两个原则：
+</code></pre><p>1.如果子类没有定义任何的指定构造方法，则子类会默认继承父类所有的指定构造方法。</p>
+<p>2.如果子类中提供了父类所有指定构造方法，无论是覆写的还是继承的，则子类会默认继承下来父类的便利构造方法。</p>
+<p>上面两个原则可能有些难以理解，第1个原则实际上也说明子类如果定义了自己的指定构造方法，或者覆写了父类的某个指定构造方法，则子类不再继承父类所有的指定构造方法。第2个原则可以这样理解：因为所有便利构造方法最终都要调用到指定构造方法，所以只要子类中有提供这个便利构造方法需要调用的指定构造方法，这个便利构造方法就会被继承。</p>
+<pre><code>重写父类的指定构造方法需要使用override关键字，但是，便利构造方法并不存在重写的概念，因为其必须调用本类的其他构造方法，因此无论子类中定义的便利构造方法与父类是否相同，都是子类独立的便利构造方法。
+</code></pre><h3 id="七、可失败构造方法"><a href="#七、可失败构造方法" class="headerlink" title="七、可失败构造方法"></a>七、可失败构造方法</h3><pre><code>在开发中还会遇到一种情况，某些构造方法需要传入一些参数，当参数不符合要求时，此构造过程可能会失败，这时，开发者可以使用可失败的构造方法来进行类型的构造，例如在类中创建可失败的构造方法示例示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class MyClassThree: MyClassTwo &#123;</span><br><span class="line">    <span class="keyword">var</span> param:Int</span><br><span class="line">    init()&#123;</span><br><span class="line">        param = <span class="number">100</span></span><br><span class="line">        <span class="keyword">super</span>.init(name: <span class="string">"HS"</span>)</span><br><span class="line">        <span class="comment">//重设继承父类属性的name值</span></span><br><span class="line">        self.name = <span class="string">"New"</span></span><br><span class="line">    &#125;</span><br><span class="line">    init?(suc:Bool)&#123;</span><br><span class="line">        guard(suc)<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> nil</span><br><span class="line">        &#125;</span><br><span class="line">        param=<span class="number">1</span></span><br><span class="line">        <span class="keyword">super</span>.init(name: <span class="string">"1"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="八、必要构造方法"><a href="#八、必要构造方法" class="headerlink" title="八、必要构造方法"></a>八、必要构造方法</h3><pre><code>如果某些构造方法是类与其子类都必须实现的，则可以使用required关键字来将其修饰为必要的构造方法，子类必须继承或者覆写父类的必要构造方法，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class MyClassThree: MyClassTwo &#123;</span><br><span class="line">    <span class="keyword">var</span> param:Int</span><br><span class="line">    required init()&#123;</span><br><span class="line">        param = <span class="number">100</span></span><br><span class="line">        <span class="keyword">super</span>.init(name: <span class="string">"HS"</span>)</span><br><span class="line">        <span class="comment">//重设继承父类属性的name值</span></span><br><span class="line">        self.name = <span class="string">"New"</span></span><br><span class="line">    &#125;</span><br><span class="line">    init?(suc:Bool)&#123;</span><br><span class="line">        guard(suc)<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> nil</span><br><span class="line">        &#125;</span><br><span class="line">        param=<span class="number">1</span></span><br><span class="line">        <span class="keyword">super</span>.init(name: <span class="string">"1"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还有一点需要注意，如果某些属性的值设置十分复杂，开发者可以使用闭包的方式来为属性设置初始值，示例如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class MyClassThree: MyClassTwo &#123;</span><br><span class="line">    <span class="comment">//注意 闭包的后面必须加()，否则会将param当成一个闭包属性来处理</span></span><br><span class="line">    <span class="keyword">var</span> param:Int = &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">6</span>*<span class="number">6</span>+<span class="number">6</span></span><br><span class="line">    &#125;()</span><br><span class="line">    required init()&#123;</span><br><span class="line">        param = <span class="number">100</span></span><br><span class="line">        <span class="keyword">super</span>.init(name: <span class="string">"HS"</span>)</span><br><span class="line">        <span class="comment">//重设继承父类属性的name值</span></span><br><span class="line">        self.name = <span class="string">"New"</span></span><br><span class="line">    &#125;</span><br><span class="line">    init?(suc:Bool)&#123;</span><br><span class="line">        guard(suc)<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> nil</span><br><span class="line">        &#125;</span><br><span class="line">        param=<span class="number">1</span></span><br><span class="line">        <span class="keyword">super</span>.init(name: <span class="string">"1"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="九、析构方法"><a href="#九、析构方法" class="headerlink" title="九、析构方法"></a>九、析构方法</h3><pre><code>当类实例将要被释放时，系统会自动调用类的析构方法，析构方法deinit()没有参数和返回值，并且只有类有析构方法，开发者可以在其中进行一些资源的释放操作，当var类型变量被赋值为nil时，实例会被释放。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/19/216Swift专题讲解十六——ARC在Swift中的应用/" class="pre-post btn btn-default" title='Swift专题讲解十六——ARC在Swift中的应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift专题讲解十六——ARC在Swift中的应用</span>
+        </a>
+    
+    
+        <a href="/2016/05/18/214Swift专题讲解十四——继承/" class="next-post btn btn-default" title='Swift专题讲解十四——继承'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift专题讲解十四——继承</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift专题讲解十五——类型构造"><span class="toc-text">Swift专题讲解十五——类型构造</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、属性的构造"><span class="toc-text">二、属性的构造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、构造方法"><span class="toc-text">三、构造方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、类的Designated构造方法与Convenience构造方法"><span class="toc-text">四、类的Designated构造方法与Convenience构造方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、构造方法的安全特性"><span class="toc-text">五、构造方法的安全特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、构造方法的继承"><span class="toc-text">六、构造方法的继承</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#七、可失败构造方法"><span class="toc-text">七、可失败构造方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#八、必要构造方法"><span class="toc-text">八、必要构造方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#九、析构方法"><span class="toc-text">九、析构方法</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

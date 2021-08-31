@@ -1,0 +1,294 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Cocos2d-x-v3坐标体系 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Cocos2d-x-v3坐标体系">
+            
+	            Cocos2d-x-v3坐标体系
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/COCOS2D">
+            COCOS2D
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/08/03</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Cocos2d-x坐标体系"><a href="#Cocos2d-x坐标体系" class="headerlink" title="Cocos2d-x坐标体系"></a>Cocos2d-x坐标体系</h2><pre><code>cocos2d引擎是一款非常优秀的扩平台的游戏开发引擎，在apple游戏榜上，有很多排名靠前的游戏都是由他创造出来的，他也有一套十分方便的坐标体系。
+</code></pre><h3 id="一、UI坐标体系"><a href="#一、UI坐标体系" class="headerlink" title="一、UI坐标体系"></a>一、UI坐标体系</h3><pre><code>UI坐标体系相对于移动开发人员来说再熟悉不过了，在iOS系统中，它就是frame体系，即坐标(0,0)点位于屏幕的左上角，向右x增大，向下y增大。
+</code></pre><h3 id="二、OpenGL坐标体系"><a href="#二、OpenGL坐标体系" class="headerlink" title="二、OpenGL坐标体系"></a>二、OpenGL坐标体系</h3><pre><code>OpenGL坐标系是cocos2d中使用的坐标系，它更接近于数学上的坐标系，即(0,0)点位于屏幕的左下角，往左x增大，往上y增大。这套坐标系统也更符合物理世界的逻辑，便于游戏的开发。当然，这并不是说cocos2d中所有的坐标都是采用这个体系标准的，在手指点击事件层，接收到点击坐标点的坐标就是采用UI坐标系表示的。
+</code></pre><h3 id="三、世界坐标系"><a href="#三、世界坐标系" class="headerlink" title="三、世界坐标系"></a>三、世界坐标系</h3><pre><code>简单的理解，世界坐标系就是绝对坐标系，在cocos2d中，精灵的坐标是相对于其父视图而言的，是相对的坐标，世界坐标则是统一绝对的坐标，在项目中是固定的。
+</code></pre><h3 id="四、相对坐标系"><a href="#四、相对坐标系" class="headerlink" title="四、相对坐标系"></a>四、相对坐标系</h3><pre><code>最常用的坐标体系，任何类设置的坐标都是相对于其父视图原点的坐标。
+</code></pre><h3 id="五、坐标系的转换"><a href="#五、坐标系的转换" class="headerlink" title="五、坐标系的转换"></a>五、坐标系的转换</h3><pre><code>由于UI坐标系与OpenGL坐标系的差异，在开发中，我们有时需要其两个标准的相互转化，cocos2d中也未我们提供了相应的方法：
+</code></pre><p>Vec2 Director::convertToGL(const Vec2&amp; uiPoint);</p>
+<pre><code>这个方法将UI坐标系转换为OpenGL坐标系。
+</code></pre><p>Vec2 Director::convertToUI(const Vec2&amp; glPoint);</p>
+<pre><code>这个方法将OpenGL坐标系转换为UI坐标系。
+</code></pre><p>Vec2 Node::convertToWorldSpace(const Vec2&amp; nodePoint) const;</p>
+<pre><code>这个方法将物体的相对坐标
+</code></pre><p>Vec2 Node::convertToNodeSpace(const Vec2&amp; worldPoint) const;</p>
+<pre><code>这个方法将世界坐标转化为某一节点的相对坐标。
+</code></pre><p>还有两个转化的方法与上面类似，只有一点不同，这两个方法参照的原点不是系统默认的，而是我们设置的节点的锚点：</p>
+<p>Vec2 Node::convertToNodeSpaceAR(const Vec2&amp; worldPoint) const;</p>
+<p>Vec2 Node::convertToWorldSpaceAR(const Vec2&amp; nodePoint) const;</p>
+<h3 id="六、锚点"><a href="#六、锚点" class="headerlink" title="六、锚点"></a>六、锚点</h3><pre><code>锚点的概念可以理解为参照点，其设置范围为0-1，系统默认的节点锚点为(0,0)。在UI坐标系中，(0,0)点就是节点的左上角，在OpenGL坐标系中，(0,0)点就是节点的左下角。例如，如果我将锚点设置为(0.5,0.5),则在UI和OpenGL坐标系中，(0,0)点都是节点的中心点。又如，我将锚点设置为(1,1)，则在UI坐标系中，原点为右下角，在OpenGL坐标系中，原点为右上角，锚点的用处就是更改参考点，在另一种情形下，锚点对程序也会产生很大的影响，就是当我们设置一个节点旋转或者缩放时，节点会以锚点位置为中心进行旋转或缩放。
+
+cocos2d中通过下面方法分别来设置和获取锚点：
+</code></pre><p>void Sprite::setAnchorPoint(const Vec2&amp; anchor);</p>
+<p>设置锚点</p>
+<p>const Vec2&amp; Node::getAnchorPoint() const;</p>
+<p>获取锚点</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/08/05/95Cocos2d-x-v3动作体系/" class="pre-post btn btn-default" title='Cocos2d-x-v3动作体系'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Cocos2d-x-v3动作体系</span>
+        </a>
+    
+    
+        <a href="/2015/07/31/92iOS8新特性扩展(Extension)应用之四——自定义键盘控件/" class="next-post btn btn-default" title='iOS8新特性扩展(Extension)应用之四——自定义键盘控件'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS8新特性扩展(Extension)应用之四——自定义键盘控件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Cocos2d-x坐标体系"><span class="toc-text">Cocos2d-x坐标体系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、UI坐标体系"><span class="toc-text">一、UI坐标体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、OpenGL坐标体系"><span class="toc-text">二、OpenGL坐标体系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、世界坐标系"><span class="toc-text">三、世界坐标系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、相对坐标系"><span class="toc-text">四、相对坐标系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、坐标系的转换"><span class="toc-text">五、坐标系的转换</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、锚点"><span class="toc-text">六、锚点</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

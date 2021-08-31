@@ -1,0 +1,305 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发之AddressBookUI框架详解 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发之AddressBookUI框架详解">
+            
+	            iOS开发之AddressBookUI框架详解
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/23</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发之AddressBookUI框架详解"><a href="#iOS开发之AddressBookUI框架详解" class="headerlink" title="iOS开发之AddressBookUI框架详解"></a>iOS开发之AddressBookUI框架详解</h2><h3 id="一、关于AddressBookUI框架"><a href="#一、关于AddressBookUI框架" class="headerlink" title="一、关于AddressBookUI框架"></a>一、关于AddressBookUI框架</h3><pre><code>AddressbookUI是iOS开发框架中提供的一套通讯录界面组件。其中封装好了一套选择联系人，查看联系人的界面，在需要时开发者可以直接调用。当然对于联系人界面，开发者也可以进行完全的自定义，下面链接博客中介绍了如何使用AddressBook框架操作通讯录与联系人。
+</code></pre><p><a href="https://my.oschina.net/u/2340880/blog/1930414" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/1930414</a></p>
+<pre><code>AddressBookUI框架主要提供了如下几个类：
+</code></pre><p>ABNewPersonViewController：新建联系人界面视图控制器</p>
+<p>ABPeoplePickerNavigationController：从通讯录选择联系人界面视图控制器</p>
+<p>ABPersonViewController：联系人详情界面视图控制器</p>
+<p>ABUnknownPersonViewController：一个未在当前通讯录中的联系人查看界面，可以添加和编辑</p>
+<h3 id="二、ABNewPersonViewController新建联系人界面"><a href="#二、ABNewPersonViewController新建联系人界面" class="headerlink" title="二、ABNewPersonViewController新建联系人界面"></a>二、ABNewPersonViewController新建联系人界面</h3><pre><code>ABNewPersonViewController类的使用非常简单，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ABNewPersonViewController *picker = [[ABNewPersonViewController alloc] init];</span><br><span class="line">picker.newPersonViewDelegate = <span class="keyword">self</span>;</span><br><span class="line">[<span class="keyword">self</span> presentModalViewController:picker animated:<span class="literal">YES</span>];</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/8eedefe345a3deb00747e8036aee4e1feb3.jpg" alt></p>
+<p>ABNewPersonViewController解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代理</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>,<span class="keyword">nullable</span>) <span class="keyword">id</span>&lt;ABNewPersonViewControllerDelegate&gt; newPersonViewDelegate;</span><br><span class="line"><span class="comment">//通讯录实例 只读</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readwrite</span>,<span class="keyword">nullable</span>) ABAddressBookRef addressBook;</span><br><span class="line"><span class="comment">//联系人 只读</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readwrite</span>,<span class="keyword">nullable</span>) ABRecordRef displayedPerson;</span><br><span class="line"><span class="comment">//联系人组 只读</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readwrite</span>,<span class="keyword">nullable</span>) ABRecordRef parentGroup;</span><br></pre></td></tr></table></figure>
+<p>联系人的新建回调可以在代理方法中处理，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">ABNewPersonViewControllerDelegate</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"><span class="comment">//新建联系人完成后的回调</span></span><br><span class="line">- (<span class="keyword">void</span>)newPersonViewController:(ABNewPersonViewController *)newPersonView didCompleteWithNewPerson:(<span class="keyword">nullable</span> ABRecordRef)person;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="三、ABPeoplePickerNavigationController选择联系人界面"><a href="#三、ABPeoplePickerNavigationController选择联系人界面" class="headerlink" title="三、ABPeoplePickerNavigationController选择联系人界面"></a>三、ABPeoplePickerNavigationController选择联系人界面</h3><pre><code>ABPeoplePickerNavigationController是用户通讯录界面，开发者在需要用户选择联系人时，可以直接调用这个界面来让用户进行选择，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ABPeoplePickerNavigationController *vc = [[ABPeoplePickerNavigationController alloc] init];</span><br><span class="line">vc.peoplePickerDelegate = <span class="keyword">self</span>;</span><br><span class="line">[<span class="keyword">self</span> presentViewController:vc animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br></pre></td></tr></table></figure>
+<p>效果如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/52aa2a5be3c62c2cd72d8bab4f8f2ff7b41.jpg" alt></p>
+<p>ABPeoplePickerNavigationController解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代理</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>,<span class="keyword">nullable</span>) <span class="keyword">id</span>&lt;ABPeoplePickerNavigationControllerDelegate&gt; peoplePickerDelegate;</span><br><span class="line"><span class="comment">//需要展示的用户联系人属性字段  数组中为属性的ID 在AddressBook框架介绍的博客中有讲解</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>,<span class="keyword">nullable</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSNumber</span>*&gt; *displayedProperties;</span><br><span class="line"><span class="comment">//通讯录实例</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readwrite</span>,<span class="keyword">nullable</span>) ABAddressBookRef addressBook;</span><br><span class="line"><span class="comment">//设置一个筛选条件 过滤掉不可显示的联系人</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>,<span class="keyword">nullable</span>) <span class="built_in">NSPredicate</span> *predicateForEnablingPerson;</span><br><span class="line"><span class="comment">//设置一个筛选条件 过滤掉不可选择的联系人</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>,<span class="keyword">nullable</span>) <span class="built_in">NSPredicate</span> *predicateForSelectionOfPerson;</span><br><span class="line"><span class="comment">//设置一个筛选条件 过滤掉不可显示的属性</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>,<span class="keyword">nullable</span>) <span class="built_in">NSPredicate</span> *predicateForSelectionOfProperty;</span><br></pre></td></tr></table></figure>
+<p>用来进行联系人筛选的属性定义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonNamePrefixProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonGivenNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0); </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonMiddleNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0); </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonFamilyNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);  </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonNameSuffixProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0); </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonPreviousFamilyNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);  </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonNicknameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0); </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonPhoneticGivenNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);  </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonPhoneticMiddleNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0); </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonPhoneticFamilyNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);    </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonOrganizationNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);        </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonDepartmentNameProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);       </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonJobTitleProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);          </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonBirthdayProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);        </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonNoteProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);      </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonPhoneNumbersProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);   </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonEmailAddressesProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);  </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonUrlAddressesProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);  </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonDatesProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);    </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonInstantMessageAddressesProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0); </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonRelatedNamesProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);     </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonSocialProfilesProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0); </span><br><span class="line"><span class="keyword">extern</span> <span class="built_in">NSString</span> * <span class="keyword">const</span> ABPersonPostalAddressesProperty <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">8</span>_0);</span><br></pre></td></tr></table></figure>
+<p>ABPeoplePickerNavigationControllerDelegate中方法解释如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//选中联系人进行回调</span></span><br><span class="line">- (<span class="keyword">void</span>)peoplePickerNavigationController:(ABPeoplePickerNavigationController*)peoplePicker didSelectPerson:(ABRecordRef)person;</span><br><span class="line"><span class="comment">//选择联系人属性</span></span><br><span class="line">- (<span class="keyword">void</span>)peoplePickerNavigationController:(ABPeoplePickerNavigationController*)peoplePicker didSelectPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier;</span><br><span class="line"><span class="comment">//取消选择</span></span><br><span class="line">- (<span class="keyword">void</span>)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker;</span><br></pre></td></tr></table></figure>
+<h3 id="四、ABPersonViewController联系人详情界面"><a href="#四、ABPersonViewController联系人详情界面" class="headerlink" title="四、ABPersonViewController联系人详情界面"></a>四、ABPersonViewController联系人详情界面</h3><pre><code>ABPersonViewController是联系人的详情展示界面，简单使用如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CFErrorRef</span> error = <span class="literal">NULL</span>;</span><br><span class="line">ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(<span class="literal">NULL</span>, &amp;error);</span><br><span class="line"><span class="built_in">CFArrayRef</span> peopleArray = ABAddressBookCopyArrayOfAllPeople(addressBook);</span><br><span class="line">ABRecordRef person = <span class="built_in">CFArrayGetValueAtIndex</span>(peopleArray, <span class="number">0</span>);</span><br><span class="line">ABPersonViewController *viewController = [[ABPersonViewController alloc] init];</span><br><span class="line">viewController.personViewDelegate = <span class="keyword">self</span>;</span><br><span class="line">viewController.displayedPerson = person;</span><br><span class="line">viewController.allowsActions = <span class="literal">NO</span>;</span><br><span class="line">viewController.allowsEditing = <span class="literal">YES</span>;</span><br><span class="line">viewController.displayedProperties = @[[<span class="built_in">NSNumber</span> numberWithInt:kABPersonPhoneProperty]];</span><br><span class="line">[<span class="keyword">self</span> presentViewController:viewController animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br></pre></td></tr></table></figure>
+<p>界面如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/dbdceff3f2d043caa93be1503b323e10608.jpg" alt></p>
+<p>ABPersonViewController中常用属性方法解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代理</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>,<span class="keyword">nullable</span>) <span class="keyword">id</span>&lt;ABPersonViewControllerDelegate&gt; personViewDelegate;</span><br><span class="line"><span class="comment">//通讯录实例</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readwrite</span>,<span class="keyword">nullable</span>) ABAddressBookRef addressBook;</span><br><span class="line"><span class="comment">//联系人记录实例</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readwrite</span>) ABRecordRef displayedPerson;</span><br><span class="line"><span class="comment">//展示的属性字段</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>,<span class="keyword">nullable</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSNumber</span>*&gt; *displayedProperties;</span><br><span class="line"><span class="comment">//是否允许编辑</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> allowsEditing;</span><br><span class="line"><span class="comment">//是否允许活动按钮 例如分享</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> allowsActions;</span><br><span class="line"><span class="comment">//是否允许关联其他联系人</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> shouldShowLinkedPeople;</span><br><span class="line"><span class="comment">//设置属性高亮</span></span><br><span class="line">- (<span class="keyword">void</span>)setHighlightedItemForProperty:(ABPropertyID)property withIdentifier:(ABMultiValueIdentifier)identifier;</span><br></pre></td></tr></table></figure>
+<p>ABPersonViewControllerDelegate中方法解释如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//选择属性发送时调用</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)personViewController:(ABPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier;</span><br></pre></td></tr></table></figure>
+<h3 id="五、关于ABUnknownPersonViewController"><a href="#五、关于ABUnknownPersonViewController" class="headerlink" title="五、关于ABUnknownPersonViewController"></a>五、关于ABUnknownPersonViewController</h3><pre><code>ABUnknownPersonViewController界面与ABPersonViewController基本一致，不同的是，ABPersonViewController需要使用一个通讯录中已经存在的联系人作为参数进行展示，ABUnknownPersonViewController则不然，你可以使用一个通讯录中不存在的联系人对象来进行界面的渲染，并且支持用户选择将此联系人存入通讯录中。示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ABUnknownPersonViewController *unknown=[[ABUnknownPersonViewController alloc]init];</span><br><span class="line">unknown.displayedPerson=ABPersonCreate();</span><br><span class="line">unknown.allowsAddingToAddressBook=<span class="literal">YES</span>;<span class="comment">//允许添加</span></span><br><span class="line">[<span class="keyword">self</span> presentViewController:unknown animated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br></pre></td></tr></table></figure>
+<p>ABUnknownPersonViewController中属性方法解释如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//代理</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>,<span class="keyword">nullable</span>) <span class="keyword">id</span>&lt;ABUnknownPersonViewControllerDelegate&gt; unknownPersonViewDelegate;</span><br><span class="line"><span class="comment">//通讯录实例对象</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readwrite</span>,<span class="keyword">nullable</span>) ABAddressBookRef addressBook;</span><br><span class="line"><span class="comment">//联系人实例</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">readwrite</span>) ABRecordRef displayedPerson;</span><br><span class="line"><span class="comment">//提示名字</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>,<span class="keyword">nullable</span>) <span class="built_in">NSString</span> *alternateName;</span><br><span class="line"><span class="comment">//提示信息</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>,<span class="keyword">nullable</span>) <span class="built_in">NSString</span> *message;</span><br><span class="line"><span class="comment">//是否允许活动</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> allowsActions;</span><br><span class="line"><span class="comment">//是否允许添加电话本</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> allowsAddingToAddressBook;</span><br></pre></td></tr></table></figure>
+<p>ABUnknownPersonViewControllerDelegate方法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//联系人解释时调用</span></span><br><span class="line">- (<span class="keyword">void</span>)unknownPersonViewController:(ABUnknownPersonViewController *)unknownCardViewController didResolveToPerson:(<span class="keyword">nullable</span> ABRecordRef)person;</span><br><span class="line"><span class="comment">//发送活动</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/09/10/380 iOS开发之AdSupport框架使用/" class="pre-post btn btn-default" title='iOS开发之AdSupport框架使用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发之AdSupport框架使用</span>
+        </a>
+    
+    
+        <a href="/2018/08/19/378iOS开发之AddressBook框架详解/" class="next-post btn btn-default" title='iOS开发之AddressBook框架详解'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发之AddressBook框架详解</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发之AddressBookUI框架详解"><span class="toc-text">iOS开发之AddressBookUI框架详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、关于AddressBookUI框架"><span class="toc-text">一、关于AddressBookUI框架</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、ABNewPersonViewController新建联系人界面"><span class="toc-text">二、ABNewPersonViewController新建联系人界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、ABPeoplePickerNavigationController选择联系人界面"><span class="toc-text">三、ABPeoplePickerNavigationController选择联系人界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、ABPersonViewController联系人详情界面"><span class="toc-text">四、ABPersonViewController联系人详情界面</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、关于ABUnknownPersonViewController"><span class="toc-text">五、关于ABUnknownPersonViewController</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

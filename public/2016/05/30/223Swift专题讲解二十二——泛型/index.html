@@ -1,0 +1,283 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift专题讲解二十二——泛型 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift专题讲解二十二——泛型">
+            
+	            Swift专题讲解二十二——泛型
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift专题讲解二十二——泛型"><a href="#Swift专题讲解二十二——泛型" class="headerlink" title="Swift专题讲解二十二——泛型"></a>Swift专题讲解二十二——泛型</h2><h3 id="一、以泛型为参数的函数"><a href="#一、以泛型为参数的函数" class="headerlink" title="一、以泛型为参数的函数"></a>一、以泛型为参数的函数</h3><pre><code>泛型是Swift语言强大的核心，泛型是对类型的抽象，使用泛型开发者可以更加灵活方便的表达代码意图。我们知道，有参函数的参数必须有一个明确的参数类型，有些时候开发者会遇到这样一种情况，编写一个函数用于交换两个变量的值，由于变量有类型之分，实现相同的功能，可能需要重载成多个函数来实现，这大大浪费了开发成本，使用泛型，可以完美的解决这个问题，示例代码如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func exchange&lt;T&gt;(inout param1:T,inout param2:T)&#123;</span><br><span class="line">    <span class="keyword">let</span> tmp = param1</span><br><span class="line">    param1 = param2</span><br><span class="line">    param2 = tmp</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> p1 = <span class="string">"15"</span></span><br><span class="line"><span class="keyword">var</span> p2 = <span class="string">"40"</span></span><br><span class="line">exchange(&amp;p1, <span class="attr">param2</span>: &amp;p2)</span><br></pre></td></tr></table></figure>
+<p>上面的方法可以实现对任意相同类型变量的交换，函数参数中使用泛型，需要在函数名后的&lt;&gt;中定义参数占位符，如有多个参数占位符，用逗号隔开即可。</p>
+<h3 id="二、泛型在类型中的应用"><a href="#二、泛型在类型中的应用" class="headerlink" title="二、泛型在类型中的应用"></a>二、泛型在类型中的应用</h3><pre><code>泛型除了可以作为函数的参数、返回值外，在定义类型时，灵活应用泛型也可以解决很多十分棘手的问题，例如实现一个栈结构的集合类型，示例代码如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">struct Stack&lt;ItemType&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> items:[ItemType] = []</span><br><span class="line">    mutating func push(param:ItemType)  &#123;</span><br><span class="line">        self.items.append(param)</span><br><span class="line">    &#125;</span><br><span class="line">    mutating func pop()-&gt;ItemType&#123;</span><br><span class="line">        <span class="keyword">return</span> self.items.removeLast()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//整型栈</span></span><br><span class="line"><span class="keyword">var</span> obj1 = Stack&lt;Int&gt;()</span><br><span class="line">obj1.push(<span class="number">1</span>)</span><br><span class="line">obj1.pop()</span><br><span class="line"><span class="comment">//字符串栈</span></span><br><span class="line"><span class="keyword">var</span> obj2 = Stack&lt;<span class="built_in">String</span>&gt;()</span><br><span class="line">obj2.push(<span class="string">"HS"</span>)</span><br><span class="line">obj2.pop()</span><br></pre></td></tr></table></figure>
+<pre><code>在对使用了泛型的类型进行扩展时，不需要在使用&lt;&gt;进行泛型的定义，直接使用原定义的泛型占位符即可，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">extension Stack&#123;</span><br><span class="line">    func getArray() -&gt; [ItemType] &#123;</span><br><span class="line">        <span class="keyword">return</span> items</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>有时候，开发者需要对泛型进行一些约束，例如只允许此泛型是继承自某个类或者实现了某个协议，示例代码如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//只有MyClass的子类可以进行Stack栈的创建</span></span><br><span class="line">struct Stack&lt;ItemType:MyClass&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> items:[ItemType] = []</span><br><span class="line">    mutating func push(param:ItemType)  &#123;</span><br><span class="line">        self.items.append(param)</span><br><span class="line">    &#125;</span><br><span class="line">    mutating func pop()-&gt;ItemType&#123;</span><br><span class="line">        <span class="keyword">return</span> self.items.removeLast()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>在协议中，可以使用另一种方式来进行泛型编程，使用associatedtype关键字可以进行类型关联，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">protocol MyProtocol &#123;</span><br><span class="line">    <span class="comment">//实现协议时才指定类型</span></span><br><span class="line">    associatedtype ItemType</span><br><span class="line">    <span class="keyword">var</span> param:ItemType &#123;get set&#125;</span><br><span class="line">&#125;</span><br><span class="line">class MyClass:MyProtocol &#123;</span><br><span class="line">    <span class="comment">//由于Swift可以自动识别类型 这是MyProtocol中的ItemType为Int</span></span><br><span class="line">    <span class="keyword">var</span> param: Int = <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、泛型与where子句的结合使用"><a href="#三、泛型与where子句的结合使用" class="headerlink" title="三、泛型与where子句的结合使用"></a>三、泛型与where子句的结合使用</h3><pre><code>使用where子句可以对泛型进行更加严格约束，使其符合开发者需要的逻辑，示例如下：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//T和C都要遵守整型协议</span></span><br><span class="line">class MyClassTwo&lt;T,C where T:IntegerType,C:IntegerType&gt; &#123;</span><br><span class="line">    <span class="keyword">var</span> param1:T</span><br><span class="line">    <span class="keyword">var</span> param2:C</span><br><span class="line">    init(param1:T,<span class="attr">param2</span>:C)&#123;</span><br><span class="line">        self.param1=param1</span><br><span class="line">        self.param2=param2</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> obj3 = MyClassTwo(param1: <span class="number">1</span>, <span class="attr">param2</span>: <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/31/224Swift专题讲解二十三——高级运算符/" class="pre-post btn btn-default" title='Swift专题讲解二十三——高级运算符'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift专题讲解二十三——高级运算符</span>
+        </a>
+    
+    
+        <a href="/2016/05/29/221Swift专题讲解二十——扩展/" class="next-post btn btn-default" title='Swift专题讲解二十——扩展'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift专题讲解二十——扩展</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift专题讲解二十二——泛型"><span class="toc-text">Swift专题讲解二十二——泛型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、以泛型为参数的函数"><span class="toc-text">一、以泛型为参数的函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、泛型在类型中的应用"><span class="toc-text">二、泛型在类型中的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、泛型与where子句的结合使用"><span class="toc-text">三、泛型与where子句的结合使用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

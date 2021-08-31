@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS动画开发之四——核心动画编程(CoreAnimation) | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS动画开发之四——核心动画编程(CoreAnimation)">
+            
+	            iOS动画开发之四——核心动画编程(CoreAnimation)
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/07/28</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS动画开发之四——核心动画编程-CoreAnimation"><a href="#iOS动画开发之四——核心动画编程-CoreAnimation" class="headerlink" title="iOS动画开发之四——核心动画编程(CoreAnimation)"></a>iOS动画开发之四——核心动画编程(CoreAnimation)</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>前几篇博客详细介绍了有关UIView层的动画使用与相关的效果，然而这些动画是UIKit为我们封装好的核心动画层的方法，通过这些方法，我们可以用的更加简便，当然功能也十分强大，基本能达到我们项目的大多需求。但是如果你想更加自由的通过动画操作视图的属性，你就需要跳过UIKit的封装，使用CoreAnimation核心动画层的方法来实现动画。
+</code></pre><h3 id="二、开始前的准备"><a href="#二、开始前的准备" class="headerlink" title="二、开始前的准备"></a>二、开始前的准备</h3><h4 id="1、认识一个的朋友"><a href="#1、认识一个的朋友" class="headerlink" title="1、认识一个的朋友"></a>1、认识一个的朋友</h4><pre><code>在开始介绍核心动画的内容前，我们需要先搞明白一个东西：Layer。你可能很少听说他，可是他却无处不在，在iOS的UI开发中，任何一个View包括继承于UIView的子类上面都会有一个Layer，可以理解为Layer为单独的一层，专门负责视图的显示，而view除此之外更多负责触摸时间等逻辑处理。因此，iOS也将所有动画的操作都交给你Layer来负责。
+</code></pre><h4 id="2、Layer层可以做到的事"><a href="#2、Layer层可以做到的事" class="headerlink" title="2、Layer层可以做到的事"></a>2、Layer层可以做到的事</h4><pre><code>Layer如此神秘，那他究竟可以做到哪些事？他确实可以做很多view做不了的事情.
+</code></pre><h5 id="1-设置view的圆角属性"><a href="#1-设置view的圆角属性" class="headerlink" title="(1)设置view的圆角属性"></a>(1)设置view的圆角属性</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> view = [[UIView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">    view.backgroundColor=[UIColor redColor];</span><br><span class="line">    view.layer.masksToBounds=YES;//设置layer层的切割属性</span><br><span class="line">    view.layer.cornerRadius=10;//设置layer层的圆角半径</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0728/165350_D5Xf_2340880.png" alt></p>
+<h5 id="2-设置view的边框"><a href="#2-设置view的边框" class="headerlink" title="(2)设置view的边框"></a>(2)设置view的边框</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">view = [[UIView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">    view.backgroundColor=[UIColor redColor];</span><br><span class="line">    CALayer *layer=view.layer;</span><br><span class="line">    layer.borderWidth=10;//设置边框的宽度</span><br><span class="line">    layer.borderColor=[[UIColor magentaColor]CGColor];//设置边框的颜色</span><br></pre></td></tr></table></figure>
+<p>注意：因为CoreAnimation层是UI层的底层，所以这里的颜色为CGColor对象。</p>
+<p>效果如下：</p>
+<h5 id><a href="#" class="headerlink" title></a><img src="http://static.oschina.net/uploads/space/2015/0728/165843_qR0U_2340880.png" alt></h5><h5 id="3-设置视图阴影"><a href="#3-设置视图阴影" class="headerlink" title="(3)设置视图阴影"></a>(3)设置视图阴影</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> view = [[UIView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    [self.view addSubview:view];</span><br><span class="line">    view.backgroundColor=[UIColor redColor];</span><br><span class="line">    CALayer *layer=view.layer;</span><br><span class="line">    layer.shadowOffset=CGSizeMake(30, 30);//设置阴影方向</span><br><span class="line">    layer.shadowColor=[[UIColor blackColor] CGColor];//设置阴影颜色</span><br><span class="line">    layer.shadowOpacity=0.5;//设置阴影透明度</span><br><span class="line">    layer.shadowRadius=10;//设置阴影圆角</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0728/170301_jCTn_2340880.png" alt></p>
+<p>这样的立体效果是否已经很酷了？NO，在加上动画才对。</p>
+<h3 id="三、CoreAnimation的使用"><a href="#三、CoreAnimation的使用" class="headerlink" title="三、CoreAnimation的使用"></a>三、CoreAnimation的使用</h3><h4 id="1、基础属性相关的动画CABasicAnimation"><a href="#1、基础属性相关的动画CABasicAnimation" class="headerlink" title="1、基础属性相关的动画CABasicAnimation"></a>1、基础属性相关的动画CABasicAnimation</h4><p>CABasicAnimation是核心动画中对属性操作需要用到了一个动画类，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    CALayer *layer=view.layer;</span><br><span class="line">    CABasicAnimation * ani= [CABasicAnimation animationWithKeyPath:@&quot;opacity&quot;];//创建对象，参数关键字为layer的属性</span><br><span class="line">    ani.duration=3;//设置执行时间</span><br><span class="line">    ani.repeatCount=1;//设置执行次数</span><br><span class="line">    ani.timingFunction=[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];//设置线性效果</span><br><span class="line">    [layer addAnimation:ani forKey:@&quot;test&quot;];//添加动画</span><br><span class="line">    layer.opacity=0;//透明度改变时执行动画动作</span><br></pre></td></tr></table></figure>
+<p>通过上面的示例，我们可以发现，layer的属性都可以来进行动画动作，这样，我们对动画的操作就自由的很多。</p>
+<h4 id="2、关键帧动画CAKeyframeAnimation"><a href="#2、关键帧动画CAKeyframeAnimation" class="headerlink" title="2、关键帧动画CAKeyframeAnimation"></a>2、关键帧动画CAKeyframeAnimation</h4><p>关键帧动画除了动画改变layer的属性外，可以设置几个关键帧点，通过这些点，可以实现路径更加负责的动画，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CALayer *layer=view.layer;</span><br><span class="line">    CAKeyframeAnimation * ani = [CAKeyframeAnimation animationWithKeyPath:@&quot;opacity&quot;];//创建一个关键帧动画对象</span><br><span class="line">    ani.duration=3;</span><br><span class="line">    ani.values=@[@1,@0,@1];//传入三个关键帧，动画会将试图先慢慢隐藏，再慢慢展现</span><br><span class="line">    [layer addAnimation:ani forKey:@&quot;test&quot;];</span><br></pre></td></tr></table></figure>
+<p>类比如上代码，我们还可以通过关键帧让试图按照我们预定的路线移动，同时我们还可以设置两个数组，分别为keyTimes和timingFunctions。这两个数组中的值可以设置动画每一段的运动线性特征和每一段的运动时间比例。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/07/29/88iOS动画开发之五——炫酷的粒子效果/" class="pre-post btn btn-default" title='iOS动画开发之五——炫酷的粒子效果'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS动画开发之五——炫酷的粒子效果</span>
+        </a>
+    
+    
+        <a href="/2015/07/28/85iOS动画开发之二——UIView动画执行的另一种方式/" class="next-post btn btn-default" title='iOS动画开发之二——UIView动画执行的另一种方式'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS动画开发之二——UIView动画执行的另一种方式</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS动画开发之四——核心动画编程-CoreAnimation"><span class="toc-text">iOS动画开发之四——核心动画编程(CoreAnimation)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、开始前的准备"><span class="toc-text">二、开始前的准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、认识一个的朋友"><span class="toc-text">1、认识一个的朋友</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、Layer层可以做到的事"><span class="toc-text">2、Layer层可以做到的事</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-设置view的圆角属性"><span class="toc-text">(1)设置view的圆角属性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-设置view的边框"><span class="toc-text">(2)设置view的边框</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#null"><span class="toc-text"></span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-设置视图阴影"><span class="toc-text">(3)设置视图阴影</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、CoreAnimation的使用"><span class="toc-text">三、CoreAnimation的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、基础属性相关的动画CABasicAnimation"><span class="toc-text">1、基础属性相关的动画CABasicAnimation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、关键帧动画CAKeyframeAnimation"><span class="toc-text">2、关键帧动画CAKeyframeAnimation</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

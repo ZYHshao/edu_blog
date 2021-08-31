@@ -1,0 +1,318 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS UIButton解读 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS UIButton解读">
+            
+	            iOS UIButton解读
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+                    <a href="/tags/iOS编程" title='iOS编程'>
+                        iOS编程
+                    </a>
+                
+                    <a href="/tags/UIButton" title='UIButton'>
+                        UIButton
+                    </a>
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/11</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>UIButton控件是应用界面中常用的一个控件，用法总结：</p>
+<p>一、初始化</p>
+<p>UIButton的初始化一般使用其类方法，+ (id)buttonWithType:(UIButtonType)buttonType;</p>
+<p>风格的枚举如下：</p>
+<p>typedef NS_ENUM(NSInteger, UIButtonType) {<br>    //用户自定义，无风格<br>    UIButtonTypeCustom = 0,<br>    //系统默认风格<br>    UIButtonTypeSystem NS_ENUM_AVAILABLE_IOS(7_0),<br>    //一下这三种创建出来的按钮一样，一个蓝色的圆圈，中间有个叹号<br>    UIButtonTypeDetailDisclosure,<br>    UIButtonTypeInfoLight,<br>    UIButtonTypeInfoDark,<br>    //创建+号按钮<br>    UIButtonTypeContactAdd,<br>    //废弃<br>    UIButtonTypeRoundedRect = UIButtonTypeSystem,<br>};</p>
+<p>二、属性设置</p>
+<p>@property(nonatomic) UIEdgeInsets contentEdgeInsets UI_APPEARANCE_SELECTOR;<br>//这个属性设置button里内容的偏移量，包括title和image，可以用如下方法设置<br>btn.contentEdgeInsets=UIEdgeInsetsMake(20, 20, 0, 0);</p>
+<p>@property(nonatomic) UIEdgeInsets titleEdgeInsets;<br>//这个属性设置标题的偏移量<br>@property(nonatomic) BOOL reversesTitleShadowWhenHighlighted;<br>//按钮高亮时，是否改变阴影效果<br>@property(nonatomic) UIEdgeInsets imageEdgeInsets;<br>//图片的偏移量<br>@property(nonatomic)BOOL  adjustsImageWhenHighlighted;<br>//设置图片的绘制是否高亮时变暗<br>@property(nonatomic)BOOL  adjustsImageWhenDisabled;<br>//设置图片是否轻绘制当按钮禁用时<br>@property(nonatomic)BOOL showsTouchWhenHighlighted;<br>//设置是否显示手指印在按钮高亮的时候<br>@property(nonatomic,retain)   UIColor     *tintColor NS_AVAILABLE_IOS(5_0);<br>//这个属性会作用于标题和图片，但是如果你是自定义风格的按钮，这个属性将不起任何作用，它只作用于系统的<br>@property(nonatomic,readonly) UIButtonType buttonType;<br>//设置button的风格</p>
+<p>三、一些set方法</p>
+<ul>
+<li>(void)setTitle:(NSString *)title forState:(UIControlState)state;<br>//设置标题和显示当前标题的按钮状态 </li>
+<li>(void)setTitleColor:(UIColor *)color forState:(UIControlState)state;<br>//设置标题颜色和显示当前颜色的按钮状态 </li>
+<li>(void)setTitleShadowColor:(UIColor *)color forState:(UIControlState)state;<br>//设置标题阴影颜色及显示时的状态</li>
+<li>(void)setImage:(UIImage *)image forState:(UIControlState)state;<br>//设置按钮图片和显示当前图片时的状态</li>
+<li>(void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state;<br>//设置按钮背景图片和显示图片时的状态</li>
+<li>(void)setAttributedTitle:(NSAttributedString *)title forState:(UIControlState)state NS_AVAILABLE_IOS(6_0);<br>//通过AttributeString创建标题</li>
+</ul>
+<p>注意：按钮图片设置和背景图片的不同在于：</p>
+<pre><code>1、设置图片，如果有标题会和标题并列显示
+
+2、设置背景图片会出现在标题下面
+
+3、图片的偏移量可以设置，背景图片不可以。
+</code></pre><p>四、一些get方法，可以得到上述设置的属性</p>
+<ul>
+<li>(NSString *)titleForState:(UIControlState)state;       </li>
+<li>(UIColor *)titleColorForState:(UIControlState)state;</li>
+<li>(UIColor *)titleShadowColorForState:(UIControlState)state;</li>
+<li>(UIImage *)imageForState:(UIControlState)state;</li>
+<li>(UIImage *)backgroundImageForState:(UIControlState)state;</li>
+<li>(NSAttributedString *)attributedTitleForState:(UIControlState)state NS_AVAILABLE_IOS(6_0);</li>
+</ul>
+<p>五、一些只读属性</p>
+<p>@property(nonatomic,readonly,retain) NSString <em>currentTitle;<br>@property(nonatomic,readonly,retain) UIColor  </em>currentTitleColor;<br>@property(nonatomic,readonly,retain) UIColor  <em>currentTitleShadowColor;<br>@property(nonatomic,readonly,retain) UIImage  </em>currentImage;<br>@property(nonatomic,readonly,retain) UIImage  <em>currentBackgroundImage;<br>@property(nonatomic,readonly,retain) NSAttributedString </em>currentAttributedTitle NS_AVAILABLE_IOS(6_0);<br>//这两个参数需要注意，虽然他们是只读属性不能重新设置，但是我们可以设置label和imageView的相关属性<br>@property(nonatomic,readonly,retain) UILabel     <em>titleLabel NS_AVAILABLE_IOS(3_0);<br>@property(nonatomic,readonly,retain) UIImageView </em>imageView  NS_AVAILABLE_IOS(3_0);</p>
+<p>六、下面这些函数，都会返回一个CGRect 矩形范围</p>
+<ul>
+<li>(CGRect)backgroundRectForBounds:(CGRect)bounds;<br>//返回背景大小</li>
+<li>(CGRect)contentRectForBounds:(CGRect)bounds;<br>//返回视图大小，包括标题和图片</li>
+<li>(CGRect)titleRectForContentRect:(CGRect)contentRect;<br>//返回标题大小</li>
+<li>(CGRect)imageRectForContentRect:(CGRect)contentRect;<br>//返回图片大小</li>
+</ul>
+<p>关于触发事件，button是继承于UIControl,这里不再叙述。</p>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/13/13iOS UISegmentedControl/" class="pre-post btn btn-default" title='iOS UISegmentedControl'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS UISegmentedControl</span>
+        </a>
+    
+    
+        <a href="/2015/04/11/11iOS 封装静态库(.a文件)/" class="next-post btn btn-default" title='iOS 封装静态库(.a文件)'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS 封装静态库(.a文件)</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <p>暂无目录</p>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
