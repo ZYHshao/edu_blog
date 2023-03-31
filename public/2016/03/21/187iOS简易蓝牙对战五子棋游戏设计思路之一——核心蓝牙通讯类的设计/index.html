@@ -1,3 +1,20 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
 <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.9.0">
@@ -194,15 +211,15 @@
 
 <div class="article-nav prev-next-wrap clearfix">
     
-        <a href="/2016/03/23/189设计iOS中随系统键盘弹收和内容文字长度自适应高度的文本框/" class="pre-post btn btn-default" title='设计iOS中随系统键盘弹收和内容文字长度自适应高度的文本框'>
+        <a href="/2016/03/21/188iOS简易蓝牙对战五子棋游戏设计思路之二——核心棋盘逻辑与胜负判定算法/" class="pre-post btn btn-default" title='iOS简易蓝牙对战五子棋游戏设计思路之二——核心棋盘逻辑与胜负判定算法'>
             <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
-            <span class="hidden-xs">设计iOS中随系统键盘弹收和内容文字长度自适应高度的文本框</span>
+            <span class="hidden-xs">iOS简易蓝牙对战五子棋游戏设计思路之二——核心棋盘逻辑与胜负判定算法</span>
         </a>
     
     
-        <a href="/2016/03/21/188iOS简易蓝牙对战五子棋游戏设计思路之二——核心棋盘逻辑与胜负判定算法/" class="next-post btn btn-default" title='iOS简易蓝牙对战五子棋游戏设计思路之二——核心棋盘逻辑与胜负判定算法'>
+        <a href="/2016/03/13/186iOS音频播放器锁屏歌词显示与性能优化/" class="next-post btn btn-default" title='iOS音频播放器锁屏歌词显示与性能优化'>
             <span class="hidden-lg">下一篇</span>
-            <span class="hidden-xs">iOS简易蓝牙对战五子棋游戏设计思路之二——核心棋盘逻辑与胜负判定算法</span><i class="fa fa-angle-right fa-fw"></i>
+            <span class="hidden-xs">iOS音频播放器锁屏歌词显示与性能优化</span><i class="fa fa-angle-right fa-fw"></i>
         </a>
     
 </div>

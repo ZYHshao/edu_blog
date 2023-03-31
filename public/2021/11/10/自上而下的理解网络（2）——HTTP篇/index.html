@@ -1,0 +1,622 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>自上而下的理解网络（2）——HTTP篇 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="自上而下的理解网络（2）——HTTP篇">
+            
+	            自上而下的理解网络（2）——HTTP篇
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/计算机网络">
+            计算机网络
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/11/10</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="自上而下的理解网络（2）——HTTP篇"><a href="#自上而下的理解网络（2）——HTTP篇" class="headerlink" title="自上而下的理解网络（2）——HTTP篇"></a>自上而下的理解网络（2）——HTTP篇</h1><h2 id="一-引言"><a href="#一-引言" class="headerlink" title="一.引言"></a>一.引言</h2><p>上一篇博客中，我们介绍了访问网站的第一步：DNS解析的相关内容。地址如下：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5272671" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5272671</a></p>
+<p>本系列博客的宗旨是【自上而下的理解网络】，因此我们还是要一步一步的从前向后说，如果你已经阅读过了DNS那篇博客，那么现在，你访问网站使用的域名已经转换成了IP地址，有了IP地址，就相当与有了对方的地址（我们姑且先这么理解），从OSI网络模型的设计思路上说，上层无需关注下层的实现，目前我们先不关注拿到IP地址后是如何找到对应的主机的，暂且认为目前我们已经可以找到服务器并与之通信了。</p>
+<p>那么当下，最紧要的问题是我们应该怎样与对方交流，我发送的数据如何能让对方理解？对方传输过来的数据我们又如何理解？这就好比，两个人要进行交流，他们必须使用相同的语言，否则就会驴唇不对马嘴，双方谁都无法理解谁。这里所比喻的“语言”就是互联网中的协议，我们访问一个网站，一般使用的都是HTTP协议。</p>
+<h2 id="二-重新认识下HTTP吧"><a href="#二-重新认识下HTTP吧" class="headerlink" title="二.重新认识下HTTP吧"></a>二.重新认识下HTTP吧</h2><p>HTTP（Hyper Text Transfer Protocol）是一种应用层的协议，其设计的结构非常面向应用。对于大多数互联网应用来说，都是由一个服务器提供服务，许多的客户机来请求服务，任何互联网服务本质上都是数据交互，即客户端告诉服务端我要什么数据，服务端将对应的数据返回给客户端，或者客户端将一些数据传送给服务端处理，或者客户端告诉服务端我要修改什么数据，删除什么数据等等。在HTTP协议中，请求的发起方必定是客户端，服务端被动的收到请求后根据逻辑做响应。因此，HTTP协议交互的数据实际上分为两种，一种是Request数据，一种是Response数据，无论是哪种数据，我们都将其称为HTTP报文。</p>
+<p>现在，你可以尝试打开浏览器的调试模式，随便访问一个网页，在网络监控部分可以看到HTTP请求的相关内容，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-c5bad365452d59ea674efcf9ebc3a2d2c2a.png" alt></p>
+<p>大致预览下，可以发现HTTP请求还有有些复杂的，请求头，响应头，请求体，响应体中都包含很多数据。通常，越面向应用层的上层协议实现简单而逻辑复杂，越底层的协议反而逻辑简单而实现复杂。HTTP协议只是看上去数据字段很多，其原理其实很简单。</p>
+<p>HTTP报文有两大部分组成，分别为报文首部和报文主体，报文首部和报文主体之间使用空行来分割。即在报文数据中，第一个空行即是标记首部和主体的分割线，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-1a59b154df40b4a2930a588b59157afb65a.png" alt></p>
+<p>其中，空行是有回车符（0x0d）加换行符（0x0a）组成，即十六进制的0x0d0a。后面我们在自己编写HTTP请求数据的组装或解析时，就可以使用连续的两个0x0d0a来作为首部和主体的分割位。报文首部又分为请求/状态行和请求/响应首部字段。</p>
+<h3 id="1-请求行与状态行"><a href="#1-请求行与状态行" class="headerlink" title="1. 请求行与状态行"></a>1. 请求行与状态行</h3><p>对于请求报文，首部的第一行数据为请求行，其格式如下：</p>
+<p><em>请求方法 URI HTTP版本信息</em></p>
+<p>请求方法，URI和HTTP版本信息之间使用空格进行分割（0x20）。</p>
+<p>对于响应报文，首部的第一行数据为状态行，其格式如下：</p>
+<p><em>HTTP版本信息 状态码及状态文案</em></p>
+<p>请求方法用来与告知服务端客户端的意图，例如是要获取数据还是上传数据，是删除文件还是修改文件等。而状态码则是服务器返回给客户端当前响应的状态，是成功了还是失败了等。</p>
+<h3 id="2-请求方法"><a href="#2-请求方法" class="headerlink" title="2. 请求方法"></a>2. 请求方法</h3><p>请求方法表明了客户端要以什么样的方式来与服务端进行数据交互，常用的请求方法有8种，列举如下：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GET</td>
+<td>获取资源</td>
+</tr>
+<tr>
+<td>POST</td>
+<td>发送数据</td>
+</tr>
+<tr>
+<td>PUT</td>
+<td>传输文件</td>
+</tr>
+<tr>
+<td>HEAD</td>
+<td>获得报文首部</td>
+</tr>
+<tr>
+<td>DELETE</td>
+<td>删除文件</td>
+</tr>
+<tr>
+<td>OPTIONS</td>
+<td>询问支持的方法</td>
+</tr>
+<tr>
+<td>TRACE</td>
+<td>追踪路径</td>
+</tr>
+<tr>
+<td>CONNECT</td>
+<td>要求用隧道协议连接代理</td>
+</tr>
+</tbody>
+</table>
+<p>方法的本质其实只是客户端与服务端约定好的数据交互意图，其本身并不会影响传输数据本身，这就好比，生活中我们各种各样的车辆，公交汽车，出租车，小货车，不同类型的车辆有不同的功能，但是本质上，他们并没有区别，公交汽车也可以拉货，小货车也可以作为出租车来载人。那么你可能回想，我们可不可以客户端与服务端约定好一种自定义的请求方法进行交互呢，当然可以，后面我们会动手实践。</p>
+<h3 id="3-状态码"><a href="#3-状态码" class="headerlink" title="3. 状态码"></a>3. 状态码</h3><p>状态码负责将服务端请求的结果告知客户端，并不一定客户端所有的请求服务端都能正确处理，通常2XX类型的状态码表示处理成功，200表示请求被正常处理。204表示请求成功处理了，但是没有数据需要返回。206表示客户端进行了范围请求，服务端成功处理了。3XX类型的状态码通常表示与重定向有关，资源移动了位置或发生的变化，服务端会返回此类型的状态码。4XX类的通常是客户端的原因造成的异常，例如使用了不支持的请求方法，要请求的资源不存在等，我相信，404是我们最常见的一种异常状态，当你请求的URL或者参数有问题时会返回这个状态码。5XX类型的状态码通常是服务器错误。</p>
+<p>当然，状态码的意义也是服务端和客户端约定而成的，在实际应用中，我们的应用逻辑可能需要更多的状态码来描述，完全可以自定义。</p>
+<h3 id="4-首部字段"><a href="#4-首部字段" class="headerlink" title="4. 首部字段"></a>4. 首部字段</h3><p>首部字段主要用来存放控制字段，例如使用什么方法进行请求，使用的HTTP协议版本，发起请求的客户端信息等。以访问huishao.cc网站为例，抓取到的HTTP请求的首部信息如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-4beee64d62ca1e112d839e48b013b83cf59.png" alt></p>
+<p>可以看到，HTTP报文首部每个字段的配置是以行为单位进行分割的，每行配置一个字段。根据不同的上下文首部字段可以分为4类：通用类，请求头类，响应头类，实体类。通用类是指同时适用于请求首部和响应首部的字段，请求头类只适用与请求首部，响应头类只使用于响应首部，实体类是指包含报文主体信息的字段，如Content-Length设置主体部分长度。</p>
+<p>下表列出了常用的HTTP官方的参考文档中定义了报文首部字段：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Accept</td>
+<td>设置期望的数据类型，例如text/html</td>
+</tr>
+<tr>
+<td>Accept-Charset</td>
+<td>设置期望的数据字符集</td>
+</tr>
+<tr>
+<td>Accept-Encoding</td>
+<td>设置期望的内容编码，例如gzip</td>
+</tr>
+<tr>
+<td>Accept-Language</td>
+<td>设置期望的页面语言</td>
+</tr>
+<tr>
+<td>Accept-Ranges</td>
+<td>响应首部中的字段，表示是否接受范围请求</td>
+</tr>
+<tr>
+<td>Age</td>
+<td>资源创建至今的时间</td>
+</tr>
+<tr>
+<td>Allow</td>
+<td>资源可支持的HTTP方法</td>
+</tr>
+<tr>
+<td>Authorization</td>
+<td>服务端用来认证客户端身份</td>
+</tr>
+<tr>
+<td>Cache-Control</td>
+<td>控制缓存行为</td>
+</tr>
+<tr>
+<td>Connection</td>
+<td>管理连接</td>
+</tr>
+<tr>
+<td>Content-Encoding</td>
+<td>设置报文主体适用的编码方式</td>
+</tr>
+<tr>
+<td>Content-Language</td>
+<td>设置报文主体适用的语言</td>
+</tr>
+<tr>
+<td>Content-Length</td>
+<td>设置报文主体字节长度</td>
+</tr>
+<tr>
+<td>Content-Location</td>
+<td>标记数据的备用URI</td>
+</tr>
+<tr>
+<td>Content-MD5</td>
+<td>报文主体的MD5摘要</td>
+</tr>
+<tr>
+<td>Content-Range</td>
+<td>报文主体的位置范围</td>
+</tr>
+<tr>
+<td>Content-Type</td>
+<td>报文主体的数据类型</td>
+</tr>
+<tr>
+<td>Cookie</td>
+<td>Cookie设置</td>
+</tr>
+<tr>
+<td>Date</td>
+<td>创建报文日期时间</td>
+</tr>
+<tr>
+<td>DNT</td>
+<td>设置是否跟踪用户偏好，属于隐私控制字段</td>
+</tr>
+<tr>
+<td>ETag</td>
+<td>设置报文主体资源的版本号</td>
+</tr>
+<tr>
+<td>Expect</td>
+<td>客户端用来设置其期望服务端使用特性行为处理</td>
+</tr>
+<tr>
+<td>From</td>
+<td>用户的电子邮箱地址</td>
+</tr>
+<tr>
+<td>Expires</td>
+<td>报文主体过期的日期时间</td>
+</tr>
+<tr>
+<td>Host</td>
+<td>请求资源的服务器地址</td>
+</tr>
+<tr>
+<td>If-Match</td>
+<td>进行资源版本比较</td>
+</tr>
+<tr>
+<td>If-Modified-Since</td>
+<td>进行资源更新时间的比较</td>
+</tr>
+<tr>
+<td>If-None-Match</td>
+<td>与If-Match逻辑相反</td>
+</tr>
+<tr>
+<td>If-Range</td>
+<td>资源未更新时发送主体的范围请求</td>
+</tr>
+<tr>
+<td>If-Unmodified-Since</td>
+<td>与If-Modified-Since逻辑相反</td>
+</tr>
+<tr>
+<td>Last-Modified</td>
+<td>资源的最后修改时间</td>
+</tr>
+<tr>
+<td>Location</td>
+<td>令客户端重定向到的URI</td>
+</tr>
+<tr>
+<td>Max-Forwards</td>
+<td>设置最大的输逐跳数</td>
+</tr>
+<tr>
+<td>Proxy-Authenticate</td>
+<td>定义了代理服务器对客户端的认证信息</td>
+</tr>
+<tr>
+<td>Proxy-Authorization</td>
+<td>代理服务器要求客户端的认证信息</td>
+</tr>
+<tr>
+<td>Range</td>
+<td>主体的字节请求范围</td>
+</tr>
+<tr>
+<td>Referer</td>
+<td>对请求中URI的原始获取方</td>
+</tr>
+<tr>
+<td>Retry-After</td>
+<td>对再次发起请求的时机要求</td>
+</tr>
+<tr>
+<td>Server</td>
+<td>HTTP服务器的安装信息</td>
+</tr>
+<tr>
+<td>TE</td>
+<td>传输编码的优先级</td>
+</tr>
+<tr>
+<td>Transfer-Encoding</td>
+<td>报文主体的传输编码方式</td>
+</tr>
+<tr>
+<td>User-Agent</td>
+<td>HTTP客户端程序的信息</td>
+</tr>
+<tr>
+<td>Upgrade</td>
+<td>升级为其他协议</td>
+</tr>
+<tr>
+<td>Vary</td>
+<td>代理服务器缓存的管理信息</td>
+</tr>
+<tr>
+<td>Via</td>
+<td>代理服务器的相关信息</td>
+</tr>
+<tr>
+<td>Warning</td>
+<td>错误通知</td>
+</tr>
+<tr>
+<td>WWW-Authenticate</td>
+<td>服务端对客户端的认证信息</td>
+</tr>
+</tbody>
+</table>
+<p>需要注意，上面列出的字段很多，但不一定所有的HTTP服务器都对他们进行了实现，HTTP本身只是一个协议，真正实现此协议的是服务端程序和客户端程序。同样，HTTP协议也是一种很具扩展性的协议，我们也可以根据应用需要，自定义一些首部字段，只要我们自己的客户端和服务端都按照约定好的理解来处理自定义的字段即可。下面，我们对一些重要的首部字段进行解释。</p>
+<h3 id="5-核心首部字段解析"><a href="#5-核心首部字段解析" class="headerlink" title="5. 核心首部字段解析"></a>5. 核心首部字段解析</h3><h4 id="Cache-Control"><a href="#Cache-Control" class="headerlink" title="Cache-Control"></a>Cache-Control</h4><p>Cache-Control首部字段用来控制缓存逻辑，在官方的协议定义中，此字段可以设置多个指令，指令间使用逗号分隔即可，例如：</p>
+<p><em>Cache-Control: private, max-age=0, no-cache</em></p>
+<p>有些指令还支持传参，例如max-age指令。指令及参数意义如下：</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>参数</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>no-cache</td>
+<td>无</td>
+<td>强制向源服务器验证缓存有效性</td>
+</tr>
+<tr>
+<td>no-store</td>
+<td>无</td>
+<td>不缓存请求或相应的任何内容</td>
+</tr>
+<tr>
+<td>max-age</td>
+<td>秒</td>
+<td>响应的最大Age值</td>
+</tr>
+<tr>
+<td>max-stale</td>
+<td>秒</td>
+<td>最大收的已过期响应时间</td>
+</tr>
+<tr>
+<td>min-fresh</td>
+<td>秒</td>
+<td>指定在最少多少时间内刷新过的响应才有效</td>
+</tr>
+<tr>
+<td>only-if-cached</td>
+<td>无</td>
+<td>从缓存获取资源</td>
+</tr>
+<tr>
+<td>public</td>
+<td>无</td>
+<td>可向任意方提供响应的缓存</td>
+</tr>
+<tr>
+<td>private</td>
+<td>无</td>
+<td>仅向特定用户返回响应</td>
+</tr>
+<tr>
+<td>must-revalidate</td>
+<td>无</td>
+<td>允许缓存，但必须向服务端验证有效性</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Accept"><a href="#Accept" class="headerlink" title="Accept"></a>Accept</h4><p>客户端通过Accept字段可以告知服务端它所需要的数据格式。例如，当客户端向服务端请求一张图片时，服务端可以提供各种类型的图片数据，但是客户端只能够解析png类型的图片，这是就可以设置Accept字段，如下：</p>
+<p>Accept：image/png</p>
+<p>客户端如果可以收多种类型的数据，Accept也支持设置多个类型，使用逗号进行分割即可，优先级会从前往后依次降低。同样，对字符集和编码方式如果有要求，通过Accept-Charset和Accept-Encoding字段设置。</p>
+<h4 id="Authorization"><a href="#Authorization" class="headerlink" title="Authorization"></a>Authorization</h4><p>Authorization是HTTP协议中用来进行用户认证的字段，有时候客户端的资源并非所有用户都可以访问，如果有用户对这部分资源发起的访问请求，服务端会回执状态码为401的响应，表示需要用户认证才能范文，这时客户端就需要将用户认证信息放入Authorization字段中再次发起请求，服务端会根据Authorization的值来判断当前用户是否有权限访问此资源。</p>
+<h4 id="Host"><a href="#Host" class="headerlink" title="Host"></a>Host</h4><p>在介绍这个字段之前，请你先回忆下，我们在进行HTTP数据交互时，要先通过IP来找到对方的位置，其实一台服务器上是可以部署很多个服务的，不同的服务有可能在不同的虚拟主机上，那个我们的这次请求究竟需要那个虚拟主机来处理呢？这就需要有字段来标识用户到底访问的是什么资源，Host字段的用途就在如此。</p>
+<h2 id="三-实践出真知"><a href="#三-实践出真知" class="headerlink" title="三. 实践出真知"></a>三. 实践出真知</h2><p>现在，你是否对HTTP协议有了新的认识和理解，我们可以从实际的应用中验证前面所说的理论知识。</p>
+<p>使用Wireshark工具来抓取网络报文包，我们可以将筛选条件设置为http协议，以便过滤掉无关的网络信息。在浏览器中访问huishao.cc网站，为了避免浏览器缓存产生的影响，可以先将缓存清空。</p>
+<p>之后，我们可以在Wireshark工具中看到这样两条记录：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-ac6fb6beebbe880ef96647cb072b65ff1e7.png" alt></p>
+<p>其中，第一条记录为HTTP的请求记录，第二条记录为HTTP的响应记录。</p>
+<p>我们先看第一个请求记录，将其HTTP协议层的数据复制出来，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">47 45 54 20 2f 20 48 54 54 50 2f 31 2e 31 0d 0a</span><br><span class="line">48 6f 73 74 3a 20 68 75 69 73 68 61 6f 2e 63 63</span><br><span class="line">0d 0a 55 70 67 72 61 64 65 2d 49 6e 73 65 63 75</span><br><span class="line">72 65 2d 52 65 71 75 65 73 74 73 3a 20 31 0d 0a</span><br><span class="line">41 63 63 65 70 74 3a 20 74 65 78 74 2f 68 74 6d</span><br><span class="line">6c 2c 61 70 70 6c 69 63 61 74 69 6f 6e 2f 78 68</span><br><span class="line">74 6d 6c 2b 78 6d 6c 2c 61 70 70 6c 69 63 61 74</span><br><span class="line">69 6f 6e 2f 78 6d 6c 3b 71 3d 30 2e 39 2c 2a 2f</span><br><span class="line">2a 3b 71 3d 30 2e 38 0d 0a 55 73 65 72 2d 41 67</span><br><span class="line">65 6e 74 3a 20 4d 6f 7a 69 6c 6c 61 2f 35 2e 30</span><br><span class="line">20 28 4d 61 63 69 6e 74 6f 73 68 3b 20 49 6e 74</span><br><span class="line">65 6c 20 4d 61 63 20 4f 53 20 58 20 31 30 5f 31</span><br><span class="line">35 5f 37 29 20 41 70 70 6c 65 57 65 62 4b 69 74</span><br><span class="line">2f 36 30 35 2e 31 2e 31 35 20 28 4b 48 54 4d 4c</span><br><span class="line">2c 20 6c 69 6b 65 20 47 65 63 6b 6f 29 20 56 65</span><br><span class="line">72 73 69 6f 6e 2f 31 34 2e 31 2e 31 20 53 61 66</span><br><span class="line">61 72 69 2f 36 30 35 2e 31 2e 31 35 0d 0a 41 63</span><br><span class="line">63 65 70 74 2d 4c 61 6e 67 75 61 67 65 3a 20 7a</span><br><span class="line">68 2d 63 6e 0d 0a 41 63 63 65 70 74 2d 45 6e 63</span><br><span class="line">6f 64 69 6e 67 3a 20 67 7a 69 70 2c 20 64 65 66</span><br><span class="line">6c 61 74 65 0d 0a 43 6f 6e 6e 65 63 74 69 6f 6e</span><br><span class="line">3a 20 6b 65 65 70 2d 61 6c 69 76 65 0d 0a 0d 0a</span><br></pre></td></tr></table></figure>
+<p>按照我们前面的分析，HTTP协议请求报文中的第一行数据为请求行，我们找到第一个换行符0d 0a为止，截出数据如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">47 45 54 20 2f 20 48 54 54 50 2f 31 2e 31</span><br></pre></td></tr></table></figure>
+<p>0x20位空格字符，用其作为分割截出三部分数据为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">47 45 54</span><br><span class="line">2f </span><br><span class="line">48 54 54 50 2f 31 2e 31</span><br></pre></td></tr></table></figure>
+<p>在Ascii码中，0x47为“G”，0x45为“E”，0x54为“T”，0x2f为“/”，0x48为“H”，0x50为“P”，0x31为“1”，0x2e为“.”。翻译完成即为：</p>
+<p>GET / HTTP/1.1</p>
+<p>按照同样的方法，以0d 0a为分隔符可以将请求头中的每一个首部字段解析出来，因为我们本次请求没有请求体数据，因此找到两个连续的0d 0a后即表示首部解析完成。</p>
+<p>响应报文的解析方法与请求报文没什么不同，这里我们不再赘述，有一点需要注意，响应报文的首部字段总有Content-Length字段表明了响应主体数据的长度。</p>
+<h2 id="四-尝试下基于TCP来实现一个HTTP服务端和客户端吧"><a href="#四-尝试下基于TCP来实现一个HTTP服务端和客户端吧" class="headerlink" title="四. 尝试下基于TCP来实现一个HTTP服务端和客户端吧"></a>四. 尝试下基于TCP来实现一个HTTP服务端和客户端吧</h2><p>在上一篇博客中，我们了解了DNS协议的原理后，基于TCP手动实现了一个简单的DNS解析器，DNS和HTTP都属于应用层的协议，TCP则属于传输层的协议。现在我们理解了HTTP的协议原理，能否手动实现一个简易的HTTP服务端和客户端呢？当然是可以的。</p>
+<h3 id="1-简易HTTP服务端"><a href="#1-简易HTTP服务端" class="headerlink" title="1. 简易HTTP服务端"></a>1. 简易HTTP服务端</h3><p>可以参考前面手动实现DNS的博客中TCP协议的用法，编写代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctype.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/stat.h&gt;</span></span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> QUEUE_MAX_COUNT 5</span></span><br><span class="line"> </span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SERVER_STRING <span class="meta-string">"Server: custom HTTP server\r\n"</span></span></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 服务端描述符</span></span><br><span class="line">    <span class="keyword">int</span> server_fd = <span class="number">-1</span>;</span><br><span class="line">    <span class="comment">// 客户端描述符</span></span><br><span class="line">    <span class="keyword">int</span> client_fd = <span class="number">-1</span>;</span><br><span class="line">    <span class="comment">// 定义端口号</span></span><br><span class="line">    u_short port = <span class="number">9001</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 客户端地址</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">client_addr</span>;</span></span><br><span class="line">    <span class="comment">// 服务端地址</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">server_addr</span>;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">socklen_t</span> client_addr_len = <span class="keyword">sizeof</span>(client_addr);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">    <span class="keyword">char</span> recv_buf[<span class="number">1024</span>];</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">int</span> hello_len = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> on = <span class="number">1</span>;</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 创建一个socket</span></span><br><span class="line">    server_fd = socket(AF_INET, SOCK_STREAM, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置地址复用</span></span><br><span class="line">    <span class="keyword">int</span> ret = setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &amp;on, <span class="keyword">sizeof</span>(on));</span><br><span class="line"></span><br><span class="line">    <span class="built_in">memset</span>(&amp;server_addr, <span class="number">0</span>, <span class="keyword">sizeof</span>(server_addr));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置端口，IP，和TCP/IP协议族</span></span><br><span class="line">    server_addr.sin_family = AF_INET;</span><br><span class="line">    server_addr.sin_port = htons(<span class="number">9001</span>);</span><br><span class="line">    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);</span><br><span class="line">        </span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 绑定套接字到端口</span></span><br><span class="line">    bind(server_fd, (struct sockaddr *)&amp;server_addr,<span class="keyword">sizeof</span>(server_addr));</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 启动socket监听请求，开始等待客户端发来的请求</span></span><br><span class="line">    listen(server_fd, QUEUE_MAX_COUNT);</span><br><span class="line"> </span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"http server running on port %d\n"</span>, port);</span><br><span class="line"> </span><br><span class="line">    <span class="comment">// 循环等待客户端请求</span></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="comment">// 调用了accept函数，阻塞了程序，直到收到客户端的请求</span></span><br><span class="line">        client_fd = accept(server_fd, (struct sockaddr *)&amp;client_addr,</span><br><span class="line">                   &amp;client_addr_len);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"client socket fd: %d\n"</span>, client_fd);</span><br><span class="line">        <span class="comment">// 调用recv函数收客户端发来的请求信息</span></span><br><span class="line">        hello_len = recv(client_fd, recv_buf, <span class="number">1024</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"receive %d\n\n"</span>, hello_len);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s\n"</span>, recv_buf);</span><br><span class="line"> </span><br><span class="line">        <span class="comment">// 不管客户端发过来的请求是啥，我们都返回同样的测试数据</span></span><br><span class="line">        <span class="comment">// 添加响应头</span></span><br><span class="line">        <span class="built_in">sprintf</span>(buf, <span class="string">"HTTP/1.0 200 OK\r\n"</span>);</span><br><span class="line">        send(client_fd, buf, <span class="built_in">strlen</span>(buf), <span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 添加服务端信息</span></span><br><span class="line">        <span class="built_in">strcpy</span>(buf, SERVER_STRING);</span><br><span class="line">        send(client_fd, buf, <span class="built_in">strlen</span>(buf), <span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 添加主题类型</span></span><br><span class="line">        <span class="built_in">sprintf</span>(buf, <span class="string">"Content-Type: text/html\r\n"</span>);</span><br><span class="line">        send(client_fd, buf, <span class="built_in">strlen</span>(buf), <span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 添加自定义头部数据</span></span><br><span class="line">        <span class="built_in">sprintf</span>(buf, <span class="string">"Custom: custom\r\n"</span>);</span><br><span class="line">        send(client_fd, buf, <span class="built_in">strlen</span>(buf), <span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 结束首部字段的添加</span></span><br><span class="line">        <span class="built_in">strcpy</span>(buf, <span class="string">"\r\n"</span>);</span><br><span class="line">        send(client_fd, buf, <span class="built_in">strlen</span>(buf), <span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 添加主体数据</span></span><br><span class="line">        <span class="built_in">sprintf</span>(buf, <span class="string">"HelloWorld!\r\n"</span>);</span><br><span class="line">        send(client_fd, buf, <span class="built_in">strlen</span>(buf), <span class="number">0</span>);</span><br><span class="line">        <span class="comment">/* 关闭客户端套接字 */</span></span><br><span class="line">        close(client_fd);</span><br><span class="line">    &#125;</span><br><span class="line">    close(server_fd);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中有比较详细的注释，一个HTTP请求结束后，当前客户端的Socket连接就会被关闭。上面只是简单实现了基于HTTP协议的数据交互，并没有真正实现应用逻辑，无论客户端发什么样的请求过来，服务端都将返回同样的数据。下面，在浏览器中输入<a href="http://localhost:9001/，效果如下图所示：" target="_blank" rel="noopener">http://localhost:9001/，效果如下图所示：</a></p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-214fa59f6707fbd3d71330338a6f987fc78.png" alt></p>
+<h3 id="2-简易的HTTP客户端"><a href="#2-简易的HTTP客户端" class="headerlink" title="2. 简易的HTTP客户端"></a>2. 简易的HTTP客户端</h3><p>与服务端实现代码类似，简易客户端代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;netdb.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;errno.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/time.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">socket_init</span><span class="params">(<span class="keyword">int</span> *sockfd,<span class="keyword">char</span> *host)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span> **argv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">char</span> message[<span class="number">512</span>];</span><br><span class="line">    <span class="keyword">int</span> socket_desc;</span><br><span class="line">    <span class="keyword">char</span> *host = <span class="string">"127.0.0.1"</span>;</span><br><span class="line">    socket_init(&amp;socket_desc,host);</span><br><span class="line">    <span class="comment">// 构建要发送的消息 CUSTOM为自定义的协议</span></span><br><span class="line">    <span class="built_in">sprintf</span>(message,<span class="string">"CUSTOM / HTTP/1.1\r\nHost: Service.com\r\n\r\n"</span>);</span><br><span class="line">    <span class="comment">// 发送数据到服务端</span></span><br><span class="line">    send(socket_desc,message,<span class="built_in">strlen</span>(message),<span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">timeout</span> = &#123;</span><span class="number">3</span>, <span class="number">0</span>&#125;;</span><br><span class="line">    <span class="comment">// 设置Sorket</span></span><br><span class="line">    setsockopt(socket_desc, SOL_SOCKET, SO_RCVTIMEO, (<span class="keyword">char</span> *)&amp;timeout, <span class="keyword">sizeof</span>(struct timeval));</span><br><span class="line">    <span class="keyword">char</span> chunk[<span class="number">512</span>];</span><br><span class="line">    fd_set fdset;</span><br><span class="line">    <span class="comment">// 重设字符集</span></span><br><span class="line">    FD_ZERO(&amp;fdset);</span><br><span class="line">    FD_SET(socket_desc,&amp;fdset);</span><br><span class="line">    <span class="comment">// 收服务端数据</span></span><br><span class="line">    select(socket_desc+<span class="number">1</span>,&amp;fdset,<span class="literal">NULL</span>,<span class="literal">NULL</span>,<span class="literal">NULL</span>);</span><br><span class="line">    <span class="keyword">if</span>(FD_ISSET(socket_desc,&amp;fdset)) &#123;</span><br><span class="line">        <span class="built_in">memset</span>(chunk , <span class="number">0</span> , <span class="number">512</span>);</span><br><span class="line">        recv(socket_desc, chunk, <span class="number">512</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"%s"</span> , chunk);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">socket_init</span><span class="params">(<span class="keyword">int</span> *sockfd,<span class="keyword">char</span> *ip)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">server</span>;</span></span><br><span class="line">    *sockfd  = socket(AF_INET,SOCK_STREAM,<span class="number">0</span>);</span><br><span class="line">    server.sin_addr.s_addr = inet_addr(ip);</span><br><span class="line">    server.sin_family = AF_INET;</span><br><span class="line">    server.sin_port = htons(<span class="number">9001</span>);</span><br><span class="line">    connect((*sockfd),(struct sockaddr *)&amp;server,<span class="keyword">sizeof</span>(server));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，上面代码中我们用了自定义的请求方法CUSTOM，启动服务端后在运行客户端，服务端应用会打印出如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CUSTOM / HTTP/1.1</span><br><span class="line">Host: Service.com</span><br></pre></td></tr></table></figure>
+<p>同样，客户端的程序会打印出如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.0 200 OK</span><br><span class="line">Server: custom HTTP server</span><br><span class="line">Content-Type: text/html</span><br><span class="line">Custom: custom</span><br><span class="line"></span><br><span class="line">HelloWorld!</span><br></pre></td></tr></table></figure>
+<h2 id="五-结尾"><a href="#五-结尾" class="headerlink" title="五. 结尾"></a>五. 结尾</h2><p>上面我们提供了服务端和客户端的简易实现代码，我相信你对HTTP协议的原理有了自己新的理解，你可以尝试下，完善下上面的代码，真正实现下HTTP协议中的GET，POST等方法。现在，回到我们本系列博客的核心：自上而下的理解网络。我们现在已经明白了域名是如何转换成IP地址，获得了IP地址后，客户端和服务端又是如何互相无障碍的通讯的。后面，我们将再进一步，进入传输层的领域，不积跬步，无以至千里，与君共勉。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2021/10/25/432一起玩转树莓派（18）——MPU6050螺旋仪加速度传感器模块应用/" class="next-post btn btn-default" title='一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#自上而下的理解网络（2）——HTTP篇"><span class="toc-text">自上而下的理解网络（2）——HTTP篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-引言"><span class="toc-text">一.引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-重新认识下HTTP吧"><span class="toc-text">二.重新认识下HTTP吧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-请求行与状态行"><span class="toc-text">1. 请求行与状态行</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-请求方法"><span class="toc-text">2. 请求方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-状态码"><span class="toc-text">3. 状态码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-首部字段"><span class="toc-text">4. 首部字段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-核心首部字段解析"><span class="toc-text">5. 核心首部字段解析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Cache-Control"><span class="toc-text">Cache-Control</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Accept"><span class="toc-text">Accept</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Authorization"><span class="toc-text">Authorization</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Host"><span class="toc-text">Host</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-实践出真知"><span class="toc-text">三. 实践出真知</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-尝试下基于TCP来实现一个HTTP服务端和客户端吧"><span class="toc-text">四. 尝试下基于TCP来实现一个HTTP服务端和客户端吧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-简易HTTP服务端"><span class="toc-text">1. 简易HTTP服务端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-简易的HTTP客户端"><span class="toc-text">2. 简易的HTTP客户端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-结尾"><span class="toc-text">五. 结尾</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

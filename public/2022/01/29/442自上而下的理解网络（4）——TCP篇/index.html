@@ -1,0 +1,393 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>自上而下的理解网络（4）——TCP篇 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="自上而下的理解网络（4）——TCP篇">
+            
+	            自上而下的理解网络（4）——TCP篇
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/网络技术">
+            网络技术
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2022/01/29</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="自上而下的理解网络（4）——TCP篇"><a href="#自上而下的理解网络（4）——TCP篇" class="headerlink" title="自上而下的理解网络（4）——TCP篇"></a>自上而下的理解网络（4）——TCP篇</h1><p>本系列文章的主题是自上而下的理解网络，这里的之上而下，只要指的是基于HTTP的网络服务。我们只要从上之下的将这一过程理解透彻，对于其他的应用来说，只是协议不同，原理是相似的。通过本系列前面几篇博客的介绍，我们了解了在浏览器中输入一个域名或App通过一个域名访问后端服务接口时，域名会转换成IP地址，其实只有IP地址还不够，理论上还需要一个端口号用来确认服务主机上对应的应用程序。只是在实际的应用中，HTTP协议默认的端口号为80，HTTPS协议默认的端口号为443。</p>
+<p>HTTP提供了应用层的数据定义结构（HTTPS又加入了安全性的保障），应用层的协议规范了不同设备，网络环境下的服务端与客户端的应用交互格式。现在，我们需要关心下这些应用数据是如何在两端间进行传输了。不知你是否还记得，我们之前有提到过网络的分层，下图描述了在TCP/IP协议簇中各个协议所属的网络层级：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-fe70f3b5ef6a37904e4ff8953d883cfb7fb.png" alt></p>
+<p>可以看到，当应用层将应用数据组装好后，并不关心数据的传输，传输层来负责将数据传输到目标主机。HTTP是基于TCP的一种应用层协议，关于UDP，其与TCP还是有很大的差别，我们本篇博客暂不予讨论。</p>
+<h2 id="一-先空谈些理论"><a href="#一-先空谈些理论" class="headerlink" title="一.先空谈些理论"></a>一.先空谈些理论</h2><p>关于TCP，大部分开发者或计算机专业的同学都不陌生，但是可能也仅仅处于只是不陌生的阶段，对其工作原理，协议内容都不甚明了。在分层网络模型中，每一层的协议都会再上一层数据的基础上增部分头信息，学习协议，其实就是学习这些头信息的意义和用法。</p>
+<p>我最早了解到TCP是在学校的网络相关课程中，后来在工作中，重学计算机相关知识中每次也会遇到TCP相关的理论内容。几乎所有老师在介绍TCP时，都会先抛出如下定义：</p>
+<blockquote>
+<p>TCP是一种面向连接的，可靠的基于字节流的传输层通信协议。</p>
+</blockquote>
+<p>这个定义中有一些关键字：<strong>面向连接</strong>，<strong>可靠的</strong>，<strong>基于字节流</strong>。面向连接和基于字节流是指什么？可靠性又是如何保障的？这正是本文要讨论的核心。</p>
+<p>首先，我们先从理论上，对TCP做一些简单的介绍。</p>
+<h3 id="1-关于面向连接"><a href="#1-关于面向连接" class="headerlink" title="1.关于面向连接"></a>1.关于面向连接</h3><p>面向连接主要是指两个TCP的应用在彼此交换数据之前，都需要先建立一个TCP的连接，形象一些描述这就好比在客户端和服务端通信前先建立一条网络上的通道，之后的通信都基于这个通道进行。通道可以建立，那么同样也可以关闭，当两台通信的设备不再需要交互数据时，就可以关闭此TCP通道。后面我们将介绍连接是如何建立的又如何断开。</p>
+<h3 id="2-关于可靠性"><a href="#2-关于可靠性" class="headerlink" title="2.关于可靠性"></a>2.关于可靠性</h3><p>说到可靠性，是指上层业务无需关心数据发送过程中是否丢失了，对方是否确定完整的收到了等等。例如我们在发送HTTP请求和接收回执数据时，根本没有关心数据到达和完整性问题，只需要等待回执即可。这是因为传输的可靠性在TCP一层保证了。</p>
+<p>TCP在发送应用数据时会将要发送的数据分成合适发送的数据块，分块进行发送。</p>
+<p>当TCP发送了一段数据后，会等待目的端的确认收到报文，如果在一定时间内没有收到此报文，则会进入超时或重试逻辑，TCP通过确认报文来保证数据的到达可靠性。</p>
+<p>TCP将维护一个端到端的数据校验和，用来检测在传输过程中是否产生了差错，如果发现了差错，TCP接收端将丢弃这个报文，并不发送确认报文，等待对方的超时或重发逻辑。</p>
+<p>TCP是通过网络层的IP协议做数据传输的，IP数据报是有可能发生乱序的，因此TCP要对接收到的数据进行重排，将收到的数据以正确的顺序返回给应用层。</p>
+<p>同样IP数据报也有可能会产生重复，TCP也会负责对重复的数据报进行去重。</p>
+<p>最后，TCP也提供流量控制，增加传输可靠性。</p>
+<h3 id="3-关于基于字节流"><a href="#3-关于基于字节流" class="headerlink" title="3.关于基于字节流"></a>3.关于基于字节流</h3><p>TCP在传输数据时，对应用层的数据不做任何解释，TCP也不再赢输数据字节流中插入任何标识符。这也就是说，TCP具体传输的是什么格式的应用数据在TCP层并不做解析，发送方发送的字节流数据也同样会在接收方完全相同的接收到，所有解释和理解都在应用层。</p>
+<h2 id="二-宏观的看TCP通信过程"><a href="#二-宏观的看TCP通信过程" class="headerlink" title="二.宏观的看TCP通信过程"></a>二.宏观的看TCP通信过程</h2><p>前面有提到，TCP在传输应用数据前首先需要建立连接，TCP建立连接的方式是通过3次通信完成，形象的被称为TCP的3次握手。</p>
+<p>在TCP协议中，有一个Flags字段，这个字段将由始至终的贯穿我们理解TCP协议全部过程。此字段将表示当前TCP报文的类型，有如下6种：</p>
+<p>SYN:建立连接。</p>
+<p>FIN:断开连接。</p>
+<p>ACK:回执响应。</p>
+<p>PSH:数据传输。</p>
+<p>RST:连接重置。</p>
+<p>URG:紧急指针。</p>
+<p>这并不是说每个TCP的报文只能对应唯一的一个类型，Flags字段占6位的数据，每一位对应一个状态，报文状态是可以聚合的，比如一个TCP报文即标记是ACK由标记为PSH。通过聚合可以减少TCP报文数，提高传输效率。完整的TCP报文格式如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d9aa46dfe044353011586c0f22942046c64.png" alt></p>
+<p>完整的报文意义我们暂且按下不表，只看其中的Flags部分，可以看到它占了6位，第1位为URG位，最后一位为FIN位。</p>
+<h3 id="1-连接建立过程"><a href="#1-连接建立过程" class="headerlink" title="1.连接建立过程"></a>1.连接建立过程</h3><p>TCP通信是在网络两端间进行的，要建立连接，一端首先需要发起建连，在HTTP数据请求中，是由客户端首先发起建连。</p>
+<p>第一步：由客户端发起SYN类型的TCP报，其中会指定目标服务器的端口号等数据。</p>
+<p>第二步：服务端收到客户端的建连报文后，回复一个包含ACK和SYN的报文，表示收到客户端的建连请求，并且发起服务端的建连要求。</p>
+<p>第三步：客户端收到服务端的响应报文后，再回一个ACK类型的报文表示收到，连接建立完成。</p>
+<h3 id="2-应用数据的发送过程"><a href="#2-应用数据的发送过程" class="headerlink" title="2.应用数据的发送过程"></a>2.应用数据的发送过程</h3><p>连接建立完成之后，TCP的通信过程就变得相对简单。一方发送数据时，会发出类型的PSH的报文，另一方接收到后需要回复对应的ACK报文，如此循环往复，直到数据交互完成。</p>
+<h3 id="3-连接断开过程"><a href="#3-连接断开过程" class="headerlink" title="3.连接断开过程"></a>3.连接断开过程</h3><p>与连接的建立类似，断开连接也需要ACK进行确认。以HTTP请求为例：</p>
+<p>第一步：当服务端发送完数据后，会首先发起FIN类型的报文来断开连接。</p>
+<p>第二步：客户端收到服务端的FIN报文后，回复ACK。</p>
+<p>第三步：客户端发送FIN报文来断开客户端连接。</p>
+<p>第四步：服务端收到客户端的FIN报文后，回复ACK。</p>
+<p>因此，TCP断开连接的过程也被形象的称为4次挥手。</p>
+<h2 id="三-深入理解下TCP的工作流程"><a href="#三-深入理解下TCP的工作流程" class="headerlink" title="三.深入理解下TCP的工作流程"></a>三.深入理解下TCP的工作流程</h2><p>现在，虽然宏观上我们对TCP的通信过程有了大致的概念，但还是太肤浅了，许多核心点我们都还没有涉及。比如时序，可靠性，TCP首部字段意义等。本节也详细讨论下这部分内容。</p>
+<h3 id="1-TCP报文首部详解"><a href="#1-TCP报文首部详解" class="headerlink" title="1.TCP报文首部详解"></a>1.TCP报文首部详解</h3><p>回到上面的那张TCP报文图示。下面我们来详细介绍下。</p>
+<p>Source Port：源端口，占16位（两个字节），这个字段很好理解，即发出此报文的端口。</p>
+<p>Destination Port：目的端口，占16位（两个字节），即要接收此报文的端口。</p>
+<p>Squence Number：序列号，占32位，TCP是基于字节流传输的，这个序列号用来标识当前报文中第1个数据字节的编号，使用此序列号对发送的字节进行计数，贯穿整个通信过程。后面会详细介绍。</p>
+<p>Acknowledgment Number：Ack序列号，占32位，表示发送ACK的一方期望接收的下个数据字节的编号。</p>
+<p>Data Offset：数据偏移量，占4位，也可以理解为TCP头部的长度，用来标记数据配置。其表示TCP头部占了多少个4字节。由于4位的最大数为15，所以TCP报头的最大长度为4*15=60个字节。</p>
+<p>Reserved：预留字段，长度为6位。</p>
+<p>Flags：类型字段，占6位。从低到高依次表示FIN，SYN，RST，PSH，ACK，URG。</p>
+<p>Window：占16位，表示滑动窗口的大小，用来告诉发送端接收端的缓存大小。达到流量控制，最大值为65535。</p>
+<p>Checksum：校验和，占16位，用来校验TCP头信息传输过程中是否出错。</p>
+<p>Urgent Pointer：紧急指针，类型为URG报文有效，表示第一个紧急数据字节所在位置。</p>
+<p>Options-Padding：额外选项，长度可变，当不足32位的倍数时，使用0补齐。</p>
+<p>Data：长度可变，传输的上层数据，可以为空。</p>
+<h3 id="2-时序是如何保障的"><a href="#2-时序是如何保障的" class="headerlink" title="2.时序是如何保障的"></a>2.时序是如何保障的</h3><p>保障时序是TCP可靠性的重要目标。时序的保障主要是通过TCP报文头中的SN（序列号）和AN（Ack序列号）保障的。</p>
+<p>我们先来看SN，SN是一个相对的概念，在一个TCP连接要建立时，客户端发起的第一个SYN报文会被分配一个SN序号，这个序号为初始化序号，之后在本次TCP通信中，我们都将以这个初始化序号为标准来计算相对SN。需要注意，SYN报文也会占据一个SN序号，下次发送数据时，SN序号会被加1。</p>
+<p>我们再来看AN，AN表示我预期要接收的下一个数据的SN号，当接收到收到了发送端的数据后，会回执Ack类型的报文，并将AN设置为发送端配置的SN号加1。</p>
+<p>通过SN和AN，简化的通信过程如下图所以：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-df2c026c1ead97e38ef09d9b1f1a7a73ab3.png" alt></p>
+<p>此图看上去是有一些绕，多分析几遍，你会对TCP的原理有相对透彻的理解。</p>
+<h3 id="3-有关可靠性的一些其他技术手段"><a href="#3-有关可靠性的一些其他技术手段" class="headerlink" title="3.有关可靠性的一些其他技术手段"></a>3.有关可靠性的一些其他技术手段</h3><p><strong>超时与重试</strong></p>
+<p>在一切顺利的情况下，TCP建连只需要3步即可完成。但是事实上，现实中的网络环境要复杂的多，建连并不总是顺利的。</p>
+<p>一种情况是客户端要连接的端口在服务端并没有监听，此时服务端主机TCP服务会直接回执一个RST类型的报文，表示连接出错，此时发起方应直接关掉连接。</p>
+<p>另一种情况是服务端主机处于异常状态，可能网络出现的问题，此时发起方无法等到服务端的任何回执，此时会进入TCP的建连超时逻辑，TCP的第一次建连重试会在超时约6秒时触发，第二次重试会在间隔大约24秒后触发，第三次重试会在间隔大约76秒后触发。具体遵循的超时重试算法我们这里不再展开。</p>
+<p><strong>RST类型的复位报文</strong></p>
+<p>有许多场景可能触发RST复位报文，一种是我们访问了无效端口时，服务端会返回RST报文。</p>
+<p>另一种场景是如果连接已经被关闭，再次通过此连接发送数据，会收到RST的复位连接。这种场景很常见，例如一端由于某些原因已经重新启动，此时另一端并不知道对端发生了异常，再用旧的连接发送数据时就会收到RST报文。</p>
+<h2 id="四-从实践中验证理论"><a href="#四-从实践中验证理论" class="headerlink" title="四.从实践中验证理论"></a>四.从实践中验证理论</h2><p>说了这么多理论，理论部分我们已经介绍了很多，足够理解TCP的通信过程。下面我们可以通过实践来验证下。</p>
+<p>首先可以本地编写两个简单的Socket服务端与客户端程序。关于示例程序，我们在前面的HTTP一文中已经有介绍，直接使用之前的那些示例程序即可。使用Wireshark抓取本地的TCP报文，客户端与服务端完整的TCP通信报文如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-4f9d57851ac7a9f2f38950eadb12b5ec516.png" alt></p>
+<p>我们程序所编写的业务逻辑如下：</p>
+<p>1.客户端端口号为52079。</p>
+<p>2.服务端端口号为9001。</p>
+<p>3.由客户端先发起TCP建连。</p>
+<p>4.由客户端发送”TCP Customer“数据到服务端。</p>
+<p>5.服务端接收到客户端发送的数据后，发送”Hello World“数据给客户端，之后发起关闭连接。</p>
+<p>6.客户端收到服务端返回的数据后，关闭连接。</p>
+<p>在这一通信过程中，产生了12个TCP报文，我们可以逐个分析下。</p>
+<p>第1个报文数据如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-b2eef6265559dbfc55ed3add936caf4ae47.png" alt></p>
+<p>可以看到，此报文是SYN类型的建连报文，由客户端发起，SN为3069091127，AN为0。除了一些选项之外，没有包含任何业务数据。</p>
+<p>第2个报文数据如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-3b39a71b343f35213dfd9abd50a2435ef92.png" alt></p>
+<p>此报文是由服务端发起的Ack报文，同时也是服务端的SYN建连报文。此报文的AN为3069091128，SN为3416281738。</p>
+<p>第3个报文数据如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d54f90e5881f24f1c35c69a86d40a8aa103.png" alt></p>
+<p>此报文由客户端发出，类型为ACK，SN为3069091128，AN为3416281739。可以看到SN已经增加了，与第2个报文的AN是对应的。</p>
+<p>第4个报文数据如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-eb675d8681a57ecac0b96aecb50fee112d1.png" alt></p>
+<p>此报文类型为ACK，它是一个特殊的报文，可以看到其有服务端发送给客户端，Window字段值为6379，这个报文的用途是指定缓存大小。此报文的AN为3069091128，SN为3416281739。SN与第3个报文的AN相对应。</p>
+<p>第5个报文数据如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-04ff699e34d7909a0de45bf2424f065aaee.png" alt></p>
+<p>此报文由客户端发出，类型为PSH，即它是一个数据传输报文，也可以看到，其内容带了12个字节的业务数据，这12个字节的数据即是”TCP Customer“。SN为3069091128，AN为3416281739。</p>
+<p>第6个报文为：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7f9999770d73f7b688b505a1d8348beb253.png" alt></p>
+<p>此报文为服务端发出的ACK报文，用来确认客户端发出的12个字节的数据，其AN为3069091140，SN为3416281739。</p>
+<p>第7个报文如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8f3979307304bd96966bf15d78a8faecc2b.png" alt></p>
+<p>可以看到，这第7个报文即是服务端主动给客户端发的数据报文，其数据部分长度为13个字节，即”HelloWorld!\r\n”。其AN为3069091140，SN为3416281739。</p>
+<p>第8个报文如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-2db7c5c69ad623e02fa172d86c9f87c1fa1.png" alt></p>
+<p>此报文为客户端回执的ACK报文，SN为3069091140，AN为3416281752。</p>
+<p>第9到第12个报文为TCP断开连接的4个报文，SN与AN的逻辑与建连类似，这里不再分析。</p>
+<h2 id="五-结尾"><a href="#五-结尾" class="headerlink" title="五.结尾"></a>五.结尾</h2><p>你可能发现了，除了初始建连报文，每个TCP报文都有ACK类型，这是因为ACK位都被置为1并无额外的数据和性能消耗。其实本文只是从理解层面介绍了TCP协议，若要将TCP讲完整，需要一本书的厚度也不为过。相信如果你之前对日常天天使用的网络技术并不理解，并且从本系列博客的首篇阅读到此，那么从应用上来讲，你一定有了更深一层的理解。后面我们将继续向下，讨论网络层的协议。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2022/02/27/443自上而下的理解网络（5）——IP篇/" class="pre-post btn btn-default" title='自上而下的理解网络（5）——IP篇'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（5）——IP篇</span>
+        </a>
+    
+    
+        <a href="/2021/12/25/441一起玩转树莓派（23）——DHT11温湿度传感器实践/" class="next-post btn btn-default" title='一起玩转树莓派（23）——DHT11温湿度传感器实践'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（23）——DHT11温湿度传感器实践</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#自上而下的理解网络（4）——TCP篇"><span class="toc-text">自上而下的理解网络（4）——TCP篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-先空谈些理论"><span class="toc-text">一.先空谈些理论</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-关于面向连接"><span class="toc-text">1.关于面向连接</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-关于可靠性"><span class="toc-text">2.关于可靠性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-关于基于字节流"><span class="toc-text">3.关于基于字节流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-宏观的看TCP通信过程"><span class="toc-text">二.宏观的看TCP通信过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-连接建立过程"><span class="toc-text">1.连接建立过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-应用数据的发送过程"><span class="toc-text">2.应用数据的发送过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-连接断开过程"><span class="toc-text">3.连接断开过程</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-深入理解下TCP的工作流程"><span class="toc-text">三.深入理解下TCP的工作流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-TCP报文首部详解"><span class="toc-text">1.TCP报文首部详解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-时序是如何保障的"><span class="toc-text">2.时序是如何保障的</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-有关可靠性的一些其他技术手段"><span class="toc-text">3.有关可靠性的一些其他技术手段</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-从实践中验证理论"><span class="toc-text">四.从实践中验证理论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-结尾"><span class="toc-text">五.结尾</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

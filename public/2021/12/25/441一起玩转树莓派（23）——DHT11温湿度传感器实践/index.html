@@ -1,0 +1,319 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（23）——DHT11温湿度传感器实践 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（23）——DHT11温湿度传感器实践">
+            
+	            一起玩转树莓派（23）——DHT11温湿度传感器实践
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/12/25</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（23）——DHT11温湿度传感器实践"><a href="#一起玩转树莓派（23）——DHT11温湿度传感器实践" class="headerlink" title="一起玩转树莓派（23）——DHT11温湿度传感器实践"></a>一起玩转树莓派（23）——DHT11温湿度传感器实践</h1><h2 id="一-引言"><a href="#一-引言" class="headerlink" title="一. 引言"></a>一. 引言</h2><p>DHT11是一款强大的复合传感器，支持环境温度和湿度的测量。其本身比较简单，但是由于其采用串行时序的方式进行数据读写，非常适合我们练习时序编程。本次实验我们使用的传感器模块如下图所示。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-eeff2bb263b2192398490fe8a120dcc5c75.png" alt></p>
+<p>可以看到，此传感器模块有3个引脚，除了电源和接地引脚外，只有一个out引脚用来输出数据和传输控制指令。下面我们来介绍下如何使用此传感器模块。</p>
+<h2 id="二-关于DHT11传感器模块"><a href="#二-关于DHT11传感器模块" class="headerlink" title="二. 关于DHT11传感器模块"></a>二. 关于DHT11传感器模块</h2><p>由于DHT11传感器元件只有一个通信引脚，因此其输入和输出都需要使用同一个引脚。即此引脚是一个串行的单线双向引脚。所谓单线双向是指其只有一条信号传输线，但是可以双向通信。这有些像我们使用的对讲机，一方说话时另一方只能听。DHT11的完整使用手册地址如下：</p>
+<p><a href="https://www.dfrobot.com.cn/image/data/DFR0067/DFR0067_DS_10.pdf" target="_blank" rel="noopener">https://www.dfrobot.com.cn/image/data/DFR0067/DFR0067_DS_10.pdf</a></p>
+<p>首先我们先来看DHT11所传输的信息数据的格式。根据文档介绍，DHT11一次完整的通信将传递40位数据，这40位数据包含了温度，湿度和用于校验正确性的数据。因此，我们在读取DHT11的数据时，要完整的读出40位数据后再进行计算。这40位数据的具体格式为：</p>
+<p>[8bit的湿度整数部分数据]+[8bit的湿度小数部分数据]+[8bit的温度整数部分数据]+[8bit的温度小数部分数据]+8bit校验数据</p>
+<p>其中[8bit的湿度整数部分数据]与[8bit的湿度小数部分数据]与[8bit的温度整数部分数据]与[8bit的温度小数部分数据]的和结果应为8bit的校验数据，如果结果不等则表明此次获取的数据出现异常，应该抛弃掉重新获取。</p>
+<p>从传感器拿到的数据格式本身比较简单，比较复杂的点在于其通信过程。整体来说，树莓派与DHT11传感器的通信过程分为3个阶段：</p>
+<p>1. 树莓派发出开始信号，之后开始等待传感器模块的应答。</p>
+<p>2.传感器模块收到树莓派发出的开始信号后，返回应答信号。</p>
+<p>3.树莓派接收到应答信号后，开始进行40位数据的接收。</p>
+<p>整体的通信过程手册中有提供一张示意图，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-71f6a80617da9df90249cbc643753bd14ac.png" alt></p>
+<p>通电后，传感器模块的总线将始终处于空闲状态或通信状态中的一种状态下。定义当空闲状态时，总线输入高电平。对于上面通信过程中的第1个阶段，树莓派先将总线电平拉低，且必须大于18毫秒以让传感器模块检测到此拉低的信号。之后树莓派再将总线拉高，表示树莓派已经发出了一次开始通信信号，1阶段结束。</p>
+<p>传感器模块检测到树莓派发起的开始信号后，此时总线电平为被树莓派拉高状态。传感器模块通过总线发送80微秒的低电平信号，表示响应了树莓派的开始信号，之后传感器模块会将总线电平再拉高80微妙，提示树莓派准备开始接收数据，2阶段结束。</p>
+<p>阶段1和阶段2的更详细示意图如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-96d16bba6aa9e8ca618dae270aad3cffe1a.png" alt></p>
+<p>3阶段为传感器模块发送数据，树莓派接收数据的阶段。每一位数据的发送有0和1两种状态，传感器每发送50微妙的低电平信号即表示要进行1bit数据的传输，之后如果传感器发送了26微秒到28微秒的高电平，则表示发送数据位0，如果发送了70微秒的高电平则表示发送数据位1。之后再进行下一位数据的发送。在实际编程操作时，我们可能不太好精准的测量高电平的时间，但是由于数据位0和数据位1的高电平时间相差很多，我们可以通过测试循环变量的计数来大致得到一个传输数据0时的大致循环次数和传输数据1时的大致循环次数，通过循环次数来判断数据具体是0还是1。</p>
+<p>数据位0的信号示意图如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-045356a1100e54bb7b9685e93ac93b12cb5.png" alt></p>
+<p>数据位1的信号示意图如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-f0e52f4e14ddf85f2fa559f95edf808fdbd.png" alt></p>
+<p>需要注意，每次测量的时间间隔最好大于1秒，且上电后等待1秒稳定再进行测量。</p>
+<p>如果没有接触过元件单总线时序编程，上面的文字描述，总的来说还是有些抽象，下面我们会通过代码来实践。</p>
+<h2 id="三-连线编码"><a href="#三-连线编码" class="headerlink" title="三. 连线编码"></a>三. 连线编码</h2><p>DHT11传感器模块只有3个引脚，中间的out引脚我们可以选择任意一个树莓派额GPIO引脚来连接，这里我们选择物理编码为11的GPIO引脚。按照上面我们介绍的DHT11模块的使用方法，编写代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用物理编码为11的引脚做总线</span></span><br><span class="line">P = <span class="number">11</span></span><br><span class="line"></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line"></span><br><span class="line">print(<span class="string">"开始进行DHT11测量数据获取\n"</span>)</span><br><span class="line"><span class="comment"># 等待1s后再进行逻辑</span></span><br><span class="line">time.sleep(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readData</span><span class="params">()</span>:</span></span><br><span class="line">	print(<span class="string">"readData"</span>)</span><br><span class="line">	<span class="comment"># 先将总线引脚设置为输出模式</span></span><br><span class="line">	GPIO.setup(P, GPIO.OUT)</span><br><span class="line">	<span class="comment"># 将总线电平拉低，发出开始信号</span></span><br><span class="line">	GPIO.output(P, GPIO.LOW)</span><br><span class="line">	<span class="comment"># 手册要求至少保持18ms的低电平，我们这里保持20ms</span></span><br><span class="line">	time.sleep(<span class="number">0.02</span>)</span><br><span class="line">	<span class="comment"># 拉高电平</span></span><br><span class="line">	GPIO.output(P, GPIO.HIGH)</span><br><span class="line">	<span class="comment"># 之后将引脚设为输入模式，等待传感器响应</span></span><br><span class="line">	GPIO.setup(P, GPIO.IN)</span><br><span class="line"></span><br><span class="line">	<span class="comment"># 先等待80us的低电平信号</span></span><br><span class="line">	<span class="keyword">while</span> GPIO.input(P) == GPIO.LOW:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">	<span class="comment"># 再等待80us的高电平信号 </span></span><br><span class="line">	<span class="keyword">while</span> GPIO.input(P) == GPIO.HIGH:</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 开始接收数据</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 循环计数</span></span><br><span class="line">	i = <span class="number">0</span></span><br><span class="line"> 	<span class="comment"># 存放二进制位数据</span></span><br><span class="line">	data = []</span><br><span class="line">	<span class="comment"># 存放中间数据</span></span><br><span class="line">	kdata = []</span><br><span class="line">	<span class="comment"># 每次读取40位数据</span></span><br><span class="line">	<span class="keyword">while</span> i &lt; <span class="number">40</span>:</span><br><span class="line">		j = <span class="number">0</span></span><br><span class="line">		<span class="comment"># 50us的低电平表示准备传输一位数据</span></span><br><span class="line">		<span class="keyword">while</span> GPIO.input(P) == GPIO.LOW:</span><br><span class="line">			<span class="keyword">continue</span></span><br><span class="line">		<span class="comment"># 开始检测高电平的时间</span></span><br><span class="line">		<span class="keyword">while</span> GPIO.input(P) == GPIO.HIGH:</span><br><span class="line">			j+=<span class="number">1</span></span><br><span class="line">			<span class="keyword">if</span> j &gt; <span class="number">100</span>:</span><br><span class="line">                    <span class="keyword">return</span> [<span class="keyword">False</span>, <span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">		kdata.append(j)</span><br><span class="line">		i+=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	print(<span class="string">"--------临时数据----------\n"</span>)</span><br><span class="line">	print(kdata)</span><br><span class="line">	print(<span class="string">"--------临时数据----------\n"</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># 开始整理数据</span></span><br><span class="line">	i = <span class="number">0</span></span><br><span class="line">	<span class="keyword">while</span> i &lt; <span class="number">40</span>:</span><br><span class="line">		tmp = kdata[i]</span><br><span class="line">		<span class="keyword">if</span> tmp &gt; <span class="number">7</span>:</span><br><span class="line">			data.append(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">else</span>:</span><br><span class="line">			data.append(<span class="number">0</span>)</span><br><span class="line">		i+=<span class="number">1</span></span><br><span class="line">	print(<span class="string">"--------临时数据2----------\n"</span>)</span><br><span class="line">	print(data)</span><br><span class="line">	print(<span class="string">"--------临时数据2----------\n"</span>)</span><br><span class="line">	<span class="comment"># 解析湿度整数部分</span></span><br><span class="line">	t1 = data[<span class="number">0</span>:<span class="number">8</span>]</span><br><span class="line">	c1 = <span class="number">0</span></span><br><span class="line">	i = <span class="number">7</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> t1:</span><br><span class="line">		c1 += n * math.pow(<span class="number">2</span>, i)</span><br><span class="line">		i-=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 解析湿度整数部分</span></span><br><span class="line">	t2 = data[<span class="number">8</span>:<span class="number">16</span>]</span><br><span class="line">	c2 = <span class="number">0</span></span><br><span class="line">	i = <span class="number">7</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> t2:</span><br><span class="line">		c2 += n * math.pow(<span class="number">2</span>, i)</span><br><span class="line">		i-=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 解析温度整数部分</span></span><br><span class="line">	t3 = data[<span class="number">16</span>:<span class="number">24</span>]</span><br><span class="line">	c3 = <span class="number">0</span></span><br><span class="line">	i = <span class="number">7</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> t3:</span><br><span class="line">		c3 += n * math.pow(<span class="number">2</span>, i)</span><br><span class="line">		i-=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 解析温度整数部分</span></span><br><span class="line">	t4 = data[<span class="number">24</span>:<span class="number">32</span>]</span><br><span class="line">	c4 = <span class="number">0</span></span><br><span class="line">	i = <span class="number">7</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> t4:</span><br><span class="line">		c4 += n * math.pow(<span class="number">2</span>, i)</span><br><span class="line">		i-=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">	<span class="comment"># 解析校验</span></span><br><span class="line">	t5 = data[<span class="number">32</span>:<span class="number">40</span>]</span><br><span class="line">	c5 = <span class="number">0</span></span><br><span class="line">	i = <span class="number">7</span></span><br><span class="line">	<span class="keyword">for</span> n <span class="keyword">in</span> t5:</span><br><span class="line">		c5 += n * math.pow(<span class="number">2</span>, i)</span><br><span class="line">		i-=<span class="number">1</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment"># 进行校验</span></span><br><span class="line">	va = <span class="keyword">True</span></span><br><span class="line">	print(<span class="string">"c1:%d\n2c:%d\n3c:%d\n4c:%d\n5:%d\n"</span>%(c1,c2,c3,c4,c5))</span><br><span class="line">	<span class="keyword">if</span> c1 + c2 + c3 +c4 == c5:</span><br><span class="line">		va = <span class="keyword">True</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		va = <span class="keyword">False</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> [va, <span class="string">"%d.%d"</span>%(c1, c2), <span class="string">"%d.%d"</span>%(c3, c4)]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">	time.sleep(<span class="number">1</span>)</span><br><span class="line">	result = readData()</span><br><span class="line">	<span class="keyword">if</span> result[<span class="number">0</span>]:</span><br><span class="line">		hum = result[<span class="number">1</span>]</span><br><span class="line">		temp = result[<span class="number">2</span>]</span><br><span class="line">		print(<span class="string">"当前环境湿度： %s %%, 当前环境温度：%s℃\n"</span> % (hum, temp))</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		print(<span class="string">"此次数据无效，已被丢弃\n"</span>)</span><br><span class="line">	time.sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>上面代码中有比较详细的注释，有些地方我们还是可以再解释一下。首先，树莓派发出开始指令的过程比较简单，无需过多解释。麻烦之处在于循环40次来获取40位的二进制数据。在获取数据时，我们采用循环变量来记录高电平的时间比例，从而可以分析出传输的数据是0还是1。需要注意，不同的设备可能循环一次的时间并不完全相同，我们可以先测试下上面代码中kdata变量存储的数据，运行代码如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-531d96a36a0364a7acdc673ddc2db831f75.png" alt></p>
+<p>可以看到，如果是传输数据0，循环计数基本是在3或者4。而如果传输的是数据1，则循环计数在11左右。代码中我们以7为分割，分析时，循环计数大于7时就认为当前传输数据1，否则为0。</p>
+<p>获取到了完整的40位二进制数据后，将其转换为数值进行校验即可。最终代码运行效果如下图所示。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-4cb14817e1539ce9def0e3b0b9e50622572.png" alt></p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2022/01/29/442自上而下的理解网络（4）——TCP篇/" class="pre-post btn btn-default" title='自上而下的理解网络（4）——TCP篇'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（4）——TCP篇</span>
+        </a>
+    
+    
+        <a href="/2021/12/17/440自上而下的理解网络（3）——HTTPS篇/" class="next-post btn btn-default" title='自上而下的理解网络（3）——HTTPS篇'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（3）——HTTPS篇</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（23）——DHT11温湿度传感器实践"><span class="toc-text">一起玩转树莓派（23）——DHT11温湿度传感器实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-引言"><span class="toc-text">一. 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-关于DHT11传感器模块"><span class="toc-text">二. 关于DHT11传感器模块</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-连线编码"><span class="toc-text">三. 连线编码</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

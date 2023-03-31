@@ -1,3 +1,20 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
 <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.9.0">
@@ -193,15 +210,15 @@
 
 <div class="article-nav prev-next-wrap clearfix">
     
-        <a href="/2015/10/24/134watchOS中进行异步图片加载和缓存的策略/" class="pre-post btn btn-default" title='watchOS中进行异步图片加载和缓存的策略'>
+        <a href="/2015/10/19/132AppleWatch开发入门八——Watch中图片缓存的处理/" class="pre-post btn btn-default" title='AppleWatch开发入门八——Watch中图片缓存的处理'>
             <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
-            <span class="hidden-xs">watchOS中进行异步图片加载和缓存的策略</span>
+            <span class="hidden-xs">AppleWatch开发入门八——Watch中图片缓存的处理</span>
         </a>
     
     
-        <a href="/2015/10/19/131AppleWatch开发入门七——watchOS中通知的应用/" class="next-post btn btn-default" title='AppleWatch开发入门七——watchOS中通知的应用'>
+        <a href="/2015/10/17/130iOS8统一的系统提示控件——UIAlertController/" class="next-post btn btn-default" title='iOS8统一的系统提示控件——UIAlertController'>
             <span class="hidden-lg">下一篇</span>
-            <span class="hidden-xs">AppleWatch开发入门七——watchOS中通知的应用</span><i class="fa fa-angle-right fa-fw"></i>
+            <span class="hidden-xs">iOS8统一的系统提示控件——UIAlertController</span><i class="fa fa-angle-right fa-fw"></i>
         </a>
     
 </div>

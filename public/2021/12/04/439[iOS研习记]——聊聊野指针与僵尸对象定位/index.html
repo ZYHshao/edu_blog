@@ -1,0 +1,377 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS研习记——聊聊野指针与僵尸对象定位 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS研习记——聊聊野指针与僵尸对象定位">
+            
+	            iOS研习记——聊聊野指针与僵尸对象定位
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/编程珠玑">
+            编程珠玑
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/12/04</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS研习记-——聊聊野指针与僵尸对象定位"><a href="#iOS研习记-——聊聊野指针与僵尸对象定位" class="headerlink" title="[iOS研习记]——聊聊野指针与僵尸对象定位"></a>[iOS研习记]——聊聊野指针与僵尸对象定位</h1><h2 id="一、从一个异常说起"><a href="#一、从一个异常说起" class="headerlink" title="一、从一个异常说起"></a>一、从一个异常说起</h2><p>在iOS项目开发中，或多或少的我们都会遇到一些Crash的情况，大部分Crash抛出的异常都是NSException层的，这类异常是OC层代码问题造成的，通常堆栈信息和异常的提示信息都非常明确，可以直接定位到出问题的代码，从而使这类问题的解决并不困难。可以引起Crash的异常除了NSException外，还有Unix层和Mach层的异常。</p>
+<p>Mach异常一般是底层内核级的异常，我们可以通过一些底层的API来对这类异常进行捕获，这不是本文的讨论内容，这里不再赘述。Unix层是指对于开发者没有捕获的Mach异常，会被转换成对应的Unix信号传递给出错线程。</p>
+<p>如果你在iOS项目在线上收集的异常中，有类似EXC_BAD_ACCESS的异常，则大概率是由于内存问题产生的野指针引起的。这也是本文我们要讨论的核心内容。</p>
+<h3 id="1-什么是野指针？"><a href="#1-什么是野指针？" class="headerlink" title="1. 什么是野指针？"></a>1. 什么是野指针？</h3><p>当前我们在编写iOS程序时大多会采用ARC来进行内存管理，通常情况下我们无需过多的对内存管理进行关心。但是这并不代表不会产生内存问题。从原理上讲，我们在创建任何对象的时候，首先都会通过操作系统从内存中申请出一块内存空间供此对象使用，并将此内存空间的地址保存到指针中供我们在代码中方便的引用到此内存。那么当这个对象被销毁的时候，原则上我们需要做两件事，一是将这块内存还回去，之后操作系统可以重复利用这块内存分配给其他申请者使用，二是将代码中的指针清空回收。这样可以保证程序能够可持续化的健康运行。工作过程如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8d7c6d107a273040122de7eae62db3f9bdd.png" alt></p>
+<p>但是无论在生活中还是编程中，意外总会发生，通常情况下，在向操作系统申请内存这一步很少会出现问题，操作系统本身的稳定性比应用程序要强很多。问题大多出现在内存释放的时候。问题可能有两种：</p>
+<p>一种是已经不需要使用的对象我们将指针变量直接清除了，但却没有告诉操作系统回收这块内存，此后程序中没有地方存储这块内存的地址，这块内存将永远无法使用和回收。这种情况下，这块内存就变成了无主内存且操作系统并不知道，就产生了我们常说的内存泄露问题，随着应用的运行时间越来越长，内存泄露可能越来越多最终导致内存不够用，程序无法再正常运行。</p>
+<p>另一种是我们告诉操作系统要回收这块内存，并且这块内存也真正的被回收了，但是程序中依然有指针变量存储着这个地址没有清空，此时这个指针就变成了也指针，因为它所指向的内存已经回收，这块内存具体是又被利用了还是依然存放着原来的数据我们都一无所知。此后如果不小心又通过这个指针使用了这块内存的数据，无论读写都将产生各种千奇百怪的问题，且我们很难定位。本文我们主要聊的就是这类野指针问题的产生原因与定位方法。</p>
+<h3 id="2-野指针会产生哪些问题？"><a href="#2-野指针会产生哪些问题？" class="headerlink" title="2. 野指针会产生哪些问题？"></a>2. 野指针会产生哪些问题？</h3><p>开发中我们遇到的大部分的EXC_BAD_ACCESS问题都是由野指针导致的，主要有两种信号：SIGSEGV和SIGBUS。其中SIGSEGV表示操作的地址非法，访问了未分配的内存或者写入了没有写权限的内存。SIGBUS表示错误的内存类型访问。</p>
+<p>野指针会产生的问题千奇百怪，难以定位。当程序中使用到了野指针时，可能存在两大种场景：</p>
+<p><strong>1&gt; 访问的内存没有被覆盖</strong></p>
+<p>如果原对象依赖的其他对象没有被删除，则看上去程序的运行好像任何问题，但是实际上却很危险，程序逻辑上的表现已经不可控。</p>
+<p>如果原对象依赖的其他对象有删除情况，则内部可能还有有其他野指针生成，依然会出现各种复杂的异常场景。</p>
+<p><strong>2&gt; 访问的内存重新被覆盖了</strong></p>
+<p>这种从场景会更加麻烦，如果当前内存区域的可访问性发生了变化，则会产生许多类型的异常，例如objc_msgSend失败，SIGBUS地址类型异常，SIGFPE运算符异常，SIGILL指令异常等等。</p>
+<p>如果当前内存是可以访问的，则可能违背我们本意的写坏其他地方在使用的内存，使其他地方在使用时产生异常。也可能要使用的数据类型和我们原对象对不上，导致未实现的选择器类的错误，查找方法类的错误，各种底层逻辑错误，以及malloc错误等。这时要排查问题就非常难了。</p>
+<p>综上所述，野指针的危害是非常大，除了其本身会造成异常Crash外，还可能会使其他正常使用的代码产生异常，并且有不可复现性与随机性，例如你可能发现某个Crash的堆栈是调用了某个对象的某个方法找不大，但是你搜遍代码也没有找到类似的方法调用，其实就是其他地方出现了野指针问题，之后这个正确的对象刚好分配到了野指针所指向的内存，野指针将此内存的数据破坏了。对于这种Crash问题，我们几乎是束手无策的。</p>
+<h3 id="3-动手造一个野指针场景试试看"><a href="#3-动手造一个野指针场景试试看" class="headerlink" title="3. 动手造一个野指针场景试试看"></a>3. 动手造一个野指针场景试试看</h3><p>通过前面的介绍，我们了解了野指针问题的产生原因与危害。现在可以动手一试。使用Xcode新建一个iOS工程。在其中新建一个名为MyObject的类，为其添加一个属性，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyObject</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>在ViewController类中编写如下测试代码：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"ViewController.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"MyObject.h"</span></span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">unsafe_unretained</span>)MyObject *object;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    MyObject *object = [[MyObject alloc] init];</span><br><span class="line">    <span class="keyword">self</span>.object = object;</span><br><span class="line">    <span class="keyword">self</span>.object.name = <span class="string">@"HelloWorld"</span>;</span><br><span class="line">    <span class="keyword">void</span> *p = (__bridge <span class="keyword">void</span> *)(<span class="keyword">self</span>.object);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%p,%@"</span>,<span class="keyword">self</span>.object,<span class="keyword">self</span>.object.name);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%p,%@"</span>,p, [(__bridge MyObject *)p name]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)touchesBegan:(<span class="built_in">NSSet</span>&lt;<span class="built_in">UITouch</span> *&gt; *)touches withEvent:(<span class="built_in">UIEvent</span> *)event &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%p"</span>,<span class="keyword">self</span>-&gt;_object);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,<span class="keyword">self</span>.object.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>这里我们手动的造出了一个会出现野指针问题的场景，ViewController类的object属性声明为的unsafe_unretained，这个修饰符的意思是当前属性不被ARC所管理，其所引用的对象释放后，此指针也不会被置空。上面代码我们在viewDidLoad方法中创建了一个MyObject对象，并复制给了当前控制器的object属性，由于栈内对象的生命周期为当前代码块内有效，因此当viewDidLoad方法结束后，此内存就会被回收，此时object指针就成了野指针。</p>
+<p>我们可以在viewDidLoad方法的最后打上断点，观察当前MyOject对象的内存分配地址，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-446de4b1b8de0de7a249fd181ffd7cc75b5.png" alt></p>
+<p>可以看到，当次运行时，object对象分配的内存地址为0x600001e542d0（每次运行都会不同），后面访问对象的属性实际上就是对此内存中数据的访问，我们如果知道了内存地址，也可以直接使用地址进行访问，不一定要有变量，例如上图中通过LLDB中的po指令可以直接向内存地址发送消息，效果和通过变量调用对象方法是一样的。</p>
+<p>之后，我们可以在运行后点击一下当前页面，大部分情况下都会出现地址异常Crash，我们可以通过LLDB输出下线程的堆栈信息，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-dbcdc97a0040a52afb9583e7c2cc1622e91.png" alt></p>
+<p>还有时候，程序可能会直接Crash到main方法中，输入更奇怪的堆栈信息，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-942c920d9a3e503478f38254685fa6ed18f.png" alt></p>
+<p>如上图所示，堆栈信息提示我们调用了数组的name方法，这其实就是因为此块内存被重新分配了。</p>
+<p>我们只创建了一个没有任何逻辑的Demo项目，野指针的问题都如此多样，如果是在实际项目中，出了野指针问题我们更难找到问题源头。并且在ARC环境下，上面示例的场景其实很好排查到，更多产生野指针的原因是多线程不安全的读写数据造成的，结合多线程使用，野指针的问题则更加难查。</p>
+<h2 id="二、从原理看野指针的监控"><a href="#二、从原理看野指针的监控" class="headerlink" title="二、从原理看野指针的监控"></a>二、从原理看野指针的监控</h2><p>要解决由野指针产生的问题，除了编程时尽量注意一些，避免危险的写法外。更重要的是能总结出一套方案来流程化的对此类问题进行监控。由于野指针问题的特性所致，我们在内存释放时其实是并不知道是否会产生野指针问题的，发生了野指针问题后也无法回溯。因此我们要用预设的思路来找这类问题的监控方案，即假设当前内存释放后依然有野指针要访问它，在设计时，我们可以不真正的将这块内存释放，而是将这块内存标记成有问题的，之后如果又发现有对这块有问题内存的访问出现，则表明出现了野指针问题。在标记内存时，我们也可以记录一下原对象的某些信息，例如类名，这样在发生野指针问题时，无论具体Crash的堆栈情况如何，我们都可以知道是具体哪个类的对象释放问题产生的野指针，能极大的缩小问题的排查范围。</p>
+<p>因此处理野指针问题的核心点在于两点：</p>
+<p>1.预设标记内存，被动等待野指针问题触发。</p>
+<p>2.记录产生野指针问题的类，从类对象的使用入手排查而不是Crash时的堆栈入手排查。</p>
+<p>针对如上两点，我们来看下如何实现。</p>
+<h3 id="1-僵尸对象"><a href="#1-僵尸对象" class="headerlink" title="1. 僵尸对象"></a>1. 僵尸对象</h3><p>将要释放的对象内存不真正回收，而是仅仅进行标记，我们会形象的成此时的对象为“僵尸对象”。Xcode默认支持开启僵尸对象，当我们向一个僵尸对象进行访问时，就会必然产生Crash，并且控制台输出相关提示信息。在Xcode中对要运行的scheme进行编辑，打开僵尸对象功能，如下所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d7a5d735f083f91ed993ed46beb31dca436.png" alt></p>
+<p>再次运行工程，程序Crash后将输出如下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*** -[MyObject retain]: message sent to deallocated instance 0x600000670670</span><br></pre></td></tr></table></figure>
+<p>我们可以明确的知道是MyObject对象的内存问题导致了野指针崩溃。</p>
+<p>Xcode的僵尸对象功能虽然好用，但是只能调试时使用，更多时候我们产生的野指针问题都是线上环境的，而且无法复现，这个功能就显得非常鸡肋的。我们能否不依赖Xcode来实现野指针的监控呢？首先我们需要先搞明白Xcode中僵尸对象的实现原理。</p>
+<h3 id="2-Apple僵尸对象的实现原理探究"><a href="#2-Apple僵尸对象的实现原理探究" class="headerlink" title="2. Apple僵尸对象的实现原理探究"></a>2. Apple僵尸对象的实现原理探究</h3><p>首先我们大致可以知道，要实现僵尸对象大概率是要对dealloc方法做些事情的，我们可以从这个方法入手找线索，查看objc的源代码，在其NSObject.m中可以看到如下代码：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Replaced by NSZombies</span></span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    _objc_rootDealloc(<span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>从注释可以看到，系统实现的僵尸对象的确是处理dealloc方法了，推测其实通过Runtime替换了NSObject的dealloc方法。在CoreFoundation的源码中也有部分关于Zombies的内容，在CFRuntime.c中可以看到如下代码：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="keyword">void</span> __CFZombifyNSObject(<span class="keyword">void</span>);  <span class="comment">// from NSObject.m</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _CFEnableZombies(<span class="keyword">void</span>) &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，_CFEnableZombies比较好理解，它应该是来表示是否开启僵尸对象功能的，应该和我们在Xcode中设置的环境变量功能一致，__CFZombifyNSObject从注释可以知道，应该是对僵尸对象的实现。我们在Xcode中添加一个__CFZombifyNSObject的符号断点，断点后内容如下所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-91ac99e079804ef48a4554bea583d53def1.png" alt></p>
+<p>看到这里的汇编，你应该不会太陌生，我们把核心的伪代码提出来，大致如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 定义字符串</span><br><span class="line">define &quot;NSObject&quot;</span><br><span class="line">// 用来获取NSObject类</span><br><span class="line">objc_lookUpClass &quot;NSObject&quot;</span><br><span class="line">// 定义字符串</span><br><span class="line">define &quot;dealloc&quot;</span><br><span class="line">define &quot;__dealloc_zombie&quot;</span><br><span class="line">// 获取dealloc方法的实现</span><br><span class="line">class_getInstanceMethod &quot;NSObject&quot; &quot;dealloc&quot;</span><br><span class="line">// 获取__dealloc_zombie方法的实现</span><br><span class="line">class_getInstanceMethod &quot;NSObject&quot; &quot;__dealloc_zombie&quot;</span><br><span class="line">// 交换dealloc与__dealloc_zombie的方法实现</span><br><span class="line">method_exchangeImplementations &quot;dealloc&quot; &quot;__dealloc_zombie&quot;</span><br></pre></td></tr></table></figure>
+<p>和我们想的差不多，下面我们可以再添加一个__dealloc_zombie的符号断点，看一看__dealloc_zombie方法是怎么实现的，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">CoreFoundation`-[NSObject(NSObject) __dealloc_zombie]:</span><br><span class="line">-&gt;  0x10ef77c49 &lt;+0&gt;:   pushq  %rbp</span><br><span class="line">    0x10ef77c4a &lt;+1&gt;:   movq   %rsp, %rbp</span><br><span class="line">    0x10ef77c4d &lt;+4&gt;:   pushq  %r14</span><br><span class="line">    0x10ef77c4f &lt;+6&gt;:   pushq  %rbx</span><br><span class="line">    0x10ef77c50 &lt;+7&gt;:   subq   $0x10, %rsp</span><br><span class="line">    0x10ef77c54 &lt;+11&gt;:  movq   0x2e04fd(%rip), %rax      ; (void *)0x0000000110021970: __stack_chk_guard</span><br><span class="line">    0x10ef77c5b &lt;+18&gt;:  movq   (%rax), %rax</span><br><span class="line">    0x10ef77c5e &lt;+21&gt;:  movq   %rax, -0x18(%rbp)</span><br><span class="line">    0x10ef77c62 &lt;+25&gt;:  testq  %rdi, %rdi</span><br><span class="line">    0x10ef77c65 &lt;+28&gt;:  js     0x10ef77d04               ; &lt;+187&gt;</span><br><span class="line">    0x10ef77c6b &lt;+34&gt;:  movq   %rdi, %rbx</span><br><span class="line">    0x10ef77c6e &lt;+37&gt;:  cmpb   $0x0, 0x488703(%rip)      ; __CFConstantStringClassReferencePtr + 7</span><br><span class="line">    0x10ef77c75 &lt;+44&gt;:  je     0x10ef77d1d               ; &lt;+212&gt;</span><br><span class="line">    0x10ef77c7b &lt;+50&gt;:  movq   %rbx, %rdi</span><br><span class="line">    0x10ef77c7e &lt;+53&gt;:  callq  0x10eff4b52               ; symbol stub for: object_getClass</span><br><span class="line">    0x10ef77c83 &lt;+58&gt;:  leaq   -0x20(%rbp), %r14</span><br><span class="line">    0x10ef77c87 &lt;+62&gt;:  movq   $0x0, (%r14)</span><br><span class="line">    0x10ef77c8e &lt;+69&gt;:  movq   %rax, %rdi</span><br><span class="line">    0x10ef77c91 &lt;+72&gt;:  callq  0x10eff464e               ; symbol stub for: class_getName</span><br><span class="line">    0x10ef77c96 &lt;+77&gt;:  leaq   0x242db5(%rip), %rsi      ; &quot;_NSZombie_%s&quot;</span><br><span class="line">    0x10ef77c9d &lt;+84&gt;:  movq   %r14, %rdi</span><br><span class="line">    0x10ef77ca0 &lt;+87&gt;:  movq   %rax, %rdx</span><br><span class="line">    0x10ef77ca3 &lt;+90&gt;:  xorl   %eax, %eax</span><br><span class="line">    0x10ef77ca5 &lt;+92&gt;:  callq  0x10eff4570               ; symbol stub for: asprintf</span><br><span class="line">    0x10ef77caa &lt;+97&gt;:  movq   (%r14), %rdi</span><br><span class="line">    0x10ef77cad &lt;+100&gt;: callq  0x10eff4ab0               ; symbol stub for: objc_lookUpClass</span><br><span class="line">    0x10ef77cb2 &lt;+105&gt;: movq   %rax, %r14</span><br><span class="line">    0x10ef77cb5 &lt;+108&gt;: testq  %rax, %rax</span><br><span class="line">    0x10ef77cb8 &lt;+111&gt;: jne    0x10ef77cd7               ; &lt;+142&gt;</span><br><span class="line">    0x10ef77cba &lt;+113&gt;: leaq   0x2427aa(%rip), %rdi      ; &quot;_NSZombie_&quot;</span><br><span class="line">    0x10ef77cc1 &lt;+120&gt;: callq  0x10eff4ab0               ; symbol stub for: objc_lookUpClass</span><br><span class="line">    0x10ef77cc6 &lt;+125&gt;: movq   -0x20(%rbp), %rsi</span><br><span class="line">    0x10ef77cca &lt;+129&gt;: movq   %rax, %rdi</span><br><span class="line">    0x10ef77ccd &lt;+132&gt;: xorl   %edx, %edx</span><br><span class="line">    0x10ef77ccf &lt;+134&gt;: callq  0x10eff4a62               ; symbol stub for: objc_duplicateClass</span><br><span class="line">    0x10ef77cd4 &lt;+139&gt;: movq   %rax, %r14</span><br><span class="line">    0x10ef77cd7 &lt;+142&gt;: movq   -0x20(%rbp), %rdi</span><br><span class="line">    0x10ef77cdb &lt;+146&gt;: callq  0x10eff482e               ; symbol stub for: free</span><br><span class="line">    0x10ef77ce0 &lt;+151&gt;: movq   %rbx, %rdi</span><br><span class="line">    0x10ef77ce3 &lt;+154&gt;: callq  0x10eff4a5c               ; symbol stub for: objc_destructInstance</span><br><span class="line">    0x10ef77ce8 &lt;+159&gt;: movq   %rbx, %rdi</span><br><span class="line">    0x10ef77ceb &lt;+162&gt;: movq   %r14, %rsi</span><br><span class="line">    0x10ef77cee &lt;+165&gt;: callq  0x10eff4b6a               ; symbol stub for: object_setClass</span><br><span class="line">    0x10ef77cf3 &lt;+170&gt;: cmpb   $0x0, 0x48867f(%rip)      ; __CFZombieEnabled</span><br><span class="line">    0x10ef77cfa &lt;+177&gt;: je     0x10ef77d04               ; &lt;+187&gt;</span><br><span class="line">    0x10ef77cfc &lt;+179&gt;: movq   %rbx, %rdi</span><br><span class="line">    0x10ef77cff &lt;+182&gt;: callq  0x10eff482e               ; symbol stub for: free</span><br><span class="line">    0x10ef77d04 &lt;+187&gt;: movq   0x2e044d(%rip), %rax      ; (void *)0x0000000110021970: __stack_chk_guard</span><br><span class="line">    0x10ef77d0b &lt;+194&gt;: movq   (%rax), %rax</span><br><span class="line">    0x10ef77d0e &lt;+197&gt;: cmpq   -0x18(%rbp), %rax</span><br><span class="line">    0x10ef77d12 &lt;+201&gt;: jne    0x10ef77d3d               ; &lt;+244&gt;</span><br><span class="line">    0x10ef77d14 &lt;+203&gt;: addq   $0x10, %rsp</span><br><span class="line">    0x10ef77d18 &lt;+207&gt;: popq   %rbx</span><br><span class="line">    0x10ef77d19 &lt;+208&gt;: popq   %r14</span><br><span class="line">    0x10ef77d1b &lt;+210&gt;: popq   %rbp</span><br><span class="line">    0x10ef77d1c &lt;+211&gt;: retq   </span><br><span class="line">    0x10ef77d1d &lt;+212&gt;: movq   0x2e0434(%rip), %rax      ; (void *)0x0000000110021970: __stack_chk_guard</span><br><span class="line">    0x10ef77d24 &lt;+219&gt;: movq   (%rax), %rax</span><br><span class="line">    0x10ef77d27 &lt;+222&gt;: cmpq   -0x18(%rbp), %rax</span><br><span class="line">    0x10ef77d2b &lt;+226&gt;: jne    0x10ef77d3d               ; &lt;+244&gt;</span><br><span class="line">    0x10ef77d2d &lt;+228&gt;: movq   %rbx, %rdi</span><br><span class="line">    0x10ef77d30 &lt;+231&gt;: addq   $0x10, %rsp</span><br><span class="line">    0x10ef77d34 &lt;+235&gt;: popq   %rbx</span><br><span class="line">    0x10ef77d35 &lt;+236&gt;: popq   %r14</span><br><span class="line">    0x10ef77d37 &lt;+238&gt;: popq   %rbp</span><br><span class="line">    0x10ef77d38 &lt;+239&gt;: jmp    0x10eff44c8               ; symbol stub for: _objc_rootDealloc</span><br><span class="line">    0x10ef77d3d &lt;+244&gt;: callq  0x10eff443e               ; symbol stub for: __stack_chk_fail</span><br></pre></td></tr></table></figure>
+<p>汇编内容较多，整体流程是比较清晰的，伪代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// 获取当前类</span><br><span class="line">object_getClass</span><br><span class="line">// 通过当前类获取当前类型</span><br><span class="line">class_getName</span><br><span class="line">// 将_NSZombie_拼接上当前类名</span><br><span class="line">zombiesClsName = &quot;_NSZombie_%s&quot; + className</span><br><span class="line">// 获取zombiesClsName类</span><br><span class="line">objc_lookUpClass zombiesClsName</span><br><span class="line">// 判断是否已经存在zombiesCls</span><br><span class="line">if not zombiesCls:</span><br><span class="line">    // 如果不存在 </span><br><span class="line">    // 现获取&quot;_NSZombie_&quot;类</span><br><span class="line">    cls = objc_lookUpClass &quot;_NSZombie_&quot;</span><br><span class="line">    // 复制出一个cls类，类名为zombiesClsName</span><br><span class="line">    objc_duplicateClass cls zombiesClsName</span><br><span class="line">// 字符串变量释放</span><br><span class="line">free zombiesClsName</span><br><span class="line">// objc中原本的对象销毁方法</span><br><span class="line">objc_destructInstance(self)</span><br><span class="line">// 将当前对象的类修改为zombiesCls</span><br><span class="line">object_setClass zombiesCls</span><br><span class="line">// 判断是否开启了僵尸对象功能</span><br><span class="line">if not __CFZombieEnabled:</span><br><span class="line">    // 如果没开启 将当前内存释放掉</span><br><span class="line">    free</span><br></pre></td></tr></table></figure>
+<p>上面的伪代码基本是__dealloc_zombie方法实现的整体过程，在objc源码中，NSObject类原本的dealloc方法实现路径如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    _objc_rootDealloc(<span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _objc_rootDealloc(<span class="keyword">id</span> obj)</span><br><span class="line">&#123;</span><br><span class="line">    ASSERT(obj);</span><br><span class="line">    obj-&gt;rootDealloc();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> objc_object::rootDealloc()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// taggedPointer无需回收内存</span></span><br><span class="line">    <span class="keyword">if</span> (isTaggedPointer()) <span class="keyword">return</span>;  <span class="comment">// fixme necessary?</span></span><br><span class="line">    <span class="comment">// nonpointer为1表示不只是地址，isa中包含了其他信息</span></span><br><span class="line">    <span class="comment">// weakly_referenced表示是否有弱引用</span></span><br><span class="line">    <span class="comment">// has_assoc 表示是否有关联属性</span></span><br><span class="line">    <span class="comment">// has_cxx_dtor 是否需要C++或Objc析构</span></span><br><span class="line">    <span class="comment">// has_sidetable_rc是否有散列表计数引脚</span></span><br><span class="line">    <span class="keyword">if</span> (fastpath(isa.nonpointer  &amp;&amp;  </span><br><span class="line">                 !isa.weakly_referenced  &amp;&amp;  </span><br><span class="line">                 !isa.has_assoc  &amp;&amp;  </span><br><span class="line">                 !isa.has_cxx_dtor  &amp;&amp;  </span><br><span class="line">                 !isa.has_sidetable_rc))</span><br><span class="line">    &#123; </span><br><span class="line">        <span class="comment">// 如果都没有 直接回收内存</span></span><br><span class="line">        assert(!sidetable_present());</span><br><span class="line">        free(<span class="keyword">this</span>);</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        object_dispose((<span class="keyword">id</span>)<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">id</span> object_dispose(<span class="keyword">id</span> obj)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!obj) <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    <span class="comment">// 进行内存回收前的销毁工作</span></span><br><span class="line">    objc_destructInstance(obj);    </span><br><span class="line">    free(obj);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，__dealloc_zombie与真正的dealloc的实现其实只差了当前内存的回收部分，objc_destructInstance方法会正常执行的，这个方法实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *objc_destructInstance(<span class="keyword">id</span> obj) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (obj) &#123;</span><br><span class="line">        <span class="comment">// Read all of the flags at once for performance.</span></span><br><span class="line">        <span class="keyword">bool</span> cxx = obj-&gt;hasCxxDtor();</span><br><span class="line">        <span class="keyword">bool</span> assoc = obj-&gt;hasAssociatedObjects();</span><br><span class="line">        <span class="comment">// C++ 析构</span></span><br><span class="line">        <span class="keyword">if</span> (cxx) object_cxxDestruct(obj);</span><br><span class="line">        <span class="comment">// 移除关联属性</span></span><br><span class="line">        <span class="keyword">if</span> (assoc) _object_remove_assocations(obj);</span><br><span class="line">        <span class="comment">// 弱引用表和散列表的清除</span></span><br><span class="line">        obj-&gt;clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上面的分析，我们发现，其实系统实现的僵尸对象非常安全，并不对正常代码的运行产生负面作用，唯一的影响在于内存不回收会增加内存的使用负担，但是可以通过某些策略来进行释放。</p>
+<h2 id="三、手动实现线上野指针问题收集"><a href="#三、手动实现线上野指针问题收集" class="headerlink" title="三、手动实现线上野指针问题收集"></a>三、手动实现线上野指针问题收集</h2><p>理解了系统僵尸对象的实现原理，即是不依赖Debug环境，我们也可以仿照此思路来实现僵尸对象监控功能。</p>
+<h3 id="1-仿照Apple的僵尸对象思路实现"><a href="#1-仿照Apple的僵尸对象思路实现" class="headerlink" title="1. 仿照Apple的僵尸对象思路实现"></a>1. 仿照Apple的僵尸对象思路实现</h3><p>首先创建一个名为_YHZombie_的模板类，实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// _YHZombie_.h</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">_YHZombie_</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//  _YHZombie_.m</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"_YHZombie_.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">_YHZombie_</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用这个对象对的所有方法都hook住进行LOG</span></span><br><span class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%p-[%@ %@]:%@"</span>,<span class="keyword">self</span> ,[<span class="built_in">NSStringFromClass</span>(<span class="keyword">self</span>.class) componentsSeparatedByString:<span class="string">@"_YHZombie_"</span>].lastObject, <span class="built_in">NSStringFromSelector</span>(aSelector), <span class="string">@"向已经dealloc的对象发送了消息"</span>);</span><br><span class="line">    <span class="comment">// 结束当前线程</span></span><br><span class="line">    abort();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>在新建一个NSObject的类别，用来替换dealloc方法，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  NSObject+YHZombiesNSObject.h</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span> (<span class="title">YHZombiesNSObject</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//  NSObject+YHZombiesNSObject.m</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"NSObject+YHZombiesNSObject.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/objc.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span> (<span class="title">YHZombiesNSObject</span>)</span></span><br><span class="line"></span><br><span class="line">+(<span class="keyword">void</span>)load &#123;</span><br><span class="line">    [<span class="keyword">self</span> __YHZobiesObject];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">void</span>)__YHZobiesObject &#123;</span><br><span class="line">    <span class="keyword">char</span> *clsChars = <span class="string">"NSObject"</span>;</span><br><span class="line">    Class cls = objc_lookUpClass(clsChars);</span><br><span class="line">    Method oriMethod = class_getInstanceMethod(cls, <span class="built_in">NSSelectorFromString</span>(<span class="string">@"dealloc"</span>));</span><br><span class="line">    Method newMethod = class_getInstanceMethod(cls, <span class="built_in">NSSelectorFromString</span>(<span class="string">@"__YHDealloc_zombie"</span>));</span><br><span class="line">    method_exchangeImplementations(oriMethod, newMethod);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)__YHDealloc_zombie &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *className = object_getClassName(<span class="keyword">self</span>);</span><br><span class="line">    <span class="keyword">char</span> *zombieClassName = <span class="literal">NULL</span>;</span><br><span class="line">    asprintf(&amp;zombieClassName, <span class="string">"_YHZombie_%s"</span>, className);</span><br><span class="line">    Class zombieClass = objc_getClass(zombieClassName);</span><br><span class="line">    <span class="keyword">if</span> (zombieClass == Nil) &#123;</span><br><span class="line">        zombieClass = objc_duplicateClass(objc_getClass(<span class="string">"_YHZombie_"</span>), zombieClassName, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    objc_destructInstance(<span class="keyword">self</span>);</span><br><span class="line">    object_setClass(<span class="keyword">self</span>, zombieClass);</span><br><span class="line">    <span class="keyword">if</span> (zombieClassName != <span class="literal">NULL</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        free(zombieClassName);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>上面代码，除了一些容错判断没有加之外，思路和系统的僵尸对象一模一样。</p>
+<p>再次运行我们的测试代码，在访问到野指针的时候将百分百的产生异常中断，并输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0x600003a8c2e0-[MyObject name]:向已经dealloc的对象发送了消息</span><br></pre></td></tr></table></figure>
+<p>现在，我们已经从原理上简单实现了一个不依赖于Xcode的野指针监控工具。</p>
+<h3 id="2-将监控推广到C指针"><a href="#2-将监控推广到C指针" class="headerlink" title="2. 将监控推广到C指针"></a>2. 将监控推广到C指针</h3><p>通过对象的僵尸化，对OC层的野指针问题可以做到很好的监控作用，但是这种方法并不实用与C层的指针，项目中如果用到C相关的指针，由于内存的管理方式不走引用计数，无法通过Hook dealloc的方式来僵尸化对象。例如，我们创建一个如下的结构体：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="built_in">NSString</span> *name;</span><br><span class="line">&#125; MyStruct;</span><br></pre></td></tr></table></figure>
+<p>在使用此结构体时，如果初始化之前进行了使用或内存回收后进行了使用都可能会出现野指针问题，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">MyStruct *p;</span><br><span class="line">p = malloc(<span class="keyword">sizeof</span>(MyStruct));</span><br><span class="line"><span class="comment">// 此时内存中的数据不可控 可能是之前未擦除的</span></span><br><span class="line">printf(<span class="string">"%x\n"</span>, *((<span class="keyword">int</span> *)p));</span><br><span class="line"><span class="comment">// 使用可能会出现野指针问题</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, p-&gt;name);</span><br><span class="line"><span class="comment">// 进行内存数据的初始化</span></span><br><span class="line">p-&gt;name = <span class="string">@"HelloWorld"</span>;</span><br><span class="line"><span class="comment">// 回收内存</span></span><br><span class="line">free(p);</span><br><span class="line"><span class="comment">// 此时内存中的数据不可控</span></span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, p-&gt;name);</span><br></pre></td></tr></table></figure>
+<p>我们可以思考下，出现上面野指针场景的主要原因是：</p>
+<p>1. 获取到分配的内存后，如果此内存之前有过使用，数据此时是不可控的，当前指针直接使用此数据会有问题。</p>
+<p>2.回收内存后，当前内存中的数据是不可控的，可能有别人或之前未清除的指针使用到。</p>
+<p>无论是上面哪种场景，此野指针问题都有非常大的随机性，难以调试。因此我们核心要处理的地方在于把随机性改为必然性，即想办法让使用到这些有问题的内存时直接Crash，而不是可能Crash。要处理场景1很容易，我们可以hook住C中的malloc方法，分配了内存后直接将一个约定好的异常数据写入内存，这样在初始化之前使用到此数据时必然产生Crash。对于场景2，我们可以hook住C中的free方法，回收内存后将一个约定好的异常数据直接写入此内存，下次如果此内存没有被再分配，使用到它后也必然产生Crash。Xcode提供的Malloc Scribble调试功能，就是用这种思路实现的。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d0e66e55706cdd8ae575eee4daa7ea0a4dc.png" alt></p>
+<p>开启Xcode的Malloc Scribble选项，运行上面代码，效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8eec1734d07682ea04373c7614b88cd402e.png" alt></p>
+<p>可以看到，在malloc分配内存之后，所有字节都被填入了0xAA，未初始化前使用就会必然产生Crash。这与Apple官方文档的解释是一致的，但是在free之后，内存数据获取到的可能并不是文档所说的0x55，是因为这块内存可能被其他内容覆写了。官网文档描述如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-5a2ea72b25a4dced2f3344adb435171133c.png" alt></p>
+<p>我们也可以手动根据Malloc Scribble的思路来实现一个将野指针问题从随机变成必然的工具，只需要重写系统的malloc相关的函数与free函数即可。对于C语言函数的Hook，我们可以直接使用fishhook库：</p>
+<p><a href="https://github.com/facebook/fishhook" target="_blank" rel="noopener">https://github.com/facebook/fishhook</a></p>
+<p>导入上面库后，新建一个命名为YHMallocScrbble的类，实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  YHMallcScrbble.h</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">YHMallcScrbble</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//  YHMallcScrbble.m</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"YHMallcScrbble.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"fishhook.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"malloc/malloc.h"</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> * (*orig_malloc)(size_t __size);</span><br><span class="line"><span class="keyword">void</span> (*orig_free)(<span class="keyword">void</span> * p);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> *_YHMalloc_(size_t __size) &#123;</span><br><span class="line">    <span class="keyword">void</span> *p = orig_malloc(__size);</span><br><span class="line">    memset(p, <span class="number">0xAA</span>, __size);</span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> _YHFree_(<span class="keyword">void</span> * p) &#123;</span><br><span class="line">    size_t size = malloc_size(p);</span><br><span class="line">    memset(p, <span class="number">0x55</span>, size);</span><br><span class="line">    orig_free(p);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">YHMallcScrbble</span></span></span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">void</span>)load &#123;</span><br><span class="line">    rebind_symbols((<span class="keyword">struct</span> rebinding[<span class="number">2</span>])&#123;&#123;<span class="string">"malloc"</span>, _YHMalloc_, (<span class="keyword">void</span> *)&amp;orig_malloc&#125;, &#123;<span class="string">"free"</span>, _YHFree_, (<span class="keyword">void</span> *)&amp;orig_free&#125;&#125;, <span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>这样我们就实现了将野指针问题从随机变成必然，并且通用C指针。</p>
+<p>相比僵尸对象方案，Malloc Scribble方法可以通用C指针，并且真正实现了对对象内存的回收，不会暂用内存。但是也有很大的弊端，比如对于free后写入的0x55在很多情况下都是无效的，因为这块内存可能又被其他地方改写了，导致Crash依然是随机的。当然我们也可以在自定义的free方法中不调用原系统的free，使得这块内存强制不能分配出去，这样其实和僵尸对象方案就比较类似了。并且相对僵尸对象方案，Malloc Scribble只能一定程度上将随机变成必然，方便问题的暴露，但是对开发者来说，并没有太多的信息告诉我们具体是什么类型的数据出的问题，排查还是有难度。</p>
+<h2 id="四、一些扩展"><a href="#四、一些扩展" class="headerlink" title="四、一些扩展"></a>四、一些扩展</h2><p>上面只是简单介绍了对野指针问题监控的一些手段原理。除了僵尸对象和Malloc Scribble外，Xcode中还提供了Address Sanitizer工具来做内存问题的监控，其原理也是对malloc和free函数做了处理，但程序访问到了有问题的内存时可以及时Crash，同时这个工具可以将对象在malloc时的堆栈信息进行存储，方面我们定位问题。无论采用哪种方法，如果我们真的要在线上执行，要做的事情其实还有很多，例如数据的收集策略，僵尸对象内存的清理时机，何时判断出有问题并抓取堆栈等等。</p>
+<p>最后，希望本文可以为你对开发中野指针问题的处理带来一些思路。本文中所编写的示例代码可以在如下地址下载：</p>
+<p><a href="https://github.com/ZYHshao/ZombiesDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/ZombiesDemo</a></p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/12/17/440自上而下的理解网络（3）——HTTPS篇/" class="pre-post btn btn-default" title='自上而下的理解网络（3）——HTTPS篇'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（3）——HTTPS篇</span>
+        </a>
+    
+    
+        <a href="/2021/11/28/438一起玩转树莓派（22）——DS1302硬件时钟实践/" class="next-post btn btn-default" title='一起玩转树莓派（22）——DS1302硬件时钟实践'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（22）——DS1302硬件时钟实践</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS研习记-——聊聊野指针与僵尸对象定位"><span class="toc-text">[iOS研习记]——聊聊野指针与僵尸对象定位</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、从一个异常说起"><span class="toc-text">一、从一个异常说起</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是野指针？"><span class="toc-text">1. 什么是野指针？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-野指针会产生哪些问题？"><span class="toc-text">2. 野指针会产生哪些问题？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-动手造一个野指针场景试试看"><span class="toc-text">3. 动手造一个野指针场景试试看</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、从原理看野指针的监控"><span class="toc-text">二、从原理看野指针的监控</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-僵尸对象"><span class="toc-text">1. 僵尸对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Apple僵尸对象的实现原理探究"><span class="toc-text">2. Apple僵尸对象的实现原理探究</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、手动实现线上野指针问题收集"><span class="toc-text">三、手动实现线上野指针问题收集</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-仿照Apple的僵尸对象思路实现"><span class="toc-text">1. 仿照Apple的僵尸对象思路实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-将监控推广到C指针"><span class="toc-text">2. 将监控推广到C指针</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、一些扩展"><span class="toc-text">四、一些扩展</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

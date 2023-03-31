@@ -1,0 +1,322 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（12）——U型光电传感器 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（12）——U型光电传感器">
+            
+	            一起玩转树莓派（12）——U型光电传感器
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/09/07</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（12）——U型光电传感器"><a href="#一起玩转树莓派（12）——U型光电传感器" class="headerlink" title="一起玩转树莓派（12）——U型光电传感器"></a>一起玩转树莓派（12）——U型光电传感器</h1><pre><code>本篇博客，我们将使用U型光电传感器实现一个简单的测速工具。本实使用的元件简单，实验的原理也非常简单。
+</code></pre><h2 id="一、关于U型光电传感器"><a href="#一、关于U型光电传感器" class="headerlink" title="一、关于U型光电传感器"></a>一、关于U型光电传感器</h2><pre><code>U型光电传感器由于其有一个U型的凹槽而得名。其凹槽的一侧会发射红外光，凹槽的另一侧装有接收装置。通过对红外光的遮挡与导通，从而改变元件信号源引脚的电平高低。基于这种特性，我们很容易使用U型光电传感器来测量是否有物体遮挡光线。在测速领域，运用广泛。
+
+本实验使用的传感器模块如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-3bd77d784f0d9449086ba5dc79e1e82dfc0.png" alt></p>
+<p>可以看到，此元件有3个引脚，GND引脚为接地引脚，VCC引脚为电源引脚，OUT引脚是输出引脚，当接收器能够接收到从发射源发出的光线时，输出引脚为低电平，当光线被阻断时，输出引脚为高电平。</p>
+<h2 id="二、计数器-OR-测速器"><a href="#二、计数器-OR-测速器" class="headerlink" title="二、计数器 OR 测速器"></a>二、计数器 OR 测速器</h2><pre><code>U型光电传感器有着非常广泛的应用，试想一下，如果一个车间流水线在不停的生产商品，如何方便的对生产的商品数量进行自动计数？这时我们就可以将一个U型光电传感器安装到商品的传送带上，只要有商品从传送带上通过，即会挡住传感器发射源发出的红外光，从而触发电平的跳变，实现计数功能。除此之外，U型光电传感器也可以方便的实现测速，我们只要知道了物体的长度和物体通过U型传感器的时间，就可以使用公式**_v = s / t_**从而计算出物体运动的速度。下面我们就来编写代码实现这两个功能。
+
+首先，元件与树莓派连线如下：
+</code></pre><table>
+<thead>
+<tr>
+<th>U型光电传感器</th>
+<th>树莓派</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>3.3V电源</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>OUT</td>
+<td>GPIO17(BCM编码)</td>
+</tr>
+</tbody>
+</table>
+<p>编写如下代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="comment"># 采用物理编码</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line"><span class="comment"># BCM GPIO17的物理编码是11</span></span><br><span class="line">out_pin = <span class="number">11</span></span><br><span class="line"><span class="comment"># 0 计数模式 1 测速模式</span></span><br><span class="line">MODE = <span class="number">0</span></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="comment"># 测速模式下，需要初始化长度S 单位为毫米</span></span><br><span class="line">S = <span class="number">10</span></span><br><span class="line">t1 = <span class="number">0</span></span><br><span class="line">t2 = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行引脚的初始化，不被遮挡时为低电平，使用低电平的下拉电阻</span></span><br><span class="line">GPIO.setup(out_pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义回调函数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">switch_state</span><span class="params">(pin)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> count,t1,t2</span><br><span class="line">    <span class="comment"># 如果是高电平</span></span><br><span class="line">    <span class="keyword">if</span> GPIO.input(pin):</span><br><span class="line">        print(<span class="string">"物体遮挡"</span>)</span><br><span class="line">        <span class="keyword">if</span> MODE == <span class="number">0</span>:</span><br><span class="line">            count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            t1 = time.time()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"物体遮挡消失"</span>)</span><br><span class="line">        <span class="keyword">if</span> MODE == <span class="number">0</span>:</span><br><span class="line">            print(<span class="string">'计数器-数量：%d'</span>%(count))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            t2 = time.time()</span><br><span class="line">            t = t2 - t1</span><br><span class="line">            v = S / t</span><br><span class="line">            print(<span class="string">'测速器-速度%fmm/s'</span>%(v))</span><br><span class="line"></span><br><span class="line">GPIO.add_event_detect(out_pin, GPIO.BOTH, callback=switch_state)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<p>如上代码所示，我们可以设置MODE变量来让元件工作在计数模式下或者测速模式下。在树莓派上运行此代码，尝试下计数和测速的功能吧。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-fe8d2874e1663ad7ad3f12b1ccb6c5ebe15.png" alt></p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/09/09/426一起玩转树莓派（13）——雨滴检测传感器/" class="pre-post btn btn-default" title='一起玩转树莓派（13）——雨滴检测传感器'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（13）——雨滴检测传感器</span>
+        </a>
+    
+    
+        <a href="/2021/08/28/424一起玩转树莓派（11）——使用LCD屏/" class="next-post btn btn-default" title='一起玩转树莓派（11）——使用LCD屏'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（11）——使用LCD屏</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（12）——U型光电传感器"><span class="toc-text">一起玩转树莓派（12）——U型光电传感器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、关于U型光电传感器"><span class="toc-text">一、关于U型光电传感器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、计数器-OR-测速器"><span class="toc-text">二、计数器 OR 测速器</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

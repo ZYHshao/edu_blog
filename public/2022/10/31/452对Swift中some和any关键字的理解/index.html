@@ -1,0 +1,300 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>对Swift中some和any关键字的理解 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="对Swift中some和any关键字的理解">
+            
+	            对Swift中some和any关键字的理解
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift">
+            Swift
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2022/10/31</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="对Swift中some和any关键字的理解"><a href="#对Swift中some和any关键字的理解" class="headerlink" title="对Swift中some和any关键字的理解"></a>对Swift中some和any关键字的理解</h1><p>在最新Swift版本中（Xcode14,Swift5.7），如果协议中有使用泛型，则如果要将此协议作为参数类型，必须使用any关键字进行修饰。其实在Swift5.1中也引入过一个some关键字，any和some都适用于协议，这两个关键字从语义上和写法上对泛型的使用进行了优化。</p>
+<h2 id="1-any"><a href="#1-any" class="headerlink" title="1. any"></a>1. any</h2><p>我们知道，协议中会规定一些属性和方法，用来约束其他结构的实现。举个简单的例子，我们可以使用协议定义了一个可飞行的实例需要实现的方法和属性，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Fly</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name:<span class="type">String</span> &#123;<span class="keyword">get</span> <span class="keyword">set</span>&#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fly</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bird</span>:<span class="title">Fly</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">"Bird"</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fly</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(name + <span class="string">"Fly"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(f: Fly)</span></span> &#123;</span><br><span class="line">    f.fly()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test(f: <span class="type">Bird</span>())</span><br></pre></td></tr></table></figure>
+<p>这个程序当前运行的很好，语义也很明确，即test的函数的参数需要是实现了Fly协议的任意类型，其实在此中情况下，虽然在调用是我们传入的是Bird实例，但是由于协议类型的约束较弱，在函数执行时编译器会将其解释成了Fly类型，实际上产生了类型丢失。尤其是当协议中有使用泛型时，此时上面的写法在最新的Xcode版本中会提示错误，需要我们添加any关键字。any关键字的意义其实就是实现上述的语义，将参数类型定义为遵守某个协议的任意类型，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Fly</span> </span>&#123;</span><br><span class="line">    associatedtype <span class="type">T</span></span><br><span class="line">    <span class="keyword">var</span> name:<span class="type">T</span> &#123;<span class="keyword">get</span> <span class="keyword">set</span>&#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fly</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bird</span>:<span class="title">Fly</span> </span>&#123;</span><br><span class="line">    <span class="keyword">typealias</span> <span class="type">T</span> = <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">"Bird"</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fly</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(name + <span class="string">"Fly"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(f: any Fly)</span></span> &#123;</span><br><span class="line">    f.fly()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = test(f: <span class="type">Bird</span>())</span><br></pre></td></tr></table></figure>
+<h2 id="2-some"><a href="#2-some" class="headerlink" title="2.some"></a>2.some</h2><p>针对于上面代码的应用场景，我们只需要约束参数的类型是遵守Fly协议的即可，但是有时候这并不够，有时协议中的函数会需要多个参数，我们需要使用泛型约束其参数的类型一致，例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">protocol</span> <span class="title">Fly</span> </span>&#123;</span><br><span class="line">    associatedtype <span class="type">T</span></span><br><span class="line">    <span class="keyword">var</span> name:<span class="type">T</span> &#123;<span class="keyword">get</span> <span class="keyword">set</span>&#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fly</span><span class="params">()</span></span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(a:T, b:T)</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bird</span>:<span class="title">Fly</span> </span>&#123;</span><br><span class="line">    <span class="keyword">typealias</span> <span class="type">T</span> = <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> name = <span class="string">"Bird"</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">fly</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(name + <span class="string">"Fly"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(a: String, b: String)</span></span> &#123;</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(f: any Fly)</span></span> &#123;</span><br><span class="line">    f.fly()</span><br><span class="line">    <span class="comment">// 这里会报错 因为any Fly类型在运行时无法确定成某个具体的类型</span></span><br><span class="line">    f.add(a: f.name, b: f.name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">test(f: <span class="type">Bird</span>())</span><br></pre></td></tr></table></figure>
+<p>可以看到，上面的代码中，test函数会报错，核心的原因在于any Fly类型的语音是任意实现了Fly协议的类型，无论是编译时还是运行时，编译器都无法推导出此f参数的类型。要解决上面的问题，可以采用泛型的方式来改写，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span>&lt;T:Fly&gt;<span class="params">(f: T)</span></span> &#123;</span><br><span class="line">    f.fly()</span><br><span class="line">    f.add(a: f.name, b: f.name)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此时代码则没有任何问题了，some关键字其实也是用于这一种场景，其表示的是一种透明类型，在运行时编译器知道其具体的类型是什么，只是对调用方来说是抽象的。下面的写法与上面使用泛型的写法作用完全一致：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">test</span><span class="params">(f: some Fly)</span></span> &#123;</span><br><span class="line">    f.fly()</span><br><span class="line">    f.add(a: f.name, b: f.name)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>整体看来，相对与泛型那种写法，使用some的写法语义更加清晰，风格上也与any刚好一致。</p>
+<p>最后，我们再来总结下，整体看来，any和some都是用来描述语义的关键字，any和协议一起使用，表示的是语义比较传统，及遵守了某个协议的类型，具体什么类型编译器也不知道。而some和协议一起使用表示的是具象的一个类型，此类型编译时不知道，调用时也开发者来说也是透明的，但是编译器自己是知道的，它就是具体的一个类型。</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2022/11/27/453在iOS中使用NSURLProtocol进行网络代理/" class="pre-post btn btn-default" title='在iOS中使用NSURLProtocol进行网络代理'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">在iOS中使用NSURLProtocol进行网络代理</span>
+        </a>
+    
+    
+        <a href="/2022/08/17/450iOS分享扩展支持自定义联系人/" class="next-post btn btn-default" title='iOS分享扩展支持自定义联系人'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS分享扩展支持自定义联系人</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#对Swift中some和any关键字的理解"><span class="toc-text">对Swift中some和any关键字的理解</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-any"><span class="toc-text">1. any</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-some"><span class="toc-text">2.some</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,400 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（19）——红外遥控控制实验 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（19）——红外遥控控制实验">
+            
+	            一起玩转树莓派（19）——红外遥控控制实验
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/11/15</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（19）——红外遥控控制实验"><a href="#一起玩转树莓派（19）——红外遥控控制实验" class="headerlink" title="一起玩转树莓派（19）——红外遥控控制实验"></a>一起玩转树莓派（19）——红外遥控控制实验</h1><p>红外遥控是生活中非常常见的电子器具，电视机，空调，音响等电器都可以通过遥控器进行控制。本篇博客，我们尝试来通过红外发生器和红外信号接受器来进行红外控制实验，在树莓派上通过红外遥控的按键来处理LED灯的控制。</p>
+<h2 id="一-实验前的准备"><a href="#一-实验前的准备" class="headerlink" title="一. 实验前的准备"></a>一. 实验前的准备</h2><p>本次实验，我们将使用一个红外遥控器来LED灯，需要准备的元件有：红外遥控器，红外收接器和一个双色LED灯。分别如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-1f95812a82d4b240bbcbc65641f005ceaa5.jpg" alt><img src="https://oscimg.oschina.net/oscnet/up-dca74231785ed8eafff75eac04c08f9683e.jpg" alt><img src="https://oscimg.oschina.net/oscnet/up-23b0faaf161f01bddb5a9a9ac97df48efe9.jpg" alt></p>
+<p>红外遥控只要安装了电池，之后我们点击任意按键的时候就会触发红外信号，红外收接模块可以收接此红外信号，双色LED我们已经十分熟悉了，后面只需根据红外信号来控制LED的亮灭即可。</p>
+<p>首先，我们可以先将红外收接传感器连接到树莓派，方便我们测试红外线的收接功能，连线如下：</p>
+<table>
+<thead>
+<tr>
+<th>树莓派</th>
+<th>红外收接器</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5V</td>
+<td>VCC</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>GPIO27(BCM编码)</td>
+<td>DO</td>
+</tr>
+</tbody>
+</table>
+<p>接着，我们需要在树莓派上安装红外驱动库lirc和Python-lirc，在树莓派终端执行如下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo apt update</span><br><span class="line"></span><br><span class="line">sudo apt install lirc</span><br><span class="line"></span><br><span class="line">sudo apt-get install liblircclient-dev</span><br><span class="line"></span><br><span class="line">sudo apt-get install python3-lirc</span><br></pre></td></tr></table></figure>
+<p>之后，需要对红外接口IO进行配置，在树莓派终端执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /boot/config.txt</span><br></pre></td></tr></table></figure>
+<p>nano是Linux系统下的一个文本编辑器，打开此配置文件后，我们需要找到下面两行配置项：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Uncomment this to enable the lirc-rpi module</span><br><span class="line"></span><br><span class="line">#dtoverlay=lirc-rpi,gpio_out_pin=17,gpio_in_pin=18,gpio_in_pull=up</span><br></pre></td></tr></table></figure>
+<p>将第二行的注释去掉，并修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dtoverlay=lirc-rpi,gpio_in_pin=27,gpio_in_pull=up</span><br></pre></td></tr></table></figure>
+<p>需要注意，这里我们采用了树莓派的GPIO27引脚(BCM编码)作为红外信号的收接引脚，并默认设置为上拉电阻。本实验中，我们不需发出红外信号，因此红外信号的输出引脚可以不用配置。修改完成后，使用Control + x来退出编辑器，退出时会询问是否保存修改，按Y键保存即可。</p>
+<p>下面，我们还需要对lirc的硬件接口进行配置，在树莓派终端使用如下指令打开配置文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/lirc/lirc_options.conf</span><br></pre></td></tr></table></figure>
+<p>在配置文件中找到如下两行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">driver = devinput</span><br><span class="line"></span><br><span class="line">device = auto</span><br></pre></td></tr></table></figure>
+<p>修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">driver = default</span><br><span class="line"></span><br><span class="line">device = /dev/lirc0</span><br></pre></td></tr></table></figure>
+<p>之后，重启树莓派，我们就可以测试红外收接功能了。</p>
+<h2 id="二-红外信号的收接"><a href="#二-红外信号的收接" class="headerlink" title="二.红外信号的收接"></a>二.红外信号的收接</h2><p>树莓派重启完成后，在终端输入如下指令来测试红外信号：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mode2 -d /dev/lirc0</span><br></pre></td></tr></table></figure>
+<p>需要注意，如果提示无法初始化lirc0，则需要先停止服务后在执行上面的指令，使用如下指令来停止服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service lircd stop</span><br></pre></td></tr></table></figure>
+<p>如果成功进入测试模式，你可以尝试使用红外遥控器对这树莓派按下一些按键，终端上出现如下图所示的输出，则表明已经可以成功收接到红外信号。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-ad30bfd1d33f35c3ff7a82ad3d582af9766.png" alt></p>
+<p>仅仅能够收接到信号对我们来说是不够的，这些信号我们并不能友好的进行识别，要将这些信号识别为有意义的按键，我们还需要信号进行编码。首先，在终端执行下面指令来查看所有可用的编码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">irrecord -l</span><br></pre></td></tr></table></figure>
+<p>终端将输出如下信息：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0416827e1d57a39c8800235f06c13752731.png" alt></p>
+<p>可用的编码非常多，本次实验我们可以选3个来使用，例如我们选择KEY_0，KEY_1和KEY_2这三个编码来绑定到我们的遥控器对应的0，1和2按键上。</p>
+<p>下面我们来进行编码的烧录，在终端执行如下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">irrecord -d /dev/lirc0 ~/lircd.conf</span><br></pre></td></tr></table></figure>
+<p>之后终端会输出很多描述文案，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-1fbbe9e86e9172914ce22b62ece37bd2aed.png" alt></p>
+<p>如果你有兴趣，可以阅读下这些介绍文案，然后直接回车即可。</p>
+<p>如果是第一次进行编码的烧录，终端会提示“Enter name of remote(only ascii, no spaces)”的文件，我们需要为烧录文件取一个名字，需要注意名字只能有ascii字符且不能有空格。输入完成名字后回车，终端会输出“Press RETURN now to start recording.”的提示，我们再次按回车，即可进入烧录阶段。</p>
+<p>烧录的过程有些繁琐，刚开始需要分析出遥控的按键间隔，我们可以随便按遥控上的按键，每次按键终端会输出一个“.”，注意一定要有耐心，一下一下的按，不要按住不松。按满一行后，终端会提示“Please keep on pressing btns like described above”，继续之前的操作即可，直到终端出现“Please enter the name for the next btn(press <enter> to finish recording)”，即表示按键间隔时间已经分析完成，我们可以开始正式录制。这时开始输入我们需要录制的键，比如KEY_0，之后终端提示如下：</enter></p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8e9f25327377a9566f068eba4a97f147a56.png" alt></p>
+<p>这时我们点按遥控器上的“0”键即可，之后按照相同的方式再录制KEY_1和KEY_2。全部录制完成后，再按回车即可。主要特别注意，这时终端会提示要进行保存验证，应尽快按住遥控器上任意一个按键不松，直到终端提示录制成功，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-cc9b8f43ff253e00f2000a397adafe42047.png" alt></p>
+<p>录制完成后，会在当前文件夹下生成*.lircd.conf的录制文件，将其拷贝到/etc/lirc/lircd.conf.d文件夹下，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp 0_1_2.lircd.conf /etc/lirc/lircd.conf.d/0_1_2.lircd.conf</span><br></pre></td></tr></table></figure>
+<p>还有一个细节需要注意，在/etc/lirc/lircd.conf.d文件夹下默认存在一个名为devinput.lircd.conf的文件，默认会读取这个文件的配置，将其改名为devinput.lircd.dist即可。进入/etc/lirc/lircd.conf.d文件夹后，执行如下指令即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mv devinput.lircd.conf devinput.lircd.dist</span><br></pre></td></tr></table></figure>
+<p>你也可以打开录制的*.lircd.conf文件看一下，如果每个录制的键后面有两串十六进制数，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-4948334be2f9a8cf3326b57e762a0ef43b4.png" alt></p>
+<p>则你需要将后一串一样的十六进制数删除，否则无法正常使用，删除后的文件如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0d8bf063d7d9aaeaff60ecc90b51bd50b0a.png" alt></p>
+<p>现在，不出意外的话，我们已经可以正常处理这3个按键信号了，在终端输入如下指令开启守护进程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service lircd restart </span><br><span class="line"></span><br><span class="line">lircd --nodaemon --device /dev/lirc0 --driver default</span><br></pre></td></tr></table></figure>
+<p>另外开一个终端，输入如下指令来测试遥控按键：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo irw</span><br></pre></td></tr></table></figure>
+<p>此时，按遥控器上的0，1和2按键，终端已经可以正常的响应了，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8e26490784deea83d5dab7680bb19a9a5d9.png" alt></p>
+<h2 id="三-在Python中使用lirc驱动库"><a href="#三-在Python中使用lirc驱动库" class="headerlink" title="三.在Python中使用lirc驱动库"></a>三.在Python中使用lirc驱动库</h2><p>你还记得我们之前的安装的python3-lirc库吧，下面是该用到它的时候了，首先创建一个Python文件，<a href="http://xn--19-kw2cwfn9ae9tnwat65fo2i.infrared.py" target="_blank" rel="noopener">我们暂且命名为19.infrared.py</a>，在树莓派终端将/etc/lirc/irexec.lircrc文件改名为lircrc，需要注意，就是lircrc文件，没有后缀名。下面我们需要根据需求进行一些配置，打开此文件，在其中配置Python程序要处理的红外按键，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7dd0d4413eb76025b2d83ba729869460227.png" alt></p>
+<p>如图中所示，通过begin和end组的方式来配置要处理的信号，其中prog需要配置为要处理此信号的Python程序，这里填我们的程序文件名即可，button用来设置要处理的按键，config用来配置传递到Python程序中的数据。更多配置方式可以通过如下链接得到：</p>
+<p><a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Ftompreston%2Fpython-lirc" target="_blank" rel="noopener">https://github.com/tompreston/python-lirc</a></p>
+<p>配置完成后，修改19.infrared.py文件如下，可以进行简单的测试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 导入lirc库</span></span><br><span class="line"><span class="keyword">import</span> lirc</span><br><span class="line"><span class="comment"># 进行初始化 这里设置blocking为False会避免阻塞，不接收的信号直接抛弃</span></span><br><span class="line">sockid = lirc.init(<span class="string">"19.infrared.py"</span>, blocking=<span class="keyword">False</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="comment">#获取按键信息</span></span><br><span class="line">    btn = lirc.nextcode()</span><br><span class="line">    <span class="keyword">if</span> len(btn):</span><br><span class="line">        print(btn)</span><br><span class="line"></span><br><span class="line">lirc.deinit()</span><br></pre></td></tr></table></figure>
+<p>运行上面代码，在红外遥控器上按0，1或者2，可以看到程序会打印出一个数组，其中存放的就是我们的按键值。</p>
+<p>现在，原理上说，你已经可以使用红外遥控和红外收接器做非常多的事情了，你可以将所有需要使用的按钮都录入，然后只做一个带LCD屏幕的计算器，或者通过遥控器控制电灯开关，温度气压计的数据上传等等。我们本次实验使用双色LED作为示例，抛砖引玉，希望你能发挥更多创造力。</p>
+<p>双色LED有3个引脚，关于双色LED灯的实验在本系列很早的一篇博客中即有介绍，如果你感觉陌生，可以往前翻一翻，这里我们直接连线：</p>
+<table>
+<thead>
+<tr>
+<th>双色LED</th>
+<th>树莓派</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>S</td>
+<td>GPIO17（BCM编码，对应物理编码11）</td>
+</tr>
+<tr>
+<td>-</td>
+<td>GPIO18（BCM编码，对应物理编码12）</td>
+</tr>
+</tbody>
+</table>
+<p>示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utd-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入lirc 和 GPIO库</span></span><br><span class="line"><span class="keyword">import</span> lirc</span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="comment"># 初始化lirc</span></span><br><span class="line">sockid = lirc.init(<span class="string">"19.infrared.py"</span>, blocking=<span class="keyword">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#初始化GPIO</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line">GPIO.setup(<span class="number">11</span>, GPIO.OUT)</span><br><span class="line">GPIO.setup(<span class="number">12</span>, GPIO.OUT)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 灭灯</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">clear</span><span class="params">()</span>:</span></span><br><span class="line">    GPIO.output(<span class="number">11</span>, GPIO.LOW)</span><br><span class="line">    GPIO.output(<span class="number">12</span>, GPIO.LOW)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置红灯亮</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">red</span><span class="params">()</span>:</span></span><br><span class="line">    GPIO.output(<span class="number">11</span>, GPIO.HIGH)</span><br><span class="line">    GPIO.output(<span class="number">12</span>, GPIO.LOW)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置绿灯亮</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">green</span><span class="params">()</span>:</span></span><br><span class="line">    GPIO.output(<span class="number">11</span>, GPIO.LOW)</span><br><span class="line">    GPIO.output(<span class="number">12</span>, GPIO.HIGH)</span><br><span class="line"></span><br><span class="line">clear()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 监听红外信号</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    btn = lirc.nextcode()</span><br><span class="line">    <span class="keyword">if</span> len(btn):</span><br><span class="line">        command = btn[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> command == <span class="string">'0'</span>:</span><br><span class="line">            clear()</span><br><span class="line">        <span class="keyword">if</span> command == <span class="string">'1'</span>:</span><br><span class="line">            red()</span><br><span class="line">        <span class="keyword">if</span> command == <span class="string">'2'</span>:</span><br><span class="line">            green()</span><br><span class="line">lirc.deinit()</span><br></pre></td></tr></table></figure>
+<p>运行代码，尝试下使用红外遥控器来控制灯的颜色和开关吧！</p>
+<h2 id="四-休息一下吧"><a href="#四-休息一下吧" class="headerlink" title="四. 休息一下吧"></a>四. 休息一下吧</h2><p>本系列博客到此，我们已经介绍了很多丰富多彩的传感器，你是否有想过组合使用这些传感器来创造出一些好玩的东西，现在你又具备了使用红外遥控远程控制程序的能力，尝试将你的想法实现一下吧！</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/11/16/435一起玩转树莓派（20）——噪声监测/" class="pre-post btn btn-default" title='一起玩转树莓派（20）——噪声监测'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（20）——噪声监测</span>
+        </a>
+    
+    
+        <a href="/2021/11/10/433自上而下的理解网络（2）——HTTP篇/" class="next-post btn btn-default" title='自上而下的理解网络（2）——HTTP篇'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（2）——HTTP篇</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（19）——红外遥控控制实验"><span class="toc-text">一起玩转树莓派（19）——红外遥控控制实验</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-实验前的准备"><span class="toc-text">一. 实验前的准备</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-红外信号的收接"><span class="toc-text">二.红外信号的收接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-在Python中使用lirc驱动库"><span class="toc-text">三.在Python中使用lirc驱动库</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-休息一下吧"><span class="toc-text">四. 休息一下吧</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

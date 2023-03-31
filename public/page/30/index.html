@@ -1,3 +1,20 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
 <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.9.0">
@@ -125,26 +142,20 @@
 
 <article class="post">
     
-        <div class="post-media">
-            <a href="/2015/10/25/135Xcode真机测试could not find developer disk image解决方法/">
-                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1025/095617_WYzU_2340880.png"   alt="Xcode真机测试could not find developer disk image解决方法">
-            </a>
-        </div>
-    
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2015/10/25/135Xcode真机测试could not find developer disk image解决方法/">Xcode真机测试could not find developer disk image解决方法</a>
+                <a href="/2015/12/18/165iOS获取和监测设备基本信息——UIDevice的使用/">iOS获取和监测设备基本信息——UIDevice的使用</a>
             </h1>
             <div class="post-meta">  &bull;
                 <time class="post-date" datetime="" title="">
-                    2015年10月25日
+                    2015年12月18日
                 </time>
             </div>
         </div>
         <p class="brief">
             
-                Xcode真机测试could not find developer disk image解决方法在使用Xcode进行真机调试的时候，有时根据真机的系统不同，会出现could not find developer disk image ...
+                iOS获取和监测设备基本信息——UIDevice的使用12345678910111213141516171819202122//获取当前设备单例+ (UIDevice *)currentDevice;//获取当前设备名称 @prope...
             
         </p>
     </div>
@@ -156,8 +167,8 @@
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/日常技巧">
-            日常技巧
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
         </a>
     </span>
     
@@ -178,7 +189,7 @@
             </div>
 
             <div class="post-permalink">
-                <a href="/2015/10/25/135Xcode真机测试could not find developer disk image解决方法/" class="btn btn-default">阅读全文</a>
+                <a href="/2015/12/18/165iOS获取和监测设备基本信息——UIDevice的使用/" class="btn btn-default">阅读全文</a>
             </div>
         </footer>
     
@@ -190,17 +201,19 @@
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2015/10/24/134watchOS中进行异步图片加载和缓存的策略/">watchOS中进行异步图片加载和缓存的策略</a>
+                <a href="/2015/12/14/164iOS传感器开发——距离传感器的应用/">iOS传感器开发——距离传感器的应用</a>
             </h1>
             <div class="post-meta">  &bull;
                 <time class="post-date" datetime="" title="">
-                    2015年10月24日
+                    2015年12月14日
                 </time>
             </div>
         </div>
         <p class="brief">
             
-                watchOS中进行异步图片加载和缓存的策略一、引言iWatch是智能手表的一次革命。iWatch的应用也将会越来越多，基于watch的一些特点，watchOS的开发者需要更加精益的把握watch的UI和性能。运用watchOS自带的...
+                iOS传感器开发——距离传感器的应用iPhone手机中内置了距离传感器，位置在手机的听筒附近，当我们在打电话的时候靠近听筒，手机的屏幕会自动熄灭，这就靠距离传感器来控制。
+
+在我们开发app时，如果需要，也可以调用距离传感器的一些接口...
             
         </p>
     </div>
@@ -212,8 +225,8 @@
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/Apple Watch开发手记">
-            Apple Watch开发手记
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
         </a>
     </span>
     
@@ -234,63 +247,7 @@
             </div>
 
             <div class="post-permalink">
-                <a href="/2015/10/24/134watchOS中进行异步图片加载和缓存的策略/" class="btn btn-default">阅读全文</a>
-            </div>
-        </footer>
-    
-</article>
-
-
-<article class="post">
-    
-    <div class="post-content">
-        <div class="post-head home-post-head">
-            <h1 class="post-title">
-                <a href="/2015/10/19/133AppleWatch开发入门九——Watch帧动画的实现/">AppleWatch开发入门九——Watch帧动画的实现</a>
-            </h1>
-            <div class="post-meta">  &bull;
-                <time class="post-date" datetime="" title="">
-                    2015年10月19日
-                </time>
-            </div>
-        </div>
-        <p class="brief">
-            
-                AppleWatch开发入门九——Watch帧动画的实现动画一直是iOS系统的一大亮点，CoreAnimation和粒子效果的支持，开发者可以很容易的做出效果炫酷的动画特效。在watchOS中，由于性能和屏幕尺寸的限制，对于动画，并没...
-            
-        </p>
-    </div>
-    
-        <footer class="post-footer clearfix">
-            <div class="pull-left tag-list">
-                <div class="post-meta">
-    
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/Apple Watch开发手记">
-            Apple Watch开发手记
-        </a>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-                
-            
-        </span>
-    </span>
-    
-
-    
-</div>
-
-            </div>
-
-            <div class="post-permalink">
-                <a href="/2015/10/19/133AppleWatch开发入门九——Watch帧动画的实现/" class="btn btn-default">阅读全文</a>
+                <a href="/2015/12/14/164iOS传感器开发——距离传感器的应用/" class="btn btn-default">阅读全文</a>
             </div>
         </footer>
     
@@ -300,26 +257,25 @@
 <article class="post">
     
         <div class="post-media">
-            <a href="/2015/10/19/131AppleWatch开发入门七——watchOS中通知的应用/">
-                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1019/132503_0uD6_2340880.png"   alt="AppleWatch开发入门七——watchOS中通知的应用">
+            <a href="/2015/12/13/163iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1213/104612_9dg5_2340880.png"   alt="iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用">
             </a>
         </div>
     
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2015/10/19/131AppleWatch开发入门七——watchOS中通知的应用/">AppleWatch开发入门七——watchOS中通知的应用</a>
+                <a href="/2015/12/13/163iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用/">iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用</a>
             </h1>
             <div class="post-meta">  &bull;
                 <time class="post-date" datetime="" title="">
-                    2015年10月19日
+                    2015年12月13日
                 </time>
             </div>
         </div>
         <p class="brief">
             
-                AppleWatch开发入门七——watchOS中通知的应用一、引言在iOS系统中，支持的通知有两种类型：本地通知和远程通知。本地通知多用于计时类通知，远程的又称推送，多用于一些提示动态的提示信息。这里有相关通知的一些知识总结：
-本地...
+                ﻿iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用一、引言通过加速度传感器，螺旋仪传感器和磁力传感，我们可以获取到手机在当前三维空间中的形态，加速度传感器也被称作重力感应。在一些赛车游戏中可以广泛得到应用。在iOS5之...
             
         </p>
     </div>
@@ -331,8 +287,8 @@
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/Apple Watch开发手记">
-            Apple Watch开发手记
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
         </a>
     </span>
     
@@ -353,63 +309,7 @@
             </div>
 
             <div class="post-permalink">
-                <a href="/2015/10/19/131AppleWatch开发入门七——watchOS中通知的应用/" class="btn btn-default">阅读全文</a>
-            </div>
-        </footer>
-    
-</article>
-
-
-<article class="post">
-    
-    <div class="post-content">
-        <div class="post-head home-post-head">
-            <h1 class="post-title">
-                <a href="/2015/10/19/132AppleWatch开发入门八——Watch中图片缓存的处理/">AppleWatch开发入门八——Watch中图片缓存的处理</a>
-            </h1>
-            <div class="post-meta">  &bull;
-                <time class="post-date" datetime="" title="">
-                    2015年10月19日
-                </time>
-            </div>
-        </div>
-        <p class="brief">
-            
-                AppleWatch开发入门八——Watch中图片缓存的处理由于iWatch在存储和性能上都和iPhone有着很大的差距，这就要求开发者对程序有更高的性能优化，下载与传输图像，在Watch操作中是一个非时的过程，因此，watchOS中...
-            
-        </p>
-    </div>
-    
-        <footer class="post-footer clearfix">
-            <div class="pull-left tag-list">
-                <div class="post-meta">
-    
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/Apple Watch开发手记">
-            Apple Watch开发手记
-        </a>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-                
-            
-        </span>
-    </span>
-    
-
-    
-</div>
-
-            </div>
-
-            <div class="post-permalink">
-                <a href="/2015/10/19/132AppleWatch开发入门八——Watch中图片缓存的处理/" class="btn btn-default">阅读全文</a>
+                <a href="/2015/12/13/163iOS传感器开发——加速度传感器，螺旋仪传感器，磁力传感器的应用/" class="btn btn-default">阅读全文</a>
             </div>
         </footer>
     
@@ -419,25 +319,25 @@
 <article class="post">
     
         <div class="post-media">
-            <a href="/2015/10/17/130iOS8统一的系统提示控件——UIAlertController/">
-                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1017/200351_DeEZ_2340880.png"   alt="iOS8统一的系统提示控件——UIAlertController">
+            <a href="/2015/12/10/162iOS传感器开发——为APP添加手机密码、指纹进行安全验证/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1210/163655_ufUv_2340880.jpg"   alt="iOS传感器开发——为APP添加手机密码、指纹进行安全验证">
             </a>
         </div>
     
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2015/10/17/130iOS8统一的系统提示控件——UIAlertController/">iOS8统一的系统提示控件——UIAlertController</a>
+                <a href="/2015/12/10/162iOS传感器开发——为APP添加手机密码、指纹进行安全验证/">iOS传感器开发——为APP添加手机密码、指纹进行安全验证</a>
             </h1>
             <div class="post-meta">  &bull;
                 <time class="post-date" datetime="" title="">
-                    2015年10月17日
+                    2015年12月10日
                 </time>
             </div>
         </div>
         <p class="brief">
             
-                iOS8统一的系统提示控件——UIAlertController一、引言相信在iOS开发中，大家对UIAlertView和UIActionSheet一定不陌生，这两个控件在UI设计中发挥了很大的作用。然而如果你用过，你会发现这两个控件...
+                iOS传感器开发——为APP添加手机密码、指纹进行安全验证一、引言iPhone5s之后，iPhone硬件上已支持进行指纹识别的功能，相应的，一些新的api也可以应用于APP中，进行用户安全的验证。目前，开发者可以使用的安全验证方式有两...
             
         </p>
     </div>
@@ -449,8 +349,8 @@
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/iOS之UI控件">
-            iOS之UI控件
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
         </a>
     </span>
     
@@ -471,7 +371,63 @@
             </div>
 
             <div class="post-permalink">
-                <a href="/2015/10/17/130iOS8统一的系统提示控件——UIAlertController/" class="btn btn-default">阅读全文</a>
+                <a href="/2015/12/10/162iOS传感器开发——为APP添加手机密码、指纹进行安全验证/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/12/06/160iOS开发CoreAnimation解读之五——高级动画技巧/">iOS开发CoreAnimation解读之五——高级动画技巧</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年12月06日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发CoreAnimation解读之五——高级动画技巧一、事务类CoreAnimation中还有一个非常重要的类：CATransaction事物类，这个可以同时设置多个layer层的动画效果。可以通过隐式和显式两种方式来进行动画...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/12/06/160iOS开发CoreAnimation解读之五——高级动画技巧/" class="btn btn-default">阅读全文</a>
             </div>
         </footer>
     
@@ -481,25 +437,25 @@
 <article class="post">
     
         <div class="post-media">
-            <a href="/2015/10/16/129AppleWatch开发入门六——Glance(预览)扩展的应用/">
-                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1016/110128_GMIL_2340880.png"   alt="AppleWatch开发入门六——Glance(预览)扩展的应用">
+            <a href="/2015/12/06/161iOS开发CoreAnimation解读之六——CATransform3D变换的应用/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1206/152731_iQIU_2340880.png"   alt="iOS开发CoreAnimation解读之六——CATransform3D变换的应用">
             </a>
         </div>
     
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2015/10/16/129AppleWatch开发入门六——Glance(预览)扩展的应用/">AppleWatch开发入门六——Glance(预览)扩展的应用</a>
+                <a href="/2015/12/06/161iOS开发CoreAnimation解读之六——CATransform3D变换的应用/">iOS开发CoreAnimation解读之六——CATransform3D变换的应用</a>
             </h1>
             <div class="post-meta">  &bull;
                 <time class="post-date" datetime="" title="">
-                    2015年10月16日
+                    2015年12月06日
                 </time>
             </div>
         </div>
         <p class="brief">
             
-                AppleWatch开发入门六——Glance(预览)扩展的应用一、简介Glance是watchOS中类似iOS的today插件一样的预览扩展。提供了Glance功能的WatchApp可以在手表主页上唤起Glance，展示app相关信...
+                iOS开发CoreAnimation解读之五——CATransform3D变换的应用一、引言CATransform3D定义了一个变化矩阵，通过对矩阵参数的设置，我们可以改变layer的一些属性，这个属性的改变，可以产生动画的效果。首先...
             
         </p>
     </div>
@@ -511,8 +467,8 @@
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/Apple Watch开发手记">
-            Apple Watch开发手记
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
         </a>
     </span>
     
@@ -533,7 +489,7 @@
             </div>
 
             <div class="post-permalink">
-                <a href="/2015/10/16/129AppleWatch开发入门六——Glance(预览)扩展的应用/" class="btn btn-default">阅读全文</a>
+                <a href="/2015/12/06/161iOS开发CoreAnimation解读之六——CATransform3D变换的应用/" class="btn btn-default">阅读全文</a>
             </div>
         </footer>
     
@@ -543,25 +499,25 @@
 <article class="post">
     
         <div class="post-media">
-            <a href="/2015/10/15/127AppleWatch开发入门四——Table视图的应用/">
-                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1015/101551_qOiw_2340880.png"   alt="AppleWatch开发入门四——Table视图的应用">
+            <a href="/2015/12/05/159iOS开发CoreAnimation解读之四——Layer层动画内容/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1204/172312_5Zup_2340880.png"   alt="iOS开发CoreAnimation解读之四——Layer层动画内容">
             </a>
         </div>
     
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2015/10/15/127AppleWatch开发入门四——Table视图的应用/">AppleWatch开发入门四——Table视图的应用</a>
+                <a href="/2015/12/05/159iOS开发CoreAnimation解读之四——Layer层动画内容/">iOS开发CoreAnimation解读之四——Layer层动画内容</a>
             </h1>
             <div class="post-meta">  &bull;
                 <time class="post-date" datetime="" title="">
-                    2015年10月15日
+                    2015年12月05日
                 </time>
             </div>
         </div>
         <p class="brief">
             
-                AppleWatch开发入门四——Table视图的应用一、Watch上的TableWatchOS中的TableView和iOS中的TableView还是有很大的区别，在开发之前，首先我们应该明白WatchOS中的Table有哪些局限性...
+                iOS开发CoreAnimation解读之四——Layer层动画内容一、引言通过前几篇博客的介绍，我们可以了解到layer层可以设置许多与控件UI相关的属性，并且对于iOS开发，UIView层的属性是会映射到CALayer的，因此，可...
             
         </p>
     </div>
@@ -573,8 +529,8 @@
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/Apple Watch开发手记">
-            Apple Watch开发手记
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
         </a>
     </span>
     
@@ -595,7 +551,7 @@
             </div>
 
             <div class="post-permalink">
-                <a href="/2015/10/15/127AppleWatch开发入门四——Table视图的应用/" class="btn btn-default">阅读全文</a>
+                <a href="/2015/12/05/159iOS开发CoreAnimation解读之四——Layer层动画内容/" class="btn btn-default">阅读全文</a>
             </div>
         </footer>
     
@@ -605,25 +561,25 @@
 <article class="post">
     
         <div class="post-media">
-            <a href="/2015/10/15/128AppleWatch开发入门五——菜单控件的使用/">
-                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1015/144535_msxf_2340880.png"   alt="AppleWatch开发入门五——菜单控件的使用">
+            <a href="/2015/12/02/158iOS运用runtime全局修改UILabel的默认字体/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1202/145711_OTN6_2340880.png"   alt="iOS运用runtime全局修改UILabel的默认字体">
             </a>
         </div>
     
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2015/10/15/128AppleWatch开发入门五——菜单控件的使用/">AppleWatch开发入门五——菜单控件的使用</a>
+                <a href="/2015/12/02/158iOS运用runtime全局修改UILabel的默认字体/">iOS运用runtime全局修改UILabel的默认字体</a>
             </h1>
             <div class="post-meta">  &bull;
                 <time class="post-date" datetime="" title="">
-                    2015年10月15日
+                    2015年12月02日
                 </time>
             </div>
         </div>
         <p class="brief">
             
-                AppleWatch开发入门五——菜单控件的使用一、简介菜单也是WatchOS中一个重要的交互方式，限于Watch的屏幕尺寸，若将所有用户交互控件都紧密的排列进展示的UI中，那样难免会使用户操作困难，也会影响界面布局的简洁美观。因此，...
+                iOS运用runtime全局修改UILabel的默认字体一、需求背景介绍在项目比较成熟的基础上，遇到了这样一个需求，应用中需要引入新的字体，需要更换所有Label的默认字体，但是同时，对于一些特殊设置了字体的label又不需要更换。乍...
             
         </p>
     </div>
@@ -635,8 +591,8 @@
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/Apple Watch开发手记">
-            Apple Watch开发手记
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
         </a>
     </span>
     
@@ -657,7 +613,7 @@
             </div>
 
             <div class="post-permalink">
-                <a href="/2015/10/15/128AppleWatch开发入门五——菜单控件的使用/" class="btn btn-default">阅读全文</a>
+                <a href="/2015/12/02/158iOS运用runtime全局修改UILabel的默认字体/" class="btn btn-default">阅读全文</a>
             </div>
         </footer>
     
@@ -667,25 +623,25 @@
 <article class="post">
     
         <div class="post-media">
-            <a href="/2015/10/14/125AppleWatch开发入门二——界面布局/">
-                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1014/140712_inlI_2340880.png"   alt="AppleWatch开发入门二——界面布局">
+            <a href="/2015/12/01/157iOS开发CoreAnimation解读之三——几种常用Layer的使用解析/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1201/152354_mDh8_2340880.png"   alt="iOS开发CoreAnimation解读之三——几种常用Layer的使用解析">
             </a>
         </div>
     
     <div class="post-content">
         <div class="post-head home-post-head">
             <h1 class="post-title">
-                <a href="/2015/10/14/125AppleWatch开发入门二——界面布局/">AppleWatch开发入门二——界面布局</a>
+                <a href="/2015/12/01/157iOS开发CoreAnimation解读之三——几种常用Layer的使用解析/">iOS开发CoreAnimation解读之三——几种常用Layer的使用解析</a>
             </h1>
             <div class="post-meta">  &bull;
                 <time class="post-date" datetime="" title="">
-                    2015年10月14日
+                    2015年12月01日
                 </time>
             </div>
         </div>
         <p class="brief">
             
-                AppleWatch开发入门二——界面布局一、简介在iphone开发中，最基本的布局方式是通过frame，将控件的位置和大小固定在屏幕上，后来，由于手机屏幕的尺寸有了略微变化，有了autoresizing的布局框架，我们可以设置子视图...
+                iOS开发CoreAnimation解读之三——几种常用Layer的使用解析一、CAEmitterLayerCAEmitterLayer是CoreAnimation框架中的粒子发射层，在以前的一片博客中有详细的介绍和范例，这里不再重复...
             
         </p>
     </div>
@@ -697,8 +653,8 @@
     
     <span class="categories-meta fa-wrap">
         <i class="fa fa-folder-open-o"></i>
-        <a href="/categories/Apple Watch开发手记">
-            Apple Watch开发手记
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
         </a>
     </span>
     
@@ -719,7 +675,69 @@
             </div>
 
             <div class="post-permalink">
-                <a href="/2015/10/14/125AppleWatch开发入门二——界面布局/" class="btn btn-default">阅读全文</a>
+                <a href="/2015/12/01/157iOS开发CoreAnimation解读之三——几种常用Layer的使用解析/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/26/156iOS开发CoreAnimation解读之二——对CALayer的分析/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1125/141858_Mnu0_2340880.png"   alt="iOS开发CoreAnimation解读之二——对CALayer的分析">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/26/156iOS开发CoreAnimation解读之二——对CALayer的分析/">iOS开发CoreAnimation解读之二——对CALayer的分析</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月26日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发CoreAnimation解读之二——对CALayer的分析一、UIView中的CALayer属性1.Layer专门负责view的视图渲染每一个UIView的对象中都有一个layer这样的属性，并且layer会负责view中...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/26/156iOS开发CoreAnimation解读之二——对CALayer的分析/" class="btn btn-default">阅读全文</a>
             </div>
         </footer>
     
@@ -730,7 +748,7 @@
 
     <nav class="pagination" role="navigation">
         <div id="page-nav">
-            <a class="extend prev" rel="prev" href="/page/29/"><i class='fa fa-angle-left'></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="page-number" href="/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/page/31/">31</a><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/43/">43</a><a class="extend next" rel="next" href="/page/31/"><i class='fa fa-angle-right'></i></a>
+            <a class="extend prev" rel="prev" href="/page/29/"><i class='fa fa-angle-left'></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/28/">28</a><a class="page-number" href="/page/29/">29</a><span class="page-number current">30</span><a class="page-number" href="/page/31/">31</a><a class="page-number" href="/page/32/">32</a><span class="space">&hellip;</span><a class="page-number" href="/page/46/">46</a><a class="extend next" rel="next" href="/page/31/"><i class='fa fa-angle-right'></i></a>
         </div>
     </nav>
 
@@ -807,7 +825,7 @@ iOS、Android、HTML、JavaScript<br/>
         
     <div class="widget">
         <h3 class="title">分类</h3>
-        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android小记/"><i class="fa" aria-hidden="true">Android小记</i></a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Apple-Watch开发手记/"><i class="fa" aria-hidden="true">Apple Watch开发手记</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/COCOS2D/"><i class="fa" aria-hidden="true">COCOS2D</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/COME-ON-SWIFT/"><i class="fa" aria-hidden="true">COME ON SWIFT</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GIT/"><i class="fa" aria-hidden="true">GIT</i></a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTML学习笔记/"><i class="fa" aria-hidden="true">HTML学习笔记</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JSPatch/"><i class="fa" aria-hidden="true">JSPatch</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/"><i class="fa" aria-hidden="true">Java</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/"><i class="fa" aria-hidden="true">Linux</i></a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Objective-C浅探/"><i class="fa" aria-hidden="true">Objective-C浅探</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/"><i class="fa" aria-hidden="true">Python</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ReactNative/"><i class="fa" aria-hidden="true">ReactNative</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SwiftUI/"><i class="fa" aria-hidden="true">SwiftUI</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Swift语法专题/"><i class="fa" aria-hidden="true">Swift语法专题</i></a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS10专题/"><i class="fa" aria-hidden="true">iOS10专题</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS14专题/"><i class="fa" aria-hidden="true">iOS14专题</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS9专题/"><i class="fa" aria-hidden="true">iOS9专题</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS之UI控件/"><i class="fa" aria-hidden="true">iOS之UI控件</i></a><span class="category-list-count">54</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS第三方库/"><i class="fa" aria-hidden="true">iOS第三方库</i></a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS编程技巧/"><i class="fa" aria-hidden="true">iOS编程技巧</i></a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS逻辑初窥/"><i class="fa" aria-hidden="true">iOS逻辑初窥</i></a><span class="category-list-count">132</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macOS开发/"><i class="fa" aria-hidden="true">macOS开发</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/万言归宗/"><i class="fa" aria-hidden="true">万言归宗</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/"><i class="fa" aria-hidden="true">代码优化</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码灵魂/"><i class="fa" aria-hidden="true">代码灵魂</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前后端/"><i class="fa" aria-hidden="true">前后端</i></a><span class="category-list-count">32</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/小码工具/"><i class="fa" aria-hidden="true">小码工具</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/日常技巧/"><i class="fa" aria-hidden="true">日常技巧</i></a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/"><i class="fa" aria-hidden="true">正则表达式</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/疑难杂症/"><i class="fa" aria-hidden="true">疑难杂症</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程珠玑/"><i class="fa" aria-hidden="true">编程珠玑</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/"><i class="fa" aria-hidden="true">设计模式</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式两三谈/"><i class="fa" aria-hidden="true">设计模式两三谈</i></a><span class="category-list-count">2</span></li></ul>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android小记/"><i class="fa" aria-hidden="true">Android小记</i></a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Apple-Watch开发手记/"><i class="fa" aria-hidden="true">Apple Watch开发手记</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/COCOS2D/"><i class="fa" aria-hidden="true">COCOS2D</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/COME-ON-SWIFT/"><i class="fa" aria-hidden="true">COME ON SWIFT</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GIT/"><i class="fa" aria-hidden="true">GIT</i></a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTML学习笔记/"><i class="fa" aria-hidden="true">HTML学习笔记</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JSPatch/"><i class="fa" aria-hidden="true">JSPatch</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/"><i class="fa" aria-hidden="true">Java</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/"><i class="fa" aria-hidden="true">Linux</i></a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Objective-C浅探/"><i class="fa" aria-hidden="true">Objective-C浅探</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/"><i class="fa" aria-hidden="true">Python</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ReactNative/"><i class="fa" aria-hidden="true">ReactNative</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Swift/"><i class="fa" aria-hidden="true">Swift</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SwiftUI/"><i class="fa" aria-hidden="true">SwiftUI</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Swift语法专题/"><i class="fa" aria-hidden="true">Swift语法专题</i></a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS10专题/"><i class="fa" aria-hidden="true">iOS10专题</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS14专题/"><i class="fa" aria-hidden="true">iOS14专题</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS9专题/"><i class="fa" aria-hidden="true">iOS9专题</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS之UI控件/"><i class="fa" aria-hidden="true">iOS之UI控件</i></a><span class="category-list-count">54</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS之逻辑初窥/"><i class="fa" aria-hidden="true">iOS之逻辑初窥</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS第三方库/"><i class="fa" aria-hidden="true">iOS第三方库</i></a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS编程技巧/"><i class="fa" aria-hidden="true">iOS编程技巧</i></a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS逻辑初窥/"><i class="fa" aria-hidden="true">iOS逻辑初窥</i></a><span class="category-list-count">132</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macOS开发/"><i class="fa" aria-hidden="true">macOS开发</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/万言归宗/"><i class="fa" aria-hidden="true">万言归宗</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/"><i class="fa" aria-hidden="true">代码优化</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码灵魂/"><i class="fa" aria-hidden="true">代码灵魂</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前后端/"><i class="fa" aria-hidden="true">前后端</i></a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/小码工具/"><i class="fa" aria-hidden="true">小码工具</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/日常技巧/"><i class="fa" aria-hidden="true">日常技巧</i></a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/"><i class="fa" aria-hidden="true">正则表达式</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/疑难杂症/"><i class="fa" aria-hidden="true">疑难杂症</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程珠玑/"><i class="fa" aria-hidden="true">编程珠玑</i></a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络技术/"><i class="fa" aria-hidden="true">网络技术</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/"><i class="fa" aria-hidden="true">计算机网络</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/"><i class="fa" aria-hidden="true">设计模式</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式两三谈/"><i class="fa" aria-hidden="true">设计模式两三谈</i></a><span class="category-list-count">2</span></li></ul>
     </div>
 
 
@@ -815,7 +833,7 @@ iOS、Android、HTML、JavaScript<br/>
         
     <div class="widget">
       <h3 class="title">归档</h3>
-        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/"><i class="fa" aria-hidden="true">2021年08月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/"><i class="fa" aria-hidden="true">2021年07月</i></a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/"><i class="fa" aria-hidden="true">2021年04月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/"><i class="fa" aria-hidden="true">2021年03月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/"><i class="fa" aria-hidden="true">2021年02月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/"><i class="fa" aria-hidden="true">2020年11月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/"><i class="fa" aria-hidden="true">2020年09月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/"><i class="fa" aria-hidden="true">2020年08月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/"><i class="fa" aria-hidden="true">2020年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/"><i class="fa" aria-hidden="true">2020年05月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/"><i class="fa" aria-hidden="true">2020年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/"><i class="fa" aria-hidden="true">2019年10月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/"><i class="fa" aria-hidden="true">2019年06月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/"><i class="fa" aria-hidden="true">2019年02月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/"><i class="fa" aria-hidden="true">2019年01月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/"><i class="fa" aria-hidden="true">2018年12月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/"><i class="fa" aria-hidden="true">2018年10月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/"><i class="fa" aria-hidden="true">2018年09月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/"><i class="fa" aria-hidden="true">2018年08月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/"><i class="fa" aria-hidden="true">2018年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/"><i class="fa" aria-hidden="true">2018年06月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/"><i class="fa" aria-hidden="true">2018年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">2018年03月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">2018年02月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">2018年01月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">2017年12月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/"><i class="fa" aria-hidden="true">2017年11月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/"><i class="fa" aria-hidden="true">2017年10月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">2017年08月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">2017年07月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/"><i class="fa" aria-hidden="true">2017年06月</i></a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">2017年05月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">2017年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">2017年03月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">2017年02月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">2017年01月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">2016年12月</i></a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">2016年11月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">2016年10月</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">2016年09月</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">2016年08月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/"><i class="fa" aria-hidden="true">2016年07月</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">2016年06月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/"><i class="fa" aria-hidden="true">2016年05月</i></a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">2016年04月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">2016年03月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/"><i class="fa" aria-hidden="true">2016年02月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/"><i class="fa" aria-hidden="true">2016年01月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/"><i class="fa" aria-hidden="true">2015年12月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/"><i class="fa" aria-hidden="true">2015年11月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/"><i class="fa" aria-hidden="true">2015年10月</i></a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/"><i class="fa" aria-hidden="true">2015年09月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/"><i class="fa" aria-hidden="true">2015年08月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/"><i class="fa" aria-hidden="true">2015年07月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/"><i class="fa" aria-hidden="true">2015年06月</i></a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/"><i class="fa" aria-hidden="true">2015年05月</i></a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/"><i class="fa" aria-hidden="true">2015年04月</i></a><span class="archive-list-count">40</span></li></ul>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/"><i class="fa" aria-hidden="true">2022年12月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/"><i class="fa" aria-hidden="true">2022年11月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/"><i class="fa" aria-hidden="true">2022年10月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/"><i class="fa" aria-hidden="true">2022年08月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/"><i class="fa" aria-hidden="true">2022年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/"><i class="fa" aria-hidden="true">2022年06月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/"><i class="fa" aria-hidden="true">2022年03月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/"><i class="fa" aria-hidden="true">2022年02月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/"><i class="fa" aria-hidden="true">2022年01月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/"><i class="fa" aria-hidden="true">2021年12月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/"><i class="fa" aria-hidden="true">2021年11月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/"><i class="fa" aria-hidden="true">2021年10月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/"><i class="fa" aria-hidden="true">2021年09月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/"><i class="fa" aria-hidden="true">2021年08月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/"><i class="fa" aria-hidden="true">2021年07月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/"><i class="fa" aria-hidden="true">2021年04月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/"><i class="fa" aria-hidden="true">2021年03月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/"><i class="fa" aria-hidden="true">2021年02月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/"><i class="fa" aria-hidden="true">2020年11月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/"><i class="fa" aria-hidden="true">2020年09月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/"><i class="fa" aria-hidden="true">2020年08月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/"><i class="fa" aria-hidden="true">2020年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/"><i class="fa" aria-hidden="true">2020年05月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/"><i class="fa" aria-hidden="true">2020年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/"><i class="fa" aria-hidden="true">2019年10月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/"><i class="fa" aria-hidden="true">2019年06月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/"><i class="fa" aria-hidden="true">2019年02月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/"><i class="fa" aria-hidden="true">2019年01月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/"><i class="fa" aria-hidden="true">2018年12月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/"><i class="fa" aria-hidden="true">2018年10月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/"><i class="fa" aria-hidden="true">2018年09月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/"><i class="fa" aria-hidden="true">2018年08月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/"><i class="fa" aria-hidden="true">2018年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/"><i class="fa" aria-hidden="true">2018年06月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/"><i class="fa" aria-hidden="true">2018年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">2018年03月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">2018年02月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">2018年01月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">2017年12月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/"><i class="fa" aria-hidden="true">2017年11月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/"><i class="fa" aria-hidden="true">2017年10月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">2017年08月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">2017年07月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/"><i class="fa" aria-hidden="true">2017年06月</i></a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">2017年05月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">2017年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">2017年03月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">2017年02月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">2017年01月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">2016年12月</i></a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">2016年11月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">2016年10月</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">2016年09月</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">2016年08月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/"><i class="fa" aria-hidden="true">2016年07月</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">2016年06月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/"><i class="fa" aria-hidden="true">2016年05月</i></a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">2016年04月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">2016年03月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/"><i class="fa" aria-hidden="true">2016年02月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/"><i class="fa" aria-hidden="true">2016年01月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/"><i class="fa" aria-hidden="true">2015年12月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/"><i class="fa" aria-hidden="true">2015年11月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/"><i class="fa" aria-hidden="true">2015年10月</i></a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/"><i class="fa" aria-hidden="true">2015年09月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/"><i class="fa" aria-hidden="true">2015年08月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/"><i class="fa" aria-hidden="true">2015年07月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/"><i class="fa" aria-hidden="true">2015年06月</i></a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/"><i class="fa" aria-hidden="true">2015年05月</i></a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/"><i class="fa" aria-hidden="true">2015年04月</i></a><span class="archive-list-count">40</span></li></ul>
     </div>
 
 

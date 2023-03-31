@@ -1,0 +1,379 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>前端自动化构建之Gulp | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="前端自动化构建之Gulp">
+            
+	            前端自动化构建之Gulp
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/前后端">
+            前后端
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2022/06/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="前端自动化构建之Gulp"><a href="#前端自动化构建之Gulp" class="headerlink" title="前端自动化构建之Gulp"></a>前端自动化构建之Gulp</h1><p>本篇文章的核心是介绍一款强大的任务流工具Gulp，之所以题目叫做“前端自动化构建之Gulp”，是因为Gulp本身是使用JS编写的运行在Node环境的一个npm包，并且大部分开发者也都使用它来作为前端项目的自动化构建工具。不过，从本质上说，Gulp并非只能做前端自动化构建，后端构建发布自动化，脚本工具集自动化，测试流程自动化等都可以使用Gulp。所以，无论你是哪个技术栈的开发者，学习使用Gulp都会对你大有裨益。</p>
+<p>这边文章能够带给你：</p>
+<ul>
+<li>Gulp工具的安装</li>
+<li>Gulp工作原理</li>
+<li>创建自动化流程中的独立任务</li>
+<li>任务的串行与并行</li>
+<li>使用管道处理数据流</li>
+<li>监听文件变更</li>
+<li>简易前端自动化构建DEMO流程</li>
+</ul>
+<p>本篇文章虽然无法将Gulp所有的细节都介绍到，但总体上来说挑选了其中最核心的部分，也是最实用的部分进行了介绍，并且通过一个前端DEMO的示例，演示使用Gulp进行[环境初始化-&gt;代码合并-&gt;代码压缩-&gt;启动服务器-&gt;监听文件-&gt;热更新浏览器]的完整自动化流程。</p>
+<h2 id="一-Gulp基础"><a href="#一-Gulp基础" class="headerlink" title="一.Gulp基础"></a>一.Gulp基础</h2><p>好像任何技术栈的开发者，都会遇到耗费时间且让人痛苦不堪的流程问题。除了基础的研发，测试，部署流程外，往往中间还需要根据需求执行额外的任务，例如代码检查，代码压缩，代码混淆等。这些流程虽然与研发无关，但是却是产品上线的必备过程，繁琐的流程不仅会消耗开发者额外的精力，对于团队来说，也很难控制所有开发者所执行的流程都一致且完整，例如某些成员可能由于疏忽大意而忘记做代码压缩就直接将项目发布上线了。因此，将流程自动化不仅可以解放人力，更是项目稳定性的保障。Gulp就是为解决这样问题而发现的一款简单，高效且生态完整的自动化工具。</p>
+<h3 id="1-安装Gulp"><a href="#1-安装Gulp" class="headerlink" title="1.安装Gulp"></a>1.安装Gulp</h3><p>Gulp是运行在Node环境中的，因此你需要先安装Node.js，这里不再赘述。</p>
+<p>Gulp工具分两部分构成，全局Gulp CLI和本地Gulp。关于他们之间的关系，后面我们再详细介绍。首先先来安装全局的Gulp CLI工具，在终端执行如下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g gulp-cli</span><br></pre></td></tr></table></figure>
+<p>安装完成后，要检查是否安装成功，可以键入如下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gulp -v</span><br></pre></td></tr></table></figure>
+<p>此时，你应该可以看到如下的输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CLI version: 2.3.0</span><br><span class="line">Local version: Unknown</span><br></pre></td></tr></table></figure>
+<p>其中，第一行表示我们安装的全局的Gulp CLI工具的版本号，第二行表示本地Gulp版本号，本地Gulp是安装在具体的项目目录中的，此时我们尚未安装。下面我们可以创建一个项目目录，例如创建名为gulp-demo文件夹，在目录下使用下面的指令来初始化Node模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm init</span><br></pre></td></tr></table></figure>
+<p>在当前目录下使用如下指令来安装本地Gulp：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev gulp</span><br></pre></td></tr></table></figure>
+<p>安装完成后，再次执行gulp -v，可以看到本地Gulp的版本，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CLI version: 2.3.0</span><br><span class="line">Local version: 4.0.2</span><br></pre></td></tr></table></figure>
+<p>需要注意，你在测试时，要使用4.x及以上的本地Gulp版本。</p>
+<h3 id="2-Gulp的工作原理"><a href="#2-Gulp的工作原理" class="headerlink" title="2.Gulp的工作原理"></a>2.Gulp的工作原理</h3><p>前面，我们安装了Gulp CLI和本地Gulp，现在是时候来介绍下Gulp的工作原理了。在使用Gulp时，我们需要编写一个名为Gulpfile.js的文件，这个文件是Gulp工作的核心，其中会定义各种任务及任务流。Gulp CLI工具是启动Gulp的入口，其通过指令来调用项目中的本地Gulp，本地Gulp会调用Gulpfile.js文件，加载和执行定义好的任务，在Gulpfile.js文件中，通常又需要调用本地Gulp模块中提供的API方法，以及本地Gulp插件或自定义函数的功能从而实现任务。工作原理如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-2856d5e01870a50854315c2d48a39ef8322.png" alt></p>
+<h3 id="3-编写Gulpfile-js文件"><a href="#3-编写Gulpfile-js文件" class="headerlink" title="3.编写Gulpfile.js文件"></a>3.编写Gulpfile.js文件</h3><p>在学习编程语言时，第一个程序通常都是HelloWorld，Gulp的学习也不例外，我们先来测试下Gulp的HelloWorld程序。在工程目录下新建一个命名为Gulpfile.js的文件，在其中编写如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 引入本地Gulp模块</span></span><br><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 调用task方法来定义任务</span></span><br><span class="line">gulp.task(<span class="string">'gulp'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"Hello Gulp!"</span>);</span><br><span class="line">  done();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>其中，task函数用来定义任务，其第1个参数为任务名，第2个参数为要执行的任务方法，这里我们传入了一个自定义的函数，此函数中会传入一个回调done参数，当任务逻辑代码结束后，要调用此回调通知Gulp此任务已经结束，否则会阻塞Gulp后续任务的执行。</p>
+<p>在当前目录下，执行如下终端指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gulp gulp</span><br></pre></td></tr></table></figure>
+<p>此指令的作用是让全局Gulp CLI工具调用本地Gulp来执行Gulpfile.js中定义的名为gulp的任务。执行后，终端输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[09:37:18] Using gulpfile ~/Desktop/gulp-demo/gulpfile.js</span><br><span class="line">[09:37:18] Starting &apos;gulp&apos;...</span><br><span class="line">Hello Gulp!</span><br><span class="line">[09:37:18] Finished &apos;gulp&apos; after 2.55 ms</span><br></pre></td></tr></table></figure>
+<p>可以看到，正确输出的Hello Gulp!，并且执行任务的开始时间和结束时间都有记录，任务耗时也有记录。</p>
+<h2 id="二-Gulp任务链与数据流"><a href="#二-Gulp任务链与数据流" class="headerlink" title="二.Gulp任务链与数据流"></a>二.Gulp任务链与数据流</h2><p>我们已经知道如何通过Gulp来执行独立的任务，但更多实际场景中，自动化的流程都不是简单独立的任务可以完成的，我们需要将任务组成任务链。例如我们模拟这几个任务：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'clean'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"清理构建目录"</span>);</span><br><span class="line">  done();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'copy'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"复制模板文件"</span>);</span><br><span class="line">  done();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'build'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"编译代码"</span>);</span><br><span class="line">  done();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'server'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"启动开发服务器"</span>);</span><br><span class="line">  done();</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'watch'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">"监听文件变化持续热更新"</span>);</span><br><span class="line">  done();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面5个任务模拟了前端自动化构建的基本流程，这些任务间有些是有依赖关系的，比如清理构建目录任务来在复制模板文件和编译代码之前，不然可能刚编译好的代码就又被清掉了，启动开发服务器则要在复制模板文件和编译代码之后，但是复制模板文件和编译代码这两个任务是可以并行进行的。使用Gulp任务链，可以非常方便的实现任务间依赖处理。</p>
+<h3 id="1-series和parallel"><a href="#1-series和parallel" class="headerlink" title="1.series和parallel"></a>1.series和parallel</h3><p>series意为串行，parallel意为并行。通过Gulp中的这两个API，可以方便的将任务组合成串行链或并行链，任务链也可以作为一个独立的任务在组合进其他的任务链，这样就是Gulp任务的组合变得非常灵活。按照前面描述的需求添加一个任务链如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'dev'</span>, gulp.series(</span><br><span class="line">  <span class="string">'clean'</span>,</span><br><span class="line">  gulp.parallel(<span class="string">'copy'</span>, <span class="string">'build'</span>),</span><br><span class="line">  <span class="string">'server'</span>,</span><br><span class="line">  <span class="string">'watch'</span></span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+<p>在终端中键入gulp dev，输出情况如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[10:38:08] Using gulpfile ~/Desktop/gulp-demo/gulpfile.js</span><br><span class="line">[10:38:08] Starting &apos;dev&apos;...</span><br><span class="line">[10:38:08] Starting &apos;clean&apos;...</span><br><span class="line">清理构建目录</span><br><span class="line">[10:38:08] Finished &apos;clean&apos; after 915 μs</span><br><span class="line">[10:38:08] Starting &apos;copy&apos;...</span><br><span class="line">[10:38:08] Starting &apos;build&apos;...</span><br><span class="line">复制模板文件</span><br><span class="line">[10:38:08] Finished &apos;copy&apos; after 349 μs</span><br><span class="line">编译代码</span><br><span class="line">[10:38:08] Finished &apos;build&apos; after 423 μs</span><br><span class="line">[10:38:08] Starting &apos;server&apos;...</span><br><span class="line">启动开发服务器</span><br><span class="line">[10:38:08] Finished &apos;server&apos; after 180 μs</span><br><span class="line">[10:38:08] Starting &apos;watch&apos;...</span><br><span class="line">监听文件变化持续热更新</span><br><span class="line">[10:38:08] Finished &apos;watch&apos; after 153 μs</span><br><span class="line">[10:38:08] Finished &apos;dev&apos; after 5.57 ms</span><br></pre></td></tr></table></figure>
+<p>从输出可以看到，任务间的串行和并行关系已经可以满足我们的需求，使用Gulp处理任务依赖就是这么简单。</p>
+<p>我们再回过头来看一下series和parallel两个方法，其内可以传入不限个数个参数，参数可以是字符串，可以是函数，也可以是其他的任务链组合。当参数为字符串时，其会被当成任务名来调用指定任务，当参数为函数时，会执行此函数，当参数为任务链组合时，会执行对应的任务链。当参数为函数时要特别注意，必须回调通知Gulp任务完成，否则会阻塞任务链。如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'dev'</span>, gulp.series(</span><br><span class="line">  <span class="string">'clean'</span>,</span><br><span class="line">  <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'custom method'</span>);</span><br><span class="line">    done();</span><br><span class="line">  &#125;,</span><br><span class="line">  gulp.parallel(<span class="string">'copy'</span>, <span class="string">'build'</span>),</span><br><span class="line">  <span class="string">'server'</span>,</span><br><span class="line">  <span class="string">'watch'</span></span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+<p>执行后，终端输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">[10:46:31] Using gulpfile ~/Desktop/gulp-demo/gulpfile.js</span><br><span class="line">[10:46:31] Starting &apos;dev&apos;...</span><br><span class="line">[10:46:31] Starting &apos;clean&apos;...</span><br><span class="line">清理构建目录</span><br><span class="line">[10:46:31] Finished &apos;clean&apos; after 738 μs</span><br><span class="line">[10:46:31] Starting &apos;&lt;anonymous&gt;&apos;...</span><br><span class="line">custom method</span><br><span class="line">[10:46:31] Finished &apos;&lt;anonymous&gt;&apos; after 238 μs</span><br><span class="line">[10:46:31] Starting &apos;copy&apos;...</span><br><span class="line">[10:46:31] Starting &apos;build&apos;...</span><br><span class="line">复制模板文件</span><br><span class="line">[10:46:31] Finished &apos;copy&apos; after 520 μs</span><br><span class="line">编译代码</span><br><span class="line">[10:46:31] Finished &apos;build&apos; after 490 μs</span><br><span class="line">[10:46:31] Starting &apos;server&apos;...</span><br><span class="line">启动开发服务器</span><br><span class="line">[10:46:31] Finished &apos;server&apos; after 168 μs</span><br><span class="line">[10:46:31] Starting &apos;watch&apos;...</span><br><span class="line">监听文件变化持续热更新</span><br><span class="line">[10:46:31] Finished &apos;watch&apos; after 117 μs</span><br><span class="line">[10:46:31] Finished &apos;dev&apos; after 7.16 ms</span><br></pre></td></tr></table></figure>
+<p>你或许发现了，执行到自定义的函数时，终端显示的任务名是anonymous，表示匿名的，更好的方式是我们使用具名函数，这样方便对任务执行状态进行回溯，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'dev'</span>, gulp.series(</span><br><span class="line">  <span class="string">'clean'</span>,</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">customMethod</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'custom method'</span>);</span><br><span class="line">    done();</span><br><span class="line">  &#125;,</span><br><span class="line">  gulp.parallel(<span class="string">'copy'</span>, <span class="string">'build'</span>),</span><br><span class="line">  <span class="string">'server'</span>,</span><br><span class="line">  <span class="string">'watch'</span></span><br><span class="line">));</span><br></pre></td></tr></table></figure>
+<h3 id="2-关于Gulp数据流"><a href="#2-关于Gulp数据流" class="headerlink" title="2.关于Gulp数据流"></a>2.关于Gulp数据流</h3><p>从宏观上了解了Gulp任务的串行与并行，现在我们再来关注下更具体的问题。本地Gulp本身提供了许多强大的API，像前面用到的task，series，parallel都是API其中之一。自动化构建，本质上是对文件的扫描和处理，因此Gulp中也封装了与文件操作相关的API。</p>
+<p>首先，读取文件流和输出文件流的两个API分别是src和dest。</p>
+<p>src方法用来创建一个文件数据流，可以从文件系统读取文件数据到虚拟文件对象，虚拟文件对象是Gulp中的一个概念，其会将文件的名称，信息，数据等抽象成一个虚拟的对象，之后文件的操作都在内存中进行，速度很快，直到处理完成后在输出到指定文件。例如开发时，我们的模板代码通常在src目录下，编译打包后会将处理后的文件放入dest目录下，这就涉及到文件的拷贝处理。</p>
+<p>在工程目录下创建一个名为src的子文件夹，在其中创建一个简单的HTML文件，修改下copy任务如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'copy'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'src/*.html'</span>).</span><br><span class="line">  pipe(gulp.dest(<span class="string">'dest'</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>再次执行整个任务流，可以看到项目根目录中自动生成了一个dest文件夹，并且已经将HTML文件拷贝了进去。在这个copy任务的实现函数中，我们并没有调用done回调，这是因为gulp的API已经实现了Gulp任务接口规范，直接返回结果即可。</p>
+<p>src方法读取文件数据流时，可以指定具体的文件或通配符，如上代码所示，表示将src文件夹下所有的HTML文件选中，创建成数据流，数据流提供的主要API是pipe方法，这个方法用来连接各个处理数据流的节点，可以将它理解为一个管道，输入从一端流入，处理后从另一端流出，如果需要继续进行其他处理，还可以连接其他管道。这种责任链的设计模式，可以非常灵活的连接各个处理插件。以前端代码合并压缩处理为例，流程如下：</p>
+<p><em><strong>文件系统—-&gt;src[虚拟文件流]—&gt;文件合并模块[合并后的虚拟文件流]—&gt;代码压缩模块[压缩有的虚拟文件流]—&gt;dest[回写到文件系统]—&gt;文件系统</strong></em></p>
+<h2 id="三-实践：简易前端自动化构建流程"><a href="#三-实践：简易前端自动化构建流程" class="headerlink" title="三.实践：简易前端自动化构建流程"></a>三.实践：简易前端自动化构建流程</h2><p>前面我们逻辑上模拟了前端自动化构建过程，只是在实现上，都是用的log进行模拟，这并不十分有趣。使其，使用Gulp搭建一个简易的前端构建自动化流程并不复杂，几分钟就可以搞定。</p>
+<h3 id="1-安装几个Gulp插件"><a href="#1-安装几个Gulp插件" class="headerlink" title="1.安装几个Gulp插件"></a>1.安装几个Gulp插件</h3><p>Gulp有着非常丰富的生态，本质上，任意npm模块我们都可以直接使用，除此之外，还有4000多个专门为Gulp设计的插件，可以方便的支持各种文件处理，代码检查等需求。插件地址如下：</p>
+<p><a href="https://gulpjs.com/plugins/" target="_blank" rel="noopener">https://gulpjs.com/plugins/</a></p>
+<p>本次实践，需要使用到2个Gulp插件和2个npm模块，分别进行文件合并，代码压缩，文件删除和浏览器测试热更新。在项目目录下使用如下指令来安装这些模块：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev gulp-concat </span><br><span class="line">npm install --save-dev gulp-uglify  </span><br><span class="line">npm install --save-dev del   </span><br><span class="line">npm install --save-dev browser-sync</span><br></pre></td></tr></table></figure>
+<p>在Gulpfile.js中引入这些模块：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</span><br><span class="line"><span class="keyword">var</span> concat = <span class="built_in">require</span> (<span class="string">'gulp-concat'</span>);</span><br><span class="line"><span class="keyword">var</span> uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>);</span><br><span class="line"><span class="keyword">var</span> del = <span class="built_in">require</span>(<span class="string">'del'</span>)</span><br><span class="line"><span class="keyword">var</span> bSync = <span class="built_in">require</span>(<span class="string">'browser-sync'</span>).create();</span><br></pre></td></tr></table></figure>
+<h3 id="2-实现自动化构建流程中的几个任务"><a href="#2-实现自动化构建流程中的几个任务" class="headerlink" title="2.实现自动化构建流程中的几个任务"></a>2.实现自动化构建流程中的几个任务</h3><p>首先我们先来实现clean任务，修改代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'clean'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> del([<span class="string">'dest'</span>])</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面代码的作用是将dest文件夹删除，每次初始构建，我们都将旧的目录删掉，以免缓存的文件对最终的软件包造成影响。</p>
+<p>copy任务的实现方法不变，直接将HTML文件模板拷贝到指定的构建目录即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'copy'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'src/*.html'</span>).</span><br><span class="line">  pipe(gulp.dest(<span class="string">'dest'</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>编译的过程主要涉及到CSS相关的SASS或LESS编译，或TS，CoffeeScript的编译等等，为了简单起见，我们只做JS文件的合并和压缩，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'build'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'src/*.js'</span>)</span><br><span class="line">  .pipe(concat(<span class="string">'main.js'</span>))</span><br><span class="line">  .pipe(uglify())</span><br><span class="line">  .pipe(gulp.dest(<span class="string">'dest'</span>))</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面代码的作用是将src文件夹下所有的JS文件合并到一个名为main.js的文件中，并进行代码压缩，最后输出到dest文件夹。</p>
+<p>实现server任务如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'server'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  bSync.init(&#123;</span><br><span class="line">    server:<span class="string">'./dest'</span>,</span><br><span class="line">  &#125;);</span><br><span class="line">  done();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>上面代码会启动本地服务器，并引导chrome项目页面。</p>
+<p>对于监听本地文件的变化，Gulp中自带对应的API，实现watch任务如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">gulp.task(<span class="string">'watch'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">  gulp.watch([<span class="string">'src/*.js'</span>],gulp.parallel(<span class="string">'build'</span>));</span><br><span class="line">  gulp.watch([<span class="string">'src/*.html'</span>],gulp.parallel(<span class="string">'copy'</span>));</span><br><span class="line">  gulp.watch([<span class="string">'dest/**/*'</span>],<span class="function"><span class="keyword">function</span>(<span class="params">done</span>)</span>&#123;</span><br><span class="line">    bSync.reload(<span class="string">'index.html'</span>);</span><br><span class="line">    done()</span><br><span class="line">  &#125;);</span><br><span class="line">  done();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这里需要注意，由于我们对JS文件的编译和HTML模板的拷贝任务是分开的，因此监听也可以分开，当发现JS文件发生了变化时，只进行编译任务即可，当发现HTML文件变化时，只进行模板拷贝任务即可，当构建文件夹有变更时，重新刷新浏览器，从而实现开发过程中的测试热更新。</p>
+<p>最后，我们可以写一些测试文件了，在src文件夹下新建两个js文件和一个html文件，代码分别如下：</p>
+<p>file1.js文件中代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mlog</span>(<span class="params">msg</span>) </span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="built_in">Date</span>(),<span class="string">': 自定义输出 -'</span>,msg);</span><br><span class="line">&#125;</span><br><span class="line">mlog(<span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
+<p>file2.js文件中代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">var</span> c = a + b;</span><br><span class="line"><span class="built_in">console</span>.log(c);</span><br></pre></td></tr></table></figure>
+<p>index.html文件中代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">header</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span> <span class="attr">src</span>=<span class="string">"./main.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">header</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">h1</span>&gt;</span>标题11<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">	</span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用gulp dev来开启自动化构建流程，你可以打开chome的控制台，查看控制台的输出，尝试修改下src文件夹中的HTML文件和JS文件，保存后可以看到对应的页面也会发生更新。</p>
+<p>到此，我们已经实现了一个简单的前端开发自动化构建流程，Gulp不负你所望吧！</p>
+<p>温馨提示：在子进程结束之前，Gulp进程是不会自动结束的，因此其会一直监听文件的变更刷新页面，要关闭开发服务器，只需control+c即可。</p>
+<h2 id="四-结语"><a href="#四-结语" class="headerlink" title="四.结语"></a>四.结语</h2><p>最后，虽然大多数情况下Gulp会用在前端自动化构建中，但是这并不是Gulp唯一的用途，任何开发工作流都可以使用Gulp来构建，npm包的丰富极大的扩展了Gulp的应用场景。希望本篇文章可以帮你打开技术视野，能够探索出Gulp的更多应用场景，帮助你简化工作流程。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>—— 珲少 QQ：316045346</p>
+<p>同时，如果本篇文章让你觉得有用，欢迎分享给更多朋友，请标明出处。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2022/06/19/446Clang代码覆盖率检测（插桩技术）/" class="pre-post btn btn-default" title='Clang代码覆盖率检测（插桩技术）'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Clang代码覆盖率检测（插桩技术）</span>
+        </a>
+    
+    
+        <a href="/2022/03/30/444自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ/" class="next-post btn btn-default" title='自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前端自动化构建之Gulp"><span class="toc-text">前端自动化构建之Gulp</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-Gulp基础"><span class="toc-text">一.Gulp基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-安装Gulp"><span class="toc-text">1.安装Gulp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Gulp的工作原理"><span class="toc-text">2.Gulp的工作原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-编写Gulpfile-js文件"><span class="toc-text">3.编写Gulpfile.js文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-Gulp任务链与数据流"><span class="toc-text">二.Gulp任务链与数据流</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-series和parallel"><span class="toc-text">1.series和parallel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-关于Gulp数据流"><span class="toc-text">2.关于Gulp数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-实践：简易前端自动化构建流程"><span class="toc-text">三.实践：简易前端自动化构建流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-安装几个Gulp插件"><span class="toc-text">1.安装几个Gulp插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-实现自动化构建流程中的几个任务"><span class="toc-text">2.实现自动化构建流程中的几个任务</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-结语"><span class="toc-text">四.结语</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

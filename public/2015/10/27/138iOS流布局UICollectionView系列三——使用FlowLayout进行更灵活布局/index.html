@@ -1,3 +1,20 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
 <!DOCTYPE HTML>
 <html lang="zh-CN">
 <head><meta name="generator" content="Hexo 3.9.0">
@@ -234,9 +251,9 @@ UICollectionViewDelegateFlowLayout是UICollectionViewDelegate的子协议，其�
         </a>
     
     
-        <a href="/2015/10/27/137iOS流布局UICollectionView系列二——UICollectionView的代理方法/" class="next-post btn btn-default" title='iOS流布局UICollectionView系列二——UICollectionView的代理方法'>
+        <a href="/2015/10/27/139iOS流布局UICollectionView系列四——自定义FlowLayout进行瀑布流布局/" class="next-post btn btn-default" title='iOS流布局UICollectionView系列四——自定义FlowLayout进行瀑布流布局'>
             <span class="hidden-lg">下一篇</span>
-            <span class="hidden-xs">iOS流布局UICollectionView系列二——UICollectionView的代理方法</span><i class="fa fa-angle-right fa-fw"></i>
+            <span class="hidden-xs">iOS流布局UICollectionView系列四——自定义FlowLayout进行瀑布流布局</span><i class="fa fa-angle-right fa-fw"></i>
         </a>
     
 </div>
