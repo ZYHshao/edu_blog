@@ -1,0 +1,354 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning系列（1）——简介 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning系列（1）——简介">
+            
+	            iOS MachineLearning系列（1）——简介
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/04/14</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning系列（1）——简介"><a href="#iOS-MachineLearning系列（1）——简介" class="headerlink" title="iOS MachineLearning系列（1）——简介"></a>iOS MachineLearning系列（1）——简介</h1><p>最近，随着Chat-GPT的发布，人工智能相关的资讯和话题再次火热了起来。有了人工智能的加持，对人们的生活以及各行各业的工作都将带来效率的极大提升。目前，各种大模型的发布层出不穷，这些大模型虽然功能非常强大（如文本理解，绘图等），但对于个人来说，要跑起这样一个模型来对外提供服务还是比较困难的，其需要有非常强大的算力支持。</p>
+<p>本系列博客，主旨在讨论使用分布式的方式来运行ML或AI相关的服务功能，在iOS平台中，系统本身就提供了ML相关的框架以及内置API接口，使用内置接口已经可以实现非常强大的AI功能，且不需要引入额外的模型，不会增大App的体积。如果有更高级的AI需求，我们也可以使用CoreML框架来运行第三方的模型，非常强大。更甚一步，如果有非常定制化的AI需求，我们也可以通过Xcode工具来自己训练模型，使用自己训练的模型来实现更加复杂的功能。</p>
+<p>在结构上，本系列博客将从应用的角度由浅入深的进行介绍，先介绍系统API的功能，再介绍如何使用三方模型，最后讨论如何自己训练模型。希望这些文章可以起到抛砖引玉的效果，帮助你打开在iOS平台上AI应用的新思路，并充分的利用用户的设备来实现AI功能，而不是中心服务器。</p>
+<h2 id="1-关于Machine-Learning"><a href="#1-关于Machine-Learning" class="headerlink" title="1 - 关于Machine Learning"></a>1 - 关于Machine Learning</h2><p>CoreML是iOS系统提供的机器Learning核心框架，其可以将训练好的模型轻松的集成到我们的应用中，至于模型，我们可以使用自己训练的，也可以使用三方训练好的，甚至可以将其他框架的模型转换成CoreML所需要的类型进行使用。</p>
+<p>iOS中的Machine Learning能力可以概括为以下几个方面：</p>
+<ul>
+<li>Machine Learning APIS</li>
+<li>Create ML</li>
+<li>Use Models</li>
+<li>ML Converters</li>
+</ul>
+<h2 id="2-Machine-Learning-APIS"><a href="#2-Machine-Learning-APIS" class="headerlink" title="2 - Machine Learning APIS"></a>2 - Machine Learning APIS</h2><p>我们知道，iOS系统本身就有一些AI功能，例如人脸识别，语音识别等，这些系统内置的功能其实也开发了API供开发者使用，我们只需要很少的代码，即可在应用中集成这些功能，包括：</p>
+<ul>
+<li>视觉：分析图像和视频的相关功能。</li>
+<li>自然语言：处理和理解文本相关的。</li>
+<li>语音：语音内容识别相关的。</li>
+<li>音频：音频类型识别相关的。</li>
+</ul>
+<p><strong>与视觉相关的API功能包括有：</strong></p>
+<p>图片分类：自动识别图像中的内容。</p>
+<p>图片增强：将图像的关键部分进行突出。</p>
+<p>图像对齐：处理图像边缘对齐。</p>
+<p>图像相似性对比：生成特征对比图像相似性。</p>
+<p>目标检测：在图像中找到目标物。</p>
+<p>对象跟踪：跟踪视频中的移动对象。</p>
+<p>轨迹检测：检测视频中运动物体的轨迹。</p>
+<p>轮廓检测：检测图像或视频中物体的轮廓。</p>
+<p>文本检测：检测图像中的文本区域。</p>
+<p>文本识别：识别图像中的文本，提取文本。</p>
+<p>人脸检测：检测图像中的人脸。</p>
+<p>人脸追踪：实时追踪相机视频流中的人脸。</p>
+<p>面部特征提取：检测面部特征提取人脸特征。</p>
+<p>人脸捕获质量：比较一组图中的人脸捕获质量。</p>
+<p>人体检测：在图片中查找人体。</p>
+<p>身体姿势分析：分析图像中的人体姿势。</p>
+<p>手部姿势识别：在图像中识别手部姿势。</p>
+<p>动物识别：识别图像中的猫狗。</p>
+<p>条形码识别：识别条形码。</p>
+<p>矩形检测：查找图片中的矩形区域。</p>
+<p>地平线检测：分析图片中的地平线角度。</p>
+<p>光电流：分析对象在连续视频帧之间的运动模式。</p>
+<p>人像细分：为图片中的人物生成无光图像。</p>
+<p>文档分析：检测图像中包含的文本矩形区域。</p>
+<p><strong>与自然语言处理相关API有：</strong></p>
+<p>token化：枚举文本字符串中的单词。</p>
+<p>语言识别：识别文本的主体语言。</p>
+<p>打标签：对文本中的实体进行标签化。</p>
+<p>词性标注：标注文本中实体的词性。</p>
+<p>单词嵌入：嵌入相近词。</p>
+<p>句子嵌入：嵌入相近句。</p>
+<p>情绪分析：分析文本的情绪。</p>
+<p><strong>与语音识别API有：</strong></p>
+<p>语音识别：将语音提取成文字。</p>
+<p><strong>与音频处理相关的API有：</strong></p>
+<p>声音分类：将声音进行分类。</p>
+<p>本系列的后续文章会对这些API的使用多详细介绍。</p>
+<h2 id="2-Create-ML"><a href="#2-Create-ML" class="headerlink" title="2 - Create ML"></a>2 - Create ML</h2><p>Create ML是Mac上提供的一种模型训练方式，其训练完成后的模型可以直接在CoreML框架上进行使用。降低了模型训练的复杂性。</p>
+<p>Create ML支持对多种类型的数据为内容进行训练，包括图片，视频，活动，声音，文本和表格等。如果安装了Xcode，则自动也将安装Create ML工具，其中自带了很多训练模板，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8c7abfc755cd98a6987a938880b12c4a7b4.png" alt></p>
+<p>关于模型的训练，也将在后续文章中做介绍。</p>
+<h2 id="3-Use-Models"><a href="#3-Use-Models" class="headerlink" title="3 - Use Models"></a>3 - Use Models</h2><p>自己训练模型是有一定的成本的，比如首先要有大量的用于训练的数据。Core ML社区也为开发者提供了一些训练好的模型，可以直接下载使用。可以在如下网站进行下载：</p>
+<p><a href="https://developer.apple.com/machine-learning/models/" target="_blank" rel="noopener">https://developer.apple.com/machine-learning/models/</a></p>
+<p>这些模型的功能还是很强大的，比如进行图像的深度预测，数字手写体识别，绘图分类，物体识别，像素分割，人类关节分析，以及查找问题的答案等等。</p>
+<p>后续文章会介绍如何使用这些模型。</p>
+<h2 id="4-ML-Converters"><a href="#4-ML-Converters" class="headerlink" title="4. ML Converters"></a>4. ML Converters</h2><p>Core ML本身是Apple提供的模型框架，我们知道还有很多第三方的训练库，我们也可以将其他框架训练的模型转换为Core ML模型，从而集成进iOS应用。支持的库和框架包括：</p>
+<ul>
+<li>TenscrFlow</li>
+<li>PyTorch</li>
+<li>XGboost</li>
+<li>scikit-learn</li>
+<li>LIBSVM</li>
+</ul>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2022/12/30/454理解iOS端的WebView同层组件/" class="next-post btn btn-default" title='理解iOS端的WebView同层组件'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">理解iOS端的WebView同层组件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning系列（1）——简介"><span class="toc-text">iOS MachineLearning系列（1）——简介</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-关于Machine-Learning"><span class="toc-text">1 - 关于Machine Learning</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Machine-Learning-APIS"><span class="toc-text">2 - Machine Learning APIS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Create-ML"><span class="toc-text">2 - Create ML</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Use-Models"><span class="toc-text">3 - Use Models</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-ML-Converters"><span class="toc-text">4. ML Converters</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
