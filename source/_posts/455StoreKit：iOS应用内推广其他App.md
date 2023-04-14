@@ -1,313 +1,211 @@
 ---
-title: 理解iOS端的WebView同层组件
-date: 2022-12-30
+title: StoreKit：iOS应用内推广其他App
+date: 2022-03-24
 categories: iOS之逻辑初窥
 tags: []
 ---
-# 理解iOS端的WebView同层组件
+# StoreKit：iOS应用内推广其他App
 
-## 一 起始
+在iOS应用中，要推广其他App有两种途径，一种是直接跳转到AppStore软件的对应App商品页，还有一种是在当前应用内内嵌一个App商品页。相比第一种方式，第二种方式的体验更好，并且不会打断用户对当前应用的使用。
 
-同层渲染是利用原生技术来优化Web渲染一种技术，很多人了解它是起于微信开放社区发布的一篇关于小程序渲染原理剖析的文章。我将链接附上：
+本篇文章，我们主要介绍StoreKit框架中的相关接口，使用StoreKit可以轻松的在当前应用内推广其他App。
 
-[https://developers.weixin.qq.com/community/develop/article/doc/000c4e433707c072c1793e56f5c813](https://developers.weixin.qq.com/community/develop/article/doc/000c4e433707c072c1793e56f5c813)
+## · 在应用内打开其他App的商品页
 
-大部分的Web应用，所有的元素和组件都是渲染在WebView内部的，有时候这导致我们无法充分利用原生的强大能力，例如音视频播放，地图功能等。因此，在微信小程序开发框架中，还提供了一些以”cover-“开头的组件，这些组件本身是原生的，只是贴在了WebView上面。借助原生组件，可以极大的提高应用的性能体验，但是也有一些弊端。
+StoreKit框架中提供了一个名为SKStoreProductViewController的类，此类事继承自UIViewController的，因此我们可以像使用普通视频控制器一样来使用它。只要我们提供了某个应用的ITunes ID，就可以轻松的在应用中打开其AppStore商品页。
 
--   原生组件的层级在WebView之上，因此无法在Web中通过标签的层级来调整组件的z轴位置。
--   原生组件与WebView文档流是完全脱离的，这使得布局的控制变得困难。
+例如下面的代码：
 
-同层组件的出现正为解决这些问题。
+```swift
+// 创建视图控制器
+let appStoreController = SKStoreProductViewController()
+// 设置代理
+appStoreController.delegate = self
+// 定义参数
+let params = [SKStoreProductParameterITunesItemIdentifier: "387682726"]
+// 加载应用信息
+appStoreController.loadProduct(withParameters: params)
+// 将页面弹出
+self.present(appStoreController, animated: true)
+```
 
-## 二 原理
+上面代码中使用了淘宝应用的ITunes ID，代码执行效果如下图所示：
 
-同层组件的目标是将原生组件渲染在与其他Web组件同一层级中。在iOS中，我们使用WKWebView来创建Web视图，WKWebView在进行解析渲染时，会将Web组件渲染到WKCompositingView上，这个View是一个原生的UIView子类，通常WKWebView内核会将多个组件共同渲染到同一个WKCompositingView上，但是如果某个HTML标签的style设置了overflow: scroll属性，并且内容超出容器的大小，WKWebView就会为其单独的创建一个WKChildScrollView，因此如果我们可以找到这个View，并和对应的Web组件一一关联起来，就可以将原生的组件渲染到这个View中，从而实现同层渲染。
+![](https://oscimg.oschina.net/oscnet/up-34a7598fbde2a3c18a283b104507c952025.jpg)
 
-我们可以先写一个简单的Web示例页面：
+可以看到，我们直接在应用内就弹起了”淘宝“的详情页，可以直接进行下载/更新操作。
 
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title></title>
-    <link rel="stylesheet" href="">
-    <style type="text/css">
-        .block {
-            width: 80%;
-            height: 300pt;
-            margin-top: 50pt;
-            background-color: red;
-        }
-        .content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
+需要注意，上面代码只能在真机上进行测试，且默认页面的弹出方式为浮层样式。
 
-        .title {
-            width: 100%;
-            text-align: center;
-        }
-        .toast {
-            position: fixed;
-            width: 250pt;
-            height: 100pt;
-            background-color: gray;
-            line-height: 100pt;
-            text-align: center;
-            color: white;
-            top: 50%;
-            left: 50%;
-            font-size: 50pt;
-            transform: translate(-50%,-50%);
-        }
-        .native {
-            width: 80%;
-            height: 350pt;
-            margin-top: 50pt;
-            background-color: blue;
-            overflow: scroll;
-        }
-    </style>
-</head>
-<body>
-    <!-- 标题 -->
-    <h1 class="title">H5页面Demo</h1>
-    <!-- 内容 -->
-    <div class="content">
-        <div class="block"></div>
-        <div class="block"></div>
-        <!-- 特殊组件 -->
-        <div class="native">
-            <div style="width: 101%; height: 101%">
-            </div>
-        </div>
-        <div class="block"></div>
-        <div class="block"></div>
-        <div class="block"></div>
-    </div>
-    <!-- 弹框 -->
-    <div class="toast show">弹窗提示</div>
-</body>
-</html>
+下面我们再来详细看下SKStoreProductViewController这个类的用法，SKStoreProductViewController本身比较简单，创建出实例后，只需要使用loadProduct来加载指定的应用即可，其所传的参数字典中，可配置的选项如下：
 
+```
+// 应用的iTunes ID 
+@available(iOS 6.0, *)
+public let SKStoreProductParameterITunesItemIdentifier: String
+
+// 内购商品的SKU码，如果配置了，则会显示内购商品信息 
+@available(iOS 11.0, *)
+public let SKStoreProductParameterProductIdentifier: String
+
+// 自定义商品页的ID
+@available(iOS 15.0, *)
+public let SKStoreProductParameterCustomProductPageIdentifier: String
+
+// 机构token
+@available(iOS 8.0, *)
+public let SKStoreProductParameterAffiliateToken: String
+@available(iOS 8.0, *)
+public let SKStoreProductParameterCampaignToken: String
+
+// 用来分析提供者的token
+@available(iOS 8.3, *)
+public let SKStoreProductParameterProviderToken: String
+
+// 广告伙伴token
+@available(iOS 9.3, *)
+public let SKStoreProductParameterAdvertisingPartnerToken: String
 
 ```
 
-上面代码中，蓝色的色块就是同层组件容器。
+其中，SKStoreProductParameterITunesItemIdentifier键是必传的。
 
-在iOS中加载此页面如下：
+SKStoreProductViewController中也定义了一个delegate属性，设置代理可以对商品页的关闭行为进行监听，如下：
 
-```objectivec
-@interface ViewController ()
+```swift
+extension ViewController: SKStoreProductViewControllerDelegate {
+    func productViewControllerDidFinish(_ viewController: SKStoreProductViewController) {
+        print("商品页关闭")
+    }
+}
+```
 
-@property (nonatomic, strong) WKWebView *webView;
+此代理方法是可选实现的。
 
-@end
+## · 一些小技巧
 
-@implementation ViewController
+**如何获取公开应用的ITunes ID？**
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self.view addSubview:self.webView];
-    NSString *html = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"web" ofType:@"html"] encoding: NSUTF8StringEncoding error:nil];
-    [self.webView loadHTMLString:html baseURL:nil];
+现在，我们以及知道了如何在应用内打开其他App的详情页，如何获取ITunes参数呢，其实是有官方的渠道可查的。地址如下：
+
+[https://tools.applemediaservices.com/](https://tools.applemediaservices.com/)
+
+在其中输入我们要查询的应用名称，即可获取到与此应用相关的推广信息，如下图所示：
+
+![](https://oscimg.oschina.net/oscnet/up-129895be3727732e459adaec12ea8d79b2e.png)
+
+可以看到，图中有一段Content Link，这其中就包含了应用的ITunes ID信息，只是其是被URL encode后的，将其复制出来，可以在如下网站进行URL Decode，即可得到原始的ITunes ID。
+
+[http://www.jsons.cn/urlencode/](http://www.jsons.cn/urlencode/)
+
+**对内嵌商品页弹起的高度，文本风格颜色进行配置？**
+
+虽然SKStoreProductViewController提供的接口很少，但我们依然有办法对其做一定程度上的定制，比如其中按钮的风格颜色，浮层的弹起高度。
+
+新建一个继承于SKStoreProductViewController的类，实现如下：
+
+```swift
+import UIKit
+import StoreKit
+
+class MyStoreProductController: SKStoreProductViewController {
     
-    
-}
-
-- (WKWebView *)webView {
-    if (!_webView) {
-        _webView = [[WKWebView alloc] initWithFrame:self.view.frame];
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // 设置页面内部分元素的风格颜色
+        view.tintColor = .red
     }
-    return _webView;
-}
 
-@end
-
-
-```
-
-使用Xcode调试工具进行查看，层级如下图所示：
-
-![](https://oscimg.oschina.net/oscnet/up-890ba9b390ac8d0b3abe55074edb181a974.png)
-
-可以看到对于蓝色的色块，WKWebView单独创建了一个WKChildScrollView来承载。
-
-## 三 尝试
-
-了解了同层组件原理后，我们可以在iOS平台上做下尝试，体验同层组件的渲染效果。首先在HTML文件中补充下面的JS代码：
-
-```javascript
-<script>
-    function insertNativeComponents() {
-        var ct = document.getElementsByClassName("native")[0];
-        var id = ct.getAttribute("id");
-        var frame = ct.getBoundingClientRect();
-        var args = {
-            "frame": {
-                "y": frame.top,
-                "x": frame.left,
-                "width": frame.width,
-                "height": frame.height
-            },
-            "id": id
-        };
-        return args
-    }
-    setTimeout(()=>{
-        window.webkit.messageHandlers.nativeViewHandler.postMessage({
-            "command": "nativeViewInsert",
-            "args": insertNativeComponents()
-        });
-    }, 1000);
-</script>
-
-```
-
-上面的insertNativeComponents函数用来找到要插入原生组件的插槽，将其id等信息传递给原生端，我们这里为了演示方便，只传递了很少的数据，实际上可以根据组件的需求向原生端传递非常丰富的数据，原生端根据这些参数来渲染和设置原生组件。
-
-在原生端，需要对WKWebView注册一个JS交互handle，如下：
-
-```objectivec
-[_webView.configuration.userContentController addScriptMessageHandler:self name:@"nativeViewHandler"];
-
-```
-
-对应的，实现协议方法如下：
-
-```objectivec
-- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
-    [self insertNativeView:message];
-}
-
-```
-
-核心的逻辑方法是inserNativeView，这个方法中要实现对JS交互指令的解析，以及原生组件的创建，插槽容器的寻找等，如下：
-
-```objectivec
-- (void)insertNativeView:(WKScriptMessage *)message {
-    NSDictionary *params = message.body[@"args"];
-    NSLog(@"%@", params);
-    // 这里创建一个UILabel 做演示
-    
-    UIView *v = [self findView:self.webView str:@"" ids:params[@"id"]];
-    
-    UIView *c = [[UIView alloc] initWithFrame:v.bounds];
-    
-    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, v.frame.size.width, 100)];
-    l.backgroundColor = UIColor.orangeColor;
-    l.font = [UIFont systemFontOfSize:40];
-    l.text = [NSString stringWithFormat:@"组件ID为：%@的原生同层组件", params[@"id"]];
-    l.textAlignment = NSTextAlignmentCenter;
-    [c addSubview:l];
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
-    [button setTitle:@"按钮" forState:UIControlStateNormal];
-    [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    button.frame = CGRectMake(0, 200, v.frame.size.width, 100);
-    button.titleLabel.font = [UIFont systemFontOfSize:40];
-    [c addSubview:button];
-    if (v) {
-        // 查目标容器
-        for (UIView *sub in v.subviews) {
-            if ([sub isKindOfClass:NSClassFromString(@"WKChildScrollView")]) {
-                c.frame = sub.bounds;
-                [sub addSubview:c];
-            }
-        }
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        // 这里可以控制页面弹起的高度
+        view.frame = CGRect(x: 0, y: 400, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - 400)
     }
 }
 
 ```
 
-上面我们创建了一个UILabel和UIButton的原生组件做示例，插槽位置的寻找可以采用递归的方式，如下：
+运行效果如下图所示：
 
-```objectivec
-- (UIView *)findView:(UIView *)root str:(NSString *)pre ids:(NSString *)ids {
-    if (!root) {
-        return nil;
-    }
-    NSLog(@"%@%@,%@",pre ,root.class, root.layer.name);
-    if ([root.layer.name containsString:[NSString stringWithFormat:@"id='%@'", ids]]) {
-        return root;
-    }
-    
-    for (UIView *v in root.subviews) {
-        UIView *res = [self findView:v str:[NSString stringWithFormat:@"%@ - ", pre] ids: ids];
-        if (res) {
-            return res;
-        }
-    }
-    return nil;
+![](https://oscimg.oschina.net/oscnet/up-41f9f1cf89d98ac4f55c6222ee27a2be7ee.jpg)
+
+## · 使用应用挂件
+
+SKStoreProductViewController打开的是一个完整的产品详情页，有时候，我们更期望要推广的应用只是占据一个挂件的位置，在iOS 14及之后的版本中，StoreKit框架中提供了SKOverlay类来实现应用挂件。
+
+示例代码如下：
+
+```swift
+// 创建配置，传入要渲染的应用的ITunes ID
+let config = SKOverlay.AppConfiguration(appIdentifier: "387682726", position: .bottom)
+let overlay = SKOverlay(configuration: config)
+// 指定展示在Scene上
+if let scene = UIApplication.shared.windows.first?.windowScene {
+    overlay.present(in: scene)
 }
-
 ```
 
-我们从JS交互命令可以拿到要插入原生组件的容器id，WKWebView在创建WKCompositingView时，其Layer的name会包含id信息，这从打印的信息上可以清楚的看到，如下图：
+效果如下图所示：
 
-![](https://oscimg.oschina.net/oscnet/up-e9123c0fbcf24aa2e6c72c1d9ff000cf425.png)
+![](https://oscimg.oschina.net/oscnet/up-337616d5e86d2173af67ef93356d290765f.jpg)
 
-我们能找到对应的容器，就是靠这个Layer的name属性。现在你可以尝试运行下项目，效果如下图所示：
+可以看到，在窗口底部会出现一个应用挂件。
 
-![](https://oscimg.oschina.net/oscnet/up-de62a0faa20c03e20c50faaaee2a0184a9d.png)
+AppConfiguration实例可配置的属性不多，列举如下：
 
-可以看到，原生组件已经正常渲染到了WebView中，且层级是受CSS控制的，其会出现在Web弹窗组件之下。
+```swift
+@available(iOS 14.0, *)
+public class AppConfiguration : SKOverlay.Configuration {
+    // 初始化方法
+    public init(appIdentifier: String, position: SKOverlay.Position)
 
-## 四 交互
+    // ITunes ID
+    open var appIdentifier: String
 
-原生组件渲染成功了，并非完事大吉，如果你为按钮增加了点击事件，会发现其并不会触发，这是因为WebView将事件都进行了拦截。要处理交互问题也非常简单，首先需要先关闭WebView的拦截，在WebView加载完成后，使用如下代码来找到WKContentView，并将其手势拦截关闭：
+    // 一些额外的Token
+    open var campaignToken: String?
+    open var providerToken: String?
 
-```objectivec
-- (void)handleGestrues {
-    UIScrollView *webViewScrollView = self.webView.scrollView;
-    if ([webViewScrollView isKindOfClass:NSClassFromString(@"WKScrollView")]) {
-        UIView *_WKContentView = webViewScrollView.subviews.firstObject;
-        if (![_WKContentView isKindOfClass:NSClassFromString(@"WKContentView")]) return;
-        NSArray *gestrues = _WKContentView.gestureRecognizers;
-        for (UIGestureRecognizer *gesture in gestrues) {
-            gesture.cancelsTouchesInView = NO;
-            gesture.delaysTouchesBegan = NO;
-            gesture.delaysTouchesEnded = NO;
-        }
-    }
+    // 自定义页面的ID
+    @available(iOS 15.0, *)
+    open var customProductPageIdentifier: String?
+  
+    // 设置要展示最近版本
+    @available(iOS 15.0, *)
+    open var latestReleaseID: String?
+
+    // 挂件的位置，可枚举bottom和bottomRaised 差别不大
+    open var position: SKOverlay.Position
+
+    // 是否允许用户关闭
+    open var userDismissible: Bool
+
+    // 启动附加数据    
+    open func setAdditionalValue(_ value: Any?, forKey key: String)
+    open func additionalValue(forKey key: String) -> Any?
+
+    // 广告体验配置
+    @available(iOS 16.0, *)
+    open func setAdImpression(_ impression: SKAdImpression)
 }
-
 ```
 
-需要注意，这个方法的调用要在WebView加载完成后。另外，我们需要将原生组件的容器组件做些修改，例如新建一个ContainerView类，如下：
+整体来说，SKOverlay不太灵活，对其出现的位置并不能精准的进行控制，SKOverlayDelegate定义了一些方法来监听其行为，如下：
 
-```objectivec
-@interface ContainerView : UIView
-
-@end
-
-@implementation ContainerView
-
-- (BOOL)conformsToProtocol:(Protocol *)aProtocol {
-    if (aProtocol == NSProtocolFromString(@"WKNativelyInteractible")) {
-        return YES;
-    }
-    return [super conformsToProtocol:aProtocol];
+```swift
+public protocol SKOverlayDelegate : NSObjectProtocol {
+    // 产品加载失败的回调    
+    optional func storeOverlayDidFailToLoad(_ overlay: SKOverlay, error: Error)
+    // 挂件将要开始弹出的回调
+    optional func storeOverlayWillStartPresentation(_ overlay: SKOverlay, transitionContext: SKOverlay.TransitionContext)
+    // 挂件以及弹出的回调
+    optional func storeOverlayDidFinishPresentation(_ overlay: SKOverlay, transitionContext: SKOverlay.TransitionContext)
+    // 挂件将要消失的回调
+    optional func storeOverlayWillStartDismissal(_ overlay: SKOverlay, transitionContext: SKOverlay.TransitionContext)
+    // 挂件已经消失的回调
+    optional func storeOverlayDidFinishDismissal(_ overlay: SKOverlay, transitionContext: SKOverlay.TransitionContext)
 }
-
-@end
-
 ```
-
-之后，将此View作为原生组件的容器，渲染到WebView中，即可实现原生组件的事件交互。
-
-## 五 随想
-
-本文从原理出发，介绍了Web同层组件在iOS端的实现方式。相比直接使用原生组件，同层组件的好处是显而易见的，其既拥有了原生组件强大的能力，又可以被大部分CSS属性进行影响，方便层级和组件间位置控制。本文中也实现了一个简单的Demo来演示同层组件，Demo非常捡漏，希望起到抛砖引玉，帮助你打开创新的思路。下面是一些建议，有兴趣你可以尝试下在iOS端实现一套完整的同层组件渲染框架。
-
-1.  JS与原生的交互命令可以定制一套完整的协议，如组件插入，组件更新，组件删除等。
-2.  传递的数据可以定义的完整丰富，例如要插入的组件类型，可能是视频，音频，地图等，各种组件在原生端的属性配置等映射。
-3.  原生端的交互与更新行为也需要通过JS传递到Web。
-4.  原生端可能需要一个容器池来维护被插入的同层组件，方便通过id寻找来进行更新等。
-5.  某些CSS属性对于同层组件可能并不能生效，也是需要通过JS传递数据到原生端处理。
 
 > 专注技术，懂的热爱，愿意分享，做个朋友
 > 
