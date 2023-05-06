@@ -1,10 +1,10 @@
 ---
-title: iOS MachineLearning 系列（11）—— 自然语言之词句相似性分析
+title: iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析
 date: 2023-05-06
 categories: 从机器学习到AI
 tags: []
 ---
-# iOS MachineLearning 系列（11）—— 自然语言之词句相似性分析
+# iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析
 
 本篇文章将介绍如何使用NaturalLanguage框架来对词句的相似性进行分析。文本相似性的分析在实际开发中应用很多，比如我们可以通过查找与用户输入相似的词来进行内容推荐。
 
