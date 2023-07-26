@@ -1,6 +1,6 @@
 ---
 title: iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型
-date: 2023-07-25
+date: 2023-07-26
 categories: 从机器学习到AI
 tags: []
 ---

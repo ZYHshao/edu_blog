@@ -1,0 +1,317 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（20）—— 训练生成CoreML模型 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（20）—— 训练生成CoreML模型">
+            
+	            iOS MachineLearning 系列（20）—— 训练生成CoreML模型
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/05/29</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（20）——-训练生成CoreML模型"><a href="#iOS-MachineLearning-系列（20）——-训练生成CoreML模型" class="headerlink" title="iOS MachineLearning 系列（20）—— 训练生成CoreML模型"></a>iOS MachineLearning 系列（20）—— 训练生成CoreML模型</h1><p>本系列前面的文章详细的介绍了在iOS中与AI能力相关的API的使用，也介绍了如何使用训练好的CoreML模型来实现更强大的AI能力。然而，无论是成熟的API提供的能力，还是各种各样的三方模型，有时候都并不能满足某一领域内的定制化需求。当我们拥有很多的课训练数据，且需要定制化的AI能力时，其实就可以自己训练生成CoreML模型，将此定制化的模型应用到工程中去。</p>
+<p>如果安装了Xcode开发工具，会自动安装Create ML工具，在Xcode的Develop Tool选项中，可以找到此工具：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7d457757856438cfcaa5ce366133c0c2fe6.png" alt></p>
+<p>Create ML工具默认提供了许多模型训练模板，如图片分析类的，文本分析类的，音频分析类的等，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7e8b1d16b61f09e46320e89efff9f5ccac7.png" alt></p>
+<p>每种模板对应的训练方式不同，我们可以根据需求来选择要使用的模板。</p>
+<h2 id="1-自己训练一个图片分类模型"><a href="#1-自己训练一个图片分类模型" class="headerlink" title="1 - 自己训练一个图片分类模型"></a>1 - 自己训练一个图片分类模型</h2><p>图片分类属于图片识别类的模型，当我们输入一个图像时，其会自动分析并进行标签分类。要训练模型，首先我们需要有一定数量的已经分类好的图片。本示例中，我们使用火影忍者中的鸣人和佐助的图片作为素材来进行训练，实现一个能够自动识别鸣人或佐助的模型。</p>
+<p>首先新建一个Create ML工程，这里我们将名称设置为YHImageClassifier。模板使用Image Classification。基础信息如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a383b71cb411c1208c6e17f4aa96a46f117.png" alt></p>
+<p>之后我们需要准备训练数据和测试数据，训练数据需要每个类别至少10张图片，图片的格式可以是JPEG或PNG，尺寸无需特别规定，尽量使用299*299尺寸的图片，数据集的数据越多，训练出的模型将越健壮和强大，每张素材图片应尽量的从不同的角度和光照方向来描述事物，并且需要注意，每个类别的素材数量应尽量保持平衡。这里为了演示方便，我们直接使用10张鸣人的图片和10张佐助的图片来作为训练素材，将他们按照标签分类放入对应的文件夹中，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-11917d3fa69dbcbaab2ea3a250a4d6854e0.png" alt></p>
+<p>其中，Training Data文件夹中有两个子文件夹，分别对应鸣人和佐助两个标签，鸣人和佐助这两个子文件夹中各有10张分类好的图片。Testing Data文件夹中结构与Training Data中的一致，只是每个子文件夹中只有一张用来测试的图片，且测试的图片不在训练集中。使用测试数据可以快速的检查我们的训练结果，如果我们有非常大量的训练数据，则可以考虑将其中的20%用来作为测试数据来进行模型可用性的评估，这里同样为了演示方便，我们每个标签只选择一张图片作为测试数据。</p>
+<p>之后，将Training Data文件夹拖入到工程的Training Data项中，Testing Data文件夹拖入到工程的Testing Data项中，我们也可以对一些训练参数进行设置，如迭代次数，是否对图片增加一些处理等，这里我们选择迭代次数为1，不选择任何额外参数，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-1cf3cc470c2d0c5cec44e13839c786a7d9b.png" alt></p>
+<p>之后点击Train按钮来进行训练，因为我们的输入数据很少，训练会非常快，训练按成后，会自动使用测试数据进行测试，本示例的测试结果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-6a15df94f621ab2f46cefcbd75befb8b54d.png" alt></p>
+<p>如果测试的结果能够让我们满意，则可以将此模型导出，如下所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7815ae4e4cbc4005c398747ff81e61c64ee.png" alt></p>
+<p>可以看到，此模型的大小只有17k，通过Create ML，训练出一个生产可用的CoreML模型真的是非常简单方便。</p>
+<h2 id="2-尝试使用YHImageClassifier模型"><a href="#2-尝试使用YHImageClassifier模型" class="headerlink" title="2 - 尝试使用YHImageClassifier模型"></a>2 - 尝试使用YHImageClassifier模型</h2><p>前面我们导出了YHImageClassifier模型，此模型可以简单的对火影忍者中的佐助或鸣人进行识别。需要注意，由于在训练时我们使用的数据量很小，因此在进行识别时，我们应尽量的选择与训练数据集类似的图片。</p>
+<p>YHImageClassifier模型的使用和前面文章介绍的官方模型的使用没有区别，我们可以再选两张鸣人和佐助的图片（不在训练集中也不在测试集中的），Demo代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> CoreML</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomModelViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> image = <span class="type">UIImage</span>(named: <span class="string">"mingren"</span>)!</span><br><span class="line">    <span class="keyword">let</span> image2 = <span class="type">UIImage</span>(named: <span class="string">"zuozhu"</span>)!</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> imageView: <span class="type">UIImageView</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> v = <span class="type">UIImageView</span>()</span><br><span class="line">        v.image = image</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> imageView2: <span class="type">UIImageView</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> v = <span class="type">UIImageView</span>()</span><br><span class="line">        v.image = image2</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> label: <span class="type">UILabel</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> l = <span class="type">UILabel</span>()</span><br><span class="line">        l.numberOfLines = <span class="number">0</span></span><br><span class="line">        l.font = .systemFont(ofSize: <span class="number">18</span>)</span><br><span class="line">        l.text = <span class="string">""</span></span><br><span class="line">        <span class="keyword">return</span> l</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> label2: <span class="type">UILabel</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> l = <span class="type">UILabel</span>()</span><br><span class="line">        l.numberOfLines = <span class="number">0</span></span><br><span class="line">        l.font = .systemFont(ofSize: <span class="number">18</span>)</span><br><span class="line">        l.text = <span class="string">""</span></span><br><span class="line">        <span class="keyword">return</span> l</span><br><span class="line">    &#125;()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        view.backgroundColor = .white</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> width = view.frame.width / <span class="number">2</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> scale = image.size.width / image.size.height</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> scale2 = image2.size.width / image2.size.height</span><br><span class="line">        </span><br><span class="line">        imageView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">100</span>, width: width, height: width / scale)</span><br><span class="line">        view.addSubview(imageView)</span><br><span class="line">        </span><br><span class="line">        imageView2.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">100</span> + imageView.frame.height, width: width, height: width / scale2)</span><br><span class="line">        view.addSubview(imageView2)</span><br><span class="line">        </span><br><span class="line">        label.frame = <span class="type">CGRect</span>(x: width, y: <span class="number">100</span>, width: view.frame.width, height: <span class="number">50</span>)</span><br><span class="line">        view.addSubview(label)</span><br><span class="line">        </span><br><span class="line">        label2.frame = <span class="type">CGRect</span>(x: width, y: <span class="number">100</span> + imageView.frame.height, width: view.frame.width, height: <span class="number">50</span>)</span><br><span class="line">        view.addSubview(label2)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> model = <span class="keyword">try</span>! <span class="type">YHImageClassifier</span>(configuration: <span class="type">MLModelConfiguration</span>())</span><br><span class="line">        <span class="keyword">let</span> input1 = <span class="keyword">try</span>! <span class="type">YHImageClassifierInput</span>(imageWith: image.cgImage!)</span><br><span class="line">        <span class="keyword">let</span> input2 = <span class="keyword">try</span>! <span class="type">YHImageClassifierInput</span>(imageWith: image2.cgImage!)</span><br><span class="line">        <span class="keyword">let</span> output1 = <span class="keyword">try</span>! model.prediction(input: input1)</span><br><span class="line">        <span class="keyword">let</span> output2 = <span class="keyword">try</span>! model.prediction(input: input2)</span><br><span class="line">        </span><br><span class="line">        label.text = output1.classLabel</span><br><span class="line">        label2.text = output2.classLabel</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-75e57820676a8b8adfe4aef810646bfe24b.png" alt></p>
+<blockquote>
+<p>提示：最好使用真机来进行模型测试，不要使用模拟器。</p>
+</blockquote>
+<p>使用Create ML，我们可以训练处一些定制化强，非常有用的图片识别器。例如某个生产的产品是否合格，某个生成的图片是否合格等，只要有大量的数据支持，模型的预测可以非常准确。</p>
+<p>文中涉及到的示例可以在如下地址下载：</p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2FZYHshao%2FMachineLearnDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/MachineLearnDemo</a></p>
+<blockquote>
+<p>欢迎留言交流！</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/07/25/476iOS MachineLearning 系列（21）——CoreML模型的更多训练模板/" class="pre-post btn btn-default" title='iOS MachineLearning 系列（21）——CoreML模型的更多训练模板'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（21）——CoreML模型的更多训练模板</span>
+        </a>
+    
+    
+        <a href="/2023/05/28/474iOS MachineLearning 系列（19）—— 分析文本中的问题答案/" class="next-post btn btn-default" title='iOS MachineLearning 系列（19）—— 分析文本中的问题答案'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（19）—— 分析文本中的问题答案</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（20）——-训练生成CoreML模型"><span class="toc-text">iOS MachineLearning 系列（20）—— 训练生成CoreML模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-自己训练一个图片分类模型"><span class="toc-text">1 - 自己训练一个图片分类模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-尝试使用YHImageClassifier模型"><span class="toc-text">2 - 尝试使用YHImageClassifier模型</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,335 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（13）—— 语音与音频相关的AI能力 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（13）—— 语音与音频相关的AI能力">
+            
+	            iOS MachineLearning 系列（13）—— 语音与音频相关的AI能力
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/05/08</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（13）——-语音与音频相关的AI能力"><a href="#iOS-MachineLearning-系列（13）——-语音与音频相关的AI能力" class="headerlink" title="iOS MachineLearning 系列（13）—— 语音与音频相关的AI能力"></a>iOS MachineLearning 系列（13）—— 语音与音频相关的AI能力</h1><p>在语音分析方面，iOS中提供了原生的Speech框架，这个框架可以实时的将语音解析成文本。这个能力非常强大，使用它我们可以实现类似实时翻译的功能。对于非语音的音频，也有一些原生的AI能力可以使用，例如分析语音的类型。SoundAnalysis框架能够识别300多种声音，我们也可以使用自己训练的模型来处理定制化的音频识别需求。</p>
+<h2 id="1-进行语音识别"><a href="#1-进行语音识别" class="headerlink" title="1 - 进行语音识别"></a>1 - 进行语音识别</h2><p>使用Speech框架来进行语音识别非常简单，并且其支持多种语言。使用此功能前，我们需要先请求用户授予权限。在Info.plist文件中新增如下key:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSSpeechRecognitionUsageDescription</span><br></pre></td></tr></table></figure>
+<p>此key设置的值为字符串文案，会在使用Speech框架时弹窗展示。</p>
+<p>需要注意，Speech框架提供的并非是完全依赖本地的AI能力，其需要连接Apple的服务器来实现功能，因此在使用时要确保网络的正常。</p>
+<p>首先需要定义个识别器对象，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> recognizer = <span class="type">SFSpeechRecognizer</span>(locale: <span class="type">Locale</span>(identifier: <span class="string">"zh-Hants"</span>))</span><br></pre></td></tr></table></figure>
+<p>其中locale参数设置所识别为的语言。</p>
+<p>之后需要创建一个语音识别请求，并发起识别任务，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里使用本地的语音文件</span></span><br><span class="line"><span class="keyword">let</span> path = <span class="type">Bundle</span>.main.path(forResource: <span class="string">"12168"</span>, ofType: <span class="string">".wav"</span>)</span><br><span class="line"><span class="keyword">let</span> url = <span class="type">URL</span>(fileURLWithPath: path!)</span><br><span class="line"><span class="comment">// 创建请求对象</span></span><br><span class="line"><span class="keyword">let</span> request = <span class="type">SFSpeechURLRecognitionRequest</span>(url: url)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> label = <span class="type">UILabel</span>(frame: <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">100</span>, width: view.frame.width, height: <span class="number">400</span>))</span><br><span class="line">label.numberOfLines = <span class="number">0</span></span><br><span class="line">view.addSubview(label)</span><br><span class="line"><span class="comment">// 发起请求任务</span></span><br><span class="line">recognizer?.recognitionTask(with: request, resultHandler: &#123; result, error <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(result?.bestTranscription.formattedString, error)</span><br><span class="line">    label.text = result?.bestTranscription.formattedString</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>运行上面的代码，如果提供的音频文件是正常的语音文件，即可看到识别效果。上面的结果回调会根据音频的长度来多次回调，每次都会根据上下文进行之前识别结果的矫正。</p>
+<p>Speech框架不仅支持语音文件的识别，也支持实时进行语音数据流的识别。只需要创建不同的Request类即可。我们可以先来看下语音分析请求的父类SFSpeechRecognitionRequest：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFSpeechRecognitionRequest</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 设置语音识别的类型</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> taskHint: <span class="type">SFSpeechRecognitionTaskHint</span></span><br><span class="line">    <span class="comment">// 设置是否在解析过程中返回中间值，默认true，如果设置false则只有当整个语音文件解析完成再返回结果</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> shouldReportPartialResults: <span class="type">Bool</span></span><br><span class="line">    <span class="comment">// 设置一组自定义的短语，这些短语可能不在词汇表中，针对场景的加强识别的准确性</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> contextualStrings: [<span class="type">String</span>]</span><br><span class="line">    <span class="comment">// 是否进行纯本地的解析，这种场景下不会发送语音到apple服务器，但是会降低准确性，某些语言不可用</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> requiresOnDeviceRecognition: <span class="type">Bool</span></span><br><span class="line">    <span class="comment">// 设置识别结果中是否增加标点，iOS16之后可用</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> addsPunctuation: <span class="type">Bool</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中taskHint属性用来设置识别类型，此枚举定义如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">SFSpeechRecognitionTaskHint</span> : <span class="title">Int</span>, @<span class="title">unchecked</span> <span class="title">Sendable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> unspecified = <span class="number">0</span> <span class="comment">// 未指定明确类型</span></span><br><span class="line">    <span class="keyword">case</span> dictation = <span class="number">1</span> <span class="comment">// 一般的听写风格</span></span><br><span class="line">    <span class="keyword">case</span> search = <span class="number">2</span> <span class="comment">// 搜索请求风格</span></span><br><span class="line">    <span class="keyword">case</span> confirmation = <span class="number">3</span> <span class="comment">// 短语</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要对语音文件进行分析，使用SFSpeechURLRecognitionRequest子类，如果要实时识别语音流，则使用SFSpeechAudioBufferRecognitionRequest子类即可，SFSpeechAudioBufferRecognitionRequest定义如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFSpeechAudioBufferRecognitionRequest</span> : <span class="title">SFSpeechRecognitionRequest</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 利于识别的音频格式</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> nativeAudioFormat: <span class="type">AVAudioFormat</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 添加AVAudioPCMBuffer数据</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">append</span><span class="params">(<span class="number">_</span> audioPCMBuffer: AVAudioPCMBuffer)</span></span></span><br><span class="line">    <span class="comment">// 添加CMSampleBuffer数据</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">appendAudioSampleBuffer</span><span class="params">(<span class="number">_</span> sampleBuffer: CMSampleBuffer)</span></span></span><br><span class="line">    <span class="comment">// 调用此方法标识语音流数据添加完成</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">endAudio</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SFSpeechRecognizer类用来发起语音识别请求，定义如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFSpeechRecognizer</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 所支持的语言</span></span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">supportedLocales</span>() -&gt; <span class="title">Set</span>&lt;<span class="title">Locale</span>&gt;</span></span><br><span class="line"><span class="class">    // 用户授权状态</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">class</span> <span class="title">func</span> <span class="title">authorizationStatus</span>() -&gt; <span class="title">SFSpeechRecognizerAuthorizationStatus</span></span></span><br><span class="line"><span class="class">    // 请求用户授权</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">class</span> <span class="title">func</span> <span class="title">requestAuthorization</span>(<span class="title">_</span> <span class="title">handler</span>: @<span class="title">escaping</span> (<span class="title">SFSpeechRecognizerAuthorizationStatus</span>) -&gt; <span class="title">Void</span>)</span></span><br><span class="line"><span class="class">    // 构造方法，使用当前系统语言</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">convenience</span> <span class="title">init</span>?()</span></span><br><span class="line"><span class="class">    // 构造方法，设置语言</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">init</span>?(<span class="title">locale</span>: <span class="title">Locale</span>)</span></span><br><span class="line"><span class="class">    // 功能是否可用</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">var</span> <span class="title">isAvailable</span>: <span class="title">Bool</span> </span>&#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 使用的语言</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> locale: <span class="type">Locale</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 获取是否支持纯本地的请求</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> supportsOnDeviceRecognition: <span class="type">Bool</span></span><br><span class="line">    <span class="comment">// 代理</span></span><br><span class="line">    <span class="keyword">weak</span> <span class="keyword">open</span> <span class="keyword">var</span> delegate: <span class="type">SFSpeechRecognizerDelegate</span>?</span><br><span class="line">    <span class="comment">// 设置发起请求默认的类型</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> defaultTaskHint: <span class="type">SFSpeechRecognitionTaskHint</span></span><br><span class="line">    <span class="comment">// 发起请求任务</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">recognitionTask</span><span class="params">(with request: SFSpeechRecognitionRequest, resultHandler: @escaping <span class="params">(SFSpeechRecognitionResult?, Error?)</span></span></span> -&gt; <span class="type">Void</span>) -&gt; <span class="type">SFSpeechRecognitionTask</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">recognitionTask</span><span class="params">(with request: SFSpeechRecognitionRequest, delegate: SFSpeechRecognitionTaskDelegate)</span></span> -&gt; <span class="type">SFSpeechRecognitionTask</span></span><br><span class="line">    <span class="comment">// 回调所使用的队列</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> queue: <span class="type">OperationQueue</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SFSpeechRecognizerDelegate协议</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">protocol</span> <span class="title">SFSpeechRecognizerDelegate</span> : <span class="title">NSObjectProtocol</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 可用性变化时回调</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">speechRecognizer</span><span class="params">(<span class="number">_</span> speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果使用闭包的方式来发起请求，则结果会在闭包回调中给到，如果采用代理的方式，则会通过代理回调返回。SFSpeechRecognitionTaskDelegate协议如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">protocol</span> <span class="title">SFSpeechRecognitionTaskDelegate</span> : <span class="title">NSObjectProtocol</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 首次检测到语音时调用</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">speechRecognitionDidDetectSpeech</span><span class="params">(<span class="number">_</span> task: SFSpeechRecognitionTask)</span></span></span><br><span class="line">    <span class="comment">// 每次有中间结果时调用</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">speechRecognitionTask</span><span class="params">(<span class="number">_</span> task: SFSpeechRecognitionTask, didHypothesizeTranscription transcription: SFTranscription)</span></span></span><br><span class="line">    <span class="comment">// 最终识别完成时调用</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">speechRecognitionTask</span><span class="params">(<span class="number">_</span> task: SFSpeechRecognitionTask, didFinishRecognition recognitionResult: SFSpeechRecognitionResult)</span></span></span><br><span class="line">    <span class="comment">// 识别任务结束后调用</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">speechRecognitionTaskFinishedReadingAudio</span><span class="params">(<span class="number">_</span> task: SFSpeechRecognitionTask)</span></span></span><br><span class="line">    <span class="comment">// 识别任务取消时调用</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">speechRecognitionTaskWasCancelled</span><span class="params">(<span class="number">_</span> task: SFSpeechRecognitionTask)</span></span></span><br><span class="line">    <span class="comment">// 识别任务完整成功后调用</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">speechRecognitionTask</span><span class="params">(<span class="number">_</span> task: SFSpeechRecognitionTask, didFinishSuccessfully successfully: Bool)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中SFTranscription类用来描述识别中间结果，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFTranscription</span> : <span class="title">NSObject</span>, <span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 格式化后的字符串</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> formattedString: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 片段数组</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> segments: [<span class="type">SFTranscriptionSegment</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 语音速度，每秒单词数</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> speakingRate: <span class="type">Double</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 单词间的平均停顿</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> averagePauseDuration: <span class="type">TimeInterval</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中SFTranscriptionSegment是具体的词组，里面封装了更多详细的信息：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFTranscriptionSegment</span> : <span class="title">NSObject</span>, <span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 词组</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> substring: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 在原字符串中的位置</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> substringRange: <span class="type">NSRange</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 在原音频中的时间点</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> timestamp: <span class="type">TimeInterval</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 在音频中的时长</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> duration: <span class="type">TimeInterval</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 测量的可信度，0到1，越大表示越可信</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> confidence: <span class="type">Float</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 对此音频片段的更多可能结果</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> alternativeSubstrings: [<span class="type">String</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 发声特性对象</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> voiceAnalytics: <span class="type">SFVoiceAnalytics</span>? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SFSpeechRecognitionResult类描述了分析的结果，实际上是一组SFTranscription的聚合。定义如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFSpeechRecognitionResult</span> : <span class="title">NSObject</span>, <span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 最完美的结果片段（如果分析结果，此为完整的）</span></span><br><span class="line">    <span class="meta">@NSCopying</span> <span class="keyword">open</span> <span class="keyword">var</span> bestTranscription: <span class="type">SFTranscription</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 所有分析结果（根据可信度来排序）</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> transcriptions: [<span class="type">SFTranscription</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 是否分析结束</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> isFinal: <span class="type">Bool</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 音频元数据信息</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> speechRecognitionMetadata: <span class="type">SFSpeechRecognitionMetadata</span>? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SFSpeechRecognitionMetadata中封装了语音的基础数据：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFSpeechRecognitionMetadata</span> : <span class="title">NSObject</span>, <span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 语音速度，每分钟单词数</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> speakingRate: <span class="type">Double</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 平均语速，每个单词平均秒数</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> averagePauseDuration: <span class="type">TimeInterval</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 语音在音频中的开始时间</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> speechStartTimestamp: <span class="type">TimeInterval</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 语音的持续时间</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> speechDuration: <span class="type">TimeInterval</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 音频分析数据</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> voiceAnalytics: <span class="type">SFVoiceAnalytics</span>? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFVoiceAnalytics</span> : <span class="title">NSObject</span>, <span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 人声稳定性</span></span><br><span class="line">    <span class="meta">@NSCopying</span> <span class="keyword">open</span> <span class="keyword">var</span> jitter: <span class="type">SFAcousticFeature</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="meta">@NSCopying</span> <span class="keyword">open</span> <span class="keyword">var</span> shimmer: <span class="type">SFAcousticFeature</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 人声高低</span></span><br><span class="line">    <span class="meta">@NSCopying</span> <span class="keyword">open</span> <span class="keyword">var</span> pitch: <span class="type">SFAcousticFeature</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 语音概率</span></span><br><span class="line">    <span class="meta">@NSCopying</span> <span class="keyword">open</span> <span class="keyword">var</span> voicing: <span class="type">SFAcousticFeature</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发起语音请求后，会返回一个SFSpeechRecognitionTask对象，此任务对象可以对当次分析过程进行控制，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SFSpeechRecognitionTask</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 当前任务状态</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> state: <span class="type">SFSpeechRecognitionTaskState</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 是否完成</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> isFinishing: <span class="type">Bool</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 手动完成任务</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">finish</span><span class="params">()</span></span></span><br><span class="line">    <span class="comment">// 是否取消</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> isCancelled: <span class="type">Bool</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 手动取消任务</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">cancel</span><span class="params">()</span></span></span><br><span class="line">    <span class="comment">// 异常数据</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> error: <span class="type">Error</span>? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 任务状态枚举定义如下</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">SFSpeechRecognitionTaskState</span> : <span class="title">Int</span>, @<span class="title">unchecked</span> <span class="title">Sendable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">case</span> starting = <span class="number">0</span> <span class="comment">// 开始</span></span><br><span class="line">    <span class="keyword">case</span> running = <span class="number">1</span>  <span class="comment">// 运行中</span></span><br><span class="line">    <span class="keyword">case</span> finishing = <span class="number">2</span> <span class="comment">// 结束</span></span><br><span class="line">    <span class="keyword">case</span> canceling = <span class="number">3</span> <span class="comment">// 取消</span></span><br><span class="line">    <span class="keyword">case</span> completed = <span class="number">4</span> <span class="comment">//完成</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-音频类别识别"><a href="#2-音频类别识别" class="headerlink" title="2 - 音频类别识别"></a>2 - 音频类别识别</h2><p>iOS内置API的音频分析能力可以方便的对音频进行分类，例如人声，乐器声等等。内置的SoundAnalysis框架能够分析识别300余种音效，当然其也支持使用自定义的模型来进行分析，本篇文章将只涉及到API的使用。</p>
+<p>SNAudioFileAnalyzer类是音频分析的处理类，例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> analyzer = <span class="keyword">try</span>! <span class="type">SNAudioFileAnalyzer</span>(url: <span class="type">URL</span>(fileURLWithPath: <span class="type">Bundle</span>.main.path(forResource: <span class="string">"12168"</span>, ofType: <span class="string">".wav"</span>)!))</span><br></pre></td></tr></table></figure>
+<p>SNAudioFileAnalyzer在实例化时会包装一个音频文件地址，后续将对此音频进行分析。首先需要创建一个分析请求，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> request = <span class="keyword">try</span>! <span class="type">SNClassifySoundRequest</span>(classifierIdentifier: .version1)</span><br></pre></td></tr></table></figure>
+<p>其参数设置使用的算法版本。</p>
+<p>通过如下方法来向SNAudioFileAnalyzer实例中添加一个请求，并设置请求过程的监听：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>! analyzer.add(request, withObserver: <span class="keyword">self</span>)</span><br></pre></td></tr></table></figure>
+<p>之后调用analyze方法来触发请求的执行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">analyzer.analyze()</span><br></pre></td></tr></table></figure>
+<p>对请求过程的监听对象需要实现SNResultsObserving协议，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">protocol</span> <span class="title">SNResultsObserving</span> : <span class="title">NSObjectProtocol</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 分析到请求结果时调用的回调，一段音频分析中会持续调用</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">request</span><span class="params">(<span class="number">_</span> request: SNRequest, didProduce result: SNResult)</span></span></span><br><span class="line">    <span class="comment">// 请求失败</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">request</span><span class="params">(<span class="number">_</span> request: SNRequest, didFailWithError error: Error)</span></span></span><br><span class="line">    <span class="comment">// 请求完成</span></span><br><span class="line">    <span class="keyword">optional</span> <span class="function"><span class="keyword">func</span> <span class="title">requestDidComplete</span><span class="params">(<span class="number">_</span> request: SNRequest)</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请求的结果数据为SNResult，这个是基础协议，真正将返回的对象是SNClassificationResult类型的，定义如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SNClassificationResult</span> : <span class="title">NSObject</span>, <span class="title">SNResult</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 分析出的类别</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> classifications: [<span class="type">SNClassification</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 在音频中的时间范围</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> timeRange: <span class="type">CMTimeRange</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 返回指定标识符的类别</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">classification</span><span class="params">(forIdentifier identifier: String)</span></span> -&gt; <span class="type">SNClassification</span>?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SNClassification</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 当前类别的标识符</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> identifier: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 可信度</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> confidence: <span class="type">Double</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>SoundAnalysis框架本身比较简单，我们再来看下分析请求类，SNRequest是请求类的基类，为了便于后续framework的升级，我们使用SNClassifySoundRequest类创建请求：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SNClassifySoundRequest</span> : <span class="title">NSObject</span>, <span class="title">SNRequest</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 模型对固定大小的音频块进行分析时的重叠量，影响分析准确性</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> overlapFactor: <span class="type">Double</span></span><br><span class="line">    <span class="comment">// 缓冲窗口的持续时间</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> windowDuration: <span class="type">CMTime</span></span><br><span class="line">    <span class="comment">// 设置一组类别，分析结果将从此组中选择</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> knownClassifications: [<span class="type">String</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 使用自定义的模型进行分析</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(mlModel: <span class="type">MLModel</span>)</span><br><span class="line">    <span class="comment">// 使用内置模型进行分析</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(classifierIdentifier: <span class="type">SNClassifierIdentifier</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后Analyzer相关的类主要用来对请求进行控制，并决定要分析的音频。SoundAnalysis框架支持直接对音频文件进行分析，也支持对音频数据流进行分析，使用的类如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 分析音频文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SNAudioFileAnalyzer</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 构造方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(url: <span class="type">URL</span>) <span class="keyword">throws</span></span><br><span class="line">    <span class="comment">// 添加一个请求和对应的监听实例</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(<span class="number">_</span> request: SNRequest, withObserver observer: SNResultsObserving)</span></span> <span class="keyword">throws</span></span><br><span class="line">    <span class="comment">// 移除一个请求</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">remove</span><span class="params">(<span class="number">_</span> request: SNRequest)</span></span></span><br><span class="line">    <span class="comment">// 移除所有请求</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">removeAllRequests</span><span class="params">()</span></span></span><br><span class="line">    <span class="comment">// 开启同步分析（会阻塞线程）</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">analyze</span><span class="params">()</span></span></span><br><span class="line">    <span class="comment">// 异步进行分析</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">analyze</span><span class="params">(completionHandler: @escaping <span class="params">(Bool)</span></span></span> -&gt; <span class="type">Void</span>)</span><br><span class="line">    <span class="comment">// 异步分析</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">analyze</span><span class="params">()</span></span> async -&gt; <span class="type">Bool</span></span><br><span class="line">    <span class="comment">// 取消分析任务</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">cancelAnalysis</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 分析音频流</span></span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">SNAudioStreamAnalyzer</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 构造方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(format: <span class="type">AVAudioFormat</span>)</span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">add</span><span class="params">(<span class="number">_</span> request: SNRequest, withObserver observer: SNResultsObserving)</span></span> <span class="keyword">throws</span></span><br><span class="line">    <span class="comment">// 请求控制方法</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">remove</span><span class="params">(<span class="number">_</span> request: SNRequest)</span></span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">removeAllRequests</span><span class="params">()</span></span></span><br><span class="line">    <span class="comment">// 对数据流做分析</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">analyze</span><span class="params">(<span class="number">_</span> audioBuffer: AVAudioBuffer, atAudioFramePosition audioFramePosition: AVAudioFramePosition)</span></span></span><br><span class="line">    <span class="comment">// 完成数据流分析</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">completeAnalysis</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整的示例代码可以在如下地址找到：</p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2FZYHshao%2FMachineLearnDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/MachineLearnDemo</a></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/05/10/469iOS MachineLearning 系列（14）—— 使用官方模型进行预测/" class="pre-post btn btn-default" title='iOS MachineLearning 系列（14）—— 使用官方模型进行预测'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（14）—— 使用官方模型进行预测</span>
+        </a>
+    
+    
+        <a href="/2023/05/06/467iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析/" class="next-post btn btn-default" title='iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（13）——-语音与音频相关的AI能力"><span class="toc-text">iOS MachineLearning 系列（13）—— 语音与音频相关的AI能力</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-进行语音识别"><span class="toc-text">1 - 进行语音识别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-音频类别识别"><span class="toc-text">2 - 音频类别识别</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

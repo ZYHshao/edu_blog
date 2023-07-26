@@ -1,0 +1,310 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（21）——CoreML模型的更多训练模板 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（21）——CoreML模型的更多训练模板">
+            
+	            iOS MachineLearning 系列（21）——CoreML模型的更多训练模板
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/07/25</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（21）——CoreML模型的更多训练模板"><a href="#iOS-MachineLearning-系列（21）——CoreML模型的更多训练模板" class="headerlink" title="iOS MachineLearning 系列（21）——CoreML模型的更多训练模板"></a>iOS MachineLearning 系列（21）——CoreML模型的更多训练模板</h1><p>前面文章中，有介绍如何训练生成定制化需求的 CoreML 模型，以图像分类为例做了演示，文章地址：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/9377371" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/9377371</a></p>
+<p>Create ML工具还提供了更多训练模版，本篇文章将系统的对其用法进行介绍。</p>
+<h2 id="一-Object-Detection类的模型训练"><a href="#一-Object-Detection类的模型训练" class="headerlink" title="一.Object Detection类的模型训练"></a>一.Object Detection类的模型训练</h2><p>之前我们也有使用过Object Detection类的模型，Object Detection，顾名思义为对象识别。即可以将一张图片中的某个对象识别出来，分析出对象的标签以及标识处对象所在图片中的位置。Object Detection最常用的模型有人脸识别模型，交通信号灯识别模型，动物识别模型等。当然，已经训练好的这些模型不一定能够满足我们需求，还以动漫角色为例，假如我们的应用需要能识别出某个图片中的某个动漫角色人物，并分析出其所在图片的位置，就可以自主来训练Object Detection类的模型。</p>
+<p>使用Create ML工具时，视觉类模型训练的步骤基本都是一致的，我们只需要提供一组训练数据和一组测试数据，在进行一些参数配置即可。详情可以参考本系列的上一篇文章。在训练某个模型时，我们最需要关注的其实就是数据的输入格式和参数的配置。</p>
+<p>Object Detection类的模型训练大致可以分为如下几步：</p>
+<ol>
+<li>收集数据足够多，且差异性覆盖足够的一组图片集（大部分数据类模型的训练都需要）。</li>
+<li>对数据集进行处理，为每张训练图片进行注解，注解包括此图中对象的标签以及所在位置（收集到数据后，一般都需要处理才能进行训练）。</li>
+<li>按照固定的格式来整理文件和目录结构，进行训练。</li>
+</ol>
+<p>下面我们来详细的介绍这几个步骤。</p>
+<p>数据的收集无需做过多介绍，只需要指定一组正常格式的图片文件即可，将这些文件放入到一个文件夹中。我们通常会将用来训练的数据集的文件夹命名为Training Data。比较重要的一步是构建annotation.json文件，这个文件的文件名是固定的，必须命名为<strong>annotation.json</strong>，且与训练图片放入同一个文件夹中，其用来为每张训练图片进行标注。每个注解对象的结构如下：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"imagefilename"</span>: <span class="string">"图片文件的名字"</span>,</span><br><span class="line">  <span class="attr">"annotation"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"coordinates"</span>: &#123;</span><br><span class="line">        <span class="attr">"y"</span>: <span class="number">0.0</span>,</span><br><span class="line">        <span class="attr">"x"</span>: <span class="number">0.0</span>,</span><br><span class="line">        <span class="attr">"height"</span>: <span class="number">199.0</span>,</span><br><span class="line">        <span class="attr">"width"</span>: <span class="number">199.0</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">"label"</span>: <span class="string">"标签名"</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，annotation可以配置为一个数组，这也就是说，Object Detection是支持一张图片中包含多个要识别的对象的，只需要正确的标志位置和标签即可。coordinates用来标记对象所在的位置和尺寸。x，y分别是相对于原点的横纵坐标位置，width和height分别设置对象的宽高。（需要注意，此处的原点为图片左上角点）。默认的尺寸坐标为像素，也支持使用比例，只需要将值都设置为0到1之间的浮点数即可。例如：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"imagefilename"</span>: <span class="string">"图片文件的名字"</span>,</span><br><span class="line">  <span class="attr">"annotation"</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="attr">"coordinates"</span>: &#123;</span><br><span class="line">        <span class="attr">"y"</span>: <span class="number">0.1</span>,</span><br><span class="line">        <span class="attr">"x"</span>: <span class="number">0.1</span>,</span><br><span class="line">        <span class="attr">"height"</span>: <span class="number">0.9</span>,</span><br><span class="line">        <span class="attr">"width"</span>: <span class="number">0.9</span></span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">"label"</span>: <span class="string">"标签名"</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>之后，设置Training Data进行训练即可。</p>
+<h2 id="二-Style-Transfer类型的模型训练"><a href="#二-Style-Transfer类型的模型训练" class="headerlink" title="二.Style Transfer类型的模型训练"></a>二.Style Transfer类型的模型训练</h2><p>Style Transfer类型的模型用来转换图片或视频的风格，这个模型也很常用，相机和视频滤镜经常会使用到此类模型。使用这个训练模版，我们可以训练出一个自定义的图片或视频滤镜。</p>
+<p>Style Transfer类型的模型训练需要准备一组训练图集，并提供一张样本风格的图片，在训练时，有两个参数可以进行调节：Strength和Density。</p>
+<p>Strength参数高，则生成的模型在应用时会保留原图更少的内容，而应用更多的样式。</p>
+<p>Density参数设置的越高，则学习风格的精细程度越高。</p>
+<h2 id="三-Hand-Pose-Classification类型的模型训练"><a href="#三-Hand-Pose-Classification类型的模型训练" class="headerlink" title="三. Hand Pose Classification类型的模型训练"></a>三. Hand Pose Classification类型的模型训练</h2><p>此类型的模型与Image Classification的模型训练方式是一致的，提供一个数据集，其中按照文件夹命名来对图片进行分类，进行训练即可。</p>
+<h2 id="四-ActionClassification，Hand-Action-Calssification类型的模型训练"><a href="#四-ActionClassification，Hand-Action-Calssification类型的模型训练" class="headerlink" title="四.ActionClassification，Hand Action Calssification类型的模型训练"></a>四.ActionClassification，Hand Action Calssification类型的模型训练</h2><p>这两类模型主要是用来进行动作的识别，要识别动作，简单的静态图片是无法实现的，因此训练时，需要提供视频数据，参数配置帧率，动作时长等。</p>
+<h2 id="五-SoundClassifier类型模型的训练"><a href="#五-SoundClassifier类型模型的训练" class="headerlink" title="五.SoundClassifier类型模型的训练"></a>五.SoundClassifier类型模型的训练</h2><p>SoundClassifier类型模型用来进行声音的分类，训练此模型与训练Image Classification的模型类似，将数据集的声音按照类型进行分类，分别放在不同的文件夹下，文件夹的名字即是声音的类别，即可进行训练。</p>
+<h2 id="六-文本分析类型的模型训练"><a href="#六-文本分析类型的模型训练" class="headerlink" title="六.文本分析类型的模型训练"></a>六.文本分析类型的模型训练</h2><p>文本分析类型的模型的训练，主要能够训练出进行文本分类的模型。在Create ML工具中，提供了两个模版，TextClassifier和WordTager。TextClassifier模型用来进行文本分类，例如之前有使用的文本的积极性分析，只需要将本文文件（txt）放入对应的标签文件夹中，将文件夹组成数据集进行训练即可。WordTager类型的模型训练也很简单，提供一组词汇，并且进行标签标记，之前使用的词性分析即是这类方式训练出来的模型。</p>
+<p>除了上面提到的这些标准模板外，Create ML工具还提供了训练数据表格化模型的模板。并且，上面所有提到的模型的训练，除了直接使用Create ML可视化工具外，我们也可以通过编写代码的方式来进行训练，此工具使用到的接口在CroreML框架中都有提供。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/07/26/477iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型/" class="pre-post btn btn-default" title='iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型</span>
+        </a>
+    
+    
+        <a href="/2023/05/29/475iOS MachineLearning 系列（20）—— 训练生成CoreML模型/" class="next-post btn btn-default" title='iOS MachineLearning 系列（20）—— 训练生成CoreML模型'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（20）—— 训练生成CoreML模型</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（21）——CoreML模型的更多训练模板"><span class="toc-text">iOS MachineLearning 系列（21）——CoreML模型的更多训练模板</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-Object-Detection类的模型训练"><span class="toc-text">一.Object Detection类的模型训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-Style-Transfer类型的模型训练"><span class="toc-text">二.Style Transfer类型的模型训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-Hand-Pose-Classification类型的模型训练"><span class="toc-text">三. Hand Pose Classification类型的模型训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-ActionClassification，Hand-Action-Calssification类型的模型训练"><span class="toc-text">四.ActionClassification，Hand Action Calssification类型的模型训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-SoundClassifier类型模型的训练"><span class="toc-text">五.SoundClassifier类型模型的训练</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六-文本分析类型的模型训练"><span class="toc-text">六.文本分析类型的模型训练</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
