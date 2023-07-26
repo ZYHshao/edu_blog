@@ -1,0 +1,352 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（22）——DS1302硬件时钟实践 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（22）——DS1302硬件时钟实践">
+            
+	            一起玩转树莓派（22）——DS1302硬件时钟实践
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/11/28</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（22）——DS1302硬件时钟实践"><a href="#一起玩转树莓派（22）——DS1302硬件时钟实践" class="headerlink" title="一起玩转树莓派（22）——DS1302硬件时钟实践"></a>一起玩转树莓派（22）——DS1302硬件时钟实践</h1><p>不知你是否有发现，我们在使用计算机时，除了第一次启动需要同步下时间外，即是没有联网，断电重启后，计算机的时间依然是准确的。这是因为在计算机主机内部有一个自带电源的硬件时钟模块，在同步时间时将当前的时间写入模块后，此硬件时钟模块会自动的维护准确的当前时间。树莓派内部本身没有硬件时钟模块，但是在某些非联网的需求场景中，我们需要准确的记录当前的日期时间，比如之前我们介绍过许多有关气象相关的传感器，在记录气象数据时，也需要记录当时的准确时间。</p>
+<h2 id="1-DS1302模块简介"><a href="#1-DS1302模块简介" class="headerlink" title="1. DS1302模块简介"></a>1. DS1302模块简介</h2><p>DS1302是一款涓流充电计时芯片。其拥有实时时钟可以计算年，月，日，时，分，秒，星期等信息，可使用的时间间隔为2000年到2100年之间。除此之外，其还拥有一个31*8位的通用暂存RAM，用来存储一些临时的逻辑数据。DS1302采用同步串行通信的方式，简化了处理器的接口，理论上除了电源之外，主需要连接三根线即可实现通信功能，即CE线，I/O线和SCLK串行时钟线。</p>
+<p>DS1302芯片有8个引脚，工作电路结构如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d1388b4b0dbb04e9632a74a993169b37c88.png" alt></p>
+<p>每个引脚的作用如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-ac0a9f303fd8d29295025906c20640d6261.png" alt></p>
+<p>DS1302采用的是8位的指令命令字，在每次通信前，都需要使用命令字来启动，命令字结构如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a9f0d09fae150615e0e86a392f40ab5d194.png" alt></p>
+<p>如上图所示，其中第7位是写入有效控制位，为0时写入无效，为1时允许写入，每次进行数据传输时，必须将此位设置为1，一般我们在使用指令时，此为强制设置为1。</p>
+<p>第6位控制芯片功能，为0时表示使用时钟数据，为1时表示使用RAM数据。</p>
+<p>第1位到第5位为寄存器选择位，选择要操作的寄存器。</p>
+<p>第0位是读写控制位，为0时表示要写数据到寄存器，为1时表示要从寄存器读数据。</p>
+<p>了解了DS1302的指令结构，要使用它我们还需要对寄存器的功能做简单的了解，本次实验我们主要使用DS1302的时钟功能，与时钟功能相关的寄存器有7个，芯片手册中给出了示例，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-c4ccc44b571f375a3136116531fcaaa8825.png" alt></p>
+<p>下面我们介绍下这些寄存器的功能和用法。</p>
+<p>首先，指令中有5位来标识要操作的寄存器的地址，上图中直接给我了操作寄存器的读写指令。</p>
+<p>第1个寄存器的地址为0b0，因此其读指令为0b1000 0001，写指令为0b1000 0000，转换成16进制，即上图中的0x81与0x80。此寄存器的最高位CH是一个标志位，每次上电后，我们可以读取一下这一位，如果是1表示断电后始终系统已经不工作了，我们需要重新校准时间，如果是0表示备用电源正常，始终持续正常运行。第4到第6位用来表示时间秒的十位数据，第0到第3位用来表示秒的个位数据，因为秒的十位数据最大为5，3个二进制位足够使用。</p>
+<p>第2个寄存器的地址为0b1，其最高位为保留位，目前无用，第4位到第6位用来藐视分钟的十位，第0位到第3位表示分钟的个位，同样分钟的十位数据最大为5，3个二进制位足够使用。</p>
+<p>第3个寄存器的地址为0b10，其最高位为1表示当前使用的是12小时制，最高位是0表示使用的是24小时制。第6位固定为0，没有意义。第5位在12小时制的模式下，为1表示的是下午，为0表示的是上午。在24小时制的模式下，第4位和第5位一起表示小时的十位。第0位到第3位表示了小时的个位。</p>
+<p>第4个寄存器的地址为0b11，其第7位和第6位为固定的0，没有意义。第5位和第4位一起表示了日期的十位，第0位到第3位表示了日期的个位。</p>
+<p>第5个寄存器的地址为0b100，其第5位到第7位为固定的0，没有意义。第4位表示了月的十位，第0到第3位表示月的个位。</p>
+<p>第6个寄存器的地址为0b101，其高5位固定为0，没有意义。第3位表示了星期。</p>
+<p>第7个寄存器的地址为0b110，高4位表示了年的十位，第4位表示了年的个位，可以表示0-99之间的值，即2000年到2099年。</p>
+<p>第8个寄存器的地址为0b111，这是一个控制寄存器，在写数据时，这个寄存器的最高位WP必须是0，如果此位为1，则给其他寄存器的写操作都将禁止，用来做保护。</p>
+<p>如果要使用到RAM功能，则指令的前两位必须是11，因此RAM的第一个寄存器的读写指令为0b1100 0000或0b1100 0001 ，即0xC0和0xC1。RAM存储寄存器有31个，地址为0x00到0x1F，对应的命令字从0xC0到0xFF。</p>
+<p>无论是时钟模式，还是RAM模式，DS1302都支持采用脉冲串的方式来读写数据，时钟脉冲串指令为0xBF与0xBE，RAM脉冲串为0xFF与0xFE。数据会按照寄存器的顺序依次写入和读出。</p>
+<p>明白了指令与寄存器的使用逻辑，下面还剩下一点需要明确，那就是如何进行数据的输入和读取。RST引脚用来控制数据读写，RTS从低电平变成高电平触发一次数据传输过程。</p>
+<h2 id="2-实验连线"><a href="#2-实验连线" class="headerlink" title="2. 实验连线"></a>2. 实验连线</h2><p>本次实验，我们使用的是封装好的DS1302模块，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-19b26d9f6d47615e2b57c04795fa4cf8075.png" alt></p>
+<p>其中CLK对应SCLK引脚，DAT是IO功能引脚，RST对应CE功能引脚。我们选用树莓派中的16，18和22引脚（物理编码，分别对应BCM编码的23，24和25），连线如下：</p>
+<table>
+<thead>
+<tr>
+<th>DS1302</th>
+<th>树莓派</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>3.3V</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>CLK</td>
+<td>GPIO23（BCM编码）</td>
+</tr>
+<tr>
+<td>DAT</td>
+<td>GPIO24（BCM编码）</td>
+</tr>
+<tr>
+<td>RST</td>
+<td>GPIO25（BCM编码）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-实验编码"><a href="#3-实验编码" class="headerlink" title="3.实验编码"></a>3.实验编码</h2><p>现在，我们只需要按照前面介绍的模块用法进行编码即可，示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> RPi.GPIO</span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用物理编码</span></span><br><span class="line">SCL = <span class="number">16</span></span><br><span class="line">IO = <span class="number">18</span></span><br><span class="line">RST = <span class="number">22</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 数据读写的间隔</span></span><br><span class="line">CLK_PERIOD = <span class="number">0.00001</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭GPIO警告</span></span><br><span class="line">RPi.GPIO.setwarnings(<span class="keyword">False</span>)</span><br><span class="line"><span class="comment"># 配置树莓派GPIO接口 使用物理编码</span></span><br><span class="line">RPi.GPIO.setmode(RPi.GPIO.BOARD)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入一个字节的数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">writeByte</span><span class="params">(Byte)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> Count <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        <span class="comment"># 将SCL置为低电平 开启一次传输</span></span><br><span class="line">        time.sleep(CLK_PERIOD)</span><br><span class="line">        RPi.GPIO.output(SCL, <span class="number">0</span>)</span><br><span class="line">        <span class="comment"># 取一位数据进行写入</span></span><br><span class="line">        Bit = Byte % <span class="number">2</span></span><br><span class="line">        Byte = int(Byte / <span class="number">2</span>)</span><br><span class="line">        <span class="comment"># 通过IO引脚进行写入</span></span><br><span class="line">        time.sleep(CLK_PERIOD)</span><br><span class="line">        RPi.GPIO.output(IO, Bit)</span><br><span class="line">        <span class="comment"># 将SCL置为高电平 结束一次传输</span></span><br><span class="line">        time.sleep(CLK_PERIOD)</span><br><span class="line">        RPi.GPIO.output(SCL, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取一个字节的数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readByte</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 将IO引脚设置为输入</span></span><br><span class="line">    RPi.GPIO.setup(IO, RPi.GPIO.IN, pull_up_down=RPi.GPIO.PUD_DOWN)</span><br><span class="line">    Byte = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> Count <span class="keyword">in</span> range(<span class="number">8</span>):</span><br><span class="line">        <span class="comment"># 先将SCL重置为高电平 </span></span><br><span class="line">        time.sleep(CLK_PERIOD)</span><br><span class="line">        RPi.GPIO.output(SCL, <span class="number">1</span>)</span><br><span class="line">        <span class="comment"># 将SCL置为低电平 开启一次传输</span></span><br><span class="line">        time.sleep(CLK_PERIOD)</span><br><span class="line">        RPi.GPIO.output(SCL, <span class="number">0</span>)</span><br><span class="line">        <span class="comment"># 读取一位数据</span></span><br><span class="line">        time.sleep(CLK_PERIOD)</span><br><span class="line">        Bit = RPi.GPIO.input(IO)</span><br><span class="line">        Byte |= ((<span class="number">2</span> ** Count) * Bit)</span><br><span class="line">    <span class="keyword">return</span> Byte</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重置一些数据</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">resetDS1302</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># SCL引脚设置为输出</span></span><br><span class="line">    RPi.GPIO.setup(SCL, RPi.GPIO.OUT, initial=<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># RST引脚设置为输出</span></span><br><span class="line">    RPi.GPIO.setup(RST, RPi.GPIO.OUT, initial=<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># IO引脚设置为输出</span></span><br><span class="line">    RPi.GPIO.setup(IO, RPi.GPIO.OUT, initial=<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># SCL和IO都置为低电平</span></span><br><span class="line">    RPi.GPIO.output(SCL, <span class="number">0</span>)</span><br><span class="line">    RPi.GPIO.output(IO, <span class="number">0</span>)</span><br><span class="line">    time.sleep(CLK_PERIOD)</span><br><span class="line">    <span class="comment"># RST置为高电平</span></span><br><span class="line">    RPi.GPIO.output(RST, <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结束操作</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">endDS1302</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># SCL引脚设置为输出</span></span><br><span class="line">    RPi.GPIO.setup(SCL, RPi.GPIO.OUT, initial=<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># RST引脚设置为输出</span></span><br><span class="line">    RPi.GPIO.setup(RST, RPi.GPIO.OUT, initial=<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># IO引脚设置为输出</span></span><br><span class="line">    RPi.GPIO.setup(IO, RPi.GPIO.OUT, initial=<span class="number">0</span>)</span><br><span class="line">    <span class="comment"># SCL和IO都置为低电平</span></span><br><span class="line">    RPi.GPIO.output(SCL, <span class="number">0</span>)</span><br><span class="line">    RPi.GPIO.output(IO, <span class="number">0</span>)</span><br><span class="line">    time.sleep(CLK_PERIOD)</span><br><span class="line">    <span class="comment"># RST置为低电平</span></span><br><span class="line">    RPi.GPIO.output(RST, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行时间校准</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setDatetime</span><span class="params">(year, month, day,  hour, minute, second, dayOfWeek)</span>:</span></span><br><span class="line">    <span class="comment"># 引脚重置</span></span><br><span class="line">    resetDS1302()</span><br><span class="line">    <span class="comment"># 设置写始终数据脉冲指令</span></span><br><span class="line">    writeByte(int(<span class="string">"10111110"</span>, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 开始依次写数据</span></span><br><span class="line">    <span class="comment"># 写入秒数据，*16的作用是把十位右移4位 下面同</span></span><br><span class="line">    writeByte((second % <span class="number">10</span>) | int(second / <span class="number">10</span>) * <span class="number">16</span>)</span><br><span class="line">    <span class="comment"># 写入分钟数据</span></span><br><span class="line">    writeByte((minute % <span class="number">10</span>) | int(minute / <span class="number">10</span>) * <span class="number">16</span>)</span><br><span class="line">    <span class="comment"># 写入小时数据</span></span><br><span class="line">    writeByte((hour % <span class="number">10</span>) | int(hour / <span class="number">10</span>) * <span class="number">16</span>)</span><br><span class="line">    <span class="comment"># 写入日期数据</span></span><br><span class="line">    writeByte((day % <span class="number">10</span>) | int(day / <span class="number">10</span>) * <span class="number">16</span>)</span><br><span class="line">    <span class="comment"># 写入月份数据</span></span><br><span class="line">    writeByte((month % <span class="number">10</span>) | int(month / <span class="number">10</span>) * <span class="number">16</span>)</span><br><span class="line">    <span class="comment"># 写入星期数据</span></span><br><span class="line">    writeByte(dayOfWeek)</span><br><span class="line">    <span class="comment"># 写入年份数据</span></span><br><span class="line">    writeByte((year % <span class="number">100</span> % <span class="number">10</span>) | int(year % <span class="number">100</span> / <span class="number">10</span>) * <span class="number">16</span>)</span><br><span class="line">    <span class="comment"># 结束数据写入</span></span><br><span class="line">    writeByte(int(<span class="string">"00000000"</span>, <span class="number">2</span>))</span><br><span class="line">    <span class="comment"># 结束任务</span></span><br><span class="line">    endDS1302()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取DS1302硬件时钟实践</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getDatetime</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 重置引脚</span></span><br><span class="line">    resetDS1302()</span><br><span class="line">    <span class="comment"># 0xBF指令，开始时钟脉冲串读取数据</span></span><br><span class="line">    writeByte(int(<span class="string">"10111111"</span>, <span class="number">2</span>))</span><br><span class="line"></span><br><span class="line">    Data = <span class="string">""</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># 依次读取</span></span><br><span class="line">    <span class="comment"># 先读出秒数据</span></span><br><span class="line">    Byte = readByte()</span><br><span class="line">    second = (Byte % <span class="number">16</span>) + int(Byte / <span class="number">16</span>) * <span class="number">10</span></span><br><span class="line">    <span class="comment"># 分钟数据</span></span><br><span class="line">    Byte = readByte()</span><br><span class="line">    minute = (Byte % <span class="number">16</span>) + int(Byte / <span class="number">16</span>) * <span class="number">10</span></span><br><span class="line">    <span class="comment"># 小时数据</span></span><br><span class="line">    Byte = readByte()</span><br><span class="line">    hour = (Byte % <span class="number">16</span>) + int(Byte / <span class="number">16</span>) * <span class="number">10</span></span><br><span class="line">    <span class="comment"># 日期数据</span></span><br><span class="line">    Byte = readByte()</span><br><span class="line">    day = (Byte % <span class="number">16</span>) + int(Byte / <span class="number">16</span>) * <span class="number">10</span></span><br><span class="line">    <span class="comment"># 月份数据</span></span><br><span class="line">    Byte = readByte()</span><br><span class="line">    month = (Byte % <span class="number">16</span>) + int(Byte / <span class="number">16</span>) * <span class="number">10</span></span><br><span class="line">    <span class="comment"># 星期数据</span></span><br><span class="line">    Byte = readByte()</span><br><span class="line">    day_of_week = (Byte % <span class="number">16</span>)</span><br><span class="line">    <span class="comment"># 年数据</span></span><br><span class="line">    Byte = readByte()</span><br><span class="line">    year = (Byte % <span class="number">16</span>) + int(Byte / <span class="number">16</span>) * <span class="number">10</span> + <span class="number">2000</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 结束任务</span></span><br><span class="line">    endDS1302()</span><br><span class="line">    <span class="keyword">return</span> datetime(year, month, day, hour, minute, second)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 时间格式化</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">format_time</span><span class="params">(dt)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> dt <span class="keyword">is</span> <span class="keyword">None</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">    fmt = <span class="string">"%m/%d/%Y %H:%M"</span></span><br><span class="line">    <span class="keyword">return</span> dt.strftime(fmt)</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_time</span><span class="params">(s)</span>:</span></span><br><span class="line">    fmt = <span class="string">"%m/%d/%Y %H:%M"</span></span><br><span class="line">    <span class="keyword">return</span> datetime.strptime(s, fmt)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化工作</span></span><br><span class="line"></span><br><span class="line">resetDS1302()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写保护已关闭。</span></span><br><span class="line">writeByte(int(<span class="string">"10001110"</span>, <span class="number">2</span>))</span><br><span class="line"><span class="comment"># 结束指令执行</span></span><br><span class="line">writeByte(int(<span class="string">"00000000"</span>, <span class="number">2</span>))</span><br><span class="line"><span class="comment"># 涓流充电模式被关闭。</span></span><br><span class="line">writeByte(int(<span class="string">"10010000"</span>, <span class="number">2</span>))</span><br><span class="line"><span class="comment"># 结束指令执行</span></span><br><span class="line">writeByte(int(<span class="string">"00000000"</span>, <span class="number">2</span>))</span><br><span class="line"><span class="comment">#结束任务</span></span><br><span class="line">endDS1302()</span><br><span class="line">        </span><br><span class="line"></span><br><span class="line">current = datetime.now()</span><br><span class="line"></span><br><span class="line">year = current.year</span><br><span class="line">month = current.month</span><br><span class="line">day = current.day</span><br><span class="line">hour = current.hour</span><br><span class="line">minute = current.minute</span><br><span class="line">second = current.second</span><br><span class="line">week = current.weekday()</span><br><span class="line"></span><br><span class="line">setDatetime(year,month,day,hour,minute,second,week)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    time.sleep(<span class="number">1</span>)</span><br><span class="line">    dt = getDatetime()</span><br><span class="line">    print(dt)</span><br></pre></td></tr></table></figure>
+<p>上面示例代码中，无论是读数据还是写数据，我们都采用的时钟脉冲串的通信模式，这样我们只需要设置一次指令，即可按需读出所需数据，非常方便。在树莓派上运行上面的代码，效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d00a72e32f44484a665b9873421e3e92cd5.png" alt></p>
+<h2 id="4-思考一下"><a href="#4-思考一下" class="headerlink" title="4.思考一下"></a>4.思考一下</h2><p>仿照上面的思路，是否可以改成非时钟脉冲串的通信方式来获取日期时间信息呢？试试吧！</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/12/04/439[iOS研习记]——聊聊野指针与僵尸对象定位/" class="pre-post btn btn-default" title='iOS研习记——聊聊野指针与僵尸对象定位'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS研习记——聊聊野指针与僵尸对象定位</span>
+        </a>
+    
+    
+        <a href="/2021/11/24/437[iOS研习记]——谈谈静态库与动态库/" class="next-post btn btn-default" title='iOS研习记——谈谈静态库与动态库'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS研习记——谈谈静态库与动态库</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（22）——DS1302硬件时钟实践"><span class="toc-text">一起玩转树莓派（22）——DS1302硬件时钟实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-DS1302模块简介"><span class="toc-text">1. DS1302模块简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-实验连线"><span class="toc-text">2. 实验连线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-实验编码"><span class="toc-text">3.实验编码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-思考一下"><span class="toc-text">4.思考一下</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

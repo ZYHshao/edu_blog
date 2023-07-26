@@ -1,0 +1,328 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（11）—— 自然语言识别与文本分析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（11）—— 自然语言识别与文本分析">
+            
+	            iOS MachineLearning 系列（11）—— 自然语言识别与文本分析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/05/05</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（11）——-自然语言识别与单词分析"><a href="#iOS-MachineLearning-系列（11）——-自然语言识别与单词分析" class="headerlink" title="iOS MachineLearning 系列（11）—— 自然语言识别与单词分析"></a>iOS MachineLearning 系列（11）—— 自然语言识别与单词分析</h1><p>在上一篇文章中，我们介绍了使用NaturalLanguage框架来进行自然语言的拆解，可以将一段文本按照单词，句子或段落的模式进行拆解。并且，在进行拆解时，其可以自动的识别所使用的语言。</p>
+<p>其实，NaturalLanguage框架本身也提供了语言识别的能力，其可以分析一段文本所对应的语言，同样对于包含多种语言的文本，其可以分析出各种语言的占比。语言识别是其他高级自然语言处理任务的基础，本篇文章还将介绍NaturalLanguage关于文本分析的能力，其能够对文本中的人名，地名和组织名进行识别，也可以对词性进行分析，如动词，名词。甚至我们还可以分析文本的积极或消极程度来推测内容的取向，从而帮助开发者开发出更加智能的应用。</p>
+<h2 id="1-语言识别"><a href="#1-语言识别" class="headerlink" title="1 - 语言识别"></a>1 - 语言识别</h2><p>NLLanguageRecognizer类用来进行语言识别，其可以对输入的文本所使用的语言进行推断，使用非常简单。</p>
+<p>首先初始化一个NLLanguageRecognizer实例，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> recognizer = <span class="type">NLLanguageRecognizer</span>()</span><br></pre></td></tr></table></figure>
+<p>可以定义一些示例的字符串来测试识别能力，如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> string1 = <span class="string">"世界，你好！"</span></span><br><span class="line"><span class="keyword">let</span> string2 = <span class="string">"Hello World!"</span></span><br><span class="line"><span class="keyword">let</span> string3 = <span class="string">"こんにちは中国"</span></span><br></pre></td></tr></table></figure>
+<p>调用NLLanguageRecognizer实例的processString方法即可对字符串进行解析，这个方法是同步的，解析完成后，通过dominantLanguage属性即可获取到这段文本所使用的最接近的语言，例如上面的示例字符串中，string1和string2是比较单纯的中文和英文，string3是日语，日语中很多字是和中文一样的，因此对其进行识别可能会出现误差，我们也可以使用languageHypotheses方法来获取可能识别出的语言，返回的结果中会对识别出的每种语言的可信度进行标记。上面的字符串识别效果如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-cf5b18351ad888c1ef9dbde129df60a50b5.png" alt></p>
+<p>其中，zh-Hant为汉语，en为英语，ja为日语。</p>
+<p>NLLanguageRecognizer类的使用很简单，其中封装属性和方法列举如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">NLLanguageRecognizer</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 类方法，直接对字符串进行主要语言识别</span></span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">dominantLanguage</span>(<span class="title">for</span> <span class="title">string</span>: <span class="title">String</span>) -&gt; <span class="title">NLLanguage</span>?</span></span><br><span class="line"><span class="class">    // 对一个字符串进行识别任务</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">func</span> <span class="title">processString</span>(<span class="title">_</span> <span class="title">string</span>: <span class="title">String</span>)</span></span><br><span class="line"><span class="class">    // 重置状态</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">func</span> <span class="title">reset</span>()</span></span><br><span class="line"><span class="class">    // 最近一次识别任务的结果</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">var</span> <span class="title">dominantLanguage</span>: <span class="title">NLLanguage</span>? </span>&#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 设置说支持的语言，可以设置只支持某些语言的识别</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> languageConstraints: [<span class="type">NLLanguage</span>]</span><br><span class="line">    <span class="comment">// 获取所有可能的语言，参数可以设置最多返回的结果个数，结果中value约接近1的语言可信度越高</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">languageHypotheses</span><span class="params">(withMaximum maxHypotheses: Int)</span></span> -&gt; [<span class="type">NLLanguage</span> : <span class="type">Double</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>NLLanguag是描述语言的结构体，支持的语言列举如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">NLLanguage</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 不确定的</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> undetermined: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 阿姆哈拉语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> amharic: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 阿拉伯语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> arabic: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 亚美尼亚</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> armenian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 孟加拉语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> bengali: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 保加利亚</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> bulgarian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 缅甸语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> burmese: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 加泰罗尼亚语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> catalan: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 切罗基</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> cherokee: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 克罗地亚</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> croatian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 捷克</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> czech: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 丹麦语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> danish: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 荷兰</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> dutch: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 英语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> english: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 芬兰语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> finnish: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 法语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> french: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 格鲁吉亚</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> georgian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 德语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> german: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 希腊语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> greek: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 古吉拉特语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> gujarati: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 希伯来语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> hebrew: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 印地语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> hindi: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 匈牙利</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> hungarian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 冰岛语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> icelandic: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 印度尼西亚语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> indonesian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 意大利语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> italian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 日语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> japanese: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 埃纳德语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> kannada: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 高棉语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> khmer: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 韩国语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> korean: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 老挝</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> lao: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 马来语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> malay: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 马拉雅拉姆语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> malayalam: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 马拉地语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> marathi: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 蒙古语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> mongolian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 挪威语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> norwegian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 奥里亚语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> oriya: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 波斯语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> persian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 波兰语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> polish: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 葡萄牙语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> portuguese: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 旁遮普语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> punjabi: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 罗马尼亚语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> romanian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 俄语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> russian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 简体中文</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> simplifiedChinese: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 锡兰语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> sinhalese: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 斯洛伐克语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> slovak: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 西班牙语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> spanish: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 瑞典语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> swedish: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 泰米尔语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> tamil: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 泰卢固语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> telugu: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 泰语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> thai: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 藏语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> tibetan: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 繁体中文</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> traditionalChinese: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 土耳其语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> turkish: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 乌克兰语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> ukrainian: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 乌尔都语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> urdu: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 越南语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> vietnamese: <span class="type">NLLanguage</span></span><br><span class="line">    <span class="comment">// 哈萨克语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> kazakh: <span class="type">NLLanguage</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-文本分析"><a href="#2-文本分析" class="headerlink" title="2 - 文本分析"></a>2 - 文本分析</h2><p>文本分析支持对单词进行分析，也支持对句子和段落进行分析。针对不同的需求场景，可以使用不同的方案来分析。在NaturalLanguage框架中，使用NLTagScheme结构体来定义分析方案，支持的方案列举如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">NLTagScheme</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 按元素类型进行标记 可以分析出单词，标点符号，空白符</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> tokenType: <span class="type">NLTagScheme</span></span><br><span class="line">    <span class="comment">// 比tokenType方案更进一步，还能分析出词性，如动词，名词等</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> lexicalClass: <span class="type">NLTagScheme</span></span><br><span class="line">    <span class="comment">// 名称分析方案，如分析出人名，地名，组织名</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> nameType: <span class="type">NLTagScheme</span></span><br><span class="line">    <span class="comment">// nameType和lexicalClass的聚合</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> nameTypeOrLexicalClass: <span class="type">NLTagScheme</span></span><br><span class="line">    <span class="comment">// 分析词干，如reading分析词干为read</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> lemma: <span class="type">NLTagScheme</span></span><br><span class="line">    <span class="comment">// 标记元素的语言</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> language: <span class="type">NLTagScheme</span> </span><br><span class="line">    <span class="comment">// 标记元素的ISO规范的脚本</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> script: <span class="type">NLTagScheme</span></span><br><span class="line">    <span class="comment">// 分析内容的消极/积极</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> sentimentScore: <span class="type">NLTagScheme</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>文本分析的结果会被封装为NLTag结构体，此结构体会包含一个字符串类型的原始值，对于lemma，language，script，sentimentScore分析方案，其结果会直接包装成字符串，其他的分析方案的结果则进行了定义，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">NLTag</span> </span>&#123;</span><br><span class="line">    <span class="comment">// tokenType方案对应的结果</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> word: <span class="type">NLTag</span> <span class="comment">// 单词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> punctuation: <span class="type">NLTag</span> <span class="comment">// 标点</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> whitespace: <span class="type">NLTag</span> <span class="comment">// 空白符</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> other: <span class="type">NLTag</span> <span class="comment">// 其他</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// lexicalClass方案对应的结果</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> noun: <span class="type">NLTag</span>  <span class="comment">// 名词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> verb: <span class="type">NLTag</span> <span class="comment">// 动词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> adjective: <span class="type">NLTag</span> <span class="comment">// 形容词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> adverb: <span class="type">NLTag</span>  <span class="comment">// 副词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> pronoun: <span class="type">NLTag</span> <span class="comment">// 代词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> determiner: <span class="type">NLTag</span> <span class="comment">// 限定词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> particle: <span class="type">NLTag</span> <span class="comment">// 小品词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> preposition: <span class="type">NLTag</span> <span class="comment">// 介词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> number: <span class="type">NLTag</span> <span class="comment">// 数词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> conjunction: <span class="type">NLTag</span> <span class="comment">// 连词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> interjection: <span class="type">NLTag</span> <span class="comment">// 感叹词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> classifier: <span class="type">NLTag</span> <span class="comment">// 分类词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> idiom: <span class="type">NLTag</span>  <span class="comment">// 惯用语</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> otherWord: <span class="type">NLTag</span> <span class="comment">// 其他单词</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> sentenceTerminator: <span class="type">NLTag</span> <span class="comment">// 语句终止符</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> openQuote: <span class="type">NLTag</span> <span class="comment">// 开引号</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> closeQuote: <span class="type">NLTag</span> <span class="comment">// 闭引号</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> openParenthesis: <span class="type">NLTag</span> <span class="comment">// 开括号</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> closeParenthesis: <span class="type">NLTag</span> <span class="comment">// 闭括号</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> wordJoiner: <span class="type">NLTag</span> <span class="comment">// 连字符</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> dash: <span class="type">NLTag</span> <span class="comment">// 破折号</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> otherPunctuation: <span class="type">NLTag</span> <span class="comment">// 其他标点</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> paragraphBreak: <span class="type">NLTag</span> <span class="comment">// 段落中断</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">let</span> otherWhitespace: <span class="type">NLTag</span> <span class="comment">// 其他空白符</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面，我们来对每种分析方案进行介绍。</p>
+<h3 id="tokenType"><a href="#tokenType" class="headerlink" title="tokenType"></a>tokenType</h3><p>tokenType方法非常简单，直接对元素类型进行简单分类，效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-5681d72f4739b9c16c4df13353bc56639da.png" alt></p>
+<h3 id="lexicalClass"><a href="#lexicalClass" class="headerlink" title="lexicalClass"></a>lexicalClass</h3><p>lexicalClass方法相比tokenType更加高级，能够更加细致的单词进行分类，但是需要注意，lexicalClass方案只对英文支持较好。效果如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-92df813a36f76c1a3e1069583eaaf56b3f9.png" alt></p>
+<h3 id="nameType"><a href="#nameType" class="headerlink" title="nameType"></a>nameType</h3><p>此方案用来解析文本中的组织名，地名，人名。同样对英文支持较好，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-ac37887db47898c6b2d23b8295d5950a39b.png" alt></p>
+<p>可以看到，其中国家的名字，人名和城市名都正确的解析了出来。</p>
+<h3 id="nameTypeOrLexicalClass"><a href="#nameTypeOrLexicalClass" class="headerlink" title="nameTypeOrLexicalClass"></a>nameTypeOrLexicalClass</h3><p>此方案无需做过多的解释，只是两种方法的聚合。</p>
+<h3 id="lemma"><a href="#lemma" class="headerlink" title="lemma"></a>lemma</h3><p>此方案用来分析词干，主要也是针对英文，效果如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-33c3e49399594ec891709f1669b122d483d.png" alt></p>
+<h3 id="language与script"><a href="#language与script" class="headerlink" title="language与script"></a>language与script</h3><p>这两个方案都是分析元素的语言相关。</p>
+<h3 id="sentimentScore"><a href="#sentimentScore" class="headerlink" title="sentimentScore"></a>sentimentScore</h3><p>此方案只能用来进行句子和段落的分析，可以推测出文案内容的积极程度，结果越接近1，标明内容的积极性越高，越接近-1表示越消极。例如：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-9d9e3b488b0bc2fd0e800999caea7c665ba.png" alt></p>
+<p>可以看到其对积极和消极的判定还是比较准确，通过测试，目前也只针对英文有效。</p>
+<p>最后，我们再来介绍下用来触发文本分析的NLTagger类，在进行分析前，首先需要实例化此类：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> tagger = <span class="type">NLTagger</span>(tagSchemes: [.lexicalClass, .tokenType, .lemma, .nameType, .script, .nameTypeOrLexicalClass, .sentimentScore, .language])</span><br></pre></td></tr></table></figure>
+<p>此实例化方法中传入的参数表示要支持的分析方案。使用如下代码来触发分析：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tagger.string = string</span><br><span class="line">tagger.enumerateTags(<span class="keyword">in</span>: string.startIndex ..&lt; string.endIndex, unit: .paragraph, scheme: .sentimentScore) &#123; tag, range <span class="keyword">in</span></span><br><span class="line">    resultLabel.text = (resultLabel.text ?? <span class="string">""</span>).appending(<span class="string">"【[\(string[range])]-[\(tag?.rawValue ?? "</span><span class="string">")]】"</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>NLTagger类定义如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">NLTagger</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 初始化方法，设置支持的分析方案</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(tagSchemes: [<span class="type">NLTagScheme</span>])</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> tagSchemes: [<span class="type">NLTagScheme</span>] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 要进行分析的字符串</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> string: <span class="type">String</span>?</span><br><span class="line">    <span class="comment">// 获取支持的方案（对不同的拆解方式和语言，所能支持的方案不同）</span></span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">availableTagSchemes</span>(<span class="title">for</span> <span class="title">unit</span>: <span class="title">NLTokenUnit</span>, <span class="title">language</span>: <span class="title">NLLanguage</span>) -&gt; [<span class="title">NLTagScheme</span>]</span></span><br><span class="line"><span class="class">    // 输入文本的主语言</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">var</span> <span class="title">dominantLanguage</span>: <span class="title">NLLanguage</span>? </span>&#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 使用自定义模型来定义方案</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">setModels</span><span class="params">(<span class="number">_</span> models: [NLModel], forTagScheme tagScheme: NLTagScheme)</span></span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">models</span><span class="params">(forTagScheme tagScheme: NLTagScheme)</span></span> -&gt; [<span class="type">NLModel</span>]</span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">setGazetteers</span><span class="params">(<span class="number">_</span> gazetteers: [NLGazetteer], <span class="keyword">for</span> tagScheme: NLTagScheme)</span></span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">gazetteers</span><span class="params">(<span class="keyword">for</span> tagScheme: NLTagScheme)</span></span> -&gt; [<span class="type">NLGazetteer</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果availableTagSchemes没有支持的方案，可能是有资源为加载到设备，使用此方法尝试请求资源</span></span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">requestAssets</span>(<span class="title">for</span> <span class="title">language</span>: <span class="title">NLLanguage</span>, <span class="title">tagScheme</span>: <span class="title">NLTagScheme</span>, <span class="title">completionHandler</span>: @<span class="title">escaping</span> (<span class="title">NLTagger</span>.<span class="title">AssetsResult</span>, <span class="title">Error</span>?) -&gt; <span class="title">Void</span>)</span></span><br><span class="line"><span class="class">    <span class="title">open</span> <span class="title">class</span> <span class="title">func</span> <span class="title">requestAssets</span>(<span class="title">for</span> <span class="title">language</span>: <span class="title">NLLanguage</span>, <span class="title">tagScheme</span>: <span class="title">NLTagScheme</span>) <span class="title">async</span> <span class="title">throws</span> -&gt; <span class="title">NLTagger</span>.<span class="title">AssetsResult</span></span></span><br><span class="line"><span class="class">    </span></span><br><span class="line"><span class="class">    // 获取元素所在字符串范围</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">func</span> <span class="title">tokenRange</span>(<span class="title">at</span> <span class="title">index</span>: <span class="title">String</span>.<span class="title">Index</span>, <span class="title">unit</span>: <span class="title">NLTokenUnit</span>) -&gt; <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">func</span> <span class="title">tokenRange</span>(<span class="title">for</span> <span class="title">range</span>: <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;, <span class="title">unit</span>: <span class="title">NLTokenUnit</span>) -&gt; <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;</span></span><br><span class="line"><span class="class">    // 对某个位置的元素进行解析</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">func</span> <span class="title">tag</span>(<span class="title">at</span> <span class="title">index</span>: <span class="title">String</span>.<span class="title">Index</span>, <span class="title">unit</span>: <span class="title">NLTokenUnit</span>, <span class="title">scheme</span>: <span class="title">NLTagScheme</span>) -&gt; (<span class="title">NLTag</span>?, <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;)</span></span><br><span class="line"><span class="class">    // 对某个位置的元素进行解析，返回肯能的结果</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">func</span> <span class="title">tagHypotheses</span>(<span class="title">at</span> <span class="title">index</span>: <span class="title">String</span>.<span class="title">Index</span>, <span class="title">unit</span>: <span class="title">NLTokenUnit</span>, <span class="title">scheme</span>: <span class="title">NLTagScheme</span>, <span class="title">maximumCount</span>: <span class="title">Int</span>) -&gt; ([<span class="title">String</span> : <span class="title">Double</span>], <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;)</span></span><br><span class="line"><span class="class">    // 进行完整解析</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">func</span> <span class="title">enumerateTags</span>(<span class="title">in</span> <span class="title">range</span>: <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;, <span class="title">unit</span>: <span class="title">NLTokenUnit</span>, <span class="title">scheme</span>: <span class="title">NLTagScheme</span>, <span class="title">options</span>: <span class="title">NLTagger</span>.<span class="title">Options</span> = [], <span class="title">using</span> <span class="title">block</span>: (<span class="title">NLTag</span>?, <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;) -&gt; <span class="title">Bool</span>)</span></span><br><span class="line"><span class="class">    // 进行范围解析</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">func</span> <span class="title">tags</span>(<span class="title">in</span> <span class="title">range</span>: <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;, <span class="title">unit</span>: <span class="title">NLTokenUnit</span>, <span class="title">scheme</span>: <span class="title">NLTagScheme</span>, <span class="title">options</span>: <span class="title">NLTagger</span>.<span class="title">Options</span> = []) -&gt; [(<span class="title">NLTag</span>?, <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;)]</span></span><br><span class="line"><span class="class">    // 手动设置语言</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">func</span> <span class="title">setLanguage</span>(<span class="title">_</span> <span class="title">language</span>: <span class="title">NLLanguage</span>, <span class="title">range</span>: <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;)</span></span><br><span class="line"><span class="class">    <span class="title">public</span> <span class="title">func</span> <span class="title">setOrthography</span>(<span class="title">_</span> <span class="title">orthography</span>: <span class="title">NSOrthography</span>, <span class="title">range</span>: <span class="title">Range</span>&lt;<span class="title">String</span>.<span class="title">Index</span>&gt;)</span></span><br><span class="line"><span class="class">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>其中availableTagSchemes获取到的可用方案不一定准确，有可能是资源未加载，使用requestAssets可以请求资源，如果最终不能支持，可以从其返回的结果判断：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">AssetsResult</span> : <span class="title">Int</span>, @<span class="title">unchecked</span> <span class="title">Sendable</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 可用</span></span><br><span class="line">    <span class="keyword">case</span> available = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 不可用</span></span><br><span class="line">    <span class="keyword">case</span> notAvailable = <span class="number">1</span></span><br><span class="line">    <span class="comment">// 异常</span></span><br><span class="line">    <span class="keyword">case</span> error = <span class="number">2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>enumerateTags方法中有一个options参数，此参数可以对分析的过程进行配置，支持的配置项如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">Options</span> : <span class="title">OptionSet</span>, @<span class="title">unchecked</span> <span class="title">Sendable</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 忽略单词类型标记</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> omitWords: <span class="type">NLTagger</span>.<span class="type">Options</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 忽略标点类型标记</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> omitPunctuation: <span class="type">NLTagger</span>.<span class="type">Options</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 忽略空白符标记</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> omitWhitespace: <span class="type">NLTagger</span>.<span class="type">Options</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 忽略其他类型元素标记</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> omitOther: <span class="type">NLTagger</span>.<span class="type">Options</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 拼接多单词的名称</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> joinNames: <span class="type">NLTagger</span>.<span class="type">Options</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 拼接缩进</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> joinContractions: <span class="type">NLTagger</span>.<span class="type">Options</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整的示例代码可以在如下地址找到：</p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2FZYHshao%2FMachineLearnDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/MachineLearnDemo</a></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/05/06/467iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析/" class="pre-post btn btn-default" title='iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析</span>
+        </a>
+    
+    
+        <a href="/2023/05/04/465iOS MachineLearning 系列（10）—— 自然语言分析之文本拆解/" class="next-post btn btn-default" title='iOS MachineLearning 系列（10）—— 自然语言分析之文本拆解'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（10）—— 自然语言分析之文本拆解</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（11）——-自然语言识别与单词分析"><span class="toc-text">iOS MachineLearning 系列（11）—— 自然语言识别与单词分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-语言识别"><span class="toc-text">1 - 语言识别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-文本分析"><span class="toc-text">2 - 文本分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#tokenType"><span class="toc-text">tokenType</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lexicalClass"><span class="toc-text">lexicalClass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nameType"><span class="toc-text">nameType</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#nameTypeOrLexicalClass"><span class="toc-text">nameTypeOrLexicalClass</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#lemma"><span class="toc-text">lemma</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#language与script"><span class="toc-text">language与script</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sentimentScore"><span class="toc-text">sentimentScore</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

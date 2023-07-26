@@ -1,0 +1,328 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>理解iOS端的WebView同层组件 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="理解iOS端的WebView同层组件">
+            
+	            理解iOS端的WebView同层组件
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之逻辑初窥">
+            iOS之逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2022/12/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="理解iOS端的WebView同层组件"><a href="#理解iOS端的WebView同层组件" class="headerlink" title="理解iOS端的WebView同层组件"></a>理解iOS端的WebView同层组件</h1><h2 id="一-起始"><a href="#一-起始" class="headerlink" title="一 起始"></a>一 起始</h2><p>同层渲染是利用原生技术来优化Web渲染一种技术，很多人了解它是起于微信开放社区发布的一篇关于小程序渲染原理剖析的文章。我将链接附上：</p>
+<p><a href="https://developers.weixin.qq.com/community/develop/article/doc/000c4e433707c072c1793e56f5c813" target="_blank" rel="noopener">https://developers.weixin.qq.com/community/develop/article/doc/000c4e433707c072c1793e56f5c813</a></p>
+<p>大部分的Web应用，所有的元素和组件都是渲染在WebView内部的，有时候这导致我们无法充分利用原生的强大能力，例如音视频播放，地图功能等。因此，在微信小程序开发框架中，还提供了一些以”cover-“开头的组件，这些组件本身是原生的，只是贴在了WebView上面。借助原生组件，可以极大的提高应用的性能体验，但是也有一些弊端。</p>
+<ul>
+<li>原生组件的层级在WebView之上，因此无法在Web中通过标签的层级来调整组件的z轴位置。</li>
+<li>原生组件与WebView文档流是完全脱离的，这使得布局的控制变得困难。</li>
+</ul>
+<p>同层组件的出现正为解决这些问题。</p>
+<h2 id="二-原理"><a href="#二-原理" class="headerlink" title="二 原理"></a>二 原理</h2><p>同层组件的目标是将原生组件渲染在与其他Web组件同一层级中。在iOS中，我们使用WKWebView来创建Web视图，WKWebView在进行解析渲染时，会将Web组件渲染到WKCompositingView上，这个View是一个原生的UIView子类，通常WKWebView内核会将多个组件共同渲染到同一个WKCompositingView上，但是如果某个HTML标签的style设置了overflow: scroll属性，并且内容超出容器的大小，WKWebView就会为其单独的创建一个WKChildScrollView，因此如果我们可以找到这个View，并和对应的Web组件一一关联起来，就可以将原生的组件渲染到这个View中，从而实现同层渲染。</p>
+<p>我们可以先写一个简单的Web示例页面：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">"text/css"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .block &#123;</span></span><br><span class="line"><span class="undefined">            width: 80%;</span></span><br><span class="line"><span class="undefined">            height: 300pt;</span></span><br><span class="line"><span class="undefined">            margin-top: 50pt;</span></span><br><span class="line"><span class="undefined">            background-color: red;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">        .content &#123;</span></span><br><span class="line"><span class="undefined">            display: flex;</span></span><br><span class="line"><span class="undefined">            flex-direction: column;</span></span><br><span class="line"><span class="undefined">            align-items: center;</span></span><br><span class="line"><span class="undefined">            width: 100%;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">        .title &#123;</span></span><br><span class="line"><span class="undefined">            width: 100%;</span></span><br><span class="line"><span class="undefined">            text-align: center;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">        .toast &#123;</span></span><br><span class="line"><span class="undefined">            position: fixed;</span></span><br><span class="line"><span class="undefined">            width: 250pt;</span></span><br><span class="line"><span class="undefined">            height: 100pt;</span></span><br><span class="line"><span class="undefined">            background-color: gray;</span></span><br><span class="line"><span class="undefined">            line-height: 100pt;</span></span><br><span class="line"><span class="undefined">            text-align: center;</span></span><br><span class="line"><span class="undefined">            color: white;</span></span><br><span class="line"><span class="undefined">            top: 50%;</span></span><br><span class="line"><span class="undefined">            left: 50%;</span></span><br><span class="line"><span class="undefined">            font-size: 50pt;</span></span><br><span class="line"><span class="undefined">            transform: translate(-50%,-50%);</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">        .native &#123;</span></span><br><span class="line"><span class="undefined">            width: 80%;</span></span><br><span class="line"><span class="undefined">            height: 350pt;</span></span><br><span class="line"><span class="undefined">            margin-top: 50pt;</span></span><br><span class="line"><span class="undefined">            background-color: blue;</span></span><br><span class="line"><span class="undefined">            overflow: scroll;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 标题 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">"title"</span>&gt;</span>H5页面Demo<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 内容 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- 特殊组件 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"native"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">"width: 101%; height: 101%"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"block"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 弹框 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"toast show"</span>&gt;</span>弹窗提示<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面代码中，蓝色的色块就是同层组件容器。</p>
+<p>在iOS中加载此页面如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">WKWebView</span> *webView;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.webView];</span><br><span class="line">    <span class="built_in">NSString</span> *html = [<span class="built_in">NSString</span> stringWithContentsOfFile:[[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"web"</span> ofType:<span class="string">@"html"</span>] encoding: <span class="built_in">NSUTF8StringEncoding</span> error:<span class="literal">nil</span>];</span><br><span class="line">    [<span class="keyword">self</span>.webView loadHTMLString:html baseURL:<span class="literal">nil</span>];</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">WKWebView</span> *)webView &#123;</span><br><span class="line">    <span class="keyword">if</span> (!_webView) &#123;</span><br><span class="line">        _webView = [[<span class="built_in">WKWebView</span> alloc] initWithFrame:<span class="keyword">self</span>.view.frame];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _webView;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>使用Xcode调试工具进行查看，层级如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-890ba9b390ac8d0b3abe55074edb181a974.png" alt></p>
+<p>可以看到对于蓝色的色块，WKWebView单独创建了一个WKChildScrollView来承载。</p>
+<h2 id="三-尝试"><a href="#三-尝试" class="headerlink" title="三 尝试"></a>三 尝试</h2><p>了解了同层组件原理后，我们可以在iOS平台上做下尝试，体验同层组件的渲染效果。首先在HTML文件中补充下面的JS代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">insertNativeComponents</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> ct = <span class="built_in">document</span>.getElementsByClassName(<span class="string">"native"</span>)[<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">var</span> id = ct.getAttribute(<span class="string">"id"</span>);</span><br><span class="line">        <span class="keyword">var</span> frame = ct.getBoundingClientRect();</span><br><span class="line">        <span class="keyword">var</span> args = &#123;</span><br><span class="line">            <span class="string">"frame"</span>: &#123;</span><br><span class="line">                <span class="string">"y"</span>: frame.top,</span><br><span class="line">                <span class="string">"x"</span>: frame.left,</span><br><span class="line">                <span class="string">"width"</span>: frame.width,</span><br><span class="line">                <span class="string">"height"</span>: frame.height</span><br><span class="line">            &#125;,</span><br><span class="line">            <span class="string">"id"</span>: id</span><br><span class="line">        &#125;;</span><br><span class="line">        <span class="keyword">return</span> args</span><br><span class="line">    &#125;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</span><br><span class="line">        <span class="built_in">window</span>.webkit.messageHandlers.nativeViewHandler.postMessage(&#123;</span><br><span class="line">            <span class="string">"command"</span>: <span class="string">"nativeViewInsert"</span>,</span><br><span class="line">            <span class="string">"args"</span>: insertNativeComponents()</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>上面的insertNativeComponents函数用来找到要插入原生组件的插槽，将其id等信息传递给原生端，我们这里为了演示方便，只传递了很少的数据，实际上可以根据组件的需求向原生端传递非常丰富的数据，原生端根据这些参数来渲染和设置原生组件。</p>
+<p>在原生端，需要对WKWebView注册一个JS交互handle，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[_webView.configuration.userContentController addScriptMessageHandler:<span class="keyword">self</span> name:<span class="string">@"nativeViewHandler"</span>];</span><br></pre></td></tr></table></figure>
+<p>对应的，实现协议方法如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)userContentController:(<span class="built_in">WKUserContentController</span> *)userContentController didReceiveScriptMessage:(<span class="built_in">WKScriptMessage</span> *)message &#123;</span><br><span class="line">    [<span class="keyword">self</span> insertNativeView:message];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>核心的逻辑方法是inserNativeView，这个方法中要实现对JS交互指令的解析，以及原生组件的创建，插槽容器的寻找等，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)insertNativeView:(<span class="built_in">WKScriptMessage</span> *)message &#123;</span><br><span class="line">    <span class="built_in">NSDictionary</span> *params = message.body[<span class="string">@"args"</span>];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, params);</span><br><span class="line">    <span class="comment">// 这里创建一个UILabel 做演示</span></span><br><span class="line">    </span><br><span class="line">    <span class="built_in">UIView</span> *v = [<span class="keyword">self</span> findView:<span class="keyword">self</span>.webView str:<span class="string">@""</span> ids:params[<span class="string">@"id"</span>]];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">UIView</span> *c = [[<span class="built_in">UIView</span> alloc] initWithFrame:v.bounds];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">UILabel</span> *l = [[<span class="built_in">UILabel</span> alloc] initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, v.frame.size.width, <span class="number">100</span>)];</span><br><span class="line">    l.backgroundColor = <span class="built_in">UIColor</span>.orangeColor;</span><br><span class="line">    l.font = [<span class="built_in">UIFont</span> systemFontOfSize:<span class="number">40</span>];</span><br><span class="line">    l.text = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"组件ID为：%@的原生同层组件"</span>, params[<span class="string">@"id"</span>]];</span><br><span class="line">    l.textAlignment = <span class="built_in">NSTextAlignmentCenter</span>;</span><br><span class="line">    [c addSubview:l];</span><br><span class="line">    <span class="built_in">UIButton</span> *button = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    [button setTitle:<span class="string">@"按钮"</span> forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">    [button setTitleColor:<span class="built_in">UIColor</span>.whiteColor forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">    button.frame = <span class="built_in">CGRectMake</span>(<span class="number">0</span>, <span class="number">200</span>, v.frame.size.width, <span class="number">100</span>);</span><br><span class="line">    button.titleLabel.font = [<span class="built_in">UIFont</span> systemFontOfSize:<span class="number">40</span>];</span><br><span class="line">    [c addSubview:button];</span><br><span class="line">    <span class="keyword">if</span> (v) &#123;</span><br><span class="line">        <span class="comment">// 查目标容器</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">UIView</span> *sub <span class="keyword">in</span> v.subviews) &#123;</span><br><span class="line">            <span class="keyword">if</span> ([sub isKindOfClass:<span class="built_in">NSClassFromString</span>(<span class="string">@"WKChildScrollView"</span>)]) &#123;</span><br><span class="line">                c.frame = sub.bounds;</span><br><span class="line">                [sub addSubview:c];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面我们创建了一个UILabel和UIButton的原生组件做示例，插槽位置的寻找可以采用递归的方式，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">UIView</span> *)findView:(<span class="built_in">UIView</span> *)root str:(<span class="built_in">NSString</span> *)pre ids:(<span class="built_in">NSString</span> *)ids &#123;</span><br><span class="line">    <span class="keyword">if</span> (!root) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@%@,%@"</span>,pre ,root.class, root.layer.name);</span><br><span class="line">    <span class="keyword">if</span> ([root.layer.name containsString:[<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"id='%@'"</span>, ids]]) &#123;</span><br><span class="line">        <span class="keyword">return</span> root;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">UIView</span> *v <span class="keyword">in</span> root.subviews) &#123;</span><br><span class="line">        <span class="built_in">UIView</span> *res = [<span class="keyword">self</span> findView:v str:[<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"%@ - "</span>, pre] ids: ids];</span><br><span class="line">        <span class="keyword">if</span> (res) &#123;</span><br><span class="line">            <span class="keyword">return</span> res;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们从JS交互命令可以拿到要插入原生组件的容器id，WKWebView在创建WKCompositingView时，其Layer的name会包含id信息，这从打印的信息上可以清楚的看到，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e9123c0fbcf24aa2e6c72c1d9ff000cf425.png" alt></p>
+<p>我们能找到对应的容器，就是靠这个Layer的name属性。现在你可以尝试运行下项目，效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-de62a0faa20c03e20c50faaaee2a0184a9d.png" alt></p>
+<p>可以看到，原生组件已经正常渲染到了WebView中，且层级是受CSS控制的，其会出现在Web弹窗组件之下。</p>
+<h2 id="四-交互"><a href="#四-交互" class="headerlink" title="四 交互"></a>四 交互</h2><p>原生组件渲染成功了，并非完事大吉，如果你为按钮增加了点击事件，会发现其并不会触发，这是因为WebView将事件都进行了拦截。要处理交互问题也非常简单，首先需要先关闭WebView的拦截，在WebView加载完成后，使用如下代码来找到WKContentView，并将其手势拦截关闭：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)handleGestrues &#123;</span><br><span class="line">    <span class="built_in">UIScrollView</span> *webViewScrollView = <span class="keyword">self</span>.webView.scrollView;</span><br><span class="line">    <span class="keyword">if</span> ([webViewScrollView isKindOfClass:<span class="built_in">NSClassFromString</span>(<span class="string">@"WKScrollView"</span>)]) &#123;</span><br><span class="line">        <span class="built_in">UIView</span> *_WKContentView = webViewScrollView.subviews.firstObject;</span><br><span class="line">        <span class="keyword">if</span> (![_WKContentView isKindOfClass:<span class="built_in">NSClassFromString</span>(<span class="string">@"WKContentView"</span>)]) <span class="keyword">return</span>;</span><br><span class="line">        <span class="built_in">NSArray</span> *gestrues = _WKContentView.gestureRecognizers;</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">UIGestureRecognizer</span> *gesture <span class="keyword">in</span> gestrues) &#123;</span><br><span class="line">            gesture.cancelsTouchesInView = <span class="literal">NO</span>;</span><br><span class="line">            gesture.delaysTouchesBegan = <span class="literal">NO</span>;</span><br><span class="line">            gesture.delaysTouchesEnded = <span class="literal">NO</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意，这个方法的调用要在WebView加载完成后。另外，我们需要将原生组件的容器组件做些修改，例如新建一个ContainerView类，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ContainerView</span> : <span class="title">UIView</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ContainerView</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="built_in">BOOL</span>)conformsToProtocol:(Protocol *)aProtocol &#123;</span><br><span class="line">    <span class="keyword">if</span> (aProtocol == <span class="built_in">NSProtocolFromString</span>(<span class="string">@"WKNativelyInteractible"</span>)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> conformsToProtocol:aProtocol];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>之后，将此View作为原生组件的容器，渲染到WebView中，即可实现原生组件的事件交互。</p>
+<h2 id="五-随想"><a href="#五-随想" class="headerlink" title="五 随想"></a>五 随想</h2><p>本文从原理出发，介绍了Web同层组件在iOS端的实现方式。相比直接使用原生组件，同层组件的好处是显而易见的，其既拥有了原生组件强大的能力，又可以被大部分CSS属性进行影响，方便层级和组件间位置控制。本文中也实现了一个简单的Demo来演示同层组件，Demo非常捡漏，希望起到抛砖引玉，帮助你打开创新的思路。下面是一些建议，有兴趣你可以尝试下在iOS端实现一套完整的同层组件渲染框架。</p>
+<ol>
+<li>JS与原生的交互命令可以定制一套完整的协议，如组件插入，组件更新，组件删除等。</li>
+<li>传递的数据可以定义的完整丰富，例如要插入的组件类型，可能是视频，音频，地图等，各种组件在原生端的属性配置等映射。</li>
+<li>原生端的交互与更新行为也需要通过JS传递到Web。</li>
+<li>原生端可能需要一个容器池来维护被插入的同层组件，方便通过id寻找来进行更新等。</li>
+<li>某些CSS属性对于同层组件可能并不能生效，也是需要通过JS传递数据到原生端处理。</li>
+</ol>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2022/12/30/454理解iOS端的WebView同层组件/" class="next-post btn btn-default" title='理解iOS端的WebView同层组件'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">理解iOS端的WebView同层组件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#理解iOS端的WebView同层组件"><span class="toc-text">理解iOS端的WebView同层组件</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-起始"><span class="toc-text">一 起始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-原理"><span class="toc-text">二 原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-尝试"><span class="toc-text">三 尝试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-交互"><span class="toc-text">四 交互</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-随想"><span class="toc-text">五 随想</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,918 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content ">
+                    
+    <div class="carousel">
+        <img src="/img/head-img.png">
+    </div>
+
+
+
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/12/01/157iOS开发CoreAnimation解读之三——几种常用Layer的使用解析/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1201/190626_kqnL_2340880.png"   alt="iOS开发CoreAnimation解读之三——几种常用Layer的使用解析">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/12/01/157iOS开发CoreAnimation解读之三——几种常用Layer的使用解析/">iOS开发CoreAnimation解读之三——几种常用Layer的使用解析</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年12月01日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发CoreAnimation解读之三——几种常用Layer的使用解析一、CAEmitterLayerCAEmitterLayer是CoreAnimation框架中的粒子发射层，在以前的一片博客中有详细的介绍和范例，这里不再重复...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/12/01/157iOS开发CoreAnimation解读之三——几种常用Layer的使用解析/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/26/156iOS开发CoreAnimation解读之二——对CALayer的分析/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1125/114958_xmKv_2340880.png"   alt="iOS开发CoreAnimation解读之二——对CALayer的分析">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/26/156iOS开发CoreAnimation解读之二——对CALayer的分析/">iOS开发CoreAnimation解读之二——对CALayer的分析</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月26日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发CoreAnimation解读之二——对CALayer的分析一、UIView中的CALayer属性1.Layer专门负责view的视图渲染每一个UIView的对象中都有一个layer这样的属性，并且layer会负责view中...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/26/156iOS开发CoreAnimation解读之二——对CALayer的分析/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/25/155iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1125/094924_WAWk_2340880.png"   alt="iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/25/155iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程/">iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月25日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程一、引言众所周知，绚丽动画效果是iOS系统的一大特点，通过UIView层封装的动画，基本已经可以满足我们应用开发的所有需求，但若需要更加自由的控...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/25/155iOS开发CoreAnimation解读之一——初识CoreAnimation核心动画编程/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/17/154iOS9新特性——堆叠视图UIStackView/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1117/131959_TK5Y_2340880.png"   alt="iOS9新特性——堆叠视图UIStackView">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/17/154iOS9新特性——堆叠视图UIStackView/">iOS9新特性——堆叠视图UIStackView</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月17日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS9新特性——堆叠视图UIStackView一、引言随着autolayout的推广开来，更多的app开始使用自动布局的方式来构建自己的UI系统，autolayout配合storyBoard和一些第三方的框架，对于创建约束来说，已经...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/17/154iOS9新特性——堆叠视图UIStackView/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/13/153iOS开发中标签控制器的使用——UITabBarController/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1113/114655_w2fi_2340880.png"   alt="iOS开发中标签控制器的使用——UITabBarController">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/13/153iOS开发中标签控制器的使用——UITabBarController/">iOS开发中标签控制器的使用——UITabBarController</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月13日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发中标签控制器的使用——UITabBarController一、引言与导航控制器相类似，标签控制器也是用于管理视图控制器的一个UI控件，在其内部封装了一个标签栏，与导航不同的是，导航的管理方式是纵向的，采用push与pop切换...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/13/153iOS开发中标签控制器的使用——UITabBarController/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/11/152iOS自定义的emoji表情键盘/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1111/190433_R7eF_2340880.png"   alt="iOS自定义的emoji表情键盘">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/11/152iOS自定义的emoji表情键盘/">iOS自定义的emoji表情键盘</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月11日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS自定义的表情键盘一、关于emoji表情随着iOS系统版本的升级，对原生emoji表情的支持也越来越丰富。emoji表情是unicode码中为表情符号设计的一组编码，当然，还有独立于unicode的另一套编码SBUnicode，在...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/11/152iOS自定义的emoji表情键盘/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/10/151iOS开发UINavigation系列四——导航控制器UINavigationController/">iOS开发UINavigation系列四——导航控制器UINavigationController</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月10日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发UINavigation系列四——导航控制器UINavigationController一、引言在前面的博客中，我么你介绍了UINavigationBar，UINavigationItem和UIToolBar，UINavig...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/10/151iOS开发UINavigation系列四——导航控制器UINavigationController/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/09/150iOS开发UINavigation系列三——工具栏UIToolBar/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1109/174300_XgJo_2340880.png"   alt="iOS开发UINavigation系列三——工具栏UIToolBar">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/09/150iOS开发UINavigation系列三——工具栏UIToolBar/">iOS开发UINavigation系列三——工具栏UIToolBar</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月09日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发UINavigation系列三——工具栏UIToolBariOS中除了UINavinationBar之外，还有工具栏UIToolBar可以供我们使用，工具栏和导航栏十分类似，只是功能更加简单，工具栏中也有UIBarButto...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/09/150iOS开发UINavigation系列三——工具栏UIToolBar/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/08/148iOS开发UINavigation系列一——导航栏UINavigtionBar/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1108/160424_TSxu_2340880.png"   alt="iOS开发UINavigation系列一——导航栏UINavigtionBar">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/08/148iOS开发UINavigation系列一——导航栏UINavigtionBar/">iOS开发UINavigation系列一——导航栏UINavigtionBar</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月08日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发UINavigation系列一——导航栏UINavigtionBar一、导航栏的使用在iOS开发中，我们通常会使用导航控制器，导航控制器中封装了一个UINavigationBar，实际上，我们也可以在不使用导航控制器的前提下...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/08/148iOS开发UINavigation系列一——导航栏UINavigtionBar/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+<article class="post">
+    
+        <div class="post-media">
+            <a href="/2015/11/08/149iOS开发UINavigation系列二——UINavigationItem/">
+                <img class="img-ajax" src="/img/loading.gif"  data-src="http://static.oschina.net/uploads/space/2015/1108/212911_VHfF_2340880.png"   alt="iOS开发UINavigation系列二——UINavigationItem">
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2015/11/08/149iOS开发UINavigation系列二——UINavigationItem/">iOS开发UINavigation系列二——UINavigationItem</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2015年11月08日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            
+                iOS开发UINavigation系列二——UINavigationItem一、引言UINavigationItem是导航栏上用于管理导航项的类，在上一篇博客中，我们知道导航栏是通过push与pop的堆栈操作来对item进行管理的，同...
+            
+        </p>
+    </div>
+    
+        <footer class="post-footer clearfix">
+            <div class="pull-left tag-list">
+                <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+</div>
+
+            </div>
+
+            <div class="post-permalink">
+                <a href="/2015/11/08/149iOS开发UINavigation系列二——UINavigationItem/" class="btn btn-default">阅读全文</a>
+            </div>
+        </footer>
+    
+</article>
+
+
+
+
+    <nav class="pagination" role="navigation">
+        <div id="page-nav">
+            <a class="extend prev" rel="prev" href="/page/32/"><i class='fa fa-angle-left'></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/31/">31</a><a class="page-number" href="/page/32/">32</a><span class="page-number current">33</span><a class="page-number" href="/page/34/">34</a><a class="page-number" href="/page/35/">35</a><span class="space">&hellip;</span><a class="page-number" href="/page/48/">48</a><a class="extend next" rel="next" href="/page/34/"><i class='fa fa-angle-right'></i></a>
+        </div>
+    </nav>
+
+
+
+                </main>
+                
+                    
+    <aside class="col-md-4 sidebar">
+        
+        
+    <div class="widget">
+        <h3 class="title">搜索</h3>
+        <div id="search-form">
+            <div id="result-mask" class="hide"></div>
+            <div class="search-area">
+                
+                    <input id="search-key" type="search" autocomplete="off" placeholder="搜点什么呢？">
+                    <button type="button" class="search-form-submit" id="search-local">站内搜索</button>
+                
+                
+            </div>
+            <div id="result-wrap" class="hide">
+                <div id="search-result"></div>
+            </div>
+            <div class="hide">
+                <template id="search-tpl">
+                    <div class="item">
+                        <a href="/{path}" title="{title}">
+                            <div class="title">{title}</div>
+                            <div class="content">{content}</div>
+                        </a>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>欢迎访问珲少的技术博客 <br/>
+iOS、Android、HTML、JavaScript<br/>
+<hr/>欢迎交流学习
+</p>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+      <h3 class="title">社交</h3> 
+        <div class="content social">
+            
+	            <a href="//github.com/ZYHshao" rel="external nofollow" title="Github" target="_blank">
+			    	<i class="git fa fa-git"></i>
+			    </a>
+            
+	            <a href="mailto:316045346@qq.com" rel="external nofollow" title="邮箱" target="_blank">
+			    	<i class="envelope-o fa fa-envelope-o"></i>
+			    </a>
+            
+	            <a href="tencent://Message/?Uin=316045346&amp;websiteName=q-zone.qq.com&amp;Menu=yes" rel="external nofollow" title="联系QQ" target="_blank">
+			    	<i class="qq fa fa-qq"></i>
+			    </a>
+            
+        </div>
+    </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">分类</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Android小记/"><i class="fa" aria-hidden="true">Android小记</i></a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Apple-Watch开发手记/"><i class="fa" aria-hidden="true">Apple Watch开发手记</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/COCOS2D/"><i class="fa" aria-hidden="true">COCOS2D</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/COME-ON-SWIFT/"><i class="fa" aria-hidden="true">COME ON SWIFT</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/GIT/"><i class="fa" aria-hidden="true">GIT</i></a><span class="category-list-count">17</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/HTML学习笔记/"><i class="fa" aria-hidden="true">HTML学习笔记</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/JSPatch/"><i class="fa" aria-hidden="true">JSPatch</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java/"><i class="fa" aria-hidden="true">Java</i></a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/"><i class="fa" aria-hidden="true">Linux</i></a><span class="category-list-count">23</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Objective-C浅探/"><i class="fa" aria-hidden="true">Objective-C浅探</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Python/"><i class="fa" aria-hidden="true">Python</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/ReactNative/"><i class="fa" aria-hidden="true">ReactNative</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Swift/"><i class="fa" aria-hidden="true">Swift</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/SwiftUI/"><i class="fa" aria-hidden="true">SwiftUI</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Swift语法专题/"><i class="fa" aria-hidden="true">Swift语法专题</i></a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS10专题/"><i class="fa" aria-hidden="true">iOS10专题</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS14专题/"><i class="fa" aria-hidden="true">iOS14专题</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS9专题/"><i class="fa" aria-hidden="true">iOS9专题</i></a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS之UI控件/"><i class="fa" aria-hidden="true">iOS之UI控件</i></a><span class="category-list-count">54</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS之逻辑初窥/"><i class="fa" aria-hidden="true">iOS之逻辑初窥</i></a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS第三方库/"><i class="fa" aria-hidden="true">iOS第三方库</i></a><span class="category-list-count">14</span></li><li class="category-list-item"><a class="category-list-link current" href="/categories/iOS编程技巧/"><i class="fa" aria-hidden="true">iOS编程技巧</i></a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS逻辑初窥/"><i class="fa" aria-hidden="true">iOS逻辑初窥</i></a><span class="category-list-count">132</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macOS开发/"><i class="fa" aria-hidden="true">macOS开发</i></a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/万言归宗/"><i class="fa" aria-hidden="true">万言归宗</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/从机器学习到AI/"><i class="fa" aria-hidden="true">从机器学习到AI</i></a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码优化/"><i class="fa" aria-hidden="true">代码优化</i></a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/代码灵魂/"><i class="fa" aria-hidden="true">代码灵魂</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/前后端/"><i class="fa" aria-hidden="true">前后端</i></a><span class="category-list-count">34</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/小码工具/"><i class="fa" aria-hidden="true">小码工具</i></a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/日常技巧/"><i class="fa" aria-hidden="true">日常技巧</i></a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/正则表达式/"><i class="fa" aria-hidden="true">正则表达式</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/疑难杂症/"><i class="fa" aria-hidden="true">疑难杂症</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/编程珠玑/"><i class="fa" aria-hidden="true">编程珠玑</i></a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络技术/"><i class="fa" aria-hidden="true">网络技术</i></a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/计算机网络/"><i class="fa" aria-hidden="true">计算机网络</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式/"><i class="fa" aria-hidden="true">设计模式</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/设计模式两三谈/"><i class="fa" aria-hidden="true">设计模式两三谈</i></a><span class="category-list-count">2</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">归档</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/07/"><i class="fa" aria-hidden="true">2023年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/"><i class="fa" aria-hidden="true">2023年05月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/"><i class="fa" aria-hidden="true">2023年04月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/"><i class="fa" aria-hidden="true">2023年03月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/12/"><i class="fa" aria-hidden="true">2022年12月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/11/"><i class="fa" aria-hidden="true">2022年11月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/10/"><i class="fa" aria-hidden="true">2022年10月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/"><i class="fa" aria-hidden="true">2022年08月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/"><i class="fa" aria-hidden="true">2022年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/06/"><i class="fa" aria-hidden="true">2022年06月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/"><i class="fa" aria-hidden="true">2022年03月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/"><i class="fa" aria-hidden="true">2022年02月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/"><i class="fa" aria-hidden="true">2022年01月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/"><i class="fa" aria-hidden="true">2021年12月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/"><i class="fa" aria-hidden="true">2021年11月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/"><i class="fa" aria-hidden="true">2021年10月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/"><i class="fa" aria-hidden="true">2021年09月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/"><i class="fa" aria-hidden="true">2021年08月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/"><i class="fa" aria-hidden="true">2021年07月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/"><i class="fa" aria-hidden="true">2021年04月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/"><i class="fa" aria-hidden="true">2021年03月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/"><i class="fa" aria-hidden="true">2021年02月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/"><i class="fa" aria-hidden="true">2020年11月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/"><i class="fa" aria-hidden="true">2020年09月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/"><i class="fa" aria-hidden="true">2020年08月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/"><i class="fa" aria-hidden="true">2020年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/"><i class="fa" aria-hidden="true">2020年05月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/04/"><i class="fa" aria-hidden="true">2020年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/"><i class="fa" aria-hidden="true">2019年10月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/"><i class="fa" aria-hidden="true">2019年06月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/"><i class="fa" aria-hidden="true">2019年02月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/"><i class="fa" aria-hidden="true">2019年01月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/12/"><i class="fa" aria-hidden="true">2018年12月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/"><i class="fa" aria-hidden="true">2018年10月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/09/"><i class="fa" aria-hidden="true">2018年09月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/"><i class="fa" aria-hidden="true">2018年08月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/"><i class="fa" aria-hidden="true">2018年07月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/"><i class="fa" aria-hidden="true">2018年06月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/"><i class="fa" aria-hidden="true">2018年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/"><i class="fa" aria-hidden="true">2018年03月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/"><i class="fa" aria-hidden="true">2018年02月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/"><i class="fa" aria-hidden="true">2018年01月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/"><i class="fa" aria-hidden="true">2017年12月</i></a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/"><i class="fa" aria-hidden="true">2017年11月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/10/"><i class="fa" aria-hidden="true">2017年10月</i></a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/08/"><i class="fa" aria-hidden="true">2017年08月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/"><i class="fa" aria-hidden="true">2017年07月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/"><i class="fa" aria-hidden="true">2017年06月</i></a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/"><i class="fa" aria-hidden="true">2017年05月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/"><i class="fa" aria-hidden="true">2017年04月</i></a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/"><i class="fa" aria-hidden="true">2017年03月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/"><i class="fa" aria-hidden="true">2017年02月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/"><i class="fa" aria-hidden="true">2017年01月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/"><i class="fa" aria-hidden="true">2016年12月</i></a><span class="archive-list-count">31</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/"><i class="fa" aria-hidden="true">2016年11月</i></a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/"><i class="fa" aria-hidden="true">2016年10月</i></a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/09/"><i class="fa" aria-hidden="true">2016年09月</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/"><i class="fa" aria-hidden="true">2016年08月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/"><i class="fa" aria-hidden="true">2016年07月</i></a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/"><i class="fa" aria-hidden="true">2016年06月</i></a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/"><i class="fa" aria-hidden="true">2016年05月</i></a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/"><i class="fa" aria-hidden="true">2016年04月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/03/"><i class="fa" aria-hidden="true">2016年03月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/"><i class="fa" aria-hidden="true">2016年02月</i></a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/"><i class="fa" aria-hidden="true">2016年01月</i></a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/"><i class="fa" aria-hidden="true">2015年12月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/"><i class="fa" aria-hidden="true">2015年11月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/"><i class="fa" aria-hidden="true">2015年10月</i></a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/"><i class="fa" aria-hidden="true">2015年09月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/"><i class="fa" aria-hidden="true">2015年08月</i></a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/"><i class="fa" aria-hidden="true">2015年07月</i></a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/"><i class="fa" aria-hidden="true">2015年06月</i></a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/"><i class="fa" aria-hidden="true">2015年05月</i></a><span class="archive-list-count">27</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/"><i class="fa" aria-hidden="true">2015年04月</i></a><span class="archive-list-count">40</span></li></ul>
+    </div>
+
+
+        
+        
+  <div class="widget">
+    <h3 class="title">标签云</h3>
+    <div class="content tag-cloud">
+        <a href="/tags/AFNetWorking/" style="font-size: 10px;">AFNetWorking</a> <a href="/tags/Block/" style="font-size: 10px;">Block</a> <a href="/tags/DES/" style="font-size: 10px;">DES</a> <a href="/tags/MD5/" style="font-size: 10px;">MD5</a> <a href="/tags/NSAttributedString/" style="font-size: 10px;">NSAttributedString</a> <a href="/tags/NSInvocation/" style="font-size: 10px;">NSInvocation</a> <a href="/tags/NSTimer/" style="font-size: 10px;">NSTimer</a> <a href="/tags/Objective-C/" style="font-size: 10px;">Objective-C</a> <a href="/tags/SEL/" style="font-size: 10px;">SEL</a> <a href="/tags/UIActivityIndicatorView/" style="font-size: 10px;">UIActivityIndicatorView</a> <a href="/tags/UIButton/" style="font-size: 10px;">UIButton</a> <a href="/tags/UIFont/" style="font-size: 10px;">UIFont</a> <a href="/tags/UIImage/" style="font-size: 10px;">UIImage</a> <a href="/tags/UILabel/" style="font-size: 10px;">UILabel</a> <a href="/tags/UIPageControl/" style="font-size: 10px;">UIPageControl</a> <a href="/tags/UIProgressView/" style="font-size: 10px;">UIProgressView</a> <a href="/tags/UISegmentedControl/" style="font-size: 10px;">UISegmentedControl</a> <a href="/tags/UISlider/" style="font-size: 10px;">UISlider</a> <a href="/tags/UIStepper/" style="font-size: 10px;">UIStepper</a> <a href="/tags/UISwitch/" style="font-size: 10px;">UISwitch</a> <a href="/tags/UITableView/" style="font-size: 10px;">UITableView</a> <a href="/tags/UITextField/" style="font-size: 10px;">UITextField</a> <a href="/tags/iOS编程/" style="font-size: 20px;">iOS编程</a> <a href="/tags/事件/" style="font-size: 10px;">事件</a> <a href="/tags/加密/" style="font-size: 10px;">加密</a> <a href="/tags/横屏/" style="font-size: 10px;">横屏</a> <a href="/tags/编程珠玑/" style="font-size: 10px;">编程珠玑</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a> <a href="/tags/静态库/" style="font-size: 10px;">静态库</a>
+    </div>
+  </div>
+
+
+        
+        
+    <div class="widget">
+        <h3 class="title">友链</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.huisao.cc" class="fa" target="_blank">所谓情怀</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+	<script src="/js/search.js?rev=@@hash"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
