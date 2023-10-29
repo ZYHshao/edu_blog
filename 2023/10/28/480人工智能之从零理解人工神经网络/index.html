@@ -1,0 +1,429 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>人工智能之从零理解人工神经网络 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="人工智能之从零理解人工神经网络">
+            
+	            人工智能之从零理解人工神经网络
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/10/28</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="人工智能之从零理解人工神经网络"><a href="#人工智能之从零理解人工神经网络" class="headerlink" title="人工智能之从零理解人工神经网络"></a>人工智能之从零理解人工神经网络</h1><h2 id="引"><a href="#引" class="headerlink" title="引"></a>引</h2><p>人工智能并非是一个新型的词汇，从十九世纪五十年代开始，人们就开始探索为机器赋予类似人的智能能力。限于当时的基础数学理论不够完善，人工智能的发展并不顺利。直到九十年代发展出了基于统计学的数学工具，人工智能才得到飞速的发展。</p>
+<p>人工智能既是为机器增加人的智能能力，最直观的想法是研究人脑的运行机制，之后构建出一套网络系统来模拟人脑的工作原理来进行学习和工作。人工神经网络即时基于这一想法而发展出来的，本篇博客是笔者学习人工智能过程中的对人工神经网络部分的理解与感悟，分享与大家共同学习，有偏差之处敬请指正。</p>
+<h2 id="1-关于人工神经网络"><a href="#1-关于人工神经网络" class="headerlink" title="1-关于人工神经网络"></a>1-关于人工神经网络</h2><p>神经网络是生物学上的一个概念，在人类大脑中数百亿个神经元协作产生了人类智能，人脑中大约有860亿个神经元。每个神经元大约连接1000个其他神经元。巨量的神经元构成了非常复杂的神经网络系统，每个神经元通过电化学信息作为输入，当电信号超出触发条件的电压阈值时，此神经元即会被激活，被激活的神经元又会将信号传递给其所连接的其他神经元。可能谁也无法说清楚如此复杂的信号传递是如何产生人类智慧的，但我们可以模拟这一过程来尝试构建机器的人工智能。关于生物学上神经网络是人类大脑学的核心研究领域，下图简单演示了人脑神经元的信号传递。</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_14867cc38ae64da08e95e1ac20ebb6f3.png" alt="image.png"></p>
+<p>人工神经网络是机器学习的一种方法，受生物神经元的启发，我们可以通过编程来构建一套人工神经网络系统，通过定义神经元的输入输出，触发条件等来模拟生物神经元的信号传递流程。目前通过人工神经网络训练的模型已经可以在诸多领域进行应用，如人脸识别、语音识别、自动驾驶、机器人游戏等。</p>
+<p>一个人工神经网络由以下核心部分需要关注：</p>
+<ul>
+<li>感知器（神经元）</li>
+<li>连接和权重</li>
+<li>传播函数</li>
+<li>组织结构</li>
+</ul>
+<p>后面，我们将对这些核心部分进行深入的讨论，并提供简单的学习案例来帮助大家理解整个网络的工作流程，其中会使用到一些简单的高等数学中的知识。</p>
+<h2 id="2-感知器"><a href="#2-感知器" class="headerlink" title="2-感知器"></a>2-感知器</h2><p>在人工神经网络中，充当神经元结构组件有一个更加确切的名字：感知器。感知器结构简单，是对生物神经细胞的最小抽象。感知器在数学模型上的抽象如下图所示：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_44e4fe2c6eef4c14acc8d247945ceb3e.png" alt="image.png"></p>
+<p>这个感知器模型非常简单，它接收3个输入，通过∑函数来运算，最终输出结果。W1，W2，W3是每个输入对应的权重，∑函数的运算规则是将输入乘以权重后进行求和。在某些资料中，你可能会看到此公式被写为输入向量与权重转置向量的点积，其实是一样的，标准的公式如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_6fa356e296634214966e4b7004f1644b.png" alt="image.png"></p>
+<p>这类感知器最终的运算方式是线性的，因此也被称为线性感知器。在神经网络中，感知器的输入是由初始输入或上一层的输出来决定的，我们要做的其实就是找到确定的权重，机器学习的学习过程其实也是找到合适权重的过程。</p>
+<p>与感知器相关的还有一个重要的概念是偏置，我们前面提到过，一个生物神经元是否激活是要看化学电信号的电压是否达到某一阈值，要判断某一感知器是否被激活，实际上的公式应该改写如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_1312f4ac31ec4b50b1cb629d31229b3b.png" alt="image.png"></p>
+<p>其中，b是当前感知器被激活的阈值，我们将公式整理后，可以将阈值b放到左边，并将其作为一个输入始终为-1的参数，通过这样的整理后，最终需要确定的数据都被统一为权重值。</p>
+<h2 id="3-多层感知器"><a href="#3-多层感知器" class="headerlink" title="3-多层感知器"></a>3-多层感知器</h2><p>现在我们了解了单个感知器的工作原理，一个神经网络其实就是由非常多个感知器按照一定的层次排布构成的。如下图：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_da2742cd2d3648cc80f6849990ba5187.png" alt="image.png"></p>
+<p>图中所示有两层感知器，第一层有3个感知器，每个感知器有两个输入，第二层有1个感知器，接收上一层的输入来处理后将结果输出。在整个神经网络中，每一层可以有任意多个感知器，感知器的个数会决定权重向量的维度（也就是这一层所需要确定的权重的个数），我们可以用X表示输入的数据向量组，W来表示输入连接到下一层的权重向量组，则下一层的结果即为：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_94f7e07f473742a4977220d2d4feb88d.png" alt="image.png"></p>
+<p>当我们将下一层每个感知器的结果都计算完成后，即可将其作为新的输入向量来向下层传递，直到获取最终结果。</p>
+<p>注*：上面的公式默认将阈值算在了输入中。</p>
+<h2 id="4-激活函数"><a href="#4-激活函数" class="headerlink" title="4-激活函数"></a>4-激活函数</h2><p>多层感知器只是对单个的感知器进行了组合，虽然我们已经可以根据输入计算出这种神经网络的输出，但这种结果的意义并不大，我们需要为每个感知器的输出结果增加一些非线性的激活逻辑才能更好的拟合生物神经元的特性。</p>
+<p>激活函数是对感知器的输出做激活运算，简单来说，即是我们需要定义一个激活函数，对每一层感知器的输出多做一步函数运算后再作为结果传递到下一层。常用的激活函数有3种：</p>
+<ul>
+<li>阶跃函数</li>
+<li>Sigmoid函数</li>
+<li>ReLU函数</li>
+</ul>
+<p>阶跃函数的定义如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_09a7418c3abf4057acbf12ec3d7cb2f5.png" alt="image.png"></p>
+<p>图形如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_31a48727df6143eba86d54d9a8c3aff6.png" alt="image.png"></p>
+<p>其特性是当输入小于0时，输出为0，输入大于等于0时，输出为1。</p>
+<p>Sigmoid函数的定义如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_dfaab17556994c01abe1c03e2c33d4ec.png" alt="image.png"></p>
+<p>这个函数的图像如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_4f4b0befb19943a9b78e87be560afd57.png" alt="image.png"></p>
+<p>sigmoid函数的特性是当输入接近负无穷时，值向0逼近，当输入接近正无穷时，值向1逼近。</p>
+<p>ReLU函数的定义如下：</p>
+<blockquote>
+<p>f(x) = max(0, x)</p>
+</blockquote>
+<p>此函数比较好理解，当输入小于0时，输出始终是0，输入大于0时，输出等于输入。</p>
+<p>在实际应用中，我们更多的会使用sigmoid函数做为激活函数，sigmoid有一个非常好的特性，即它是连续光滑的，连续和光滑的函数在数学上有着非常好的性质，这说明其可以很方便的进行求导。</p>
+<p>引入了激活函数后，神经网络模型可以抽象成如下图所示：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_3c0c2b69ad5e4448b87a3605477cec98.png" alt="image.png"></p>
+<p>其中，φ是sigmoid函数。</p>
+<p>理论上，两层的感知器可以拟合出所有的连续函数，三层及以上的感知器可以拟合出所有函数。</p>
+<h2 id="5-从一个简单的示例看人工神经网络的计算过程"><a href="#5-从一个简单的示例看人工神经网络的计算过程" class="headerlink" title="5-从一个简单的示例看人工神经网络的计算过程"></a>5-从一个简单的示例看人工神经网络的计算过程</h2><p>前面，我们介绍了人工神经网络的基本工作流程。现在我们可以通过一个例子来看具体的计算过程。</p>
+<p>首先，假设我们已经训练好了一个模型，此模型的功能是进行逻辑与运算。当然我们知道，逻辑与运算的规则非常简单，其有两个输入，每个输入的值为0或者1，当输入都为1时结果才为1，任一输入为0时结果就为0。与运算的所有输入与输出的可能列表如下：</p>
+<p>  | 1 | 0<br>1 | 1 | 0<br>0 | 0 | 0  </p>
+<p>忘记我们已知的这个计算规则，我们的目的是通过机器学习，让计算机自己通过模型来预测出正确的结果。我们要使用的神经网络有两层，结构如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_baac6805a78646c4bf00be9cc03cfabb.png" alt="image.png"></p>
+<p>由于模型是训练好的，所需要的权重参数都是已知的。其中第一层的权重向量为：</p>
+<p>W1 = [</p>
+<p>-3.9 -3.9 -5.4</p>
+<p>4.4 4.4 6.2</p>
+<p>-4.7 -4.7 -6.6</p>
+<p>]</p>
+<p>假设我们输入的两个值分别为1和1，加上偏置-1，则输入向量为:</p>
+<p>X1 = [1 1 -1]</p>
+<p>进行点乘后，得到的中间结果为：</p>
+<p>r1 = -3.9 <em> 1 + -3.9 </em> 1 + 5.4 * 1 = -2.4</p>
+<p>r2 = 4.4 + 4.4 - 6.2 = 2.6</p>
+<p>r3 = -4.7 - 4.7 + 6.6 = -2.8</p>
+<p>因此第一层运算后的中间向量为：</p>
+<p>R1 = [-2.4 2.6 -2.8]</p>
+<p>将R1向量进行sigmoid运算，结果为：</p>
+<p>X2 = [0.083 0.93 0.057]</p>
+<p>向量X2即为第2层的输入向量，加上偏置输入，最终的第二层的输入为：</p>
+<p>X2 = [0.083 0.93 0.057 -1]</p>
+<p>第2层的权重向量为：</p>
+<p>W2 = [-8.09 7.24 -7.49 -2.88]</p>
+<p>进行点乘运算，第二层的中间结果为：</p>
+<p>R2 = 0.67 + 6.73 - 0.42 + 2.88 = 9.86</p>
+<p>将9.86进行sigmoid运算，结果为0.9999，非常接近1。</p>
+<p>同样，如果我们将最初的输入修改为：</p>
+<p>X1 = [0 1 -1]</p>
+<p>则：</p>
+<p>r1 = -3.9 <em> 0 + -3.9 </em> 1 + 5.4 * 1 = 1.5</p>
+<p>r2 = 0 + 4.4 - 6.2 = -1.8</p>
+<p>r3 = 0 - 4.7 + 6.6 = 1.9</p>
+<p>R1 = [1.5 -1.8 1.9]</p>
+<p>X2 = [0.817 0.14 0.86 -1]</p>
+<p>R2 = -8.09*0.817 + 7.24*0.14 - 7.49*0.86 + 2.88 = 9.86</p>
+<p>对9.86进行sigmoid运算后，结果为0.00005，此模型的预测是符合预期的。</p>
+<p>我们这里举的是一个比较简单的例子，因为输出只有0和1。如果我们要预测的场景有多个输出，例如预测某个点位于直角坐标系中的哪个象限中，则可以输出4个值，分别表示此点落在对应象限的概率。</p>
+<h2 id="6-训练过程"><a href="#6-训练过程" class="headerlink" title="6-训练过程"></a>6-训练过程</h2><p>上面示例中，我们假定使用的模型是已经训练好的，那么如果我们尚未确定所需要的权重参数时，需要怎么做呢？需要试！我们可以先随意的选取一组权重组合，之后正向的执行一遍计算过程，最终计算获取到的结果与真实结果间的误差，通过将误差反向传播来优化更新整个网络的权重向量。为了方便演示这一过程，我们可以将神经网络模型再优化的简单些，如下图所示：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_901d8e26f28d4371b003ee9ff8a78862.png" alt="image.png"></p>
+<p>假设此神经网络的作用是拟合取反运算符的功能，即输入为0时输出1，输入为1时输出0。现在第一层的权重和第二层的权重我们都不知晓。随机取一组权重组合，例如：</p>
+<p>W1 = [</p>
+<p>1 1</p>
+<p>1 1</p>
+<p>]</p>
+<p>W2 = [1 1 1]</p>
+<p>现在设输入为0，运算过程为：</p>
+<p>X1 = [0 -1]</p>
+<p>R1 = [-1 -1]</p>
+<p>X2 = [0.731 0.731 -1]</p>
+<p>R2 = 0.462</p>
+<p>X2 = 0.61</p>
+<p>最终计算的结果为0.61，我们预期的结果应该为1，与正确输出相比误差很多，误差我们一般使用如下公式来描述：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_aa210f137c5b495ebddcdcc83f5d5341.png" alt="image.png"></p>
+<p>其中的连加符号是用来将多个输出的误差进行相加，本例中只有一个输出，我们可以将其忽略。公式中的1/2是一个小技巧，对方差除以2不会对结果产生大的影响，但是可以使后续的求导结果更加简化。</p>
+<p>如果我们带入计算此次误差，结果为：0.39。这个误差值是很大的，我们需要分析出每个权重参数对此误差产生的影响，然后尽量降低此影响。</p>
+<p>首先，最终的结果实际上是由一层层的结果经过线性计算加上触发函数而得到的，因此本质上我们可以用复合函数来表示最终的结果与输出间的关系。以本场景为例，第二层函数我们可以表示为φ(f(x2))，第一层函数可以表示为x2=φ(g(x))，带入后的完整函数为φ(f(φ(g(x))))，即：</p>
+<p>target = φ(f(φ(g(x))))</p>
+<p>因此，我们要计算每个权重对误差的影响，找到梯度的反方向进行优化即可，其实只需要使用误差函数对指定权重变量求偏导。</p>
+<p>梯度的定位为变化率最大的方向，导数本身描述的就是变量的变化导致结果变化的变化速度，因此我们根据其导数进行调整即可最快的优化参数。</p>
+<p>下面，我们以W2向量中的第1个权重为例来进行优化，公式如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_50535e09cfc446dd9d4c9a457841eaad.png" alt="image.png"></p>
+<p>其中out为最后一部分输出函数，即sigmod函数，net为最后一层的逻辑函数，其与w1有关，分别计算这些值：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_f31b2ae3296946dcba038653e304bd02.png" alt="image.png"></p>
+<p>通过上面的复合函数求导运算，我们可以计算出最终的误差关于w1权重的偏导值，仔细观察，其实此偏导值的工作可以简化为：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_c78a3d17e5174fb9a27ed8fe4943abdd.png" alt="image.png"></p>
+<p>可以看到，其中只有outx11是上一层对应此乘以此权重值的结果，其他参数都只与最终结果或本层的输出有关。我们将这部分提为一个新的变量，将误差关于某个权重的偏导简化为：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_15adcf1fd91249f7a561718c43402dba.png" alt="image.png"></p>
+<p>现在我们已经计算出了关于误差w1权重的梯度，现在向其反方向进行调整即可，我们采用0.5的学习率，更新权重参数如下：</p>
+<p>w_1 = w1 - 0.5 * - (0.0678) = 1.0339</p>
+<p>同理对同层的w2进行更新也是一样的逻辑。更新完第2层的权重后，我们还需要继续向上一层传递，更新第一层的权重。这里我们不再演示计算。</p>
+<p>W2向量对应的修改为：</p>
+<p>W2 = [1.0339 1.0339 1]</p>
+<p>再次输入为0，运算过程为：</p>
+<p>X1 = [0 -1]</p>
+<p>R1 = [-1 -1]</p>
+<p>X2 = [0.731 0.731 -1]</p>
+<p>R2 = 0.731*1.0339+0.731*1.0339-1</p>
+<p>X2 = 0.625</p>
+<p>误差为0.375，减少了一点点。同理去更新其他权重，直到达到满意的效果为止。</p>
+<p>上面演示的计算过程为称为反向传播算法，在人工神经网络中，机器学习的整体逻辑即是不断的进行权重的更新，更新过程为进行一次预测（首次全部用随机的权重），之后通过反向传播算法来逐层逐个的使用误差函数对权重进行求导，使用求导结果来进行权重的更新，更新这里实际上是使用了梯度下降算法，后面会在详细讨论这个算法。更新权重后，再次进行正向的预测，之后用新的误差来反向传播在此更新，直到预测正确的概率达到我们的预期位置。本例演示的是一个比较简单的神经网络，当感知器较多和输出较多时，反向传播计算起来会非常麻烦。</p>
+<h2 id="7-关于梯度下降算法"><a href="#7-关于梯度下降算法" class="headerlink" title="7-关于梯度下降算法"></a>7-关于梯度下降算法</h2><p>在前面网络训练部分的介绍中，我们最终推导出一个关于误差的函数，对于每层感知器来说，我们是通过复合函数以及链式法则来其中权重参数求偏导的。我们直到，偏导数的意义是反应函数值与某个变量变化的关系，当误差为整数时，我们需要尽量让其降低，因此需要计算此点的梯度后，向梯度的反方向进行变化。权重的更新方式可以表示为：</p>
+<p>W` = W - α * L</p>
+<p>其中L为梯度，乘以的α被称为学习率，即用来控制误差下降的速度。学习率并非越大越好，过大的学习率可以产生过冲，但是过低的学习率会使训练的收敛过程很慢。误差关于权重的函数是一个多维的函数，多维本身很难理解，但是将其类比在三维平面上就比较好理解了。例如下图所示：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_06e9f97c0e234dc89b5f32ee62b4a65e.png" alt="image.png"></p>
+<p>此三维空间中的平面中有凹有凸，当我们随机取一组权重参数时，误差函数可能落在平面上的任意一点，我们需要找到此处的梯度方向然后进行下降，学习率小会使的每次迭代所优化的步长都很小，很难快速到达最终的低点，学习率过大又可能越过了低点，导致每次迭代效果来回震荡。</p>
+<p>因此要使整个神经网络的训练效率提高，对学习率的选择是非常重要的。如何指定学习率，也有一些成熟的算法，下图演示了各种算法中迭代轮数与误差函数的收敛速度的关系：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_6201a774c57e4eda94c1699a1de3b37b.png" alt="image.png"></p>
+<p>批量梯度下降法是比较原始的梯度下降形式，在一次迭代中使用所有样本来进行梯度的更新。梯度使用每个样本梯度的平均值。</p>
+<p>随机梯度下降法是指每次迭代时，都使用一个样本来进行权重参数的优化。</p>
+<p>小批量梯度下降法是批量梯度下降法与随机梯度下降法的折中，使用一个以上而又不是全部的训练样本来进行参数优化。</p>
+<p>动量随机梯度下降法是对随机梯度下降法的简单优化，其使用上一步的梯度与当前梯度的加权平均值来进行参数优化，避免过早的稳定，可以加快下降的速度。</p>
+<p>PRrop法会忽略梯度的震荡，直接观察梯度的符号，如果与上一步的相当，则放大为1.2倍，如果与上一步相反，则缩小为0.5倍。简单理解，如果步长未越过最小值，则继续增大步长，如果越过了最小值，则减少步长。</p>
+<p>Adam是一种自适应的时刻估计方法，较为复杂，但其收敛很快。</p>
+<h2 id="8-结语"><a href="#8-结语" class="headerlink" title="8-结语"></a>8-结语</h2><p>最后，关于为何人工神经网络理论上可以模拟任何的线性与非线性函数，应该是有数学上的严格证明，对于拟合过程和原理，很难说的清楚。我们更关心的是如何运用相关理论和技术，开发出有强大智能的应用。本文中介绍的模型预测过程涉及的计算和训练过程中参数的优化方法，看上去很繁琐，其实都非常容易使用编程的方式实现，并且有许多成熟的神经网络库可以直接使用，这些后续在的文章再讨论。希望本文能带给你一些收获，欢迎私信指点~</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2023/09/22/479Swift中的异步编程方式/" class="next-post btn btn-default" title='Swift中的异步编程方式'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift中的异步编程方式</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#人工智能之从零理解人工神经网络"><span class="toc-text">人工智能之从零理解人工神经网络</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#引"><span class="toc-text">引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-关于人工神经网络"><span class="toc-text">1-关于人工神经网络</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-感知器"><span class="toc-text">2-感知器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-多层感知器"><span class="toc-text">3-多层感知器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-激活函数"><span class="toc-text">4-激活函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-从一个简单的示例看人工神经网络的计算过程"><span class="toc-text">5-从一个简单的示例看人工神经网络的计算过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-训练过程"><span class="toc-text">6-训练过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-关于梯度下降算法"><span class="toc-text">7-关于梯度下降算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-结语"><span class="toc-text">8-结语</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
