@@ -1,7 +1,7 @@
 ---
 title: 【Swift专题】聊聊Swift中的属性
 date: 2024-01-31
-categories: SWIFT
+categories: Swift语法专题
 tags: []
 ---
 # 【Swift专题】聊聊Swift中的属性
