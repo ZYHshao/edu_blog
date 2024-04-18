@@ -1,0 +1,375 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>聊聊Swift中的宏 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="聊聊Swift中的宏">
+            
+	            聊聊Swift中的宏
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2024/04/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="聊聊Swift中的宏"><a href="#聊聊Swift中的宏" class="headerlink" title="聊聊Swift中的宏"></a>聊聊Swift中的宏</h1><p>宏，Macros是一种常见的编程技术，传统的C语言中，即包含了宏功能。宏这种功能，简单来说是在代码的预编译阶段进行静态替换，是一种非运行时的特性。但是往复杂了说，宏实际上也提供了一种”元编程“方式，即对程序本身进行编程。如果真正掌握宏的应用，又比较复杂，以C语言中的宏为例，宏可以有参数，可以进行嵌套展开，要编写质量高的宏，还是非常有难度。这里附上之前的一篇关于Objective-C下宏的应用博文，以供需要的朋友参考：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/3357392" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/3357392</a></p>
+<h2 id="Swift宏简介"><a href="#Swift宏简介" class="headerlink" title="Swift宏简介"></a>Swift宏简介</h2><p>最初的Swift版本其实并不支持宏，这其实也和Swift语言的设计理念有关，C语言中的宏应用广泛，但是编译时展开的特性会是代码的可读性下降，也会增加代码的漏洞风险。Swift秉承安全、易理解、易使用的设计初衷，并没有引入宏的概念。但宏的元编程能力可以大大的提高编程的灵活性和复用性，Swift在5.9版本中重新引入了宏功能，并且是以一种全新的方式来定义和实现宏，在提供灵活性的同时保证代码的安全性和可靠性。但这也有一些缺陷，相比与C语言的宏，Swift中的宏的定义非常抽象，实现复杂，不太利于开发者进行理解。本篇文章即基于这一前提，希望可以系统简介的对Swift中的宏进行介绍，帮助更多开发者了解它，使用它。</p>
+<p>首先，在做详细介绍前，我们需要先牢记几个核心原理：</p>
+<p>1 - 宏会在编译代码前进行代码转换，即预编译阶段进行处理。</p>
+<p><strong>2 - 宏在展开时，永远只会增加代码，不会修改或删除原始的代码。（重点）</strong></p>
+<p>3 - 宏的输入和输出都会经过编译器的检查，保证其语法正确，并且如果宏展开后的实现发现异常，也会被处理为编译时异常。</p>
+<p>上述的原理1和原理3无需特别关注，只需要知道宏是一个编译时的特性即可，原理2是非常重要的，当我们想将某个功能点编写为宏时，首先要考虑的是我们是要附加功能还是删改功能，如果是增加功能则非常适合使用宏，如果是删改逻辑则应该早早放弃，宏永远不应该删改原本的代码。</p>
+<p>Swift中的宏分为两类：</p>
+<p>1 - 独立宏</p>
+<p>2 - 附加宏</p>
+<p>其中，独立宏单独出现，单独使用，不会附加到任何声明（可以理解为原始代码）上。附加宏则需要配合声明一起使用，通常是为了向原代码中增加一些功能。从特性上看，独立宏与C语言的宏有些类似，做简单的代码展开或静态替换很方便。附加宏则更像是一种装饰器模式的应用，为原始逻辑进行包装，附加功能。这两种宏从声明到用法上都有区别。</p>
+<h3 id="独立宏"><a href="#独立宏" class="headerlink" title="独立宏"></a>独立宏</h3><p>独立宏使用”#”来调用，因此当你在代码中看到#相关的语法时，就要意识到这是一个宏，且是一个独立宏。标准库中默认提供了一些独立宏可以直接使用，例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="built_in">print</span>(#file, #function, #line)</span><br><span class="line">        #warning(<span class="string">"系统宏，显示警告信息"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中，#file,#function,#line和#warning都是独立宏，前3个宏无参数，在编译时分别替换为当前文件名、当前函数名和当前行号，#warning宏有参数，用来为告诉编译器这里展示一条警告信息。这些宏因为是标准库中的，我们无法查看展开后的样子，如果是自定义宏则可以直接展开查看，后面我们再介绍。</p>
+<h3 id="附加宏"><a href="#附加宏" class="headerlink" title="附加宏"></a>附加宏</h3><p>使用”@“来调用附加宏，附加宏用来补充其所声明的代码，为原始代码添加新的功能，附加宏比较复杂，后面我们再详细介绍。</p>
+<h2 id="宏的声明、定义与实现"><a href="#宏的声明、定义与实现" class="headerlink" title="宏的声明、定义与实现"></a>宏的声明、定义与实现</h2><p>Swift语言和C语言的一大区别在于Swift一般无需做声明，如函数、变量、类等，直接定义即可使用。但宏却不同，宏必须进行声明，声明的主要作用是指定宏的名称、参数以及类型和使用场景。</p>
+<p>与普通的Swift功能代码不同，每个宏都是一个单独的Swift包，在工程中我们可以创建一个新的Package，选择Swift Macro，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7bcd8d021aaf3632b410c7cda46652efc50.png" alt></p>
+<p>宏的实现依赖于swift-syntax包，Xcode会自动帮我们加载好依赖。创建好的的Package会自动生成模版文件，我们只需要关系Sources和Tests文件夹下的内容即可。自动生成的模板中的宏是使用了swift-syntax包的Swift源代码静态分析能力，略为复杂，增加了理解宏本身的难度。这里我们可以不理会这部分，专注于宏本身的逻辑。</p>
+<p>首先，一个宏模块分为声明，实现，测试和使用4个部分。下面我们逐一来进行介绍。</p>
+<h3 id="宏的声明"><a href="#宏的声明" class="headerlink" title="宏的声明"></a>宏的声明</h3><h4 id="独立宏声明"><a href="#独立宏声明" class="headerlink" title="独立宏声明"></a>独立宏声明</h4><p>独立宏使用@freestanding来进行声明，在声明宏时，需要指定宏的角色。独立宏有两种角色：</p>
+<p>expression：创建一段有返回值的代码。</p>
+<p>declaration：声明类宏，用来创建声明类的代码。</p>
+<p>例如我们声明一个角色为expression的宏，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@freestanding(expression)</span><br><span class="line"><span class="keyword">public</span> macro <span class="type">AppendHello</span>(<span class="number">_</span> msg: <span class="type">String</span>) -&gt; <span class="type">String</span> = #externalMacro(module: <span class="string">"MyMacroMacros"</span>, type: <span class="string">"AppendHelloMacro"</span>)</span><br></pre></td></tr></table></figure>
+<p>代码中，@freestanding(expression)指定了当前宏是一个表达式角色的独立宏，#externalMacro是Swift内置的一个宏，指定了当前宏所对应的模块名以及类型标识。</p>
+<p>声明一个declaration角色的宏如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@freestanding(declaration, names: arbitrary)</span><br><span class="line"><span class="keyword">public</span> macro <span class="type">MakeStatic</span>(<span class="number">_</span> name: <span class="type">String</span>) = #externalMacro(module: <span class="string">"MyMacroMacros"</span>, type: <span class="string">"MakeStaticMacro"</span>)</span><br></pre></td></tr></table></figure>
+<p>需要注意，宏在指定角色时，可以通过names参数来对要使用的符号进行定义，以上面的宏声明为例，MakeStatic的作用是会生成一个静态变量，因此会在原代码中新增符号，但是变量的名称是由参数决定的，因此需要将names参数设置为arbitrary，表示要生成的符号是不定的。</p>
+<p>names参数可填为：</p>
+<p>1 named(xxx) 具体的符号名称。</p>
+<p>2 overloaded 对原符号的重载</p>
+<p>3 prefixed(xxx) 增加前缀</p>
+<p>4 suffixed(xxx) 增加后缀</p>
+<p>5 arbitrary 动态符号名称</p>
+<h4 id="附加宏声明"><a href="#附加宏声明" class="headerlink" title="附加宏声明"></a>附加宏声明</h4><p>附加宏使用@attached来进行声明，与独立宏类似，其也需要指定角色：</p>
+<p>peer：对等角色，与所附加的原代码在相同的层级上增加代码，例如增加函数的重载。</p>
+<p>member：成员角色，为所附加的原代码增加内部成员，如增加属性等。</p>
+<p>memberAttribute：成员属性角色，为所附加的源代码的内部成员增加属性。</p>
+<p>accessor：访问器角色，为所附加的源代码增加Getter，Setter方法等。</p>
+<p>extension（之前为conformance，最新swift版本修改为extension）：遵守着角色，为所附加的源代码增加协议和约束。</p>
+<p>我们先来定义一个peer角色类型的宏，用来实现一个自动生成的重载函数，此重载函数会增强原函数的功能，添加函数的执行时间日志。如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@attached(peer, names: overloaded)</span><br><span class="line"><span class="keyword">public</span> macro <span class="type">OverrideForAPM</span>() = #externalMacro(module: <span class="string">"MyMacroMacros"</span>, type: <span class="string">"OverrideForAPMMacro"</span>)</span><br></pre></td></tr></table></figure>
+<p>这里我们将names指定为了overloaded，表示对原符号的重载操作。后面会有此宏的实现示例。</p>
+<p>member角色的宏通常用来为类或结构增加成员变量或方法等，声明示例如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@attached(member, names: named(logSelf))</span><br><span class="line"><span class="keyword">public</span> macro <span class="type">MemberLog</span>() = #externalMacro(module: <span class="string">"MyMacroMacros"</span>, type: <span class="string">"MemberLogMacro"</span>)</span><br></pre></td></tr></table></figure>
+<p>其中，我们声明时明确定义了要引入的符号logSelf，此符号将作为生成的函数名。</p>
+<p>memberAttribute角色宏本质上是作用于类或结构的成员上，用来为成员增加修饰，例如可以定义一个宏为类的成员都默认加上@objc修饰：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@attached(memberAttribute)</span><br><span class="line"><span class="keyword">public</span> macro <span class="type">Objc</span>() = #externalMacro(module: <span class="string">"MyMacroMacros"</span>, type: <span class="string">"ObjcMacro"</span>)</span><br></pre></td></tr></table></figure>
+<p>accessor角色宏用在具体的成员上，用来增加访问器逻辑，例如下面的声明，此宏将为访问器自动生成计算属性逻辑：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@attached(accessor)</span><br><span class="line"><span class="keyword">public</span> macro <span class="type">GetLog</span>() = #externalMacro(module: <span class="string">"MyMacroMacros"</span>, type: <span class="string">"GetLogMacro"</span>)</span><br></pre></td></tr></table></figure>
+<p>extension宏用来为原结构增加一些协议或遵守一些规则，例如我们可以定义一个宏，来让所修饰的修改自动实现Equatable协议：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@attached(<span class="class"><span class="keyword">extension</span>, <span class="title">conformances</span>:<span class="title">Equatable</span> ,<span class="title">names</span>: <span class="title">named</span>(==))</span></span><br><span class="line"><span class="class"><span class="title">public</span> <span class="title">macro</span> <span class="title">EqualProtocol</span>() = #<span class="title">externalMacro</span>(<span class="title">module</span>: "<span class="title">MyMacroMacros</span>", <span class="title">type</span>: "<span class="title">EqualProtocolMacro</span>")</span></span><br></pre></td></tr></table></figure>
+<p>其中conformances参数指定要遵守的协议，因为我们同时要对协议进行实现，会引入新的符号，因此需要names参数中也指明。</p>
+<h3 id="宏的实现"><a href="#宏的实现" class="headerlink" title="宏的实现"></a>宏的实现</h3><p>宏的实现，即也是宏的定义。指定了宏具体要实现的逻辑。</p>
+<h4 id="独立宏实现"><a href="#独立宏实现" class="headerlink" title="独立宏实现"></a>独立宏实现</h4><p>根据前面AppendHello宏的声明，在MyMacroMacros可以对其进行实现，代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">AppendHelloMacro</span>: <span class="title">ExpressionMacro</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">expansion</span><span class="params">(of node: some FreestandingMacroExpansionSyntax, <span class="keyword">in</span> context: some MacroExpansionContext)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">ExprSyntax</span> &#123;</span><br><span class="line">        <span class="comment">// 解析宏的参数，此宏我们定义了一个msg参数</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> argument = node.argumentList.first?.expression, <span class="keyword">let</span> segment = argument.<span class="keyword">as</span>(<span class="type">StringLiteralExprSyntax</span>.<span class="keyword">self</span>)?.segments.first <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"编译异常"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 我们需要将静态代码内部的字符串数据解析出来</span></span><br><span class="line">        <span class="keyword">switch</span> segment &#123;</span><br><span class="line">        <span class="keyword">case</span> .stringSegment(<span class="keyword">let</span> string):</span><br><span class="line">            <span class="comment">// 返回一个静态字符串表达式</span></span><br><span class="line">            <span class="keyword">return</span> <span class="type">ExprSyntax</span>(stringLiteral: <span class="string">"\"\(string.content.text + "</span><span class="type">Hello</span><span class="string">")\""</span>)</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"编译异常"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@main</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyMacroPlugin</span>: <span class="title">CompilerPlugin</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> providingMacros: [<span class="type">Macro</span>.<span class="type">Type</span>] = [</span><br><span class="line">        <span class="type">AppendHelloMacro</span>.<span class="keyword">self</span>,</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所有的表达式角色的独立宏，在定义时需要实现ExpressionMacro协议，此协议中的expansion函数将返回展开后的结果，我们可以根据逻辑来返回数据即可。需要注意，在编写宏时，我们所有做的操作都是元编程操作，因此需要对Swift元代码进行解析与处理，这也是swift-syntax主要提供的功能。代码中的解析逻辑你可以暂时无需关注。另外，在Plugin的定义中，我们要将此宏类实例进行返回，这里的类与我们前面声明时的类标识要一致。</p>
+<p>MakeStatic宏的定义方法也类似，只是其需要实现DeclarationMacro协议，角色为声明类型的宏主要是为原代码增加一些声明，如增加属性，增加方法，增加协议等等。为了演示方便，MakeStatic的作用是根据传入的字符串生成一个静态变量，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">MakeStaticMacro</span>: <span class="title">DeclarationMacro</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">expansion</span><span class="params">(of node: some FreestandingMacroExpansionSyntax, <span class="keyword">in</span> context: some MacroExpansionContext)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">DeclSyntax</span>] &#123;</span><br><span class="line">        <span class="comment">// 解析宏的参数，此宏我们定义了一个name参数</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> argument = node.argumentList.first?.expression, <span class="keyword">let</span> segment = argument.<span class="keyword">as</span>(<span class="type">StringLiteralExprSyntax</span>.<span class="keyword">self</span>)?.segments.first <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"编译异常"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 我们需要将静态代码内部的字符串数据解析出来</span></span><br><span class="line">        <span class="keyword">switch</span> segment &#123;</span><br><span class="line">        <span class="keyword">case</span> .stringSegment(<span class="keyword">let</span> string):</span><br><span class="line">            <span class="comment">// 返回一个静态字符串表达式</span></span><br><span class="line">            <span class="keyword">return</span> [<span class="string">"static var \(string): Any?"</span>]</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"编译异常"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="附加宏实现"><a href="#附加宏实现" class="headerlink" title="附加宏实现"></a>附加宏实现</h4><p>OverrideForAPM宏的实现如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">OverrideForAPMMacro</span>: <span class="title">PeerMacro</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">expansion</span><span class="params">(of node: AttributeSyntax, providingPeersOf declaration: some DeclSyntaxProtocol, <span class="keyword">in</span> context: some MacroExpansionContext)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">SwiftSyntax</span>.<span class="type">DeclSyntax</span>] &#123;</span><br><span class="line">        <span class="comment">// 函数的声明部分</span></span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> functionDecl = declaration.<span class="keyword">as</span>(<span class="type">FunctionDeclSyntax</span>.<span class="keyword">self</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">fatalError</span>(<span class="string">"编译异常"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 函数的实现副本</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> body = functionDecl.body &#123;</span><br><span class="line">           <span class="keyword">return</span> [</span><br><span class="line">           <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">           func \(functionDecl.name)(_ apm: Bool)  &#123;</span></span><br><span class="line"><span class="string">           if apm &#123;print(Date())&#125;</span></span><br><span class="line"><span class="string">           \(body.statements)</span></span><br><span class="line"><span class="string">           if apm &#123;print(Date())&#125;</span></span><br><span class="line"><span class="string">           &#125;</span></span><br><span class="line"><span class="string">           "</span><span class="string">""</span></span><br><span class="line">           ]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>MemberLog宏的实现如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">MemberLogMacro</span>: <span class="title">MemberMacro</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">expansion</span><span class="params">(of node: AttributeSyntax, providingMembersOf declaration: some DeclGroupSyntax, <span class="keyword">in</span> context: some MacroExpansionContext)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">DeclSyntax</span>] &#123;</span><br><span class="line">        <span class="keyword">return</span> [</span><br><span class="line">        <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">        func logSelf()&#123;</span></span><br><span class="line"><span class="string">        print(self)</span></span><br><span class="line"><span class="string">        &#125;</span></span><br><span class="line"><span class="string">        "</span><span class="string">""</span></span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Objc宏的实现如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">ObjcMacro</span>: <span class="title">MemberAttributeMacro</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">expansion</span><span class="params">(of node: SwiftSyntax.AttributeSyntax, attachedTo declaration: some SwiftSyntax.DeclGroupSyntax, providingAttributesFor member: some SwiftSyntax.DeclSyntaxProtocol, <span class="keyword">in</span> context: some SwiftSyntaxMacros.MacroExpansionContext)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">SwiftSyntax</span>.<span class="type">AttributeSyntax</span>] &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">"@objc"</span>]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>GetLog宏的实现如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">GetLogMacro</span>: <span class="title">AccessorMacro</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">expansion</span><span class="params">(of node: AttributeSyntax, providingAccessorsOf declaration: some DeclSyntaxProtocol, <span class="keyword">in</span> context: some MacroExpansionContext)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">AccessorDeclSyntax</span>] &#123;</span><br><span class="line">        <span class="comment">// 获取所修饰的符号</span></span><br><span class="line">        <span class="keyword">guard</span></span><br><span class="line">             <span class="keyword">let</span> property = declaration.<span class="keyword">as</span>(<span class="type">VariableDeclSyntax</span>.<span class="keyword">self</span>),</span><br><span class="line">             <span class="keyword">let</span> binding = property.bindings.first,</span><br><span class="line">             <span class="keyword">let</span> identifier = binding.pattern.<span class="keyword">as</span>(<span class="type">IdentifierPatternSyntax</span>.<span class="keyword">self</span>)?.identifier.trimmed</span><br><span class="line">           <span class="keyword">else</span> &#123;</span><br><span class="line">             <span class="keyword">return</span> []</span><br><span class="line">           &#125;</span><br><span class="line">         <span class="keyword">return</span> [</span><br><span class="line">         <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">         get &#123;</span></span><br><span class="line"><span class="string">            print("</span>获取计算属性值<span class="string">", _\(identifier))</span></span><br><span class="line"><span class="string">            return _\(identifier)</span></span><br><span class="line"><span class="string">         &#125;</span></span><br><span class="line"><span class="string">         "</span><span class="string">""</span>,</span><br><span class="line">         <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">         set &#123;</span></span><br><span class="line"><span class="string">            _\(identifier) = newValue</span></span><br><span class="line"><span class="string">         &#125;</span></span><br><span class="line"><span class="string">         "</span><span class="string">""</span></span><br><span class="line">         ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>EqualProtocol 宏的实现如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">EqualProtocolMacro</span>: <span class="title">ExtensionMacro</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">expansion</span><span class="params">(of node: AttributeSyntax, attachedTo declaration: some DeclGroupSyntax, providingExtensionsOf type: some TypeSyntaxProtocol, conformingTo protocols: [TypeSyntax], <span class="keyword">in</span> context: some MacroExpansionContext)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">ExtensionDeclSyntax</span>] &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="keyword">try</span> <span class="type">ExtensionDeclSyntax</span>(<span class="string">"extension \(type.trimmed): Equatable &#123; static func == (lhs: \(type.trimmed), rhs: \(type.trimmed)) -&gt; Bool &#123; lhs == rhs&#125;&#125;"</span>)]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于附加宏来说，除了上述示例的场景外，我们也可以对某个宏指定多个角色，例如member角色宏和accessor角色宏，可以同时为所修饰的原结构增加内部属性和外部访问器方法。多个角色宏的实现也类似，只需要具体的实现多个协议即可了。</p>
+<h3 id="宏的使用"><a href="#宏的使用" class="headerlink" title="宏的使用"></a>宏的使用</h3><p>宏的使用非常简单，创建的宏Package中自动生成了一个main.swift文件，我们可以在其中进行使用测试，例如：</p>
+<p>使用独立的表达式宏：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// newString将被赋值为 Xiao mingHello</span></span><br><span class="line"><span class="keyword">let</span> newString = #<span class="type">AppendHello</span>(<span class="string">"Xiao ming "</span>)</span><br><span class="line"><span class="built_in">print</span>(newString)</span><br></pre></td></tr></table></figure>
+<p>使用独立的声明宏：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MySingle</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 会被展开为 static var obj: Any?</span></span><br><span class="line">    #<span class="type">MakeStatic</span>(<span class="string">"obj"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用peer宏：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此宏编译后会增加一个新的重载函数，如下：</span></span><br><span class="line"><span class="comment">//func myFunc(_ apm: Bool)  &#123;</span></span><br><span class="line"><span class="comment">//    if apm &#123;</span></span><br><span class="line"><span class="comment">//        print(Date())</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//        print("MyFuncCall")</span></span><br><span class="line"><span class="comment">//    if apm &#123;</span></span><br><span class="line"><span class="comment">//        print(Date())</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line">@<span class="type">OverrideForAPM</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">myFunc</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"MyFuncCall"</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 调用将打印：</span></span><br><span class="line"><span class="comment">//2024-04-17 14:44:29 +0000</span></span><br><span class="line"><span class="comment">//MyFuncCall</span></span><br><span class="line"><span class="comment">//2024-04-17 14:44:29 +0000</span></span><br><span class="line">myFunc(<span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
+<p>使用member宏：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@<span class="type">MemberLog</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomClass</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 将像类中添加方法：</span></span><br><span class="line">    <span class="comment">// func logSelf() &#123;</span></span><br><span class="line">    <span class="comment">//    print(self)</span></span><br><span class="line">    <span class="comment">//&#125;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">c</span> = <span class="type">CustomClass</span>()</span><br><span class="line"><span class="comment">// MyMacroClient.CustomClass</span></span><br><span class="line"><span class="built_in">c</span>.logSelf()</span><br></pre></td></tr></table></figure>
+<p>使用memberAttribute宏：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@<span class="type">Objc</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SwiftObjcClass</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 宏展开有会增加 @objc</span></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">func1</span><span class="params">()</span></span> &#123;&#125;</span><br><span class="line">    <span class="comment">// 宏展开有会增加 @objc</span></span><br><span class="line">    <span class="keyword">var</span> v1 = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 宏展开有会增加 @objc</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">let</span> s1 = <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用accessor宏：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GetLogDemo</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> _prop = <span class="number">0</span></span><br><span class="line">    @<span class="type">GetLog</span></span><br><span class="line">    <span class="keyword">var</span> prop:<span class="type">Int</span></span><br><span class="line">    <span class="comment">// 下面将被展开</span></span><br><span class="line">    <span class="comment">//    &#123;</span></span><br><span class="line">    <span class="comment">//        get &#123;</span></span><br><span class="line">    <span class="comment">//           _prop</span></span><br><span class="line">    <span class="comment">//        &#125;</span></span><br><span class="line">    <span class="comment">//        set &#123;</span></span><br><span class="line">    <span class="comment">//           _prop = newValue</span></span><br><span class="line">    <span class="comment">//        &#125;</span></span><br><span class="line">    <span class="comment">//    &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> d = <span class="type">GetLogDemo</span>()</span><br><span class="line">d.prop = <span class="number">2</span></span><br><span class="line"><span class="comment">// 获取计算属性值 2</span></span><br><span class="line"><span class="built_in">print</span>(d.prop)</span><br></pre></td></tr></table></figure>
+<p>使用extension宏：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@<span class="type">EqualProtocol</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyNumber</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 会在下面展开</span></span><br><span class="line"><span class="comment">//extension MyNumber: Equatable &#123;</span></span><br><span class="line"><span class="comment">//    static func == (lhs: MyNumber, rhs: MyNumber) -&gt; Bool &#123;</span></span><br><span class="line"><span class="comment">//        lhs == rhs</span></span><br><span class="line"><span class="comment">//    &#125;</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="宏的调试与测试"><a href="#宏的调试与测试" class="headerlink" title="宏的调试与测试"></a>宏的调试与测试</h3><p>可以发现，宏的代码编写思路与常规的应用开发思路有很大不同，我们主要需要处理的是对Swift代码本身的语法树结构的解析与补充。当然，大部分工作swift-syntax包都帮我们处理好了。在开发宏时，我们可以直接在使用处右键将宏进行展开，可以直接看到宏编译后的结果，例如：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-73c1d9675026440d371d50219c312af63db.png" alt></p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-f3af9be2c0b0f3bc29daa5635a5ecc5cff6.png" alt></p>
+<p>如果宏展开后的结果比较复杂，我们也可以在运行时进行断点，将宏展开，然后直接进行断点调试即可。</p>
+<p>另外，如果想要对宏本身进行断点调试，则我们需要通过单元测试来运行宏，模板代码中已经默认生成了测试代码，例如对AppendHello宏进行单测，修改测试文件如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> SwiftSyntax</span><br><span class="line"><span class="keyword">import</span> SwiftSyntaxBuilder</span><br><span class="line"><span class="keyword">import</span> SwiftSyntaxMacros</span><br><span class="line"><span class="keyword">import</span> SwiftSyntaxMacrosTestSupport</span><br><span class="line"><span class="keyword">import</span> XCTest</span><br><span class="line"></span><br><span class="line"><span class="comment">// Macro implementations build for the host, so the corresponding module is not available when cross-compiling. Cross-compiled tests may still make use of the macro itself in end-to-end tests.</span></span><br><span class="line">#<span class="keyword">if</span> canImport(<span class="type">MyMacroMacros</span>)</span><br><span class="line"><span class="keyword">import</span> MyMacroMacros</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> testMacros: [<span class="type">String</span>: <span class="type">Macro</span>.<span class="type">Type</span>] = [</span><br><span class="line">    <span class="string">"AppendHello"</span>: <span class="type">AppendHelloMacro</span>.<span class="keyword">self</span>,</span><br><span class="line">]</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line"><span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">MyMacroTests</span>: <span class="title">XCTestCase</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">testMacro</span><span class="params">()</span></span> <span class="keyword">throws</span> &#123;</span><br><span class="line">        #<span class="keyword">if</span> canImport(<span class="type">MyMacroMacros</span>)</span><br><span class="line">        assertMacroExpansion(</span><br><span class="line">            <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">            #AppendHello("</span><span class="type">Xiao</span> <span class="type">Li</span> <span class="string">")</span></span><br><span class="line"><span class="string">            "</span><span class="string">""</span>,</span><br><span class="line">            expandedSource: <span class="string">""</span><span class="string">"</span></span><br><span class="line"><span class="string">            "</span><span class="type">Xiao</span> <span class="type">Li</span> <span class="type">Hello</span><span class="string">"</span></span><br><span class="line"><span class="string">            "</span><span class="string">""</span>,</span><br><span class="line">            macros: testMacros</span><br><span class="line">        )</span><br><span class="line">        #<span class="keyword">else</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="type">XCTSkip</span>(<span class="string">"macros are only supported when running tests for the host platform"</span>)</span><br><span class="line">        #endif</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>单测的逻辑也比较简单，即我们给一个输入宏，然后与预期的展开结果进行对比即可，因为宏是静态展开，因此非常容易也很适合进行单测。在单测执行时，我们是可以对宏的实现部分进行断点的，通过断点，可以对其输入参数的详细信息进行查看，方便我们宏逻辑的编写，以上述单测为例，断点可以后可查看语法节点数据，如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(lldb) po node</span><br><span class="line">MacroExpansionExprSyntax</span><br><span class="line">├─pound: pound</span><br><span class="line">├─macroName: identifier(<span class="string">"AppendHello"</span>)</span><br><span class="line">├─leftParen: leftParen</span><br><span class="line">├─arguments: LabeledExprListSyntax</span><br><span class="line">│ ╰─[0]: LabeledExprSyntax</span><br><span class="line">│   ╰─expression: StringLiteralExprSyntax</span><br><span class="line">│     ├─openingQuote: stringQuote</span><br><span class="line">│     ├─segments: StringLiteralSegmentListSyntax</span><br><span class="line">│     │ ╰─[0]: StringSegmentSyntax</span><br><span class="line">│     │   ╰─content: stringSegment(<span class="string">"Xiao Li "</span>)</span><br><span class="line">│     ╰─closingQuote: stringQuote</span><br><span class="line">├─rightParen: rightParen</span><br><span class="line">╰─additionalTrailingClosures: MultipleTrailingClosureElementListSyntax</span><br></pre></td></tr></table></figure>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>本篇文章，单纯从Swift宏的角度介绍了各种宏的使用方法和应用场景，然而真正要写好宏，其实还是比较有难度的，首先在编写时展开结果并不直观，其次要考虑的边界情况也很多，因此单测试一个非常好的保证质量的工具。另外，能够熟练使用swift-syntax包也是写好宏的基础。有时间，后面在专门整理swift-syntax的用法吧，希望本篇文章可以为你带来一些帮助和启发，感谢你使用宝贵时间阅读。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2024/02/24/483.iOS自定义应用设置页面/" class="next-post btn btn-default" title='iOS自定义应用设置页面'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS自定义应用设置页面</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#聊聊Swift中的宏"><span class="toc-text">聊聊Swift中的宏</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift宏简介"><span class="toc-text">Swift宏简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#独立宏"><span class="toc-text">独立宏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#附加宏"><span class="toc-text">附加宏</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宏的声明、定义与实现"><span class="toc-text">宏的声明、定义与实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#宏的声明"><span class="toc-text">宏的声明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#独立宏声明"><span class="toc-text">独立宏声明</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#附加宏声明"><span class="toc-text">附加宏声明</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#宏的实现"><span class="toc-text">宏的实现</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#独立宏实现"><span class="toc-text">独立宏实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#附加宏实现"><span class="toc-text">附加宏实现</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#宏的使用"><span class="toc-text">宏的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#宏的调试与测试"><span class="toc-text">宏的调试与测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写在最后"><span class="toc-text">写在最后</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
