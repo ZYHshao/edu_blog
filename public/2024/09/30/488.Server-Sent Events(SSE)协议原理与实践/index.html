@@ -1,0 +1,320 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Server-Sent Events(SSE)协议原理与实践 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Server-Sent Events(SSE)协议原理与实践">
+            
+	            Server-Sent Events(SSE)协议原理与实践
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/编程珠玑">
+            编程珠玑
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2024/09/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="Server-Sent-Events-SSE-协议原理与实践"><a href="#Server-Sent-Events-SSE-协议原理与实践" class="headerlink" title="Server-Sent Events(SSE)协议原理与实践"></a>Server-Sent Events(SSE)协议原理与实践</h1><p>这些年，语言类大模型相关的应用成为了非常热门的提效工具。各行各业都可以通过定制化的AI工具来提高工作效率。在这类应用的客户端中，由于大模型的运算效率和输出格式的原因，你会发现几乎所有的实时交流都是流式输出的，一个体验良好的客户端会实时接收数据流，进行MarkDown格式的内容渲染。本篇文章将主要讨论实现这种流式数据接收的一种方法，使用SSE协议：Server-Sent Events，并以JavaScript和Swift语言分别来对Web端和iOS端做实践。如果你正需要一种类似语言大模型交流方式的交互体验，希望本篇文章可以为你带来启发。</p>
+<h2 id="一-认识SSE协议"><a href="#一-认识SSE协议" class="headerlink" title="一 认识SSE协议"></a>一 认识SSE协议</h2><h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h3><p>SSE协议全称为Server-Sent Events，从名称也可以得知，这是一种服务端向客户端发送事件消息的协议。我们知道，通常在服务端和客户端交互的的HTTP请求中，请求会在一次收发数据后结束掉（下载除外），客户端首先发起请求，将数据发送到服务端，服务端根据业务逻辑将数据返回给客户端，则这次请求就完成了。但有时候，我们需要客户端和服务端进行多轮的有状态的通信（每次HTTP请求本质都是无状态的），这当然也不复杂，通过建立Socket长连接，在同一次连接生命周期中，客户端不仅可以多次随时的向发服务端发送数据，服务端也能够主动的多次随时向客户端推送信息。我们平时使用的IM即是通信软件，通常就是使用长链接来实现的。</p>
+<p>回到本篇文章讨论的主题，我们的核心需求是客户端一次请求，服务端可以多次向客户端推送消息。这当然使用长连接也可以实现，但Socket全双工的机制用在这里会有些浪费，也会增加复杂性和使用成本。SSE协议则是专门针对这种需求场景所产生的。</p>
+<p>总体来说，SSE与Socket类似，都是在客户端和服务端之间建立持久的通信通道。不同的是，SSE更加轻量，并且不是全双工的，它是一个单向的通道，SSE的数据流接收过程更类似于下载。我们可以通过以下几点来特性来理解SSE协议：</p>
+<p>1 SSE使用的是HTTP协议，天然的能在大多数互联网应用中直接使用。</p>
+<p>2 SSE非常轻量，更加面向应用层，比Socket使用简单。</p>
+<p>3 天然支持断线重连，减少开发成本。</p>
+<p>4 通常用来传输文本数据，客户端可以多次接收。</p>
+<p>5 丰富的自定义能力。</p>
+<h3 id="2-协议细节"><a href="#2-协议细节" class="headerlink" title="2 协议细节"></a>2 协议细节</h3><p>SSE协议本质上依然是一个HTTP请求，要使用SSE，客户端接收到用户端的请求时，需要将Response Header中的Content-Type字段设置为：text/event-steam，状态码信息则正常返回200 OK即可，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Content-Type: text/event-stream</span><br><span class="line">Cache-Control: no-cache</span><br><span class="line">Connection: keep-alive</span><br></pre></td></tr></table></figure>
+<p>text/event-stream是标记返回数据为流式数据，SSE理论上需要服务端多次推送消息到客户端，需要保持连接为keep-alive状态。</p>
+<p>服务端在向客户端发送数据时，每次可以发送多个消息，每个消息间使用\n\n分隔，每个消息可以有多行组成，行之间使用\n分隔。</p>
+<p>每行的格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">字段:值\n</span><br></pre></td></tr></table></figure>
+<p>其中“字段”一项是可选的，如果没有字段，以冒号开头，则表示此行为注释。</p>
+<p>SSE协议中约定的字段包括以下4种：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data</span><br><span class="line">event</span><br><span class="line">id</span><br><span class="line">retry</span><br></pre></td></tr></table></figure>
+<p>下面我们来具体介绍这几种字段以及其值的意义。</p>
+<p>data字段标识此部分信息为数据内容，数据内容如果很长，可以分为多行，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data: conent1\n</span><br><span class="line">data: conent1e1_end\n\n</span><br></pre></td></tr></table></figure>
+<p>也可以将一个长的JSON拆分成多行发送：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">data: &#123;\n</span><br><span class="line">data: &quot;a&quot;: &quot;a&quot;,\n</span><br><span class="line">data: &quot;b&quot;, 1\n</span><br><span class="line">data: &#125;\n\n</span><br></pre></td></tr></table></figure>
+<p>id字段通常标识数据的编号，便于实现断线重连等逻辑。</p>
+<p>event字段用来标识时间的额类型，例如当服务端数据推送完成后，通常会发送一个特殊的event事件表示数据全部发送完，之后断开连接。</p>
+<p>retry字段用来配置一个数值，指定客户端重新发起连接的间隔。</p>
+<h2 id="二-实践-基于Node-js的服务端SSE实践"><a href="#二-实践-基于Node-js的服务端SSE实践" class="headerlink" title="二 实践-基于Node.js的服务端SSE实践"></a>二 实践-基于Node.js的服务端SSE实践</h2><p>使用Node.js平台来编写一个SSE协议的测试程序非常简单，实例代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">"http"</span>);</span><br><span class="line"></span><br><span class="line">http.createServer(<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> url = req.url;</span><br><span class="line">  <span class="keyword">if</span> (url === <span class="string">"/stream"</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> count = <span class="number">0</span></span><br><span class="line">    res.writeHead(<span class="number">200</span>, &#123;</span><br><span class="line">      <span class="string">"Content-Type"</span>:<span class="string">"text/event-stream"</span>,</span><br><span class="line">      <span class="string">"Cache-Control"</span>:<span class="string">"no-cache"</span>,</span><br><span class="line">      <span class="string">"Connection"</span>:<span class="string">"keep-alive"</span>,</span><br><span class="line">      <span class="string">"Access-Control-Allow-Origin"</span>: <span class="string">'*'</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 设置重连间隔</span></span><br><span class="line">    res.write(<span class="string">"retry: 10000\n"</span>);</span><br><span class="line">    <span class="comment">// 发起开始事件</span></span><br><span class="line">    res.write(<span class="string">"event: start\n"</span>);</span><br><span class="line">    res.write(<span class="string">"data: "</span> + (<span class="keyword">new</span> <span class="built_in">Date</span>()) + <span class="string">"\n\n"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 发送数据</span></span><br><span class="line">    res.write(<span class="string">"data: "</span> + (<span class="keyword">new</span> <span class="built_in">Date</span>()) + <span class="string">" count:"</span> + (count++) + <span class="string">"\n\n"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 每秒发送一次数据</span></span><br><span class="line">    interval = setInterval(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      </span><br><span class="line">      <span class="keyword">if</span> (count == <span class="number">20</span>) &#123;</span><br><span class="line">        <span class="comment">// 发送结束事件</span></span><br><span class="line">        res.write(<span class="string">"event: end\n"</span>);</span><br><span class="line">        res.write(<span class="string">"data: "</span> + (<span class="keyword">new</span> <span class="built_in">Date</span>()) + <span class="string">"\n\n"</span>);</span><br><span class="line">        res.end();</span><br><span class="line">        clearInterval(interval);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        res.write(<span class="string">"data: "</span> + (<span class="keyword">new</span> <span class="built_in">Date</span>()) + <span class="string">" count:"</span> + (count++) + <span class="string">"\n\n"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">    req.connection.addListener(<span class="string">"close"</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">      clearInterval(interval);</span><br><span class="line">    &#125;, <span class="literal">false</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;).listen(<span class="number">8844</span>, <span class="string">"127.0.0.1"</span>);</span><br></pre></td></tr></table></figure>
+<p>使用node执行上面的程序，可以在浏览器中输入如下地址进行测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:8844/stream</span><br></pre></td></tr></table></figure>
+<p>SSE是一个GET请求（其实使用POST也没有问题）。服务端代码的逻辑是会每秒输出测试数据，直到输出20条后结束，并关闭连接。页面展示效果如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-65d03a34305987bc4290a516ed9fabf6eaf.png" alt></p>
+<h2 id="三-实践-SSE客户端实践"><a href="#三-实践-SSE客户端实践" class="headerlink" title="三 实践-SSE客户端实践"></a>三 实践-SSE客户端实践</h2><h3 id="1-JavaScript客户端"><a href="#1-JavaScript客户端" class="headerlink" title="1 JavaScript客户端"></a>1 JavaScript客户端</h3><p>实现了SSE协议的浏览器中会提供一个名为EventSource的对象，此对象对SSE协议的数据交互提供了支持。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;html&gt;</span><br><span class="line">    &lt;script&gt;</span><br><span class="line">    <span class="keyword">var</span> source = <span class="keyword">new</span> EventSource(<span class="string">"http://localhost.charlesproxy.com:8844/stream"</span>);</span><br><span class="line">    source.onopen = <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 连接建立后会回调</span></span><br><span class="line">        <span class="built_in">console</span>.log(event)</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    source.onmessage = <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 接收到数据回调</span></span><br><span class="line">        <span class="keyword">var</span> data = event.data;</span><br><span class="line">        <span class="built_in">console</span>.log(data)</span><br><span class="line">    &#125;;</span><br><span class="line">    source.onerror = <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 连接错误回调</span></span><br><span class="line">        <span class="built_in">console</span>.log(event)</span><br><span class="line">    &#125;;</span><br><span class="line">    &lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>html&gt;</span><br></pre></td></tr></table></figure>
+<p>运行客户端代码，从打印信息可以看到，start和end事件并没有监听到，这是因为这两个事件时我们自定义的事件，要监听自定义事件，方法如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 监听自定义事件</span></span><br><span class="line">source.addEventListener(<span class="string">'start'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> data = event.data;</span><br><span class="line">    <span class="built_in">console</span>.log(event)</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line">source.addEventListener(<span class="string">'end'</span>, <span class="function"><span class="keyword">function</span> (<span class="params">event</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> data = event.data;</span><br><span class="line">    <span class="built_in">console</span>.log(event)</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="2-Swift客户端"><a href="#2-Swift客户端" class="headerlink" title="2 Swift客户端"></a>2 Swift客户端</h3><p>Swift客户端可以直接使用原生提供的URLSession来实现，示例代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span>, <span class="title">URLSessionDataDelegate</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> url: <span class="type">URL</span>!</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> task: <span class="type">URLSessionDataTask</span>!</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> session: <span class="type">URLSession</span>!</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> receivedData = <span class="type">Data</span>()</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">self</span>.url = <span class="type">URL</span>(string: <span class="string">"http://localhost.charlesproxy.com:8844/stream"</span>)</span><br><span class="line">        <span class="keyword">let</span> configuration = <span class="type">URLSessionConfiguration</span>.<span class="keyword">default</span></span><br><span class="line">        <span class="keyword">self</span>.session = <span class="type">URLSession</span>(configuration: configuration, delegate: <span class="keyword">self</span>, delegateQueue: <span class="type">OperationQueue</span>.main)</span><br><span class="line">        </span><br><span class="line">        startListening()</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">startListening</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> request = <span class="type">URLRequest</span>(url: url)</span><br><span class="line">        </span><br><span class="line">        task = session.dataTask(with: request)</span><br><span class="line">        task.resume()</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">parseSSE</span><span class="params">(data: Data)</span></span> &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> eventsString = <span class="type">String</span>(data: data, encoding: .utf8) <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Unable to decode data"</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">let</span> events = eventsString.<span class="built_in">split</span>(separator: <span class="string">"\n\n"</span>)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> event <span class="keyword">in</span> events &#123;</span><br><span class="line">            <span class="keyword">let</span> eventLines = event.<span class="built_in">split</span>(separator: <span class="string">"\n"</span>)</span><br><span class="line">            <span class="keyword">var</span> eventData: [<span class="type">String</span>: <span class="type">String</span>] = [:]</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">for</span> line <span class="keyword">in</span> eventLines &#123;</span><br><span class="line">                <span class="keyword">let</span> keyValue = line.<span class="built_in">split</span>(separator: <span class="string">":"</span>, maxSplits: <span class="number">1</span>)</span><br><span class="line">                <span class="keyword">if</span> keyValue.<span class="built_in">count</span> == <span class="number">2</span> &#123;</span><br><span class="line">                    <span class="keyword">let</span> key = <span class="type">String</span>(keyValue[<span class="number">0</span>]).trimmingCharacters(<span class="keyword">in</span>: .whitespaces)</span><br><span class="line">                    <span class="keyword">let</span> value = <span class="type">String</span>(keyValue[<span class="number">1</span>]).trimmingCharacters(<span class="keyword">in</span>: .whitespaces)</span><br><span class="line">                    eventData[key] = value</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            handleEvent(eventData: eventData)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">handleEvent</span><span class="params">(eventData: [String: String])</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> eventType = eventData[<span class="string">"event"</span>], <span class="keyword">let</span> data = eventData[<span class="string">"data"</span>] &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Event Type: \(eventType), Data: \(data)"</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">let</span> data = eventData[<span class="string">"data"</span>] &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Data: \(data)"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">stopListening</span><span class="params">()</span></span> &#123;</span><br><span class="line">        task?.cancel()</span><br><span class="line">        task = <span class="literal">nil</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// MARK: - URLSessionDataDelegate methods</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">urlSession</span><span class="params">(<span class="number">_</span> session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data)</span></span> &#123;</span><br><span class="line">        receivedData.append(data)</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 处理完整的事件</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> eventsString = <span class="type">String</span>(data: receivedData, encoding: .utf8), eventsString.<span class="built_in">contains</span>(<span class="string">"\n\n"</span>) &#123;</span><br><span class="line">            <span class="keyword">let</span> eventsData = eventsString.data(using: .utf8)!</span><br><span class="line">            parseSSE(data: eventsData)</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 清除已处理的数据</span></span><br><span class="line">            receivedData = <span class="type">Data</span>()</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">urlSession</span><span class="params">(<span class="number">_</span> session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> error = error &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Error occurred: \(error)"</span>)</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"Connection closed by server"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意，要使用代理的方式接收数据，而不是block回调的方式，block回调方式的接口会等待所有数据接收完成后才会回调。运行上面的iOS客户端代码，控制台打印数据如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">Event Type: start, Data: Mon Sep 30 2024 14:11:04 GMT+0800 (China Standard Time)</span><br><span class="line">Data: Mon Sep 30 2024 14:11:04 GMT+0800 (China Standard Time) count:0</span><br><span class="line">Data: Mon Sep 30 2024 14:11:05 GMT+0800 (China Standard Time) count:1</span><br><span class="line">Data: Mon Sep 30 2024 14:11:06 GMT+0800 (China Standard Time) count:2</span><br><span class="line">Data: Mon Sep 30 2024 14:11:07 GMT+0800 (China Standard Time) count:3</span><br><span class="line">Data: Mon Sep 30 2024 14:11:08 GMT+0800 (China Standard Time) count:4</span><br><span class="line">Data: Mon Sep 30 2024 14:11:09 GMT+0800 (China Standard Time) count:5</span><br><span class="line">Data: Mon Sep 30 2024 14:11:10 GMT+0800 (China Standard Time) count:6</span><br><span class="line">Data: Mon Sep 30 2024 14:11:11 GMT+0800 (China Standard Time) count:7</span><br><span class="line">Data: Mon Sep 30 2024 14:11:12 GMT+0800 (China Standard Time) count:8</span><br><span class="line">Data: Mon Sep 30 2024 14:11:13 GMT+0800 (China Standard Time) count:9</span><br><span class="line">Data: Mon Sep 30 2024 14:11:14 GMT+0800 (China Standard Time) count:10</span><br><span class="line">Data: Mon Sep 30 2024 14:11:15 GMT+0800 (China Standard Time) count:11</span><br><span class="line">Data: Mon Sep 30 2024 14:11:16 GMT+0800 (China Standard Time) count:12</span><br><span class="line">Data: Mon Sep 30 2024 14:11:17 GMT+0800 (China Standard Time) count:13</span><br><span class="line">Data: Mon Sep 30 2024 14:11:18 GMT+0800 (China Standard Time) count:14</span><br><span class="line">Data: Mon Sep 30 2024 14:11:19 GMT+0800 (China Standard Time) count:15</span><br><span class="line">Data: Mon Sep 30 2024 14:11:20 GMT+0800 (China Standard Time) count:16</span><br><span class="line">Data: Mon Sep 30 2024 14:11:21 GMT+0800 (China Standard Time) count:17</span><br><span class="line">Data: Mon Sep 30 2024 14:11:22 GMT+0800 (China Standard Time) count:18</span><br><span class="line">Data: Mon Sep 30 2024 14:11:23 GMT+0800 (China Standard Time) count:19</span><br><span class="line">Event Type: end, Data: Mon Sep 30 2024 14:11:24 GMT+0800 (China Standard Time)</span><br><span class="line">Connection closed by server</span><br></pre></td></tr></table></figure>
+<p>到此，我们对SSE协议的原理，定义以及服务端和客户端的用法实践做了简单介绍，对于单向的服务端发送序列数据到客户端且在短时间内会完成的场景，你都可以考虑使用SSE实现，希望本篇文章可以为你带来一些收获。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2024/09/02/487.UIInteraction：iOS中强大的视图交互能力/" class="next-post btn btn-default" title='UIInteraction：iOS中强大的视图交互能力'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">UIInteraction：iOS中强大的视图交互能力</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Server-Sent-Events-SSE-协议原理与实践"><span class="toc-text">Server-Sent Events(SSE)协议原理与实践</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-认识SSE协议"><span class="toc-text">一 认识SSE协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-简介"><span class="toc-text">1 简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-协议细节"><span class="toc-text">2 协议细节</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-实践-基于Node-js的服务端SSE实践"><span class="toc-text">二 实践-基于Node.js的服务端SSE实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-实践-SSE客户端实践"><span class="toc-text">三 实践-SSE客户端实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-JavaScript客户端"><span class="toc-text">1 JavaScript客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Swift客户端"><span class="toc-text">2 Swift客户端</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
