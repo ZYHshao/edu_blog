@@ -1,0 +1,310 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>关于ArkUI状态管理的全面总结 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="关于ArkUI状态管理的全面总结">
+            
+	            关于ArkUI状态管理的全面总结
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/HarmonyOS">
+            HarmonyOS
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2025/05/02</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <blockquote>
+<p>状态管理是ArkUI的核心组成部分。简单来说，应用程序的UI展现其实都是状态数据的执行结果，在声明式的UI框架中，界面本质上是一个有限的状态机，数据有多少种组合逻辑上页面就会有多少种样式结果。通过状态数据来驱动页面的更新会让程序的界面开发变的简单，开发者只需要关注数据的变化和流转逻辑，无需在关注页面组件的更新。<br>在ArkUI中提供了V1版本和V2版本两套状态管理接口，V1版本使用逻辑简单，V2版本功能更加强大，本文会分别介绍这两套接口的用法，在实际开发中，可以根据具体场景来渲染要使用的接口。</p>
+</blockquote>
+<h1 id="ArkUI中的状态管理机制V1"><a href="#ArkUI中的状态管理机制V1" class="headerlink" title="ArkUI中的状态管理机制V1"></a>ArkUI中的状态管理机制V1</h1><h2 id="使用-State定义组件内状态"><a href="#使用-State定义组件内状态" class="headerlink" title="使用@State定义组件内状态"></a>使用@State定义组件内状态</h2><p>本质上，UI组件是承载数据的载体，这里说的数据通常指静态的数据，在组件内部，我们可以使用变量来存储数据，当组件在使用这些变量时，读取到的是当时变量所存储的数据，后续变量的更改便不再会和组件产生关系。尝试运行下面的代码，会发现我们修改了变量的值后，页面中的Text组件并不会更新：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">@Entry</span><br><span class="line">@Component</span><br><span class="line">struct Index &#123;</span><br><span class="line">  message: string = &apos;Hello World&apos;;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      Text(this.message).fontSize(30)</span><br><span class="line">        .onClick(() =&gt; &#123;</span><br><span class="line">          this.message = &apos;Welcome&apos;;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>若要让组件影响数据的变化而进行更新，我们需要在组件和数据之间建立一种联系，即使用状态变量，@State装饰器可以将组件内的属性变量修饰为状态属性，@State只能在组件内定义，其生命周期与组件本身的生命周期一致。并且，@State会将对应属性修饰为私有的，仅可以在组件内部使用，当状态数据发生变化时，使用到此状态数据的UI组件也会同步进行更新，但这并不是一定的，@State触发组件的更新是有一定规则的，具体列举如下：<br>1.当属性本身为boolean，string，number类型时，数据变化会被观察到。<br>这条规则是最简单的一条规则，基础数据类型的更改会直接触发组件更新。<br>2.当属性为class类型时，属性本身的重新赋值会被观察到。<br>例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">class Student &#123;</span><br><span class="line">  name: string</span><br><span class="line">  age: number</span><br><span class="line">  constructor(name:string, age:number) &#123;</span><br><span class="line">    this.name = name</span><br><span class="line">    this.age = age</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@Entry</span><br><span class="line">@Component</span><br><span class="line">struct Index &#123;</span><br><span class="line">  @State student: Student = new Student(&quot;xiao ming&quot;, 28)</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      Text(this.student.name).fontSize(30)</span><br><span class="line">        .onClick(() =&gt; &#123;</span><br><span class="line">          this.student = new Student(&quot;xiao li&quot;, 30)</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3.当属性为class类型时，class实例对象的属性赋值会被观察到。<br>与规则2类似，对象的属性修改也可以触发更新，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Text(this.student.name).fontSize(30)</span><br><span class="line">  .onClick(() =&gt; &#123;</span><br><span class="line">    this.student.name = &apos;xiao li&apos;</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure></p>
+<p>4.当属性为class类型时，class实例对象嵌套的属性赋值不能被观察到。<br>当属性本身class的实例，且对象的某个属性也是class的实例时，对属性的属性进行修改时无法触发UI更新的。<br>5.当属性为array类型时，属性本身的重新赋值会被观察到。<br>如使用ForEach来进行数组的循环渲染时，array属性的重新赋值会触发UI更新。<br>6.当属性为array类型时，数组的增删改会被观察到。<br>array本身的修改操作可以触发UI更新。<br>7.当属性为array类型，且内部元素为对象类型时，对象的属性修改不能被观察到。<br>    与规则4类似，当数组中的元素为类的实例对象时，对实例对象的属性进行修改便不会再触发UI更新。<br>8.当属性为Map和Set类型时，行为与array相同。<br>另外@State所修饰的属性必须进行初始化，不过如果父组件再构造子组件时有通过参数传值，则参数会将初始化的值覆盖。</p>
+<h2 id="使用-Prop进行单向数据同步"><a href="#使用-Prop进行单向数据同步" class="headerlink" title="使用@Prop进行单向数据同步"></a>使用@Prop进行单向数据同步</h2><p>使用@State定义的状态属性只用于当前组件内的状态维护，当前组件的状态是无法直接传递到子组件进行使用的。举个例子，下面是一个自定义的组件，父组件会将状态属性作为参数传递到子组件，父组件中状态数据的更新不不会触发自定义组件的更新。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 自定义组件</span><br><span class="line">@Component</span><br><span class="line">struct CustomText &#123;</span><br><span class="line">  message: string = &quot;&quot;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Text(this.message).onClick(() =&gt; &#123;</span><br><span class="line">      this.message = &apos;你好世界&apos;;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@Entry</span><br><span class="line">@Component</span><br><span class="line">struct Index &#123;</span><br><span class="line">  @State message: string = &apos;Hello World&apos;;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      Text(this.message).fontSize(30)</span><br><span class="line">        .onClick(() =&gt; &#123;</span><br><span class="line">          this.message = &apos;Welcome&apos;;</span><br><span class="line">        &#125;)</span><br><span class="line">      // 状态数据的修改不会触发自定义组件的更新</span><br><span class="line">      CustomText(&#123;message: this.message&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行上面代码，当Index组件的message状态发生变化时，CustomText组件并没有更新。通常在进行组件传参时，数据会被拷贝，我们当然也可以将CustomText组件内的message属性使用@State装饰为状态属性，但是此时Index组件内的message属性和CustomText组件内的message属性本质上是两个状态属性，Index组件的message状态变化依然不会同步到CustomText中，同样CustomText中状态的变化也与Index组件没有关系。<br>若要在父子组件的状态属性间建立起关系，我们需要额外使用一些装饰器。@Prop装饰器即是用来做父子状态同步的，@Prop可以将父组件的状态变更同步给子组件，但是子组件对此状态的变更仅会在子组件内生效，不会同步回父组件，且父组件如果有新的状态更新，会将子组件的更新覆盖掉。例如上面的示例代码，将CustomText组件的message属性使用@Prop进行修饰，此时点击父组件中的第一个Text元素，可以看到CustomText组件也会同步进行更新，但是如果点击CustomText中的文本组件，你会看到仅仅子组件会同步更新，状态变更不会同步回父组件。<br>@Prop状态属性的可监听规则与@State一致，在使用@Prop定义状态时，尤其要注意的是在子组件内其虽然可以被修改，但是修改的状态仅仅是一种暂存状态，与父组件关联的状态更新会直接将暂存的状态覆盖，因此，为了便于组件状态的管理，在实际开发中，在编码规范上一般是不允许子组件修改@Prop属性的，这样可以保证数据源更新的唯一性，方便数据变更的回溯，避免状态管理产生混乱。</p>
+<h2 id="使用-Link进行双向数据同步"><a href="#使用-Link进行双向数据同步" class="headerlink" title="使用@Link进行双向数据同步"></a>使用@Link进行双向数据同步</h2><p>子组件中使用@Link进行修饰的属性可以与父组件的状态建立双向绑定的关系，即父组件状态的变化会同步到子组件中，子组件对此状态的更新也会同步到父组件中。由于@Link这种父子组件状态完全同步的特性，被@Link修饰的属性不允许有初始值，其必须由父组件的状态属性进行初始化，建立起绑定关系。例如下面的示例代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 自定义组件</span><br><span class="line">@Component</span><br><span class="line">struct CustomText &#123;</span><br><span class="line">  @Link message: string</span><br><span class="line">  build() &#123;</span><br><span class="line">    Text(this.message).onClick(() =&gt; &#123;</span><br><span class="line">      this.message = &apos;你好世界&apos;;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@Entry</span><br><span class="line">@Component</span><br><span class="line">struct Index &#123;</span><br><span class="line">  @State message: string = &apos;Hello World&apos;;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      Text(this.message).fontSize(30)</span><br><span class="line">        .onClick(() =&gt; &#123;</span><br><span class="line">          this.message = &apos;Welcome&apos;;</span><br><span class="line">        &#125;)</span><br><span class="line">      CustomText(&#123;message: this.message&#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>代码修改后，父子组件中对状态数据的修改都能实时同步到UI渲染上，看上去就像它们共享了同一个状态数据一样。<br>与@State和@Prop装饰器相比，@Link主要区别有两点。首先不可以在页面入口组件中使用，即不允许在被@Entry修饰的组件中使用。其次是@Link修饰的属性不允许初始化。</p>
+<h3 id="跨多级父子关系的状态同步"><a href="#跨多级父子关系的状态同步" class="headerlink" title="跨多级父子关系的状态同步"></a>跨多级父子关系的状态同步</h3><p>前面所介绍的@Prop和@Link装饰器，都是用来进行父子组件间的状态同步，而在很多业务较复杂的场景中，组件的嵌套层级可能会非常深，外层组件中的状态可能要经过多层传递才能同步到内层组件，这会使代码变的冗余且复杂。ArkUI中还提供了两个装饰器用来进行跨层级的组件状态同步，它们就是@Provide和@Consume。<br>@Provider和@Consume可以摆脱状态传递的束缚，通过供给、消费的模型进行数据同步。我们可以通过一个简单的例子来看，如下代码编写了一个任务卡页面：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">// 任务结构模型</span><br><span class="line">class  Task &#123;</span><br><span class="line">  message: string</span><br><span class="line">  finish: boolean</span><br><span class="line"></span><br><span class="line">  constructor(msg:string, state: boolean) &#123;</span><br><span class="line">    this.message = msg</span><br><span class="line">    this.finish = state</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Entry</span><br><span class="line">@Component</span><br><span class="line">struct Index &#123;</span><br><span class="line">  // 任务状态数据</span><br><span class="line">  @State task: Task = new Task(&quot;完成学习任务&quot;, false)</span><br><span class="line"></span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      ToDoCard(&#123;item: this.task&#125;)</span><br><span class="line">      Button(&apos;修改标题&apos;).onClick(()=&gt;&#123;</span><br><span class="line">        this.task.message = &quot;修改后的任务标题&quot;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 任务卡组件</span><br><span class="line">@Component</span><br><span class="line">struct ToDoCard &#123;</span><br><span class="line">  @Prop item:Task</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      Text(&quot;我的任务卡&quot;).margin(60).fontSize(40)</span><br><span class="line">      ToDoItem(&#123;task: this.item&#125;).height(60)</span><br><span class="line">    &#125;.width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 任务内容组件</span><br><span class="line">@Component</span><br><span class="line">struct ToDoItem &#123;</span><br><span class="line">  @Prop task: Task</span><br><span class="line">  build() &#123;</span><br><span class="line">    Row() &#123;</span><br><span class="line">      Text(this.task.message).fontSize(25)</span><br><span class="line">      Text(this.task.finish ? &apos;完成&apos; : &apos;未完成&apos;).onClick(()=&gt;&#123;</span><br><span class="line">        this.task.finish = !this.task.finish</span><br><span class="line">      &#125;).fontColor(this.task.finish ? Color.Green : Color.Red)</span><br><span class="line">    &#125;.width(&apos;100%&apos;).justifyContent(FlexAlign.SpaceAround)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>阅读上面代码，可以发现Task会由Index和ToDoItem两个组件进行控制，这两个组件都会对状态数据进行修改，由于ToDoItem并不是Index组件的直接子组件，因此我们需要将Task状态从Index组件先传递到ToDoCard组件，再从ToDoCard组件传递到ToDoItem组件。事实上，ToDoCard本身并没有对Task状态的依赖，这里仅仅作为中间组件进行状态传递，当组件的嵌套层数变深时，这个传递的路径也会对应变长。<br>对于这种场景，我们可以在父组件中使用@Provider来进行数据的供给，之后在此父组件的所有后代组件中，都可以使用@Consume来消费此供给的状态数据，即@Provider和@Consume在跨层级的组件间建立了双向的数据绑定。修改代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">@Entry</span><br><span class="line">@Component</span><br><span class="line">struct Index &#123;</span><br><span class="line">  @Provide task2: Task = new Task(&quot;完成学习任务&quot;, false)</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      ToDoCard()</span><br><span class="line">      Button(&apos;修改标题&apos;).onClick(()=&gt;&#123;</span><br><span class="line">        this.task2.message = &quot;修改后的任务标题&quot;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 任务内容组件</span><br><span class="line">@Component</span><br><span class="line">struct ToDoItem &#123;</span><br><span class="line">  @Consume task2: Task</span><br><span class="line">  build() &#123;</span><br><span class="line">    Row() &#123;</span><br><span class="line">      Text(this.task2.message).fontSize(25)</span><br><span class="line">      Text(this.task2.finish ? &apos;完成&apos; : &apos;未完成&apos;).onClick(()=&gt;&#123;</span><br><span class="line">        this.task2.finish = !this.task2.finish</span><br><span class="line">      &#125;).fontColor(this.task2.finish ? Color.Green : Color.Red)</span><br><span class="line">    &#125;.width(&apos;100%&apos;).justifyContent(FlexAlign.SpaceAround)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行代码，程序依然可以按照预期的方式运行。<br>被@Provider装饰器修饰的属性，会以属性名为标识，将其注入到所有后代组件中，在需要使用此状态数据的后代组件中使用@Consume获取。需要注意，默认情况下是以属性名为标识的，如果我们无法保证父组件与其后代组件的属性名一致，则也可以自定义标识名，例如在父组件中使用如下方式修饰属性：<br>@Provide(‘shared’) task2: Task = new Task(“完成学习任务”, false)<br>其中“shared”是我们自定义的标识，同样在后代组件中使用时也要用此标识获取：<br>@Consume(‘shared’) task2: Task<br>@Provider与@Consume修饰的属性会构建出双向绑定的关系，@Consume修饰的属性不可以有初始值，并且如果我们对标识进行了自定义，则不允许重现重复的标识，否则会产生冲突。</p>
+<h2 id="处理嵌套属性的变化"><a href="#处理嵌套属性的变化" class="headerlink" title="处理嵌套属性的变化"></a>处理嵌套属性的变化</h2><p>前面我们所介绍的所有与状态同步相关的装饰器，对于对象属性的变化，其都只能响应一层，对于多层嵌套的情况，比如对象的某个属性依然是类对象类型或者数组中元素的类型是对象类型，这时第二层属性的变化是无法被响应到的。ArkUI中提供了@Observed和@ObjectLink来处理这种问题。<br>首先，我们编写两个测试类，用来模拟嵌套属性变化的场景：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">class Grade &#123;</span><br><span class="line">  id: number</span><br><span class="line">  name: string</span><br><span class="line">  constructor(id: number, name: string) &#123;</span><br><span class="line">    this.id = id</span><br><span class="line">    this.name = name</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Student &#123;</span><br><span class="line">  name: string</span><br><span class="line">  age: number</span><br><span class="line">  grade: Grade</span><br><span class="line">  constructor(name: string, age: number, grade: Grade) &#123;</span><br><span class="line">    this.name = name</span><br><span class="line">    this.age = age</span><br><span class="line">    this.grade = grade</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中，Student是第一层数据模型，其中的grade属性是Grade类实例，是第二层数据类型。编写测试组件如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">@Entry</span><br><span class="line">@Component</span><br><span class="line">struct Index &#123;</span><br><span class="line">  @State student?: Student = undefined</span><br><span class="line">  aboutToAppear(): void &#123;</span><br><span class="line">    // 创建模拟数据</span><br><span class="line">    this.student = new Student(&apos;Jaki&apos;, 20, new Grade(2, &apos;2年级&apos;))</span><br><span class="line">  &#125;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column(&#123;space: 20&#125;) &#123;</span><br><span class="line">      Text(&apos;学生信息&apos;).fontSize(35)</span><br><span class="line">      Text(&apos;姓名：&apos; + this.student?.name).fontSize(25)</span><br><span class="line">      Text(&apos;年龄：&apos; + this.student?.age).fontSize(25)</span><br><span class="line">      GradeComponent(&#123;grade: this.student?.grade&#125;)</span><br><span class="line">      Button(&apos;更新年级信息&apos;).onClick(()=&gt;&#123;</span><br><span class="line">        if (this.student) &#123;</span><br><span class="line">          this.student.grade.id = this.student.grade.id + 1</span><br><span class="line">          this.student.grade.name =  this.student.grade.id + 1 + &apos;年级&apos;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">struct GradeComponent &#123;</span><br><span class="line">  @Prop grade: Grade</span><br><span class="line">  build() &#123;</span><br><span class="line">    Text(&apos;年级：编号&apos; + this.grade?.id + &apos; &apos; + this.grade?.name).fontSize(25)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行代码，点击页面中的按钮，可以看到子组件中的年级编号并没有更新，尽管在子组件中grade属性被@Prop进行了修饰，但是由于在Index组件内，grade数据是二层模型，其属性变化无法被响应到。<br>@Observed装饰器用来对类进行修饰，其可以将类实例封装为响应性的，修改Grade类如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@Observed class Grade &#123;</span><br><span class="line">  id: number</span><br><span class="line">  name: string</span><br><span class="line">  constructor(id: number, name: string) &#123;</span><br><span class="line">    this.id = id</span><br><span class="line">    this.name = name</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>再次运行代码，可以看到年级编号已经可以实时更新。但是需要注意，当前示例代码的grade属性是用@Prop修饰的，其数据是单向绑定的，如果要进行双向绑定，则需要使用@ObjectLink装饰器，而不是@Link装饰器。使用@Observed装饰的类的实例，其只有传递给@Prop或@OjectLink装饰的属性其响应性才会生效，因此对于嵌套的数据模型，要响应其二层属性的变更，必须使用子组件来承载这些二级属性的渲染。</p>
+<h2 id="状态变更通知"><a href="#状态变更通知" class="headerlink" title="状态变更通知"></a>状态变更通知</h2><p>大多数情况下，状态的变更是开发者自行触发的，但这并不是一定的。我们知道，当父子组件间建立了状态同步关系后，父组件或子组件，甚至任意后代组件，都可能成为状态变更触发源，这时我们想要监听到状态变更的触发动作就不太容易了。在ArkUI中，可以使用@Watch装饰器来对一个状态变量进行修饰，此装饰器可以对应的配置一个回调函数，当其装饰的状态发生变化时，会执行回调函数。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">@Entry</span><br><span class="line">@Component</span><br><span class="line">struct Index &#123;</span><br><span class="line">  // 监听message状态的变更</span><br><span class="line">  @State @Watch(&apos;stateChange&apos;) message: string = &apos;Hello World&apos;;</span><br><span class="line"></span><br><span class="line">  build() &#123;</span><br><span class="line">    RelativeContainer() &#123;</span><br><span class="line">      Text(this.message).fontSize(30)</span><br><span class="line">        .onClick(() =&gt; &#123;</span><br><span class="line">          this.message = &apos;Welcome&apos;;</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">  // 状态变更回调，参数为状态属性的名字</span><br><span class="line">  stateChange(name: string) &#123;</span><br><span class="line">    this.getUIContext().getPromptAction().showToast(&#123;message: `$&#123;name&#125;状态发生了变更：$&#123;this.message&#125;`&#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行代码，点击页面中的Text元素，可以看到页面弹出了Toast提示。@Watch装饰器的参数是字符串类型，需要配置为一个函数名。当状态属性发生变化时，会调用此函数，并将发生变化的状态变量名作为参数传入此函数中。另外，@Watch所监听的是“状态的变化”，状态数据的初始化以及不产生变化的赋值都不会触发回调函数的执行。<br>如果我们在@Watch的回调方法中进行了其他状态数据的修改，其是会触发UI更新的，并且如果所变更的状态数据也添加了@Watch监听，则其对应的回调函数也会被执行。因此，我们应该尽量避免在状态监听回调中做修改状态的操作，避免产生循环调用。<br>在实际应用中，我们可以将多个状态属性的回调函数都设置为同一个，同步参数来判断具体发生变更的数据，执行对应的逻辑。</p>
+<h1 id="ArkUI中的状态管理机制V2"><a href="#ArkUI中的状态管理机制V2" class="headerlink" title="ArkUI中的状态管理机制V2"></a>ArkUI中的状态管理机制V2</h1><p>V2版本的状态管理能力是在API12中新增加的，前面我们介绍的V1状态管理功能虽然强大，但在多层嵌套的属性变化响应中还是有很大的局限性，@Observed以及@ObjectLink虽然提供了这类问题的处理方案，但是需要开发者根据数据结构的嵌套方式来组织组件的嵌套结构，耦合严重，使用非常不便。并且，V1版本的状态管理也不够细化，例如无法从语义上区分组件的内部属性和外部属性，@Watch监听状态数据变化时无法获取到变化前的值等等。为了更好的解决这些问题，ArkUI中引入了一套新的状态管理装饰器，在实际开发中，更推荐使用V2版本的状态管理接口，但对于简单的需求场景，使用V1版本也没有问题，但是要避免V2版本的接口与V1版本的接口混用。</p>
+<h2 id="组件内部状态与外部状态"><a href="#组件内部状态与外部状态" class="headerlink" title="组件内部状态与外部状态"></a>组件内部状态与外部状态</h2><p>我们知道，在进行自定义组件时需要使用@Component装饰器，其实这种说法并不完全精准，如果我们要使用V2版本的状态管理接口，则需要使用@ComponentV2装饰器。@ComponentV2与@Component用法是一样的，用来定义自定义组件，其内部可以配合使用@Local、@Param等状态管理装饰器。本节我们将介绍@Local装饰器的用法。<br>@Local只能在@ComponentV2修饰的组件中进行使用，其与@State有些类似，用来维护组件内部的状态，但也有很大不同，主要表现在：<br>1.@Local从语义上表示的是组件的内部状态，因此其只能在组件内部进行初始化，不能够外部传入赋值，这与@State不同。<br>2.@Local可以观测到变量本身的变化，数组、字典等容器元素的变化，但是不能观测到对象变量属性的变化，@State则可以观测到一层属性的变化。在V2版本的状态管理中，对象属性的观测有专门的方法，我们后续会介绍。<br>@Local装饰器的使用示例如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">@Entry</span><br><span class="line">@ComponentV2</span><br><span class="line">struct Index &#123;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      SubComponent()</span><br><span class="line">    &#125;.align(Alignment.Center)</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@ComponentV2</span><br><span class="line">struct SubComponent &#123;</span><br><span class="line">  // 内部状态，只能在组件内部初始化</span><br><span class="line">  @Local msg: string = &apos;Hello&apos;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      Text(&quot;子组件&quot;).fontSize(30)</span><br><span class="line">      Text(this.msg).onClick(()=&gt;&#123;</span><br><span class="line">        this.msg = &apos;World&apos;</span><br><span class="line">      &#125;).fontSize(25)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>与内部状态相对应，如果组件的某个状态属性是需要父组件传入的，则需要将其定义为外部状态，外部状态支持在内部进行初始化，也支持外部参数赋值，修改上面代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">@ComponentV2</span><br><span class="line">struct Index &#123;</span><br><span class="line">  @Local msg: string = &apos;Index Hello&apos;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      SubComponent(&#123;outMsg: this.msg&#125;)</span><br><span class="line">    &#125;.align(Alignment.Center)</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;).onClick(()=&gt;&#123;</span><br><span class="line">      this.msg = &apos;Index World&apos;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@ComponentV2</span><br><span class="line">struct SubComponent &#123;</span><br><span class="line">  // 内部状态，只能在组件内部初始化</span><br><span class="line">  @Local msg: string = &apos;Hello&apos;</span><br><span class="line">  @Param outMsg: string = &apos;&apos;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      Text(&quot;子组件&quot;).fontSize(30)</span><br><span class="line">      Text(this.msg).onClick(()=&gt;&#123;</span><br><span class="line">        this.msg = &apos;World&apos;</span><br><span class="line">      &#125;).fontSize(25)</span><br><span class="line">      Text(this.outMsg).fontSize(30)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行可以看到，@Param修饰的属性可以和父组件间建立起单向的数据绑定关系，上面示例代码中我们为outMsg进行了初始化，因此即使不从外部传入也可以正常运行，如果我们需要约束此属性必须从外部传入，则可以使用如下方式进行修饰：<br>@Param @Require outMsg: string<br>@Require装饰器用来强制指定某个状态属性必须从外部传入，如果使用自定义组件时没有传递此参数，则会产生编译错误。<br>@Param状态属性本身是只读的，组件内部不允许对此状态变量本身进行修改，但如果其类型为对象类型，则修改属性是允许的，并且对属性的修改会同步到父组件中，不过在V2版本的状态管理中，子组件要向父组件同步数据有一套更加标准的编程规范，我们后续会介绍。<br>另外，对应@Param装饰器，还有一个装饰器可以和它搭配使用，即@Once。@Once会将此状态修饰为单次变更，即只会在初始化时从外部接收数据，之后外部数据的变更将不会再同步到组件内部的状态，如下：<br>@Param @Require @Once outMsg: string<br>并且有一点需要注意，一旦将@Once和@Param结合使用，@Param修饰的状态数据便不再是只读，其可以在组件内部进行修改，且可能触发UI的更新。因此，当我们需要从外部同步一次数据源，之后在组件内部进行修改时，即可以使用@Once装饰器的能力。</p>
+<h2 id="规范的父子数据双向同步"><a href="#规范的父子数据双向同步" class="headerlink" title="规范的父子数据双向同步"></a>规范的父子数据双向同步</h2><p>在实际应用开发中，我们不会直接修改使用@Param修饰的属性，对于父子组件状态双向同步的需求场景，ArkUI提供了一种更加规范的编程模式，即使用回调函数来通知父组件进行状态变更，在父组件中修改状态数据后再同步到子组件更新UI。<br>@Event装饰器是一种语义装饰器，其标明在使用子组件时需要实现此回调方法来处理状态变更。@Event通常与@Param配合使用。示例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">@Entry</span><br><span class="line">@ComponentV2</span><br><span class="line">struct Index &#123;</span><br><span class="line">  // 父组件中的状态属性</span><br><span class="line">  @Local msg: string = &apos;Index Hello&apos;</span><br><span class="line">  build() &#123;</span><br><span class="line">Column() &#123;</span><br><span class="line">  // 将状态数据传递到子组件，并通过子组件的回调来更新状态</span><br><span class="line">      SubComponent(&#123;outMsg: this.msg, outMsgChange: (value)=&gt;&#123;</span><br><span class="line">        this.msg = value</span><br><span class="line">      &#125;&#125;)</span><br><span class="line">    &#125;.align(Alignment.Center)</span><br><span class="line">    .height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;).onClick(()=&gt;&#123;</span><br><span class="line">      this.msg = &apos;Index World&apos;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@ComponentV2</span><br><span class="line">struct SubComponent &#123;</span><br><span class="line">  @Param @Require outMsg: string</span><br><span class="line">  @Event outMsgChange: (newValue: string) =&gt; void</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column() &#123;</span><br><span class="line">      Text(&quot;子组件&quot;).fontSize(30)</span><br><span class="line">      Text(this.outMsg).fontSize(30).onClick(()=&gt;&#123;</span><br><span class="line">        this.outMsgChange(&apos;Sub Change Value&apos;)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>运行代码，可以看到父子组件的状态数据能够双向进行同步了。</p>
+<h2 id="对象类型状态属性的变更响应"><a href="#对象类型状态属性的变更响应" class="headerlink" title="对象类型状态属性的变更响应"></a>对象类型状态属性的变更响应</h2><p>V2版本的状态管理接口最强大之处便体现在对象属性变换的响应上。在V1版本中，对嵌套属性的状态响应处理会比较麻烦，V2版本则对这部分能力进行了重新设计，完全通过定义对象和其属性的可响应性来驱动UI的更新。<br>我们可以使用@ObservedV2和@Trace这两个装饰器来定义对象的可响应性。这两个装饰器需要组合使用，单独使用其中任何一个装饰器都没有任何作用。@ObservedV2用来装饰类型，将对应类型修饰为具有响应性的类型，@Trace用来装饰类中的属性，将对应属性修饰能够触发UI响应的属性。<br>使用前面章节编写过的学生信息为例，重新定义数据模型类如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">@ObservedV2</span><br><span class="line">class Grade &#123;</span><br><span class="line">  @Trace id: number</span><br><span class="line">  @Trace title: string</span><br><span class="line">  constructor(id: number, title: string) &#123;</span><br><span class="line">    this.id = id</span><br><span class="line">    this.title = title</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">@ObservedV2</span><br><span class="line">class Student &#123;</span><br><span class="line">  @Trace age: number</span><br><span class="line">  name: string</span><br><span class="line">  @Trace grade: Grade</span><br><span class="line">  constructor(age: number, name: string, grade: Grade) &#123;</span><br><span class="line">    this.age = age</span><br><span class="line">    this.name = name</span><br><span class="line">    this.grade = grade</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用@Trace修饰的属性发生变更时，会触发V2版本组件的UI更新，我们无需再关注组件的组织层级关系，但是需要注意，非@Trace修饰的属性是没有响应性的。示例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">@Entry</span><br><span class="line">@ComponentV2</span><br><span class="line">struct Index &#123;</span><br><span class="line">  student?: Student</span><br><span class="line">  aboutToAppear(): void &#123;</span><br><span class="line">    this.student = new Student(20, &apos;Jaki&apos;, new Grade(1, &apos;1年级&apos;))</span><br><span class="line">  &#125;</span><br><span class="line">  build() &#123;</span><br><span class="line">    Column(&#123;space: 20&#125;) &#123;</span><br><span class="line">      Text(&apos;学生信息&apos;).fontSize(35)</span><br><span class="line">      Text(`姓名：$&#123;this.student?.name&#125;`).fontSize(20)</span><br><span class="line">      Text(`年龄：$&#123;this.student?.age&#125;`).fontSize(20).onClick(()=&gt;&#123; this.student!.age += 1 &#125;)</span><br><span class="line">      Text(`年级：编号$&#123;this.student?.grade.id&#125; $&#123;this.student?.grade.title&#125;`)</span><br><span class="line">        .fontSize(20)</span><br><span class="line">        .onClick(()=&gt;&#123;</span><br><span class="line">          this.student!.grade.id += 1</span><br><span class="line">          this.student!.grade.title = `$&#123;this.student!.grade.id&#125;年级`</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;.height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，@ObservedV2和@Trace的使用要比@Observed和@ObjectLink方便很多。</p>
+<h2 id="更强大的状态变化监听能力"><a href="#更强大的状态变化监听能力" class="headerlink" title="更强大的状态变化监听能力"></a>更强大的状态变化监听能力</h2><p>@Monitor是状态管理V2中提供的监听状态变更的装饰器。前面我们学习过@Watch装饰器，@Monitor的使用逻辑与@Watch有非常大的区别，且功能更加强大。<br>首先，@Watch装饰器所修饰的目标是状态属性，而@Monitor所修饰的目标是方法。@Watch的参数是监听到变化后触发的函数，而@Monitor的参数是要监听的状态属性。更重要的是，@Watch只能监听到一层属性变化，而@Monitor可以监听到更深层的属性变化，且能够获取到变化前后的值。<br>我们先来看下面的示例代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">@Entry</span><br><span class="line">@ComponentV2</span><br><span class="line">struct Index &#123;</span><br><span class="line">  @Local student: Student = new Student(20, &apos;Jaki&apos;, new Grade(1, &apos;1年级&apos;))</span><br><span class="line">  @Local title: string = &apos;学生信息&apos;</span><br><span class="line">  // 对student的age属性进行监听，对title状态进行监听</span><br><span class="line">  @Monitor(&apos;student.age&apos;, &apos;title&apos;)</span><br><span class="line">  changeCallback(monitor: IMonitor) &#123;</span><br><span class="line">    for (let path of monitor.dirty) &#123;</span><br><span class="line">      if (path == &apos;student.age&apos;) &#123;</span><br><span class="line">        let old = monitor.value(path)?.before as number</span><br><span class="line">        let now = monitor.value(path)?.now as number</span><br><span class="line">        this.getUIContext().getPromptAction().showToast(&#123;message: `监听到age变化 $&#123;old&#125; to $&#123;now&#125;`&#125;)</span><br><span class="line">      &#125;</span><br><span class="line">      if (path == &apos;title&apos;) &#123;</span><br><span class="line">        let old = monitor.value(path)?.before as string</span><br><span class="line">        let now = monitor.value(path)?.now as string</span><br><span class="line">        this.getUIContext().getPromptAction().showToast(&#123;message: `监听到title变化 $&#123;old&#125; -&gt; $&#123;now&#125;`&#125;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  build() &#123;</span><br><span class="line">    Column(&#123;space: 20&#125;) &#123;</span><br><span class="line">      Text(this.title).fontSize(35).onClick(()=&gt;&#123; this.title = &quot;信息&quot; &#125;)</span><br><span class="line">      Text(`姓名：$&#123;this.student?.name&#125;`).fontSize(20)</span><br><span class="line">      Text(`年龄：$&#123;this.student?.age&#125;`).fontSize(20).onClick(()=&gt;&#123; this.student!.age += 1 &#125;)</span><br><span class="line">      Text(`年级：编号$&#123;this.student?.grade.id&#125; $&#123;this.student?.grade.title&#125;`)</span><br><span class="line">        .fontSize(20)</span><br><span class="line">        .onClick(()=&gt;&#123;</span><br><span class="line">          this.student!.grade.id += 1</span><br><span class="line">          this.student!.grade.title = `$&#123;this.student!.grade.id&#125;年级`</span><br><span class="line">        &#125;)</span><br><span class="line">    &#125;.height(&apos;100%&apos;)</span><br><span class="line">    .width(&apos;100%&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面代码中，@Monitor装饰器中传入了两个参数，@Monitor本身可以传不定个数的字符串类型参数，用来设置要监听的具体的状态属性，以上面代码为例，如果我们设置的监听目标是student状态，则当学生的年龄或年级发生变化时，并不会触发changeCallback回调，只有当我们对student属性重新赋值时才会触发，将参数设置为student.age则表示要对student对象的age属性进行监听，当学生的年龄发生变化时会回调changeCallback方法。@Monitor装饰器在监听对象类型的属性时，只要对象是可相应的，对应的属性设置的是可相应的，则都可以通过这种链式语法来定义监听。<br>被@Monitor修饰的方法会被传入一个IMonitor类型的参数，此参数中封装了状态变更的信息，IMonitor接口中包含dirty属性和value方法，dirty是一个字符串数组，保存了此次回调包含的变化源，@Monitor可以设置监听多个状态，因此一次回调也可能会包含多个状态的变化，我们可以通过遍历dirty数组来获取具体那些状态发生了变化。value是一个方法，通过它可以获取某个状态具体的变化情况，其返回值类型为IMonitorValue，此方法的参数是可选的，如果明确只有一个状态发生变化，则也可以不传参数，此接口包含的属性如下：<br>属性名    类型    意义<br>before    泛型    变化前的值。<br>now    泛型    变化后的值。<br>path    字符串    变化的来源，属性名或多层的属性路径。<br>@Monitor也可以在被@ObservedV2装饰的类中使用，用来对类中某个被@Trace修饰的属性的变化进行监听，例如我们也可以将对学生年龄变化的监听逻辑放在Student类的内部：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import promptAction from &apos;@ohos.promptAction&apos;;</span><br><span class="line">@ObservedV2</span><br><span class="line">class Student &#123;</span><br><span class="line">  @Trace age: number</span><br><span class="line">  name: string</span><br><span class="line">  @Trace grade: Grade</span><br><span class="line"></span><br><span class="line">  @Monitor(&apos;age&apos;)</span><br><span class="line">  changeCallback(monitor: IMonitor) &#123;</span><br><span class="line">    promptAction.showToast(&#123;message: `Student内部监听到age的变更 - $&#123;monitor.value()?.before&#125; -&gt; $&#123;monitor.value()?.now&#125;`&#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  constructor(age: number, name: string, grade: Grade) &#123;</span><br><span class="line">    this.age = age</span><br><span class="line">    this.name = name</span><br><span class="line">    this.grade = grade</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2025/03/28/490.ArkUI中图片与视频多媒体组件的应用/" class="next-post btn btn-default" title='ArkUI中图片与视频多媒体组件的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">ArkUI中图片与视频多媒体组件的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ArkUI中的状态管理机制V1"><span class="toc-text">ArkUI中的状态管理机制V1</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-State定义组件内状态"><span class="toc-text">使用@State定义组件内状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Prop进行单向数据同步"><span class="toc-text">使用@Prop进行单向数据同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用-Link进行双向数据同步"><span class="toc-text">使用@Link进行双向数据同步</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#跨多级父子关系的状态同步"><span class="toc-text">跨多级父子关系的状态同步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#处理嵌套属性的变化"><span class="toc-text">处理嵌套属性的变化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#状态变更通知"><span class="toc-text">状态变更通知</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ArkUI中的状态管理机制V2"><span class="toc-text">ArkUI中的状态管理机制V2</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#组件内部状态与外部状态"><span class="toc-text">组件内部状态与外部状态</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#规范的父子数据双向同步"><span class="toc-text">规范的父子数据双向同步</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#对象类型状态属性的变更响应"><span class="toc-text">对象类型状态属性的变更响应</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更强大的状态变化监听能力"><span class="toc-text">更强大的状态变化监听能力</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
