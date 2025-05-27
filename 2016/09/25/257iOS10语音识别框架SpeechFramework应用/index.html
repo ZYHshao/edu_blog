@@ -1,0 +1,324 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS10语音识别框架SpeechFramework应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS10语音识别框架SpeechFramework应用">
+            
+	            iOS10语音识别框架SpeechFramework应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS10专题">
+            iOS10专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/09/25</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS10语音识别框架SpeechFramework应用"><a href="#iOS10语音识别框架SpeechFramework应用" class="headerlink" title="iOS10语音识别框架SpeechFramework应用"></a>iOS10语音识别框架SpeechFramework应用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>iOS10系统是一个较有突破性的系统，其在Message，Notification等方面都开放了很多实用性的开发接口。本篇博客将主要探讨iOS10中新引入的SpeechFramework框架。有个这个框架，开发者可以十分容易的为自己的App添加语音识别功能，不需要再依赖于其他第三方的语音识别服务，并且，Apple的Siri应用的强大也证明了Apple的语音服务是足够强大的，不通过第三方，也大大增强了用户的安全性。
+</code></pre><h3 id="二、SpeechFramework框架中的重要类"><a href="#二、SpeechFramework框架中的重要类" class="headerlink" title="二、SpeechFramework框架中的重要类"></a>二、SpeechFramework框架中的重要类</h3><pre><code>SpeechFramework框架比较轻量级，其中的类并不十分冗杂，在学习SpeechFramework框架前，我们需要对其中类与类与类之间的关系有个大致的熟悉了解。
+</code></pre><p>SFSpeechRecognizer：这个类是语音识别的操作类，用于语音识别用户权限的申请，语言环境的设置，语音模式的设置以及向Apple服务发送语音识别的请求。</p>
+<p>SFSpeechRecognitionTask：这个类是语音识别服务请求任务类，每一个语音识别请求都可以抽象为一个SFSpeechRecognitionTask实例，其中SFSpeechRecognitionTaskDelegate协议中约定了许多请求任务过程中的监听方法。</p>
+<p>SFSpeechRecognitionRequest:语音识别请求类，需要通过其子类来进行实例化。</p>
+<p>SFSpeechURLRecognitionRequest：通过音频URL来创建语音识别请求。</p>
+<p>SFSpeechAudioBufferRecognitionRequest:通过音频流来创建语音识别请求。</p>
+<p>SFSpeechRecognitionResult：语音识别请求结果类。</p>
+<p>SFTranscription：语音转换后的信息类。</p>
+<p>SFTranscriptionSegment：语音转换中的音频节点类。</p>
+<pre><code>了解了上述类的作用于其之间的联系，使用SpeechFramework框架将十分容易。
+</code></pre><h3 id="三、申请用户语音识别权限与进行语音识别请求"><a href="#三、申请用户语音识别权限与进行语音识别请求" class="headerlink" title="三、申请用户语音识别权限与进行语音识别请求"></a>三、申请用户语音识别权限与进行语音识别请求</h3><pre><code>开发者若要在自己的App中使用语音识别功能，需要获取用户的同意。首先需要在工程的Info.plist文件中添加一个Privacy-Speech Recognition Usage Description键，其实需要对应一个String类型的值，这个值将会在系统获取权限的警告框中显示，Info.plist文件如下图所示：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/0925/194243_bTmq_2340880.png" alt></p>
+<p>使用SFSpeechRecognize类的requestAuthorization方法来进行用户权限的申请，用户的反馈结果会在这个方法的回调block中传入，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//申请用户语音识别权限</span></span><br><span class="line">[SFSpeechRecognizer requestAuthorization:^(SFSpeechRecognizerAuthorizationStatus status) &#123;     </span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>SFSpeechRecognizerAuthorzationStatus枚举中定义了用户的反馈结果，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="built_in">NSInteger</span>, SFSpeechRecognizerAuthorizationStatus) &#123;</span><br><span class="line">    <span class="comment">//结果未知 用户尚未进行选择</span></span><br><span class="line">    SFSpeechRecognizerAuthorizationStatusNotDetermined,</span><br><span class="line">    <span class="comment">//用户拒绝授权语音识别</span></span><br><span class="line">    SFSpeechRecognizerAuthorizationStatusDenied,</span><br><span class="line">    <span class="comment">//设备不支持语音识别功能</span></span><br><span class="line">    SFSpeechRecognizerAuthorizationStatusRestricted,</span><br><span class="line">    <span class="comment">//用户授权语音识别</span></span><br><span class="line">    SFSpeechRecognizerAuthorizationStatusAuthorized,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre><code>如果申请用户语音识别权限成功，开发者可以通过SFSpeechRecognizer操作类来进行语音识别请求，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建语音识别操作类对象</span></span><br><span class="line">SFSpeechRecognizer * rec = [[SFSpeechRecognizer alloc]init];</span><br><span class="line"><span class="comment">//通过一个音频路径创建音频识别请求</span></span><br><span class="line">SFSpeechRecognitionRequest * request = [[SFSpeechURLRecognitionRequest alloc]initWithURL:[[<span class="built_in">NSBundle</span> mainBundle] URLForResource:<span class="string">@"7011"</span> withExtension:<span class="string">@"m4a"</span>]];</span><br><span class="line"><span class="comment">//进行请求</span></span><br><span class="line">[rec recognitionTaskWithRequest:request resultHandler:^(SFSpeechRecognitionResult * _Nullable result, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">    <span class="comment">//打印语音识别的结果字符串</span></span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,result.bestTranscription.formattedString);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h3 id="四、深入SFSpeechRecognizer类"><a href="#四、深入SFSpeechRecognizer类" class="headerlink" title="四、深入SFSpeechRecognizer类"></a>四、深入SFSpeechRecognizer类</h3><pre><code>SFSpeechRecognizer类的主要作用是申请权限，配置参数与进行语音识别请求。其中比较重要的属性与方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取当前用户权限状态</span></span><br><span class="line">+ (SFSpeechRecognizerAuthorizationStatus)authorizationStatus;</span><br><span class="line"><span class="comment">//申请语音识别用户权限</span></span><br><span class="line">+ (<span class="keyword">void</span>)requestAuthorization:(<span class="keyword">void</span>(^)(SFSpeechRecognizerAuthorizationStatus status))handler;</span><br><span class="line"><span class="comment">//获取所支持的所有语言环境</span></span><br><span class="line">+ (<span class="built_in">NSSet</span>&lt;<span class="built_in">NSLocale</span> *&gt; *)supportedLocales;</span><br><span class="line"><span class="comment">//初始化方法 需要注意 这个初始化方法将默认以设备当前的语言环境作为语音识别的语言环境</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="keyword">instancetype</span>)init;</span><br><span class="line"><span class="comment">//初始化方法 设置一个特定的语言环境</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="keyword">instancetype</span>)initWithLocale:(<span class="built_in">NSLocale</span> *)locale <span class="built_in">NS_DESIGNATED_INITIALIZER</span>;</span><br><span class="line"><span class="comment">//语音识别是否可用</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isAvailable) <span class="built_in">BOOL</span> available;</span><br><span class="line"><span class="comment">//语音识别操作类协议代理</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) <span class="keyword">id</span>&lt;SFSpeechRecognizerDelegate&gt; delegate;</span><br><span class="line"><span class="comment">//设置语音识别的配置参数 需要注意 在每个语音识别请求中也有这样一个属性 这里设置将作为默认值</span></span><br><span class="line"><span class="comment">//如果SFSpeechRecognitionRequest对象中也进行了设置 则会覆盖这里的值</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, SFSpeechRecognitionTaskHint) &#123;</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskHintUnspecified = 0,     // 无定义</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskHintDictation = 1,       // 正常的听写风格</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskHintSearch = 2,          // 搜索风格</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskHintConfirmation = 3,    // 短语风格</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) SFSpeechRecognitionTaskHint defaultTaskHint;</span><br><span class="line"><span class="comment">//使用回调Block的方式进行语音识别请求 请求结果会在Block中传入</span></span><br><span class="line">- (SFSpeechRecognitionTask *)recognitionTaskWithRequest:(SFSpeechRecognitionRequest *)request</span><br><span class="line">                                          resultHandler:(<span class="keyword">void</span> (^)(SFSpeechRecognitionResult * __<span class="keyword">nullable</span> result, <span class="built_in">NSError</span> * __<span class="keyword">nullable</span> error))resultHandler;</span><br><span class="line"><span class="comment">//使用代理回调的方式进行语音识别请求</span></span><br><span class="line">- (SFSpeechRecognitionTask *)recognitionTaskWithRequest:(SFSpeechRecognitionRequest *)request</span><br><span class="line">                                               delegate:(<span class="keyword">id</span> &lt;SFSpeechRecognitionTaskDelegate&gt;)delegate;</span><br><span class="line"><span class="comment">//设置请求所占用的任务队列</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSOperationQueue</span> *queue;</span><br></pre></td></tr></table></figure>
+<p>SFSpeechRecognizerDelegate协议中只约定了一个方法，如下:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当语音识别操作可用性发生改变时会被调用</span></span><br><span class="line">- (<span class="keyword">void</span>)speechRecognizer:(SFSpeechRecognizer *)speechRecognizer availabilityDidChange:(<span class="built_in">BOOL</span>)available;</span><br></pre></td></tr></table></figure>
+<pre><code>通过Block回调的方式进行语音识别请求十分简单，如果使用代理回调的方式，开发者需要实现SFSpeechRecognitionTaskDelegate协议中的相关方法，如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当开始检测音频源中的语音时首先调用此方法</span></span><br><span class="line">- (<span class="keyword">void</span>)speechRecognitionDidDetectSpeech:(SFSpeechRecognitionTask *)task;</span><br><span class="line"><span class="comment">//当识别出一条可用的信息后 会调用</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">需要注意，apple的语音识别服务会根据提供的音频源识别出多个可能的结果 每有一条结果可用 都会调用此方法</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">void</span>)speechRecognitionTask:(SFSpeechRecognitionTask *)task didHypothesizeTranscription:(SFTranscription *)transcription;</span><br><span class="line"><span class="comment">//当识别完成所有可用的结果后调用</span></span><br><span class="line">- (<span class="keyword">void</span>)speechRecognitionTask:(SFSpeechRecognitionTask *)task didFinishRecognition:(SFSpeechRecognitionResult *)recognitionResult;</span><br><span class="line"><span class="comment">//当不再接受音频输入时调用 即开始处理语音识别任务时调用</span></span><br><span class="line">- (<span class="keyword">void</span>)speechRecognitionTaskFinishedReadingAudio:(SFSpeechRecognitionTask *)task;</span><br><span class="line"><span class="comment">//当语音识别任务被取消时调用</span></span><br><span class="line">- (<span class="keyword">void</span>)speechRecognitionTaskWasCancelled:(SFSpeechRecognitionTask *)task;</span><br><span class="line"><span class="comment">//语音识别任务完成时被调用</span></span><br><span class="line">- (<span class="keyword">void</span>)speechRecognitionTask:(SFSpeechRecognitionTask *)task didFinishSuccessfully:(<span class="built_in">BOOL</span>)successfully;</span><br></pre></td></tr></table></figure>
+<pre><code>SFSpeechRecognitionTask类中封装了属性和方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//此任务的当前状态</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, SFSpeechRecognitionTaskState) &#123;</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskStateStarting = 0,       // 任务开始</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskStateRunning = 1,        // 任务正在运行</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskStateFinishing = 2,      // 不在进行音频读入 即将返回识别结果</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskStateCanceling = 3,      // 任务取消</span></span><br><span class="line"><span class="comment">    SFSpeechRecognitionTaskStateCompleted = 4,      // 所有结果返回完成</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) SFSpeechRecognitionTaskState state;</span><br><span class="line"><span class="comment">//音频输入是否完成</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isFinishing) <span class="built_in">BOOL</span> finishing;</span><br><span class="line"><span class="comment">//手动完成音频输入 不再接收音频</span></span><br><span class="line">- (<span class="keyword">void</span>)finish;</span><br><span class="line"><span class="comment">//任务是否被取消</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isCancelled) <span class="built_in">BOOL</span> cancelled;</span><br><span class="line"><span class="comment">//手动取消任务</span></span><br><span class="line">- (<span class="keyword">void</span>)cancel;</span><br></pre></td></tr></table></figure>
+<pre><code>关于音频识别请求类，除了可以使用SFSpeechURLRecognitionRequest类来进行创建外，还可以使用SFSpeechAudioBufferRecognitionRequest类来进行创建：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SFSpeechAudioBufferRecognitionRequest</span> : <span class="title">SFSpeechRecognitionRequest</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">AVAudioFormat</span> *nativeAudioFormat;</span><br><span class="line"><span class="comment">//拼接音频流</span></span><br><span class="line">- (<span class="keyword">void</span>)appendAudioPCMBuffer:(<span class="built_in">AVAudioPCMBuffer</span> *)audioPCMBuffer;</span><br><span class="line">- (<span class="keyword">void</span>)appendAudioSampleBuffer:(<span class="built_in">CMSampleBufferRef</span>)sampleBuffer;</span><br><span class="line"><span class="comment">//完成输入</span></span><br><span class="line">- (<span class="keyword">void</span>)endAudio;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="五、语音识别结果类SFSpeechRecognitionResult"><a href="#五、语音识别结果类SFSpeechRecognitionResult" class="headerlink" title="五、语音识别结果类SFSpeechRecognitionResult"></a>五、语音识别结果类SFSpeechRecognitionResult</h3><pre><code>SFSpeechRecognitionResult类是语音识别结果的封装，其中包含了许多套平行的识别信息，其每一份识别信息都有可信度属性来描述其准确程度。SFSpeechRecognitionResult类中属性如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//识别到的多套语音转换信息数组 其会按照准确度进行排序</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;SFTranscription *&gt; *transcriptions;</span><br><span class="line"><span class="comment">//准确性最高的识别实例</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) SFTranscription *bestTranscription;</span><br><span class="line"><span class="comment">//是否已经完成 如果YES 则所有所有识别信息都已经获取完成</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">getter</span>=isFinal) <span class="built_in">BOOL</span> final;</span><br></pre></td></tr></table></figure>
+<p>SFSpeechRecognitionResult类只是语音识别结果的一个封装，真正的识别信息定义在SFTranscription类中，SFTranscription类中属性如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//完整的语音识别准换后的文本信息字符串</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *formattedString;</span><br><span class="line"><span class="comment">//语音识别节点数组</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;SFTranscriptionSegment *&gt; *segments;</span><br></pre></td></tr></table></figure>
+<p>当对一句完整的话进行识别时，Apple的语音识别服务实际上会把这句语音拆分成若干个音频节点，每个节点可能为一个单词，SFTranscription类中的segments属性就存放这些节点。SFTranscriptionSegment类中定义的属性如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当前节点识别后的文本信息</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *substring;</span><br><span class="line"><span class="comment">//当前节点识别后的文本信息在整体识别语句中的位置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSRange</span> substringRange;</span><br><span class="line"><span class="comment">//当前节点的音频时间戳</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSTimeInterval</span> timestamp;</span><br><span class="line"><span class="comment">//当前节点音频的持续时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSTimeInterval</span> duration;</span><br><span class="line"><span class="comment">//可信度/准确度 0-1之间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> confidence;</span><br><span class="line"><span class="comment">//关于此节点的其他可能的识别结果 </span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt; *alternativeSubstrings;</span><br></pre></td></tr></table></figure>
+<p>温馨提示：SpeechFramework框架在模拟器上运行会出现异常情况，无法进行语音识别请求。会报出kAFAssistantErrorDomain的错误，还望有知道解决方案的朋友，给些建议，Thanks。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/10/09/258iOS10中更加灵活的色彩API/" class="pre-post btn btn-default" title='iOS10中更加灵活的色彩API'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS10中更加灵活的色彩API</span>
+        </a>
+    
+    
+        <a href="/2016/09/18/255iOS10通知框架UserNotification理解与应用/" class="next-post btn btn-default" title='iOS10通知框架UserNotification理解与应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS10通知框架UserNotification理解与应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS10语音识别框架SpeechFramework应用"><span class="toc-text">iOS10语音识别框架SpeechFramework应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、SpeechFramework框架中的重要类"><span class="toc-text">二、SpeechFramework框架中的重要类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、申请用户语音识别权限与进行语音识别请求"><span class="toc-text">三、申请用户语音识别权限与进行语音识别请求</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、深入SFSpeechRecognizer类"><span class="toc-text">四、深入SFSpeechRecognizer类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、语音识别结果类SFSpeechRecognitionResult"><span class="toc-text">五、语音识别结果类SFSpeechRecognitionResult</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,522 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS自定义应用设置页面 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS自定义应用设置页面">
+            
+	            iOS自定义应用设置页面
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之逻辑初窥">
+            iOS之逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2024/02/24</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS自定义应用设置页面"><a href="#iOS自定义应用设置页面" class="headerlink" title="iOS自定义应用设置页面"></a>iOS自定义应用设置页面</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>我们知道，当安装了一个iOS应用程序后，在系统的设置中，就会为此应用生成一个单独的设置模块，可以在其中控制应用的网络权限、推送权限等系统设置项。除了系统功能的相关设置外，其实应用程序也有许多自身设置的需求，例如应用缓存数据的设置、应用主题的设置以及用户账户的设置等。通常，应用自身的设置会由开发者自行开发，在应用内提供页面来承载，这使得应用的设置被割裂成了两部分。其实，iOS系统的设置页面也提供了不同应用进行定制的能力，例如系统的Safari浏览器应用，其设置页面如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-19eea4415b8b2707910a91918556c4f7d08.png" alt></p>
+<p>本篇文章将讨论应用自定义系统设置页面的技术细节，某些场景下，将应用设置项合并入系统设置可以提供给用户更一致的使用体验。</p>
+<h2 id="从一个小示例开始"><a href="#从一个小示例开始" class="headerlink" title="从一个小示例开始"></a>从一个小示例开始</h2><p>应用本身设置项的配置需要定义在一个plist文件中。在项目中可以直接新建一个Settings Bundle文件，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-96807b5e3abbb101708b813a00e2d0d5da6.png" alt></p>
+<p>生成的Bundle中包含一个国际化文件和一个Root.plist文件，国际化的文件我们暂不关心，其用来根据用户本地的语言环境来映射不同语言的字符串。Root.plist文件是配置设置项的核心文件。其内容如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-c33fa2d051bf404b940894fa37fcc92e647.png" alt></p>
+<p>模版中默认定义了4个item，分别用来显示一个分组头、输入框、开关和滑块组件。效果如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8bc1e502933224b97a7a6c0ec7b6ad38f4a.png" alt></p>
+<p>每个配置项的意义和用法，我们后续在详细介绍。可以看到，通过Plist文件的配置，我们可以在设置页面中添加许多可用户交互的组件。要读取用户设置情况也非常简单，只需要读取此Bundle文件中的Root.plist文件即可，例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path = <span class="type">Bundle</span>.main.path(forResource: <span class="string">"Settings"</span>, ofType: <span class="string">"bundle"</span>)</span><br><span class="line"><span class="keyword">let</span> settings = <span class="type">NSDictionary</span>(contentsOfFile: path!.appending(<span class="string">"/Root.plist"</span>))</span><br></pre></td></tr></table></figure>
+<p>需要注意，Plist文件中的键与在Xcode中看到的键值并不一致，Xcode对键值进行了可读化，你可以以文件的方式查看，即可看到真正的键名，例如上面的设置文件内容为：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-897433769a875aa3899608de90ac34d14b4.png" alt></p>
+<h2 id="Plist文件配置项详解"><a href="#Plist文件配置项详解" class="headerlink" title="Plist文件配置项详解"></a>Plist文件配置项详解</h2><h3 id="Root-plist文件最外层可配置键"><a href="#Root-plist文件最外层可配置键" class="headerlink" title="Root.plist文件最外层可配置键"></a>Root.plist文件最外层可配置键</h3><ul>
+<li>PreferenceSpecifiers</li>
+</ul>
+<p>此键是必须的，设置为一个数组，数组中每个具体的元素即是配置设置项的每一项。数组的顺序会决定设置项的排序。</p>
+<ul>
+<li>StringsTable</li>
+</ul>
+<p>设置用来进行语言本地化的文件名。</p>
+<ul>
+<li>ApplicationGroupContainerIdentifier</li>
+</ul>
+<p>用来设置Group标识，用来在小组件等扩展中访问此设置。</p>
+<p>配置的核心是PreferenceSpecifiers，其配置的数组中的元素根据不同的type会渲染不同的组件，能支持的类型包括如下几种：</p>
+<p>1. PSTextFieldSpecifier：文本输入框。</p>
+<p>2.PSTitleValueSpecifier: 只读的标题，只能用来显示信息。</p>
+<p>3.PSToggleSwitchSpecifier：开关。</p>
+<p>3.PSSliderSpecifier：滑块。</p>
+<p>4.PSMultiValueSpecifier：多选列表，点击后会跳转到一个新的页面，其中提供一组选项供选择。</p>
+<p>5.PSGroupSpecifier：分组，用来对选项进行分组，此处可以理解为分组的分割线，能够设置标题。</p>
+<p>6.PSRadioGroupSpecifier: 此类型也用来设置选则列表，与PSMultiValueSpecifier不同的是其不会跳转到新的页面，而是直接在当前页面展示列表。</p>
+<p>7.PSChildPaneSpecifier: 此类型用来设置一个子页面，其可以配置另一个Plist文件来展示子页面的选项。</p>
+<p>下面将逐一对这些类型进行介绍。</p>
+<h3 id="PSGroupSpecifier"><a href="#PSGroupSpecifier" class="headerlink" title="PSGroupSpecifier"></a>PSGroupSpecifier</h3><p>用来渲染一个分组，可配置字段：</p>
+<ul>
+<li>Title</li>
+</ul>
+<p>设置分组标题。</p>
+<ul>
+<li>FooterText</li>
+</ul>
+<p>设置尾部文案。</p>
+<ul>
+<li>SupportedUserInterfaceIdioms</li>
+</ul>
+<p>设置只在某些设备上显示，例如”iPhone“</p>
+<p>配置效果：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a9212e60f7a52ce4e87ff7d1026ac976aa9.png" alt></p>
+<h3 id="PSChildPaneSpecifier"><a href="#PSChildPaneSpecifier" class="headerlink" title="PSChildPaneSpecifier"></a>PSChildPaneSpecifier</h3><ul>
+<li>Title</li>
+</ul>
+<p>设置标题。</p>
+<ul>
+<li>File</li>
+</ul>
+<p>子设置页面Plist文件名。</p>
+<ul>
+<li>SupportedUserInterfaceIdioms</li>
+</ul>
+<p>设置只在某些设备上显示，例如”iPhone“</p>
+<h3 id="PSRadioGroupSpecifier"><a href="#PSRadioGroupSpecifier" class="headerlink" title="PSRadioGroupSpecifier"></a>PSRadioGroupSpecifier</h3><p>直接展开的选择列表。</p>
+<ul>
+<li>Title</li>
+</ul>
+<p>设置标题。</p>
+<ul>
+<li>FooterText</li>
+</ul>
+<p>设置尾部文案。</p>
+<ul>
+<li>Key</li>
+</ul>
+<p>唯一标识。</p>
+<ul>
+<li>DefaultValue</li>
+</ul>
+<p>默认的选中项。</p>
+<ul>
+<li>Values</li>
+</ul>
+<p>一组选项的值。</p>
+<ul>
+<li>Titles</li>
+</ul>
+<p>一组选项显示的标题。</p>
+<ul>
+<li>DisplaySortedByTitle</li>
+</ul>
+<p>布尔值，选项是否根据标题进行排序。</p>
+<ul>
+<li>SupportedUserInterfaceIdioms</li>
+</ul>
+<p>设置只在某些设备上显示，例如”iPhone“</p>
+<p>配置效果：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e020002b8cde2dd716fc37bdc8138aac9f6.png" alt></p>
+<h3 id="PSMultiValueSpecifier"><a href="#PSMultiValueSpecifier" class="headerlink" title="PSMultiValueSpecifier"></a>PSMultiValueSpecifier</h3><ul>
+<li>Title</li>
+</ul>
+<p>设置标题。</p>
+<ul>
+<li>Key</li>
+</ul>
+<p>唯一标识。</p>
+<ul>
+<li>DefaultValue</li>
+</ul>
+<p>默认的选中项。</p>
+<ul>
+<li>Values</li>
+</ul>
+<p>一组选项的值。</p>
+<ul>
+<li>Titles</li>
+</ul>
+<p>一组选项显示的标题。</p>
+<ul>
+<li>ShortTitles</li>
+</ul>
+<p>配置一组短标题，设置后会显示短标题，点击后进入新的页面展示长内容。</p>
+<ul>
+<li>DisplaySortedByTitle</li>
+</ul>
+<p>布尔值，选项是否根据标题进行排序。</p>
+<ul>
+<li>SupportedUserInterfaceIdioms</li>
+</ul>
+<p>设置只在某些设备上显示，例如”iPhone“</p>
+<h3 id="PSTextFieldSpecifier"><a href="#PSTextFieldSpecifier" class="headerlink" title="PSTextFieldSpecifier"></a>PSTextFieldSpecifier</h3><p>文本输入框。</p>
+<ul>
+<li>Title</li>
+</ul>
+<p>设置标题。</p>
+<ul>
+<li>Key</li>
+</ul>
+<p>唯一标识。</p>
+<ul>
+<li>DefaultValue</li>
+</ul>
+<p>默认的值。</p>
+<ul>
+<li>IsSecure</li>
+</ul>
+<p>是否加密。</p>
+<ul>
+<li>KeyboardType</li>
+</ul>
+<p>弹出的键盘类型。</p>
+<ul>
+<li>AutocapitalizationType</li>
+</ul>
+<p>自动大小写模式。</p>
+<ul>
+<li>AutocorrectionType</li>
+</ul>
+<p>自动拼写纠正。</p>
+<ul>
+<li>SupportedUserInterfaceIdioms</li>
+</ul>
+<p>设置只在某些设备上显示，例如”iPhone“</p>
+<h3 id="PSTitleValueSpecifier"><a href="#PSTitleValueSpecifier" class="headerlink" title="PSTitleValueSpecifier"></a>PSTitleValueSpecifier</h3><ul>
+<li>Title</li>
+</ul>
+<p>设置标题。</p>
+<ul>
+<li>Key</li>
+</ul>
+<p>唯一标识。</p>
+<ul>
+<li>DefaultValue</li>
+</ul>
+<p>显示的值。</p>
+<ul>
+<li>Values</li>
+</ul>
+<p>存储在数据库中的一组值。</p>
+<ul>
+<li>Titles</li>
+</ul>
+<p>存储在数据库中的一组key。</p>
+<ul>
+<li>SupportedUserInterfaceIdioms</li>
+</ul>
+<p>设置只在某些设备上显示，例如”iPhone“</p>
+<h3 id="PSSliderSpecifier"><a href="#PSSliderSpecifier" class="headerlink" title="PSSliderSpecifier"></a>PSSliderSpecifier</h3><ul>
+<li>Key</li>
+</ul>
+<p>唯一标识。</p>
+<ul>
+<li>DefaultValue</li>
+</ul>
+<p>默认值。</p>
+<ul>
+<li>MinimumValue</li>
+</ul>
+<p>滑块的最小值。</p>
+<ul>
+<li>MaximumValue</li>
+</ul>
+<p>滑块的最大值。</p>
+<ul>
+<li>MinmumValueImage</li>
+</ul>
+<p>最小值一侧显示的图片。</p>
+<ul>
+<li>MaximumValueImage</li>
+</ul>
+<p>最大值一侧显示的图片。</p>
+<ul>
+<li>SupportedUserInterfaceIdioms</li>
+</ul>
+<p>设置只在某些设备上显示，例如”iPhone“</p>
+<h3 id="PSToggleSwitchSpecifier"><a href="#PSToggleSwitchSpecifier" class="headerlink" title="PSToggleSwitchSpecifier"></a>PSToggleSwitchSpecifier</h3><ul>
+<li>Title</li>
+</ul>
+<p>设置标题。</p>
+<ul>
+<li>Key</li>
+</ul>
+<p>唯一标识。</p>
+<ul>
+<li>DefaultValue</li>
+</ul>
+<p>默认开关状态。</p>
+<ul>
+<li>TrueValue</li>
+</ul>
+<p>开关开启时绑定的值，不会显示。</p>
+<ul>
+<li>FalseValue</li>
+</ul>
+<p>开关关闭时绑定的值，不会显示。</p>
+<ul>
+<li>SupportedUserInterfaceIdioms</li>
+</ul>
+<p>设置只在某些设备上显示，例如”iPhone“</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2024/04/18/484.聊聊Swift中的宏/" class="pre-post btn btn-default" title='聊聊Swift中的宏'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">聊聊Swift中的宏</span>
+        </a>
+    
+    
+        <a href="/2024/01/31/482【Swift专题】聊聊Swift中的属性/" class="next-post btn btn-default" title='【Swift专题】聊聊Swift中的属性'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">【Swift专题】聊聊Swift中的属性</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS自定义应用设置页面"><span class="toc-text">iOS自定义应用设置页面</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#引言"><span class="toc-text">引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#从一个小示例开始"><span class="toc-text">从一个小示例开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Plist文件配置项详解"><span class="toc-text">Plist文件配置项详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Root-plist文件最外层可配置键"><span class="toc-text">Root.plist文件最外层可配置键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSGroupSpecifier"><span class="toc-text">PSGroupSpecifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSChildPaneSpecifier"><span class="toc-text">PSChildPaneSpecifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSRadioGroupSpecifier"><span class="toc-text">PSRadioGroupSpecifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSMultiValueSpecifier"><span class="toc-text">PSMultiValueSpecifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSTextFieldSpecifier"><span class="toc-text">PSTextFieldSpecifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSTitleValueSpecifier"><span class="toc-text">PSTitleValueSpecifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSSliderSpecifier"><span class="toc-text">PSSliderSpecifier</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PSToggleSwitchSpecifier"><span class="toc-text">PSToggleSwitchSpecifier</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

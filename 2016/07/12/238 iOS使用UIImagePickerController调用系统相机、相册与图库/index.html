@@ -1,0 +1,302 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS使用UIImagePickerController调用系统相机、相册与图库 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS使用UIImagePickerController调用系统相机、相册与图库">
+            
+	            iOS使用UIImagePickerController调用系统相机、相册与图库
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/07/12</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS使用UIImagePickerController调用系统相机、相册与图库"><a href="#iOS使用UIImagePickerController调用系统相机、相册与图库" class="headerlink" title="iOS使用UIImagePickerController调用系统相机、相册与图库"></a>iOS使用UIImagePickerController调用系统相机、相册与图库</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>UIImagePickerController是系统封装好的一个导航视图控制器，使用其开发者可以十分方便的进行相机相册相关功能的调用。UIImagePickerController继承于UINavigationController，其通过代理的方式将用户获取的图片或者视频文件传入给开发者。
+</code></pre><h3 id="二、UIImagePickerController中属性与方法的应用"><a href="#二、UIImagePickerController中属性与方法的应用" class="headerlink" title="二、UIImagePickerController中属性与方法的应用"></a>二、UIImagePickerController中属性与方法的应用</h3><pre><code>在使用UIImagePickerController之前，应该先判断设备做支持的媒体文件获取类型，使用如下方法进行判断：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//判断是否支持某个数据提供类型</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">UIImagePickerControllerSourceType枚举定义如下:</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, UIImagePickerControllerSourceType) &#123;</span></span><br><span class="line"><span class="comment">    //系统图库</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerSourceTypePhotoLibrary,</span></span><br><span class="line"><span class="comment">    //相机</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerSourceTypeCamera,</span></span><br><span class="line"><span class="comment">    //系统相册</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerSourceTypeSavedPhotosAlbum</span></span><br><span class="line"><span class="comment">&#125; __TVOS_PROHIBITED;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isSourceTypeAvailable:(<span class="built_in">UIImagePickerControllerSourceType</span>)sourceType;</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断某个数据提供者所支持的文件格式</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">文件格式定义在&lt;MobileCoreServices/MobileCoreServices.h&gt;框架中</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">+ (<span class="keyword">nullable</span> <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt; *)availableMediaTypesForSourceType:(<span class="built_in">UIImagePickerControllerSourceType</span>)sourceType; </span><br><span class="line"></span><br><span class="line"><span class="comment">//判断所支持的相机设备</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, UIImagePickerControllerCameraDevice) &#123;</span></span><br><span class="line"><span class="comment">    //前置摄像头</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerCameraDeviceRear,</span></span><br><span class="line"><span class="comment">    //后置摄像头</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerCameraDeviceFront</span></span><br><span class="line"><span class="comment">&#125; __TVOS_PROHIBITED;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isCameraDeviceAvailable:(<span class="built_in">UIImagePickerControllerCameraDevice</span>)cameraDevice                   <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">4</span>_0); </span><br><span class="line"></span><br><span class="line"><span class="comment">//判断对闪光灯的支持</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isFlashAvailableForCameraDevice:(<span class="built_in">UIImagePickerControllerCameraDevice</span>)cameraDevice           <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">4</span>_0);</span><br><span class="line"></span><br><span class="line"><span class="comment">//判断相机设备支持的媒体模式</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">返回值为如下枚举：</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, UIImagePickerControllerCameraCaptureMode) &#123;</span></span><br><span class="line"><span class="comment">    //照片模式</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerCameraCaptureModePhoto,</span></span><br><span class="line"><span class="comment">    //视频模式</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerCameraCaptureModeVideo</span></span><br><span class="line"><span class="comment">&#125; __TVOS_PROHIBITED;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">+ (<span class="keyword">nullable</span> <span class="built_in">NSArray</span>&lt;<span class="built_in">NSNumber</span> *&gt; *)availableCaptureModesForCameraDevice:(<span class="built_in">UIImagePickerControllerCameraDevice</span>)cameraDevice <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">4</span>_0);</span><br></pre></td></tr></table></figure>
+<p>上面提到的定义于&lt;MobileCoreServices/MobileCoreServices.h&gt;框架中的文件类型，列举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//图片类型</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeImage                                __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="comment">//JPEG格式</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeJPEG                                 __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="comment">//JPEG2000格式</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeJPEG2000                             __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeTIFF                                 __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypePICT                                 __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeGIF                                  __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypePNG                                  __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeQuickTimeImage                       __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeAppleICNS                            __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeBMP                                  __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeICO                                  __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeRawImage                             __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeScalableVectorGraphics               __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeLivePhoto                            __OSX_AVAILABLE_STARTING(__MAC_NA,__IPHONE_9_1);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//视频格式</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeAudiovisualContent                   __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeMovie                                __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeVideo                                __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeAudio                                __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeQuickTimeMovie                       __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeMPEG                                 __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeMPEG2Video                           __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeMPEG2TransportStream                 __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeMP3                                  __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeMPEG4                                __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeMPEG4Audio                           __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeAppleProtectedMPEG4Audio             __OSX_AVAILABLE_STARTING(__MAC_10_4,__IPHONE_3_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeAppleProtectedMPEG4Video             __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeAVIMovie                             __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeAudioInterchangeFileFormat           __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeWaveformAudio                        __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">const</span> <span class="built_in">CFStringRef</span> kUTTypeMIDIAudio                            __OSX_AVAILABLE_STARTING(__MAC_10_10,__IPHONE_8_0);</span><br></pre></td></tr></table></figure>
+<p>CFStringRef与NSString类型的转换，可以使用如下方法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * str = (__bridge <span class="built_in">NSString</span>*)kUTTypeMovie;</span><br></pre></td></tr></table></figure>
+<p>UIImagePickerController中更多属性与方法解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置代理</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>,<span class="keyword">nonatomic</span>,<span class="keyword">weak</span>)      <span class="keyword">id</span> &lt;<span class="built_in">UINavigationControllerDelegate</span>, <span class="built_in">UIImagePickerControllerDelegate</span>&gt; delegate;</span><br><span class="line"><span class="comment">//设置书体提供者类型 默认为图库</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>)           <span class="built_in">UIImagePickerControllerSourceType</span>     sourceType; </span><br><span class="line"><span class="comment">//设置所需要的数据类型，需要设置为系统定义的文件类型字符串数组 默认为kUTTypeImage</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">copy</span>)      <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt;                   *mediaTypes;</span><br><span class="line"><span class="comment">//设置是否允许编辑图片 设置为YES，则用户选择图片时可以编辑裁剪图片</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>)           <span class="built_in">BOOL</span>                                  allowsEditing;</span><br><span class="line"><span class="comment">//设置媒体文件的最大时长 默认为10分钟</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>)           <span class="built_in">NSTimeInterval</span>                        videoMaximumDuration; </span><br><span class="line"><span class="comment">//设置媒体文件的质量 枚举如下：</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, UIImagePickerControllerQualityType) &#123;</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerQualityTypeHigh = 0,       // 高质量</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerQualityTypeMedium = 1,     // 中等质量</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerQualityTypeLow = 2,         // 低质量</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerQualityType640x480 NS_ENUM_AVAILABLE_IOS(4_0) = 3,    </span></span><br><span class="line"><span class="comment">    UIImagePickerControllerQualityTypeIFrame1280x720 NS_ENUM_AVAILABLE_IOS(5_0) = 4,</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerQualityTypeIFrame960x540 NS_ENUM_AVAILABLE_IOS(5_0) = 5,</span></span><br><span class="line"><span class="comment">&#125; __TVOS_PROHIBITED;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>)           <span class="built_in">UIImagePickerControllerQualityType</span>    videoQuality;</span><br><span class="line"><span class="comment">//设置是否显示相机控制界面</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>)           <span class="built_in">BOOL</span>                                  showsCameraControls;</span><br><span class="line"><span class="comment">//自定义的拍照界面 其会覆盖在原拍照界面上</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nullable</span>, <span class="keyword">nonatomic</span>,<span class="keyword">strong</span>) __kindof <span class="built_in">UIView</span>                *cameraOverlayView  <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">3</span>_1);  </span><br><span class="line"><span class="comment">//设置拍照界面的transform</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>)           <span class="built_in">CGAffineTransform</span>                     cameraViewTransform ;</span><br><span class="line"><span class="comment">//拍照</span></span><br><span class="line">- (<span class="keyword">void</span>)takePicture <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">3</span>_1);  </span><br><span class="line"><span class="comment">//进行视频捕获</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)startVideoCapture <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">4</span>_0);</span><br><span class="line"><span class="comment">//停止视频捕获</span></span><br><span class="line">- (<span class="keyword">void</span>)stopVideoCapture  <span class="built_in">NS_AVAILABLE_IOS</span>(<span class="number">4</span>_0);</span><br><span class="line"><span class="comment">//设置相机捕获模式 照片或视频</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">UIImagePickerControllerCameraCaptureMode</span> cameraCaptureMode;</span><br><span class="line"><span class="comment">//设置相机设备 前置或后置摄像头</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">UIImagePickerControllerCameraDevice</span>      cameraDevice;</span><br><span class="line"><span class="comment">//设置闪光灯模式</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, UIImagePickerControllerCameraFlashMode) &#123;</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerCameraFlashModeOff  = -1, //关闭</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerCameraFlashModeAuto = 0,  //自动</span></span><br><span class="line"><span class="comment">    UIImagePickerControllerCameraFlashModeOn   = 1   //开启</span></span><br><span class="line"><span class="comment">&#125; __TVOS_PROHIBITED;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>) <span class="built_in">UIImagePickerControllerCameraFlashMode</span>   cameraFlashMode;</span><br></pre></td></tr></table></figure>
+<h3 id="三、UIImagePickerControllerDelegate中方法解析"><a href="#三、UIImagePickerControllerDelegate中方法解析" class="headerlink" title="三、UIImagePickerControllerDelegate中方法解析"></a>三、UIImagePickerControllerDelegate中方法解析</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//相机拍照完成或者从图库相册选择相片完成后触发的回调方法 editingInfo字典中将传入编辑信息</span></span><br><span class="line">- (<span class="keyword">void</span>)imagePickerController:(<span class="built_in">UIImagePickerController</span> *)picker didFinishPickingImage:(<span class="built_in">UIImage</span> *)image editingInfo:(<span class="keyword">nullable</span> <span class="built_in">NSDictionary</span>&lt;<span class="built_in">NSString</span> *,<span class="keyword">id</span>&gt; *)editingInfo <span class="built_in">NS_DEPRECATED_IOS</span>(<span class="number">2</span>_0, <span class="number">3</span>_0);</span><br><span class="line"><span class="comment">//相机录像或者从图库相册选择视频完成后触发的回调方法 info字典中是具体信息</span></span><br><span class="line">- (<span class="keyword">void</span>)imagePickerController:(<span class="built_in">UIImagePickerController</span> *)picker didFinishPickingMediaWithInfo:(<span class="built_in">NSDictionary</span>&lt;<span class="built_in">NSString</span> *,<span class="keyword">id</span>&gt; *)info;</span><br><span class="line"><span class="comment">//ImagePickerController取消选择是回调的方法</span></span><br><span class="line">- (<span class="keyword">void</span>)imagePickerControllerDidCancel:(<span class="built_in">UIImagePickerController</span> *)picker;</span><br></pre></td></tr></table></figure>
+<p>上面方法中的编辑字典与信息字典中，约定好了一些键值对，开发者可以通过相应的键获取需要的信息，规则如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个键对应NSString类型的值 意义为媒体文件的格式</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">UIImagePickerControllerMediaType</span>;</span><br><span class="line"><span class="comment">//这个键对应UIImage类型的值 意义为获取的原始图片</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">UIImagePickerControllerOriginalImage</span>;</span><br><span class="line"><span class="comment">//这个件对应UIIImage类型的值 意义为获取编辑后的图片</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">UIImagePickerControllerEditedImage</span>;</span><br><span class="line"><span class="comment">//这个键对应一个NSValue值 可以转为CGRect类型 意义为编辑的图片范围</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">UIImagePickerControllerCropRect</span>;</span><br><span class="line"><span class="comment">//这个键对应媒体文件的URL</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">UIImagePickerControllerMediaURL</span>;</span><br><span class="line"><span class="comment">//这个键对应图库中的URL</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">UIImagePickerControllerReferenceURL</span>;</span><br><span class="line"><span class="comment">//这个键对应一个NSDictionary 里面存放媒体数据</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">UIImagePickerControllerMediaMetadata</span>;</span><br><span class="line"><span class="comment">//现场图片数据 相机捕捉图片时会记录声音</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">UIImagePickerControllerLivePhoto</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="四、对捕获的图片与视频进行持久化"><a href="#四、对捕获的图片与视频进行持久化" class="headerlink" title="四、对捕获的图片与视频进行持久化"></a>四、对捕获的图片与视频进行持久化</h3><pre><code>系统也提供了对相机照片和视频进行存储的方式，列举如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将图片数据存储到相册</span></span><br><span class="line"><span class="keyword">void</span> <span class="built_in">UIImageWriteToSavedPhotosAlbum</span>(<span class="built_in">UIImage</span> *image, __<span class="keyword">nullable</span> <span class="keyword">id</span> completionTarget, __<span class="keyword">nullable</span> SEL completionSelector, <span class="keyword">void</span> * __<span class="keyword">nullable</span> contextInfo);</span><br><span class="line"><span class="comment">//将视频保存到相册</span></span><br><span class="line"><span class="built_in">BOOL</span> <span class="built_in">UIVideoAtPathIsCompatibleWithSavedPhotosAlbum</span>(<span class="built_in">NSString</span> *videoPath);</span><br><span class="line"><span class="keyword">void</span> <span class="built_in">UISaveVideoAtPathToSavedPhotosAlbum</span>(<span class="built_in">NSString</span> *videoPath, __<span class="keyword">nullable</span> <span class="keyword">id</span> completionTarget, __<span class="keyword">nullable</span> SEL completionSelector, <span class="keyword">void</span> * __<span class="keyword">nullable</span> contextInfo);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/07/13/239iOS中UIPopoverController使用详解/" class="pre-post btn btn-default" title='iOS中UIPopoverController使用详解'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS中UIPopoverController使用详解</span>
+        </a>
+    
+    
+        <a href="/2016/07/11/237iOS第三方文件压缩框架——Godzippa/" class="next-post btn btn-default" title='iOS第三方文件压缩框架——Godzippa'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS第三方文件压缩框架——Godzippa</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS使用UIImagePickerController调用系统相机、相册与图库"><span class="toc-text">iOS使用UIImagePickerController调用系统相机、相册与图库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、UIImagePickerController中属性与方法的应用"><span class="toc-text">二、UIImagePickerController中属性与方法的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、UIImagePickerControllerDelegate中方法解析"><span class="toc-text">三、UIImagePickerControllerDelegate中方法解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、对捕获的图片与视频进行持久化"><span class="toc-text">四、对捕获的图片与视频进行持久化</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

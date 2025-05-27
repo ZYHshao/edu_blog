@@ -1,0 +1,290 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>OS X开发：下拉菜单按钮NSPopUpButton应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="OS X开发：下拉菜单按钮NSPopUpButton应用">
+            
+	            OS X开发：下拉菜单按钮NSPopUpButton应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/macOS开发">
+            macOS开发
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/07/24</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="OS-X开发：下拉菜单按钮NSPopUpButton应用"><a href="#OS-X开发：下拉菜单按钮NSPopUpButton应用" class="headerlink" title="OS X开发：下拉菜单按钮NSPopUpButton应用"></a>OS X开发：下拉菜单按钮NSPopUpButton应用</h2><pre><code>NSPopUpButton是一个下拉按钮，当用户点击时，其会弹出一个下拉选择菜单。一个简单的示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="built_in">NSPopUpButton</span> * popUpButton = [[<span class="built_in">NSPopUpButton</span> alloc]initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">400</span>, <span class="number">200</span>, <span class="number">300</span>)];</span><br><span class="line">    <span class="comment">//设置弹出菜单</span></span><br><span class="line">    <span class="built_in">NSMenu</span> * menu = [[<span class="built_in">NSMenu</span> alloc]initWithTitle:<span class="string">@"menu"</span>];</span><br><span class="line">    [menu insertItemWithTitle:<span class="string">@"one"</span> action:<span class="keyword">@selector</span>(null) keyEquivalent:<span class="string">@""</span> atIndex:<span class="number">0</span>];</span><br><span class="line">    [menu addItemWithTitle:<span class="string">@"two"</span> action:<span class="keyword">@selector</span>(null) keyEquivalent:<span class="string">@""</span>];</span><br><span class="line">    popUpButton.menu = menu;</span><br><span class="line">    <span class="comment">//设置弹出菜单的位置</span></span><br><span class="line">    popUpButton.preferredEdge = <span class="built_in">NSRectEdgeMaxX</span>;</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:popUpButton];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0724/102801_SccG_2340880.png" alt></p>
+<p>NSPopUpButton继承与NSButton，因此NSButton添加触发事件的方式在NSPopUpButton中依然使用，NSPopUpButton类中属性和方法解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化方法 flag参数决定是下拉菜单模式还是弹出菜单模式</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithFrame:(<span class="built_in">NSRect</span>)buttonFrame pullsDown:(<span class="built_in">BOOL</span>)flag;</span><br><span class="line"><span class="comment">//设置下拉菜单</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">strong</span>) <span class="built_in">NSMenu</span> *menu;</span><br><span class="line"><span class="comment">//设置当交互事件发生时，是否禁用选项</span></span><br><span class="line"><span class="keyword">@property</span> <span class="built_in">BOOL</span> autoenablesItems;</span><br><span class="line"><span class="comment">//风格设置是否为下拉菜单</span></span><br><span class="line"><span class="keyword">@property</span> <span class="built_in">BOOL</span> pullsDown;</span><br><span class="line"><span class="comment">//设置菜单弹出的优先位置</span></span><br><span class="line"><span class="keyword">@property</span> <span class="built_in">NSRectEdge</span> preferredEdge;</span><br><span class="line"></span><br><span class="line"><span class="comment">//列表按钮相关</span></span><br><span class="line"><span class="comment">//添加一个按钮</span></span><br><span class="line">- (<span class="keyword">void</span>)addItemsWithTitles:(<span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt; *)itemTitles;</span><br><span class="line"><span class="comment">//插入一个按钮</span></span><br><span class="line">- (<span class="keyword">void</span>)insertItemWithTitle:(<span class="built_in">NSString</span> *)title atIndex:(<span class="built_in">NSInteger</span>)index;</span><br><span class="line"><span class="comment">//通过标题移除一个按钮</span></span><br><span class="line">- (<span class="keyword">void</span>)removeItemWithTitle:(<span class="built_in">NSString</span> *)title;</span><br><span class="line"><span class="comment">//通过索引移除按钮</span></span><br><span class="line">- (<span class="keyword">void</span>)removeItemAtIndex:(<span class="built_in">NSInteger</span>)index;</span><br><span class="line"><span class="comment">//移除所有按钮</span></span><br><span class="line">- (<span class="keyword">void</span>)removeAllItems;</span><br><span class="line"><span class="comment">//所有列表选项按钮数组</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSMenuItem</span> *&gt; *itemArray;</span><br><span class="line"><span class="comment">//按钮个数</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>) <span class="built_in">NSInteger</span> numberOfItems;</span><br><span class="line"><span class="comment">//获取按钮索引的方法</span></span><br><span class="line">- (<span class="built_in">NSInteger</span>)indexOfItem:(<span class="built_in">NSMenuItem</span> *)item;</span><br><span class="line">- (<span class="built_in">NSInteger</span>)indexOfItemWithTitle:(<span class="built_in">NSString</span> *)title;</span><br><span class="line">- (<span class="built_in">NSInteger</span>)indexOfItemWithTag:(<span class="built_in">NSInteger</span>)tag;</span><br><span class="line">- (<span class="built_in">NSInteger</span>)indexOfItemWithRepresentedObject:(<span class="keyword">nullable</span> <span class="keyword">id</span>)obj;</span><br><span class="line">- (<span class="built_in">NSInteger</span>)indexOfItemWithTarget:(<span class="keyword">nullable</span> <span class="keyword">id</span>)target andAction:(<span class="keyword">nullable</span> SEL)actionSelector;</span><br><span class="line"><span class="comment">//获取按钮的方法</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSMenuItem</span> *)itemAtIndex:(<span class="built_in">NSInteger</span>)index;</span><br><span class="line">- (<span class="keyword">nullable</span> <span class="built_in">NSMenuItem</span> *)itemWithTitle:(<span class="built_in">NSString</span> *)title;</span><br><span class="line"><span class="comment">//获取最后一个按钮</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">readonly</span>, <span class="keyword">strong</span>) <span class="built_in">NSMenuItem</span> *lastItem;</span><br><span class="line"><span class="comment">//选择某个按钮的方法</span></span><br><span class="line">- (<span class="keyword">void</span>)selectItem:(<span class="keyword">nullable</span> <span class="built_in">NSMenuItem</span> *)item;</span><br><span class="line">- (<span class="keyword">void</span>)selectItemAtIndex:(<span class="built_in">NSInteger</span>)index;</span><br><span class="line">- (<span class="keyword">void</span>)selectItemWithTitle:(<span class="built_in">NSString</span> *)title;</span><br><span class="line">- (<span class="built_in">BOOL</span>)selectItemWithTag:(<span class="built_in">NSInteger</span>)tag;</span><br><span class="line">- (<span class="keyword">void</span>)setTitle:(<span class="built_in">NSString</span> *)string;</span><br><span class="line"><span class="comment">//获取选中的按钮</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">readonly</span>, <span class="keyword">strong</span>) <span class="built_in">NSMenuItem</span> *selectedItem;</span><br><span class="line"><span class="comment">//获取已经选中的按钮索引</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>) <span class="built_in">NSInteger</span> indexOfSelectedItem;</span><br><span class="line"><span class="comment">//获取已经选中的按钮tag</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>) <span class="built_in">NSInteger</span> selectedTag;</span><br><span class="line"><span class="comment">//将选中的标题显示进行同步</span></span><br><span class="line">- (<span class="keyword">void</span>)synchronizeTitleAndSelectedItem;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取某个索引按钮的标题</span></span><br><span class="line">- (<span class="built_in">NSString</span> *)itemTitleAtIndex:(<span class="built_in">NSInteger</span>)index;</span><br><span class="line"><span class="comment">//获取按钮标题数组</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt; *itemTitles;</span><br><span class="line"><span class="comment">//获取选中的按钮标题</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nullable</span>, <span class="keyword">readonly</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *titleOfSelectedItem;</span><br><span class="line"><span class="comment">//当下拉菜单弹出时发送的通知</span></span><br><span class="line">APPKIT_EXTERN <span class="built_in">NSNotificationName</span> <span class="built_in">NSPopUpButtonWillPopUpNotification</span>;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/07/26/354将iOS项目进行子工程化/" class="pre-post btn btn-default" title='将iOS项目进行子工程化'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">将iOS项目进行子工程化</span>
+        </a>
+    
+    
+        <a href="/2017/07/24/353自己动手设计一款iOS自动构建发布工具/" class="next-post btn btn-default" title='自己动手设计一款iOS自动构建发布工具'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">自己动手设计一款iOS自动构建发布工具</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#OS-X开发：下拉菜单按钮NSPopUpButton应用"><span class="toc-text">OS X开发：下拉菜单按钮NSPopUpButton应用</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

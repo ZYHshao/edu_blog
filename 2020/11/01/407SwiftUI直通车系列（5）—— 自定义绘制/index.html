@@ -1,0 +1,311 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>SwiftUI直通车系列（5）—— 自定义绘制 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="SwiftUI直通车系列（5）—— 自定义绘制">
+            
+	            SwiftUI直通车系列（5）—— 自定义绘制
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/SwiftUI">
+            SwiftUI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2020/11/01</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="SwiftUI直通车系列（5）——-自定义绘制"><a href="#SwiftUI直通车系列（5）——-自定义绘制" class="headerlink" title="SwiftUI直通车系列（5）—— 自定义绘制"></a>SwiftUI直通车系列（5）—— 自定义绘制</h1><p>前情回顾：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/4529951" target="_blank" rel="noopener">SwiftUI直通车系列（1）—— 视图的布局与组织</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/4534222" target="_blank" rel="noopener">SwiftUI直通车系列（2）—— 列表视图</a></p>
+<p><a href="http://SwiftUI直通车系列三（3）—— 使用导航" target="_blank" rel="noopener">SwiftUI直通车系列三（3）—— 使用导航</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/4654523" target="_blank" rel="noopener">SwiftUI直通车系列（4）—— 处理用户交互</a></p>
+<pre><code>在UI开发中，我们经常会使用到各式各样的图标或图形。通常，我们可以直接使用图片来渲染图形，在SwiftUI中也提供了相关的接口来对图形绘制提供支持，理论上，我们可以不使用外部图片来自定义绘制出我们想要渲染的图形。
+</code></pre><h2 id="一、图形绘制"><a href="#一、图形绘制" class="headerlink" title="一、图形绘制"></a>一、图形绘制</h2><pre><code>首先，在定义SwiftUI组件时，我们可以通过路径的定义绘制其要表现的UI图形，例如要在页面上显示一个菱形图形，示例代码如下：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DrawTestView</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Path</span> &#123; path <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> width = <span class="number">200</span></span><br><span class="line">            <span class="keyword">let</span> height = <span class="number">200</span></span><br><span class="line">            path.move(to: <span class="type">CGPoint</span>(x: width, y: height))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">100</span>, y: <span class="number">400</span>))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">200</span>, y: <span class="number">600</span>))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">300</span>, y: <span class="number">400</span>))</span><br><span class="line">        &#125;.fill(<span class="type">Color</span>.red)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView_Previews</span>: <span class="title">PreviewProvider</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> previews: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">DrawTestView</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示:</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-b3beb413cbd6cfef456c88d83df05feef51.png" alt></p>
+<p>上面的代码很好理解，使用Path在定义View时，move方法用来进行绘制点的移动，简单理解，如果我们将图形的绘制类比与用笔作画，则move方法的作用就是移动笔尖的位置。addLine方法用来向视图上画一条线，定义完了路径后，调用fill方法用来进行图形内部颜色的填充。如上代码所示，实际上我们只画了三条线，系统默认将三条线及最后一个点与原点的连线组成的图形内部进行了颜色的填充，如果我们不对内部进行颜色填充，只将线的颜色显示出来，就更加直观了，代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DrawTestView</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Path</span> &#123; path <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> width = <span class="number">200</span></span><br><span class="line">            <span class="keyword">let</span> height = <span class="number">200</span></span><br><span class="line">            path.move(to: <span class="type">CGPoint</span>(x: width, y: height))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">100</span>, y: <span class="number">400</span>))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">200</span>, y: <span class="number">600</span>))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">300</span>, y: <span class="number">400</span>))</span><br><span class="line">        &#125;.stroke(<span class="type">Color</span>.red,lineWidth: <span class="number">10</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-454aac65ce47c05445aef656f58974b0a7e.png" alt></p>
+<p>与addLine的使用方法类似，我们还可以通过添加矩形、椭圆、贝塞尔曲线等等方法来绘制图形，示例代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DrawTestView</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">Path</span> &#123; path <span class="keyword">in</span></span><br><span class="line">            <span class="keyword">let</span> width = <span class="number">200</span></span><br><span class="line">            <span class="keyword">let</span> height = <span class="number">200</span></span><br><span class="line">            path.move(to: <span class="type">CGPoint</span>(x: width, y: height))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">100</span>, y: <span class="number">400</span>))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">200</span>, y: <span class="number">600</span>))</span><br><span class="line">            path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">300</span>, y: <span class="number">400</span>))</span><br><span class="line">            path.addRect(<span class="type">CGRect</span>(x: <span class="number">20</span>, y: <span class="number">20</span>, width: <span class="number">30</span>, height: <span class="number">30</span>))</span><br><span class="line">            path.addEllipse(<span class="keyword">in</span>: <span class="type">CGRect</span>(x: <span class="number">60</span>, y: <span class="number">20</span>, width: <span class="number">60</span>, height: <span class="number">30</span>))</span><br><span class="line">            path.addCurve(to: <span class="type">CGPoint</span>(x: <span class="number">100</span>, y: <span class="number">100</span>), control1: <span class="type">CGPoint</span>(x: <span class="number">160</span>, y: <span class="number">100</span>), control2: <span class="type">CGPoint</span>(x: <span class="number">60</span>, y: <span class="number">80</span>))</span><br><span class="line">            path.addRoundedRect(<span class="keyword">in</span>: <span class="type">CGRect</span>(x: <span class="number">140</span>, y: <span class="number">20</span>, width: <span class="number">50</span>, height: <span class="number">40</span>), cornerSize: <span class="type">CGSize</span>(width: <span class="number">20</span>, height: <span class="number">20</span>))</span><br><span class="line">        &#125;.stroke(<span class="type">Color</span>.red,lineWidth: <span class="number">3</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-78f8aa936eafc2aee6b664fc0e79db253fa.png" alt></p>
+<h2 id="二、设置绘制属性"><a href="#二、设置绘制属性" class="headerlink" title="二、设置绘制属性"></a>二、设置绘制属性</h2><pre><code>在SwiftUI中，完成了图形的定义是一步，之后我们还需要将图形描边绘制或填充绘制。无论是描边绘制还是填充绘制，我们都可以定制化的对绘制属性进行控制，例如下面的示例代码：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DrawTestView</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">VStack</span> &#123;</span><br><span class="line">            <span class="type">Path</span> &#123; path <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">let</span> width = <span class="number">200</span></span><br><span class="line">                <span class="keyword">let</span> height = <span class="number">0</span></span><br><span class="line">                path.move(to: <span class="type">CGPoint</span>(x: width, y: height))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">100</span>, y: <span class="number">200</span>))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">200</span>, y: <span class="number">400</span>))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">300</span>, y: <span class="number">200</span>))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">200</span>, y: <span class="number">0</span>))</span><br><span class="line">            &#125;.stroke(style: <span class="type">StrokeStyle</span>(lineWidth: <span class="number">3</span>, lineCap: <span class="type">CGLineCap</span>.butt, lineJoin: .bevel, miterLimit: <span class="number">2</span>, dash: [<span class="number">15</span>,<span class="number">4</span>], dashPhase: <span class="number">2</span>)).foregroundColor(.blue)</span><br><span class="line">            <span class="type">Path</span> &#123; path <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">let</span> width = <span class="number">200</span></span><br><span class="line">                <span class="keyword">let</span> height = <span class="number">20</span></span><br><span class="line">                path.move(to: <span class="type">CGPoint</span>(x: width, y: height))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">100</span>, y: <span class="number">220</span>))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">200</span>, y: <span class="number">420</span>))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">300</span>, y: <span class="number">220</span>))</span><br><span class="line">            &#125;.fill(<span class="type">LinearGradient</span>(gradient: <span class="type">Gradient</span>(colors: [<span class="type">Color</span>.red, <span class="type">Color</span>.blue]), startPoint: .top, endPoint: .bottom))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-73e79ccdc74f288b5fe8e0aca1c95876df8.png" alt></p>
+<p>对于描边绘制，我们可以设置线的风格，间距，转角风格等。对于填充绘制，我们可以为其设置渐变填充，上面代码示例的是线性渐变效果，系统还提供了圆心渐变等功能。</p>
+<h2 id="三、简单的图形变换和组合"><a href="#三、简单的图形变换和组合" class="headerlink" title="三、简单的图形变换和组合"></a>三、简单的图形变换和组合</h2><pre><code>有规律的对绘制的图形进行变换和组合往往可以得到非常美观的复合图形，例如对于上面绘制的菱形，我们可以通过修改透明度进行图形组合，并使用旋转变换的方式使其构建出更加美观的图标，修改代码如下：
+</code></pre><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DrawTestView</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> angle:<span class="type">Angle</span></span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">            <span class="type">Path</span> &#123; path <span class="keyword">in</span></span><br><span class="line">                <span class="keyword">let</span> width = <span class="number">250</span></span><br><span class="line">                <span class="keyword">let</span> height = <span class="number">150</span></span><br><span class="line">                path.move(to: <span class="type">CGPoint</span>(x: width, y: height))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">100</span>, y: <span class="number">300</span>))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">200</span>, y: <span class="number">450</span>))</span><br><span class="line">                path.addLine(to: <span class="type">CGPoint</span>(x: <span class="number">300</span>, y: <span class="number">100</span>))</span><br><span class="line">            &#125;.fill(<span class="type">LinearGradient</span>(gradient: <span class="type">Gradient</span>(colors: [<span class="type">Color</span>.red, <span class="type">Color</span>.blue]), startPoint: .top, endPoint: .bottom)).rotationEffect(angle, anchor: .center)</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DrawContent</span>:<span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">ZStack</span>&#123;</span><br><span class="line">            <span class="type">ForEach</span>(<span class="number">0</span> ..&lt; <span class="number">10</span>) &#123; i <span class="keyword">in</span></span><br><span class="line">                <span class="type">DrawTestView</span>(angle: <span class="type">Angle</span>(degrees:<span class="type">Double</span>(<span class="number">36</span>*i))).opacity(<span class="number">0.3</span>)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ContentView_Previews</span>: <span class="title">PreviewProvider</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">var</span> previews: some <span class="type">View</span> &#123;</span><br><span class="line">        <span class="type">DrawContent</span>()</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-ac133a136d569ba4838cccd588ec46bcb47.png" alt></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2020/11/30/408SwiftUI直通车系列（6）—— 使用动画/" class="pre-post btn btn-default" title='SwiftUI直通车系列（6）—— 使用动画'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">SwiftUI直通车系列（6）—— 使用动画</span>
+        </a>
+    
+    
+        <a href="/2020/09/29/406SwiftUI直通车系列（4）—— 处理用户交互/" class="next-post btn btn-default" title='SwiftUI直通车系列（4）—— 处理用户交互'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SwiftUI直通车系列（4）—— 处理用户交互</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#SwiftUI直通车系列（5）——-自定义绘制"><span class="toc-text">SwiftUI直通车系列（5）—— 自定义绘制</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、图形绘制"><span class="toc-text">一、图形绘制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、设置绘制属性"><span class="toc-text">二、设置绘制属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、简单的图形变换和组合"><span class="toc-text">三、简单的图形变换和组合</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

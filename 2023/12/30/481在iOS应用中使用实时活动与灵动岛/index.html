@@ -1,0 +1,326 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>在iOS应用中使用实时活动与灵动岛 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="在iOS应用中使用实时活动与灵动岛">
+            
+	            在iOS应用中使用实时活动与灵动岛
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/12/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="在iOS应用中使用实时活动与灵动岛"><a href="#在iOS应用中使用实时活动与灵动岛" class="headerlink" title="在iOS应用中使用实时活动与灵动岛"></a>在iOS应用中使用实时活动与灵动岛</h1><p>iOS16系统引入了实时活动与灵动岛相关的API。实时活动API能够让用户在桌面直接浏览到应用程序所提供的实时性较高的信息，例如比赛的比分信息，外卖的配送进度信息，票务信息等。在支持灵动岛的设备上，实时活动配合灵动岛，更是能带给用户沉浸式的信息获取体验，在某些特定应用场景下非常有用。</p>
+<h2 id="1-引言"><a href="#1-引言" class="headerlink" title="1 - 引言"></a>1 - 引言</h2><p>从iOS16开始，实时活动能够在锁屏、待机桌面以及灵动岛等位置提供信息更新展示。在某些特定场景下，实时活动可以提供给用户几个小时内掌握实时事件、活动或任务更新。常见的应用场景有：</p>
+<p>- 外卖类应用实时提供用户配送进度，剩余时间。</p>
+<p>- 赛事类应用的实时分数。</p>
+<p>- 健身类应用与可穿戴设备的实时体能状态更新。</p>
+<p>实时应用将会展示在设备的：</p>
+<p>- 锁屏页面</p>
+<p>- 通知列表顶部</p>
+<p>- 在支持灵动岛的设备上，在灵动岛位置展示</p>
+<p>- 不支持灵动岛的设备上，实时活动的更新会在屏幕顶部弹出通知</p>
+<p>- 待机显示时，实时活动会充满整个屏幕</p>
+<p>需要注意，灵动岛的可可显示区域优先，在开发实时活动时，在设计上可以参考下面的最佳实践文档：</p>
+<p><a href="https://developer.apple.com/cn/design/human-interface-guidelines/live-activities/" target="_blank" rel="noopener">https://developer.apple.com/cn/design/human-interface-guidelines/live-activities/</a></p>
+<h2 id="2-开发实时活动与适配灵动岛"><a href="#2-开发实时活动与适配灵动岛" class="headerlink" title="2 - 开发实时活动与适配灵动岛"></a>2 - 开发实时活动与适配灵动岛</h2><p>首先，要支持实时活动需要在工程中创建一个Widget Extension，实时活动本身也是小组件的一种。如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-37c2b760860571f79e65c852e883c6934e4.png" alt></p>
+<p>需要注意，在创建Widget小组件时，将Include Live Activicy选中，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0ce2a07fb26403a6f07e1f63431cedf9c24.png" alt></p>
+<p>虽然实时活动也是小组件，但其他普通的Widget区别很大，小组件是通过Timeline来进行更新，而实时活动只能通过App触发更新或特殊Push更新和关闭；小组件需要用户手动添加使用，而实时活动则是由主App进行开启。创建好Tatget后，模版自带3个文件，其中LiveWidgetLiveActivity中实时活动的核心框架代码，我们做些简单的修改，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ActivityKit</span><br><span class="line"><span class="keyword">import</span> WidgetKit</span><br><span class="line"><span class="keyword">import</span> SwiftUI</span><br><span class="line"><span class="comment">// 状态结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LiveWidgetAttributes</span>: <span class="title">ActivityAttributes</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">struct</span> <span class="title">ContentState</span>: <span class="title">Codable</span>, <span class="title">Hashable</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 动态的状态，有App或Push来触发更新</span></span><br><span class="line">        <span class="keyword">var</span> score: <span class="type">String</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 静态的状态，实时活动开启时指定</span></span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> teamA: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> teamB: <span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 编写SwiftUI页面</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LiveWidgetLiveActivity</span>: <span class="title">Widget</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> body: some <span class="type">WidgetConfiguration</span> &#123;</span><br><span class="line">        <span class="type">ActivityConfiguration</span>(<span class="keyword">for</span>: <span class="type">LiveWidgetAttributes</span>.<span class="keyword">self</span>) &#123; context <span class="keyword">in</span></span><br><span class="line">            <span class="comment">// Lock screen/banner UI goes here</span></span><br><span class="line">            <span class="type">VStack</span> &#123;</span><br><span class="line">                <span class="type">Text</span>(context.attributes.name)</span><br><span class="line">                <span class="type">Text</span>(<span class="string">"💻💻💻💻💻💻💻💻💻💻💻"</span>)</span><br><span class="line">                <span class="type">Text</span>(<span class="string">"\(context.attributes.teamA) 对战 \(context.attributes.teamB)"</span>)</span><br><span class="line">                <span class="type">Text</span>(<span class="string">"当前比分:\(context.state.score)"</span>)</span><br><span class="line">            &#125;.padding(.all, <span class="number">10</span>)</span><br><span class="line">            .activityBackgroundTint(<span class="type">Color</span>.cyan)</span><br><span class="line">            .activitySystemActionForegroundColor(<span class="type">Color</span>.black)</span><br><span class="line"></span><br><span class="line">        &#125; dynamicIsland: &#123; context <span class="keyword">in</span></span><br><span class="line">            <span class="type">DynamicIsland</span> &#123;</span><br><span class="line">                <span class="comment">// Expanded UI goes here.  Compose the expanded UI through</span></span><br><span class="line">                <span class="comment">// various regions, like leading/trailing/center/bottom</span></span><br><span class="line">                <span class="type">DynamicIslandExpandedRegion</span>(.leading) &#123;</span><br><span class="line">                    <span class="type">Text</span>(context.attributes.teamA)</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">DynamicIslandExpandedRegion</span>(.trailing) &#123;</span><br><span class="line">                    <span class="type">Text</span>(context.attributes.teamB)</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">DynamicIslandExpandedRegion</span>(.center) &#123;</span><br><span class="line">                    <span class="type">Text</span>(<span class="string">"\(context.attributes.name)"</span>)</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="type">DynamicIslandExpandedRegion</span>(.bottom) &#123;</span><br><span class="line">                    <span class="type">Text</span>(<span class="string">"当前比分:\(context.state.score)"</span>)</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; compactLeading: &#123;</span><br><span class="line">                <span class="type">Text</span>(context.attributes.teamA)</span><br><span class="line">            &#125; compactTrailing: &#123;</span><br><span class="line">                <span class="type">Text</span>(context.attributes.teamB)</span><br><span class="line">            &#125; minimal: &#123;</span><br><span class="line">                <span class="type">Text</span>(<span class="string">"🆚"</span>)</span><br><span class="line">            &#125;</span><br><span class="line">            .widgetURL(<span class="type">URL</span>(string: <span class="string">"http://www.apple.com"</span>))</span><br><span class="line">            .keylineTint(<span class="type">Color</span>.red)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面代码中，LiveWidgetAttributes定义实时活动所需要的数据模型，其中直接定义的属性可以理解为静态的属性，即当实时活动开启时就确定的数据，例如比赛参与的队伍，外卖的订单信息等。其中的ContentState用来定义需要更新的数据，例如比分数据，外卖剩余时间数据等。</p>
+<p>实时活动只能使用SwiftUI来编写，如上代码所示ActivityConfiguration配置实时活动组件，dynamicIsland参数用来对灵动岛进行适配。</p>
+<p>在进行灵动岛的适配时，需要对灵动岛的各种状态进行配置：</p>
+<p>1 - 展开状态下的灵动岛。</p>
+<p>2 - 长条状态下的灵动岛。</p>
+<p>3 - mini状态下的灵动岛。</p>
+<p>展开状态下的灵动岛分为左右中下4部分，如上代码所示可以对每个部分进行布局，在开启实时活动时，长按灵动岛可以进入展开状态，效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-2b4e65353eb6e43dc5f4815982b0382687d.png" alt></p>
+<p>长条状态是灵动岛的默认状态，可以对左右两部分进行配置，效果如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-3992c046e56e2c212ba28017a3cbc03ee77.png" alt></p>
+<p>当同时有多个App开启了实时活动时，灵动岛上将只展示一个圆圈，此时即是mini状态，通常可以配置为一个图标，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-48d2520b6d9e2b52dabe1b7169ced9058ef.png" alt></p>
+<p>在锁屏或拉下通知栏时，实时活动将展示在所有通知的最上方，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e62f3a9987dbd64d2c8b45806eb467c0d21.png" alt></p>
+<p>在iOS17中，当设备在横屏充电时，会自动进入待机状态，如果有实时活动，实时活动将占据整个待机页面，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d799bb20730aa0bc48a92a297af61b867be.png" alt></p>
+<h2 id="3-实时活动的开启与更新"><a href="#3-实时活动的开启与更新" class="headerlink" title="3 - 实时活动的开启与更新"></a>3 - 实时活动的开启与更新</h2><p>前面有提到过，实时活动只能通过主App来开启，LiveWidgetLiveActivity结构体需要在主App中被引入。首先设置LiveWidgetLiveActivity的Target Membership为主App与小组件Target共享，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a70c88441fd085551831028739c1de4773b.png" alt></p>
+<p>在主App中调用如下代码来进行实时活动的开启：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="comment">// 框架引入</span></span><br><span class="line"><span class="keyword">import</span> ActivityKit</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        <span class="comment">// Do any additional setup after loading the view.</span></span><br><span class="line">        <span class="keyword">let</span> attri = <span class="type">LiveWidgetAttributes</span>(name: <span class="string">"XX杯英雄电竞总决赛"</span>, teamA: <span class="string">"王族队"</span>, teamB: <span class="string">"斩星队"</span>)</span><br><span class="line">        <span class="keyword">let</span> state = <span class="type">LiveWidgetAttributes</span>.<span class="type">ContentState</span>(score: <span class="string">"2-1"</span>)</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">try</span> <span class="type">Activity</span>.request(attributes: attri, contentState: state, pushType: .token) &#125;</span><br><span class="line">        <span class="keyword">catch</span> &#123;</span><br><span class="line">            <span class="built_in">print</span>(error)</span><br><span class="line">        &#125;</span><br><span class="line">       </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Activicy.request方法来请求开启一个实时活动，Activicy中还有一些方法用来对实时活动进行更新和获取更新实时活动的PushToken，下面是其中封装的核心属性方法的详细解释：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Activity</span>&lt;<span class="title">Attributes</span>&gt; : <span class="title">Identifiable</span> <span class="title">where</span> <span class="title">Attributes</span> : <span class="title">ActivityAttributes</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 开启一个实时活动，其中PushType目前只支持Token模型的Push更新</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="function"><span class="keyword">func</span> <span class="title">request</span><span class="params">(attributes: Attributes, content: ActivityContent&lt;Activity&lt;Attributes&gt;.ContentState&gt;, pushType: PushType? = <span class="literal">nil</span>)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">Activity</span>&lt;<span class="type">Attributes</span>&gt;</span><br><span class="line">    <span class="comment">// 获取应用当前的实时活动</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> activities: [<span class="type">Activity</span>&lt;<span class="type">Attributes</span>&gt;] &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 异步队列，用来监听实时活动的更新</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">var</span> activityUpdates: <span class="type">Activity</span>&lt;<span class="type">Attributes</span>&gt;.<span class="type">ActivityUpdates</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 当前实时活动的状态： 活跃，已结束，已移除</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">var</span> activityState: <span class="type">ActivityState</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 用来监听状态变更</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">var</span> activityStateUpdates: <span class="type">Activity</span>&lt;<span class="type">Attributes</span>&gt;.<span class="type">ActivityStateUpdates</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 通过Push更新实时活动时的PushToken</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">var</span> pushToken: <span class="type">Data</span>? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 异步的对实时活动状态进行更新</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">update</span><span class="params">(using contentState: Activity&lt;Attributes&gt;.ContentState)</span></span> async</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">update</span><span class="params">(<span class="number">_</span> content: ActivityContent&lt;Activity&lt;Attributes&gt;.ContentState&gt;)</span></span> async</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">update</span><span class="params">(using contentState: Activity&lt;Attributes&gt;.ContentState, alertConfiguration: AlertConfiguration? = <span class="literal">nil</span>)</span></span> async</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">update</span><span class="params">(<span class="number">_</span> content: ActivityContent&lt;Activity&lt;Attributes&gt;.ContentState&gt;, alertConfiguration: AlertConfiguration? = <span class="literal">nil</span>)</span></span> async</span><br><span class="line">    <span class="comment">// 结束一个实时活动</span></span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">end</span><span class="params">(using contentState: Activity&lt;Attributes&gt;.ContentState? = <span class="literal">nil</span>, dismissalPolicy: ActivityUIDismissalPolicy = .<span class="keyword">default</span>)</span></span> async</span><br><span class="line">    <span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">end</span><span class="params">(<span class="number">_</span> content: ActivityContent&lt;Activity&lt;Attributes&gt;.ContentState&gt;?, dismissalPolicy: ActivityUIDismissalPolicy = .<span class="keyword">default</span>)</span></span> async</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，需要注意，此处进行更新实时活动的Push必须是基于Token验证的APNs，不能是基于证书验证的APNs，此处的Token不是从Application接口拿到的Device Token，而是从Apple Developer后台创建的鉴权Token，另外，基于Token的Push认证要比基于证书的更加方便，且无需关心过期时间，如果你的应用的APNs目前依然是基于证书的，则需要进行改造后才能使用其来更新实时活动。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2024/01/31/482【Swift专题】聊聊Swift中的属性/" class="pre-post btn btn-default" title='【Swift专题】聊聊Swift中的属性'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">【Swift专题】聊聊Swift中的属性</span>
+        </a>
+    
+    
+        <a href="/2023/10/28/480人工智能之从零理解人工神经网络/" class="next-post btn btn-default" title='人工智能之从零理解人工神经网络'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">人工智能之从零理解人工神经网络</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#在iOS应用中使用实时活动与灵动岛"><span class="toc-text">在iOS应用中使用实时活动与灵动岛</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-引言"><span class="toc-text">1 - 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-开发实时活动与适配灵动岛"><span class="toc-text">2 - 开发实时活动与适配灵动岛</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-实时活动的开启与更新"><span class="toc-text">3 - 实时活动的开启与更新</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

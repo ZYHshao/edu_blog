@@ -1,0 +1,380 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS定位服务的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS定位服务的应用">
+            
+	            iOS定位服务的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/05/14</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS定位服务的应用"><a href="#iOS定位服务的应用" class="headerlink" title="iOS定位服务的应用"></a>iOS定位服务的应用</h2><h3 id="一、授权的申请与设置"><a href="#一、授权的申请与设置" class="headerlink" title="一、授权的申请与设置"></a>一、授权的申请与设置</h3><p>在IOS8之后，IOS的定位服务做了优化，若要使用定位服务，必须先获取用户的授权。</p>
+<p>首先需要在info.plist文件中添加一个键：NSLocationAlwaysUsageDescription或者NSLocationWhenInUseUsageDescription。其中NSLocationAlwaysUsageDescription是要始终使用定位服务，NSLocationWhenInUseUsageDescription是只在前台使用定位服务。</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0514/112130_maRK_2340880.png" alt></p>
+<p>IOS8中CLLocationManager新增的两个新方法：</p>
+<p>- (void)requestAlwaysAuthorization;</p>
+<p>- (void)requestWhenInUseAuthorization;</p>
+<p>这两个方法对应上面的两个键值，用于在代码中申请定位服务权限。</p>
+<h3 id="二、定位服务相关方法"><a href="#二、定位服务相关方法" class="headerlink" title="二、定位服务相关方法"></a>二、定位服务相关方法</h3><p>IOS的定位服务在CoreLocation.framework框架内，首先引入这个框架：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0514/112450_1NAE_2340880.png" alt></p>
+<p>开启定位服务的代码非常简单，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;ViewController.h&quot;</span><br><span class="line">#import &lt;CoreLocation/CoreLocation.h&gt;</span><br><span class="line">@interface ViewController ()&lt;CLLocationManagerDelegate&gt;//定位服务的代理</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    CLLocationManager* manager = [[CLLocationManager alloc]init];//初始化一个定位管理对象</span><br><span class="line">    [manager requestWhenInUseAuthorization];//申请定位服务权限</span><br><span class="line">    manager.delegate=self;//设置代理</span><br><span class="line">    [manager startUpdatingLocation];//开启定位服务</span><br><span class="line">&#125;</span><br><span class="line">//定位位置改变后调用的函数</span><br><span class="line">-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations&#123;</span><br><span class="line">    NSLog(@&quot;%@&quot;,locations);</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>CLLocationManager相关方法解读：</p>
+<p>+ (BOOL)locationServicesEnabled;</p>
+<p>判断设备是否支持定位服务</p>
+<p>+ (BOOL)headingAvailable;</p>
+<p>判断设备是否支持航向信息功能(海拔，速度，方向等传感器的支持)</p>
+<p>+ (BOOL)significantLocationChangeMonitoringAvailable;</p>
+<p>判断设备是否支持更新位置信息</p>
+<p>+ (BOOL)isMonitoringAvailableForClass:(Class)regionClass;</p>
+<p>判断设备是否支持区域检测，regionClass是地图框架中的类。</p>
+<p>+ (BOOL)isRangingAvailabl;</p>
+<p>判断设备是否支持蓝牙测距</p>
+<p>+ (CLAuthorizationStatus)authorizationStatus;</p>
+<p>获得定位服务的授权状态，CLAuthorizationStatus的枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(int, CLAuthorizationStatus) &#123;</span><br><span class="line">    kCLAuthorizationStatusNotDetermined = 0,//用户还没有做选择</span><br><span class="line">    kCLAuthorizationStatusRestricted,//应用拒接使用定位服务</span><br><span class="line">    kCLAuthorizationStatusDenied,//用户拒绝授权</span><br><span class="line">    kCLAuthorizationStatusAuthorizedAlways,//8.0后可用，始终授权位置服务</span><br><span class="line">    kCLAuthorizationStatusAuthorizedWhenInUse,//8.0后可用，只在前台授权位置服务</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>@property(assign, nonatomic) CLActivityType activityType;</p>
+<p>这个属性用来设置位置更新的模式，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, CLActivityType) &#123;</span><br><span class="line">    CLActivityTypeOther = 1,//未知模式，默认为此</span><br><span class="line">    CLActivityTypeAutomotiveNavigation,    //车辆导航模式</span><br><span class="line">    CLActivityTypeFitness,                //行人模式</span><br><span class="line">    CLActivityTypeOtherNavigation         //其他交通工具模式</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>模式的应用可以起到节省电量的作用，例如车辆导航模式，当汽车停止时，位置更新服务会暂停。</p>
+<p>@property(assign, nonatomic) CLLocationDistance distanceFilter;</p>
+<p>设置位置更新的敏感范围，单位为米。</p>
+<p>@property(assign, nonatomic) CLLocationAccuracy desiredAccuracy;</p>
+<p>设置定位服务的精确度，系统定义好的几个参数如下：</p>
+<p>kCLLocationAccuracyBestForNavigation;//导航最高精确<br>kCLLocationAccuracyBest;//高精确<br>kCLLocationAccuracyNearestTenMeters;//10米<br>kCLLocationAccuracyHundredMeters;//百米<br>kCLLocationAccuracyKilometer;//千米<br>kCLLocationAccuracyThreeKilometers;//三公里</p>
+<p>@property(assign, nonatomic) BOOL pausesLocationUpdatesAutomatically;</p>
+<p>设置位置更新是否自动暂停</p>
+<p>@property(readonly, nonatomic, copy) CLLocation *location;</p>
+<p>最后一次更新的位置信息，只读属性</p>
+<p>@property(assign, nonatomic) CLLocationDegrees headingFilter;</p>
+<p>相关航向更新的敏感范围</p>
+<p>@property(assign, nonatomic) CLDeviceOrientation headingOrientation;</p>
+<p>定位航向时的参照方向默认为正北，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(int, CLDeviceOrientation) &#123;</span><br><span class="line">    CLDeviceOrientationUnknown = 0,//方向未知</span><br><span class="line">    CLDeviceOrientationPortrait,//纵向模式</span><br><span class="line">    CLDeviceOrientationPortraitUpsideDown,//纵向倒置模式</span><br><span class="line">    CLDeviceOrientationLandscapeLeft,//左向横向模式</span><br><span class="line">    CLDeviceOrientationLandscapeRight,//右向横向模式</span><br><span class="line">    CLDeviceOrientationFaceUp,//水平屏幕向上模式</span><br><span class="line">    CLDeviceOrientationFaceDown//水平屏幕下模式</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>@property(readonly, nonatomic, copy) CLHeading *heading;</p>
+<p>最后一个定位得到的航向信息</p>
+<p>- (void)startUpdatingLocation;</p>
+<p>开启定位服务</p>
+<p>- (void)stopUpdatingLocation;</p>
+<p>停止定位服务</p>
+<p>- (void)startUpdatingHeading;</p>
+<p>开启航向地理信息服务</p>
+<p>- (void)stopUpdatingHeading;</p>
+<p>停止航向地理信息服务</p>
+<h3 id="三、定位服务代理的相关方法"><a href="#三、定位服务代理的相关方法" class="headerlink" title="三、定位服务代理的相关方法"></a>三、定位服务代理的相关方法</h3><p>- (void)locationManager:(CLLocationManager <em>)manager didUpdateLocations:(NSArray </em>)locations；</p>
+<p>位置更新后调用的方法，数组中是所有定位到的位置信息，最后一个是最新的。</p>
+<p>- (void)locationManager:(CLLocationManager <em>)manager didUpdateHeading:(CLHeading </em>)newHeading；</p>
+<p>航向信息更新后调用的方法</p>
+<p>- (void)locationManager:(CLLocationManager <em>)manager didFailWithError:(NSError </em>)error;</p>
+<p>定位异常时调用的方法</p>
+<h3 id="四、定位服务获取到的位置对象"><a href="#四、定位服务获取到的位置对象" class="headerlink" title="四、定位服务获取到的位置对象"></a>四、定位服务获取到的位置对象</h3><p>上面也提到，定位后返回的数组中存放的都是CLLocation对象，这里面有很详细的位置信息，属性如下：</p>
+<p>@property(readonly, nonatomic) CLLocationCoordinate2D coordinate;</p>
+<p>经纬度属性，CLLocationCoordinate2D是一个结构体，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">    CLLocationDegrees latitude;//纬度</span><br><span class="line">    CLLocationDegrees longitude;//经度</span><br><span class="line">&#125; CLLocationCoordinate2D;</span><br></pre></td></tr></table></figure>
+<p>@property(readonly, nonatomic) CLLocationDistance altitude;</p>
+<p>海拔高度，浮点型</p>
+<p>@property(readonly, nonatomic) CLLocationAccuracy horizontalAccuracy;</p>
+<p>水平方向的容错半径</p>
+<p>@property(readonly, nonatomic) CLLocationAccuracy verticalAccuracy;</p>
+<p>竖直方向的容错半径</p>
+<p>@property(readonly, nonatomic) CLLocationDirection course;</p>
+<p>设备前进的方向，取值范围为0-359.9，相对正北方向</p>
+<p>@property(readonly, nonatomic) CLLocationSpeed speed;</p>
+<p>速度，单位为m/s</p>
+<p>@property(readonly, nonatomic, copy) NSDate *timestamp;</p>
+<p>定位时的时间戳</p>
+<h3 id="五、航标定位得到的航标信息对象"><a href="#五、航标定位得到的航标信息对象" class="headerlink" title="五、航标定位得到的航标信息对象"></a>五、航标定位得到的航标信息对象</h3><p>CLHeading对象的属性信息：</p>
+<p>@property(readonly, nonatomic) CLLocationDirection magneticHeading;</p>
+<p>设备朝向航标方向，0为北磁极。</p>
+<p>@property(readonly, nonatomic) CLLocationDirection trueHeading;</p>
+<p>设备朝向真实方向，0被地理上的北极</p>
+<p>@property(readonly, nonatomic) CLLocationDirection headingAccuracy;</p>
+<p>方向偏差</p>
+<p>@property(readonly, nonatomic) CLHeadingComponentValue x;</p>
+<p>x轴的方向值</p>
+<p>@property(readonly, nonatomic) CLHeadingComponentValue y;</p>
+<p>y轴方向值</p>
+<p>@property(readonly, nonatomic) CLHeadingComponentValue z;</p>
+<p>z轴方向值</p>
+<p>@property(readonly, nonatomic, copy) NSDate *timestamp;</p>
+<p>方向定位时间戳</p>
+<p>如有疏漏 欢迎指正</p>
+<p>学习使用 欢迎转载</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/05/15/58iOS原生地图开发指南续——大头针与自定义标注/" class="pre-post btn btn-default" title='iOS原生地图开发指南续——大头针与自定义标注'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS原生地图开发指南续——大头针与自定义标注</span>
+        </a>
+    
+    
+        <a href="/2015/05/14/56标签之美六——滚动字幕的应用/" class="next-post btn btn-default" title='标签之美六——滚动字幕的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">标签之美六——滚动字幕的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS定位服务的应用"><span class="toc-text">iOS定位服务的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、授权的申请与设置"><span class="toc-text">一、授权的申请与设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、定位服务相关方法"><span class="toc-text">二、定位服务相关方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、定位服务代理的相关方法"><span class="toc-text">三、定位服务代理的相关方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、定位服务获取到的位置对象"><span class="toc-text">四、定位服务获取到的位置对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、航标定位得到的航标信息对象"><span class="toc-text">五、航标定位得到的航标信息对象</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

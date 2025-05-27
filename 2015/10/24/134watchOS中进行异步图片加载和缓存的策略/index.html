@@ -1,0 +1,296 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>watchOS中进行异步图片加载和缓存的策略 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="watchOS中进行异步图片加载和缓存的策略">
+            
+	            watchOS中进行异步图片加载和缓存的策略
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Apple Watch开发手记">
+            Apple Watch开发手记
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/10/24</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="watchOS中进行异步图片加载和缓存的策略"><a href="#watchOS中进行异步图片加载和缓存的策略" class="headerlink" title="watchOS中进行异步图片加载和缓存的策略"></a>watchOS中进行异步图片加载和缓存的策略</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>iWatch是智能手表的一次革命。iWatch的应用也将会越来越多，基于watch的一些特点，watchOS的开发者需要更加精益的把握watch的UI和性能。运用watchOS自带的缓存体系进行数据的缓存，是增强用户体验度的一种方式，这篇博客，介绍在watchOS中进行异步加载图片和缓存的方法，愿与志同道合的朋友，一起交流。
+</code></pre><p>关于watchOS中的缓存框架，在这里：<a href="http://my.oschina.net/u/2340880/blog/519023" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/519023   </a>。</p>
+<h3 id="二、存储的命名规则"><a href="#二、存储的命名规则" class="headerlink" title="二、存储的命名规则"></a>二、存储的命名规则</h3><pre><code>在进行设计之前，我们应该先了解，watchOS的缓存容量为最大20M，因为有限，我们更应该认真的利用每一份空间，因此，缓存我们不仅可以存，在即将装满的时候，我们还要有办法从缓存中删去一些东西，让出空间，那么应该删除哪些东西了，我们应该都可以想到，当然是旧的了，把最早的缓存删掉，所以，在存的时候，我们要设计一种规则，可以保存存入的时间，并且不影响我寻找这个缓存文件。我的方法是通过格式化的命名：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//这是一个规范缓存命名的方法</span><br><span class="line">func checkString(str:NSString)-&gt;NSString&#123;</span><br><span class="line">    let result:NSMutableString=NSMutableString()</span><br><span class="line">    //先将所有的非字母和数字剔除掉</span><br><span class="line">    for var i=0 ; i&lt;str.length ; i++ &#123;</span><br><span class="line">        if (str.characterAtIndex(i)&gt;=48&amp;&amp;str.characterAtIndex(i)&lt;=57)||(str.characterAtIndex(i)&gt;=65&amp;&amp;str.characterAtIndex(i)&lt;=90)||(str.characterAtIndex(i)&gt;=97&amp;&amp;str.characterAtIndex(i)&lt;=122)&#123;</span><br><span class="line">            result.appendFormat(&quot;%c&quot;,str.characterAtIndex(i))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    //拼接上当前时间戳</span><br><span class="line">    let date:Double = NSDate().timeIntervalSince1970</span><br><span class="line">    result.appendFormat(&quot;?%.0f&quot;,date)</span><br><span class="line">    return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过？符号将名称和时间戳进行了拼接。</p>
+<h3 id="二、进行异步加载图片和缓存"><a href="#二、进行异步加载图片和缓存" class="headerlink" title="二、进行异步加载图片和缓存"></a>二、进行异步加载图片和缓存</h3><pre><code>这一步是如下的设计思路：通过图片url从缓存的路径中进行寻找，如果有，直接取出图片，如果没有，开启一个线程进行异步加载，完成后刷新主线程UI并将图片文件规范命名后进行缓存：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">//进行存取缓存的操作</span><br><span class="line">//取出watchOS的缓存目录</span><br><span class="line">let imagedic:NSDictionary = WKInterfaceDevice().cachedImages as NSDictionary</span><br><span class="line">    //取图片存储的名称</span><br><span class="line">    let imageUrl:NSMutableString=NSMutableString()</span><br><span class="line">        //这里的url是外界传进来的图片地址url，进行去掉特殊字符</span><br><span class="line">        for var i=0 ; i&lt;url?.length ; i++ &#123;</span><br><span class="line">            if (url?.characterAtIndex(i)&gt;=48&amp;&amp;url?.characterAtIndex(i)&lt;=57)||(url?.characterAtIndex(i)&gt;=65&amp;&amp;url?.characterAtIndex(i)&lt;=90)||(url?.characterAtIndex(i)&gt;=97&amp;&amp;url?.characterAtIndex(i)&lt;=122)&#123;</span><br><span class="line">                imageUrl.appendFormat(&quot;%c&quot;,(url?.characterAtIndex(i))!)</span><br><span class="line">             &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        //查找缓存中是否有图片</span><br><span class="line">        //遍历watchOS的缓存目录</span><br><span class="line">        for var i=0 ; i&lt;imagedic.allKeys.count ; i++ &#123;</span><br><span class="line">           //通过规定好的？进行分割</span><br><span class="line">           let str:NSArray =  imagedic.allKeys[i].componentsSeparatedByString(&quot;?&quot;)</span><br><span class="line">                if str[0].isEqualToString(imageUrl as String) &#123;</span><br><span class="line">                    //找到图片 view是要设置的interfaceImage</span><br><span class="line">                    view.setImageNamed(imagedic.allKeys[i] as? String)</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            //设置缺省图片 这里是外界传进来的缺省图片，如果需要下载，先设置缺省图片</span><br><span class="line">            if defaultImage != nil &#123;</span><br><span class="line">                view.setImageNamed(defaultImage as? String)</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            //进行下载和存储</span><br><span class="line">            let dispath = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)</span><br><span class="line">            //在新的线程中下载</span><br><span class="line">            dispatch_async(dispath, &#123; () -&gt; Void in</span><br><span class="line">                let imgURL:NSURL = NSURL(string: url as! String)!</span><br><span class="line">                let imageData:NSData? = NSData(contentsOfURL: imgURL)</span><br><span class="line">                if imageData != nil &#123;</span><br><span class="line">                    //主线程中刷新</span><br><span class="line">                    dispatch_async(dispatch_get_main_queue(), &#123; () -&gt; Void in</span><br><span class="line">                        view.setImageData(imageData!)</span><br><span class="line">                    &#125;)</span><br><span class="line">                    //写缓存  如果缓存满了 就删掉时间戳最早的一张缓存</span><br><span class="line">                    //这个方法会返回bool值，判断是否存入成功</span><br><span class="line">                    while !WKInterfaceDevice().addCachedImageWithData(imageData!, name: checkString(url!) as String) &#123;</span><br><span class="line">                        //如果存入失败，删去时间戳最早的缓存</span><br><span class="line">                        var temp:NSString?</span><br><span class="line">                        //保存最早的缓存名称</span><br><span class="line">                        var result:NSString?</span><br><span class="line">                        for var i=0 ; i&lt;imagedic.allKeys.count ; i++ &#123;</span><br><span class="line">                            let str:NSArray =  imagedic.allKeys[i].componentsSeparatedByString(&quot;?&quot;)</span><br><span class="line">                            if temp == nil &#123;</span><br><span class="line">                                temp = str[1] as? NSString</span><br><span class="line">                                result = imagedic.allKeys[i] as! String</span><br><span class="line">                                break</span><br><span class="line">                            &#125;</span><br><span class="line">                            if str[1].doubleValue &lt; temp?.doubleValue &#123;</span><br><span class="line">                                //找到更早的缓存</span><br><span class="line">                                temp = str[1] as? NSString</span><br><span class="line">                                result = imagedic.allKeys[i] as! String</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                        //删掉缓存</span><br><span class="line">                        WKInterfaceDevice().removeCachedImageWithName(result as! String)</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;)</span><br></pre></td></tr></table></figure>
+<p>上面的代码和注释，已经介绍了所有的思路，有错误之处或者更好的方式，还望多多指点。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/10/25/135Xcode真机测试could not find developer disk image解决方法/" class="pre-post btn btn-default" title='Xcode真机测试could not find developer disk image解决方法'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Xcode真机测试could not find developer disk image解决方法</span>
+        </a>
+    
+    
+        <a href="/2015/10/19/131AppleWatch开发入门七——watchOS中通知的应用/" class="next-post btn btn-default" title='AppleWatch开发入门七——watchOS中通知的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">AppleWatch开发入门七——watchOS中通知的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#watchOS中进行异步图片加载和缓存的策略"><span class="toc-text">watchOS中进行异步图片加载和缓存的策略</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、存储的命名规则"><span class="toc-text">二、存储的命名规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、进行异步加载图片和缓存"><span class="toc-text">二、进行异步加载图片和缓存</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

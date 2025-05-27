@@ -1,0 +1,317 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（19）—— 分析文本中的问题答案 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（19）—— 分析文本中的问题答案">
+            
+	            iOS MachineLearning 系列（19）—— 分析文本中的问题答案
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/05/28</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（19）——-分析文本中的问题答案"><a href="#iOS-MachineLearning-系列（19）——-分析文本中的问题答案" class="headerlink" title="iOS MachineLearning 系列（19）—— 分析文本中的问题答案"></a>iOS MachineLearning 系列（19）—— 分析文本中的问题答案</h1><p>本篇文章将介绍Apple官方推荐的唯一的一个文本处理模型：BERT-SQuAD。此模型用来分析一段文本，并根据提供的问题在文本中寻找答案。需要注意，BERT模型不会生成新的句子，它会从提供的文本中找到最有可能的答案段落或句子。</p>
+<p>BERT模型的使用比较复杂，大致可以分为如下几步：</p>
+<ol>
+<li>将词汇表导入。</li>
+<li>将问题和原文档分解为Token序列。</li>
+<li>使用词汇表将Token序列转换成id序列。</li>
+<li>将id序列转换成模型需要的多维数组进行输入。</li>
+<li>根据分析的结果解析答案序列。</li>
+<li>根据词汇表将答案序列转换为可读的字符串。</li>
+</ol>
+<p>我们一步一步来进行介绍。</p>
+<h2 id="1-词汇表"><a href="#1-词汇表" class="headerlink" title="1 - 词汇表"></a>1 - 词汇表</h2><p>词汇表没有过多需要讲的，其中定义了每个词汇对应的id，在本文末尾会有示例代码工程，工程中自带了需要使用的词汇表。此词汇表包含了3万余个词汇，每个词汇独占一行，其行号即表示当前词汇的id值。</p>
+<p>加载词汇表的示例代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> tokensDic = <span class="type">Dictionary</span>&lt;<span class="type">Substring</span>, <span class="type">Int</span>&gt;()</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readDictionary</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 读取文件中的数据</span></span><br><span class="line">    <span class="keyword">let</span> fileName = <span class="string">"bert-base-uncased-vocab"</span></span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> url = <span class="type">Bundle</span>.main.url(forResource: fileName, withExtension: <span class="string">"txt"</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">fatalError</span>(<span class="string">"Vocabulary file is missing"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">guard</span> <span class="keyword">let</span> rawVocabulary = <span class="keyword">try</span>? <span class="type">String</span>(contentsOf: url) <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">fatalError</span>(<span class="string">"Vocabulary file has no contents."</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 按行进行分割</span></span><br><span class="line">    <span class="keyword">let</span> words = rawVocabulary.<span class="built_in">split</span>(separator: <span class="string">"\n"</span>)</span><br><span class="line">    <span class="keyword">let</span> values = <span class="number">0</span>..&lt;words.<span class="built_in">count</span></span><br><span class="line">    <span class="comment">// 加载到字典</span></span><br><span class="line">    tokensDic = <span class="type">Dictionary</span>(uniqueKeysWithValues: <span class="built_in">zip</span>(words, values))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-将问题和原文档分解为Token序列"><a href="#2-将问题和原文档分解为Token序列" class="headerlink" title="2 - 将问题和原文档分解为Token序列"></a>2 - 将问题和原文档分解为Token序列</h2><p>在本系列前面的文章中，有介绍过NaturalLanguage这个框架，其实用来进行自然语言处理的，当然也包含文本的Token分解功能。示例代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> wordTokens = [<span class="type">Substring</span>]()</span><br><span class="line"><span class="keyword">let</span> tagger = <span class="type">NLTagger</span>(tagSchemes: [.tokenType])</span><br><span class="line"><span class="comment">// 全部转换成小写</span></span><br><span class="line">tagger.string = content.lowercased()</span><br><span class="line">tagger.enumerateTags(<span class="keyword">in</span>: tagger.string!.startIndex ..&lt; tagger.string!.endIndex,</span><br><span class="line">                     unit: .word,</span><br><span class="line">                     scheme: .tokenType,</span><br><span class="line">                     options: [.omitWhitespace]) &#123; (<span class="number">_</span>, range) -&gt; <span class="type">Bool</span> <span class="keyword">in</span></span><br><span class="line">    wordTokens.append(tagger.string![range])</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> questionTokens = [<span class="type">Substring</span>]()</span><br><span class="line">tagger.string = question.lowercased()</span><br><span class="line">tagger.enumerateTags(<span class="keyword">in</span>: tagger.string!.startIndex ..&lt; tagger.string!.endIndex,</span><br><span class="line">                     unit: .word,</span><br><span class="line">                     scheme: .tokenType,</span><br><span class="line">                     options: [.omitWhitespace]) &#123; (<span class="number">_</span>, range) -&gt; <span class="type">Bool</span> <span class="keyword">in</span></span><br><span class="line">    questionTokens.append(tagger.string![range])</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-将Token序列转换成ID序列"><a href="#3-将Token序列转换成ID序列" class="headerlink" title="3 - 将Token序列转换成ID序列"></a>3 - 将Token序列转换成ID序列</h2><p>第三步，根据词汇表来将Token序列转换成ID序列，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加载词汇表</span></span><br><span class="line">readDictionary()</span><br><span class="line"><span class="comment">// 转换问题Token序列</span></span><br><span class="line"><span class="keyword">let</span> questionTokenIds = questionTokens.compactMap &#123; token <span class="keyword">in</span></span><br><span class="line">    tokensDic[token]</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 转换原文档Token序列</span></span><br><span class="line"><span class="keyword">let</span> contentTokenIds = wordTokens.compactMap &#123; token <span class="keyword">in</span></span><br><span class="line">    tokensDic[token]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-将ID序列转换为模型的输入"><a href="#4-将ID序列转换为模型的输入" class="headerlink" title="4 - 将ID序列转换为模型的输入"></a>4 - 将ID序列转换为模型的输入</h2><p>这一步略微复杂，首先我们先看下BERT-SQuAD模式的输入输出：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a5c5baf6c41ac4c7efae466c04caacdd70b.png" alt></p>
+<p>需要注意，其输入有两个，wordIDs是ID序列二维数组，其中包含问题，源文档，使用特殊的分隔符进行分割。wordTypes也是一个二维数组，对应的标记wordIDs数组中每个元素的意义。示例代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 开始标记，使用特殊数值101</span></span><br><span class="line"><span class="keyword">let</span> startToken = <span class="number">101</span></span><br><span class="line"><span class="comment">// 分隔符标记，使用特殊数值102</span></span><br><span class="line"><span class="keyword">let</span> separatorToken = <span class="number">102</span></span><br><span class="line"><span class="comment">// 补位标记，使用特殊数值0</span></span><br><span class="line"><span class="keyword">let</span> padToken = <span class="number">0</span></span><br><span class="line"><span class="comment">// 输入wordIDs</span></span><br><span class="line"><span class="keyword">var</span> inputTokens:[<span class="type">Int</span>] = []</span><br><span class="line"><span class="comment">// 先拼入开始标记</span></span><br><span class="line">inputTokens.append(startToken)</span><br><span class="line"><span class="comment">// 拼入问题ID序列</span></span><br><span class="line">inputTokens.append(contentsOf: questionTokenIds)</span><br><span class="line"><span class="comment">// 拼入分隔符标记</span></span><br><span class="line">inputTokens.append(separatorToken)</span><br><span class="line"><span class="comment">// 拼入源文档ID序列</span></span><br><span class="line">inputTokens.append(contentsOf: contentTokenIds)</span><br><span class="line"><span class="comment">// 拼入分隔符标记</span></span><br><span class="line">inputTokens.append(separatorToken)</span><br><span class="line"><span class="comment">// 不够384位，则用0补齐</span></span><br><span class="line"><span class="keyword">while</span> inputTokens.<span class="built_in">count</span> &lt; <span class="number">384</span> &#123;</span><br><span class="line">    inputTokens.append(padToken)</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 输入wordTypes</span></span><br><span class="line"><span class="keyword">var</span> inputTokenTypes:[<span class="type">Int</span>] = []</span><br><span class="line"><span class="comment">// 开始标记，分隔符，和补位标对应的数据位设0</span></span><br><span class="line">inputTokenTypes.append(<span class="number">0</span>)</span><br><span class="line"><span class="comment">// 问题内容位设1</span></span><br><span class="line">inputTokenTypes.append(contentsOf: <span class="type">Array</span>(repeating: <span class="number">1</span>, <span class="built_in">count</span>: questionTokenIds.<span class="built_in">count</span>))</span><br><span class="line">inputTokenTypes.append(<span class="number">0</span>)</span><br><span class="line"><span class="comment">// 源文档内容位设1</span></span><br><span class="line">inputTokenTypes.append(contentsOf:  <span class="type">Array</span>(repeating: <span class="number">1</span>, <span class="built_in">count</span>: contentTokenIds.<span class="built_in">count</span>))</span><br><span class="line">inputTokenTypes.append(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">while</span> inputTokenTypes.<span class="built_in">count</span> &lt; <span class="number">384</span> &#123;</span><br><span class="line">    inputTokenTypes.append(<span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构造MLMultiArray二维数组，其结构为1*384的二维结构</span></span><br><span class="line"><span class="keyword">var</span> tokenMultiArray = <span class="keyword">try</span>! <span class="type">MLMultiArray</span>(shape: [<span class="number">1</span>, <span class="number">384</span>], dataType: .int32)</span><br><span class="line"><span class="keyword">for</span> (index, inputToken) <span class="keyword">in</span> inputTokens.enumerated() &#123;</span><br><span class="line">    tokenMultiArray[[<span class="number">0</span>, <span class="type">NSNumber</span>(integerLiteral: index)]] = <span class="type">NSNumber</span>(integerLiteral: inputToken)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> typesMultiArray = <span class="keyword">try</span>! <span class="type">MLMultiArray</span>(shape: [<span class="number">1</span>, <span class="number">384</span>], dataType: .int32)</span><br><span class="line"><span class="keyword">for</span> (index, inputToken) <span class="keyword">in</span> inputTokenTypes.enumerated() &#123;</span><br><span class="line">    typesMultiArray[[<span class="number">0</span>, <span class="type">NSNumber</span>(integerLiteral: index)]] = <span class="type">NSNumber</span>(integerLiteral: inputToken)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-使用模型进行预测"><a href="#5-使用模型进行预测" class="headerlink" title="5 - 使用模型进行预测"></a>5 - 使用模型进行预测</h2><p>准备好了输入数据，这一步就非常简单，示例如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> model = <span class="keyword">try</span>! <span class="type">BERTSQUADFP16</span>(configuration: <span class="type">MLModelConfiguration</span>())</span><br><span class="line"><span class="keyword">let</span> input = <span class="type">BERTSQUADFP16Input</span>(wordIDs: tokenMultiArray, wordTypes: typesMultiArray)</span><br><span class="line"><span class="keyword">let</span> output = <span class="keyword">try</span>! model.prediction(input: input)</span><br><span class="line">handleOutput(output: output)</span><br></pre></td></tr></table></figure>
+<h2 id="6-处理输出"><a href="#6-处理输出" class="headerlink" title="6 - 处理输出"></a>6 - 处理输出</h2><p>BERT-SQuAD模型的输出为两个1*1*384*1的四位数组，指定了答案的起始位置与结束位置。虽然输出数据为4维的，但是其有3各维度都只有1个元素，因此我们可以将其提取为一维的，定义方法如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">MLMultiArray</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">doubleArray</span><span class="params">()</span></span> -&gt; [<span class="type">Double</span>] &#123;</span><br><span class="line">        <span class="keyword">let</span> unsafeMutablePointer = dataPointer.bindMemory(to: <span class="type">Double</span>.<span class="keyword">self</span>, capacity: <span class="built_in">count</span>)</span><br><span class="line">        <span class="keyword">let</span> unsafeBufferPointer = <span class="type">UnsafeBufferPointer</span>(start: unsafeMutablePointer, <span class="built_in">count</span>: <span class="built_in">count</span>)</span><br><span class="line">        <span class="keyword">return</span> [<span class="type">Double</span>](unsafeBufferPointer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>处理输出数据如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleOutput</span><span class="params">(output: BERTSQUADFP16Output)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 值越大，表示当前索引为答案的开始位置的可能性越大，找到最可能的答案开始位置</span></span><br><span class="line">    <span class="keyword">var</span> startIndex = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> startIndex ..&lt; output.startLogits.doubleArray().<span class="built_in">count</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> output.startLogits.doubleArray()[p] &gt; output.startLogits.doubleArray()[startIndex] &#123;</span><br><span class="line">            startIndex = p</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 同理，找到最可能得答案结束位置，这里我们设置答案长度不超过5个Token</span></span><br><span class="line">    <span class="keyword">var</span> endIndex = startIndex</span><br><span class="line">    <span class="keyword">for</span> p <span class="keyword">in</span> endIndex ..&lt; startIndex + <span class="number">5</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> output.endLogits.doubleArray()[p] &gt; output.endLogits.doubleArray()[startIndex] &#123;</span><br><span class="line">            endIndex = p</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取答案ID序列</span></span><br><span class="line">    <span class="keyword">let</span> subs = inputTokens[startIndex ..&lt; endIndex]</span><br><span class="line">    <span class="comment">// 将ID序列转回字符串</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> subs &#123;</span><br><span class="line">        <span class="keyword">for</span> item <span class="keyword">in</span> tokensDic <span class="keyword">where</span> item.value == i &#123;</span><br><span class="line">            <span class="built_in">print</span>(item.key)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码运行效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d89b66e2da6f803fee3744ab762f3aebf78.png" alt></p>
+<p>本中所涉及到的代码，都可以在如下 Demo 中找到：</p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2FZYHshao%2FMachineLearnDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/MachineLearnDemo</a></p>
+<p>本系列文章到此已经将Apple官方所推荐的模型都做了介绍，当然这些模式的训练都是广泛的，不一定会适用于你的应用场景，CoreML框架也提供了更加强大的模型训练能力，我们可以根据自己的场景并提供有针对性的数据进行个性化的模型训练，在后续文章中会再详细讨论。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/05/29/475iOS MachineLearning 系列（20）—— 训练生成CoreML模型/" class="pre-post btn btn-default" title='iOS MachineLearning 系列（20）—— 训练生成CoreML模型'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（20）—— 训练生成CoreML模型</span>
+        </a>
+    
+    
+        <a href="/2023/05/25/473iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型/" class="next-post btn btn-default" title='iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（19）——-分析文本中的问题答案"><span class="toc-text">iOS MachineLearning 系列（19）—— 分析文本中的问题答案</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-词汇表"><span class="toc-text">1 - 词汇表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-将问题和原文档分解为Token序列"><span class="toc-text">2 - 将问题和原文档分解为Token序列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-将Token序列转换成ID序列"><span class="toc-text">3 - 将Token序列转换成ID序列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-将ID序列转换为模型的输入"><span class="toc-text">4 - 将ID序列转换为模型的输入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-使用模型进行预测"><span class="toc-text">5 - 使用模型进行预测</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-处理输出"><span class="toc-text">6 - 处理输出</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

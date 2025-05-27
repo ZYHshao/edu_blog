@@ -1,0 +1,291 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>网格与瀑布流布局浅析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="网格与瀑布流布局浅析">
+            
+	            网格与瀑布流布局浅析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/HarmonyOS">
+            HarmonyOS
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2025/05/09</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="网格布局"><a href="#网格布局" class="headerlink" title="网格布局"></a>网格布局</h1><p>网格布局从布局结构上看与栅格布局类似，其核心也是将页面分为指定的行和列，相比栅格布局，网格布局更加灵活，不仅可以进行列的合并，也可以对行进行合并。<br>网格布局的核心是提供行列定义模版，模板本身是一个字符串，行和列分别进行定义，字符串中的fr个数表示行或列的个数，fr前的数字表示此行或列对应的尺寸占比，例如下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Grid() &#123;</span><br><span class="line">  ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9], (index: number)=&gt;&#123;</span><br><span class="line">    GridItem() &#123;</span><br><span class="line">      Text(`数据$&#123;index&#125;`).fontSize(30).textAlign(TextAlign.Center)</span><br><span class="line">    &#125;.backgroundColor(Color.Red)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;.rowsTemplate(&apos;1fr 2fr 1fr&apos;).columnsTemplate(&apos;1fr 2fr 1fr&apos;).columnsGap(10).rowsGap(10)</span><br></pre></td></tr></table></figure></p>
+<p>上面代码中的’1fr 2fr 1fr’即是模版的定义，运行效果如图所示。<br><img src="https://dl-harmonyos.51cto.com/images/202505/843f964026b3eb8ae7a287dffcfbccfc35186b.png?x-oss-process=image/resize,w_194,h_792" alt="431.png"></p>
+<p>Grid在使用时，要注意有如下规则：<br>1.Grid容器的子组件必须为GridItem组件。<br>2.行列模板同时进行了设置时，将会展示固定行列个数的元素，整个容器不可滚动。<br>3.当只设置了行或列的模板时，元素按照设置的方向进行布局，超出的内容可以滚动。<br>4.当行和列的模版都没有设置时，其行列数由子元素的尺寸决定，整个容器不可滚动。<br>通过行列模版，我们定义的是规则的网格结构，Grid容器也支持定义不规则的网格结构，在构造Grid实例时，其有两个参数，分别为：<br>|参数|类型|意义|<br>|-|-|-|<br>|scroller|    Scroller|    可滚动时，控制容器的滚动以及获取相关信息。|<br>|layoutOptions|    GridLayoutOptions|    布局参数。|</p>
+<p>layoutOptions布局参数中可以实现onGetRectByIndex配置项，此配置项需要设置为一个函数，用来返回指定索引数据的布局规则。示例代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Grid(undefined, &#123;</span><br><span class="line">  regularSize:[1, 1],</span><br><span class="line">  onGetRectByIndex: (index: number)=&gt;&#123;</span><br><span class="line">    // 注意此处的index从0开始，表示数据下标</span><br><span class="line">    if (index == 0) &#123;</span><br><span class="line">      // 从第1行第1列开始，占1行3列</span><br><span class="line">      return [0, 0, 1, 3]</span><br><span class="line">    &#125;</span><br><span class="line">    if (index == 3) &#123;</span><br><span class="line">      // 从第2行第3列开始，占2行1列</span><br><span class="line">      return [1, 2, 2, 1]</span><br><span class="line">    &#125;</span><br><span class="line">    if (index == 7) &#123;</span><br><span class="line">      // 从第4行第2列开始，占1行2列</span><br><span class="line">      return [3, 1, 1, 2]</span><br><span class="line">    &#125;</span><br><span class="line">    return undefined</span><br><span class="line">  &#125;</span><br><span class="line">&#125;) &#123;</span><br><span class="line">  ForEach([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], (index: number)=&gt;&#123;</span><br><span class="line">    GridItem() &#123;</span><br><span class="line">      Text(`数据$&#123;index&#125;`).fontSize(30).textAlign(TextAlign.Center)</span><br><span class="line">    &#125;.backgroundColor(Color.Red)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;.rowsTemplate(&apos;1fr 1fr 1fr 1fr&apos;).columnsTemplate(&apos;1fr 1fr 1fr&apos;).columnsGap(10).rowsGap(10)</span><br></pre></td></tr></table></figure></p>
+<p>其中regularSize用来指定标准的子组件布局尺寸，目前只支持一个子组件占单行单列，此参数为后续扩展预留。onGetRectByIndex用来具体设置某个元素的位置和占用行列数，其设置的函数的参数index为元素索引，从0开始，此函数如果返回undefined则表示默认的布局规则，不做额外改变。我们也可以返回一个包含4个数值元素的数组，4个数值分别表示要布局子组件的：起始行索引，起始列索引，占用行数、占用列数。运行上面的代码，效果如图:<br><img src="https://dl-harmonyos.51cto.com/images/202505/739eb2430fe54142fed7214468c2fefb665100.png?x-oss-process=image/resize,w_186,h_1182" alt="432.png"><br>需要注意，在设置某个索引位置元素的布局规则时，需要符合布局逻辑，子组件将按照顺序进行布局，如果设置的位置已经被其他子组件占用，则设置无效。同样如果起始位置没有被占用但是其他位置被占用，则只会展示GridItem子组件的一部分。<br>关于使用Scroller对Grid容器的滚动进行控制，以及相关滚动事件的监听，其用法与List容器完全一致，这里就不再赘述。</p>
+<h1 id="瀑布流布局"><a href="#瀑布流布局" class="headerlink" title="瀑布流布局"></a>瀑布流布局</h1><p>瀑布流布局常用在展示宽度或高度不规则的信息流中，常见于电商或资讯类软件中。在ArkUI中使用WaterFlow创建瀑布流容器，WaterFlow支持横向滚动也支持纵向滚动，对于横向滚动的瀑布流，可以通过rowsTemplate方法设置行数与对应占比的模版。对于纵向滚动的瀑布流，可以通过columnsTemplate设置列数以及对应占比的模版。<br>纵向滚动的瀑布流在布局时，通常子元素的宽度固定，高度动态，当发生换行时，新的元素会被布局在高度最小的列下面，同理对于横向布局的瀑布流，子元素高度固定，宽度动态，发生换列时，新的元素会优先布局在宽度最小的行后面。我们若要手动实现这样的布局逻辑会非常复杂，使用WaterFlow则非常简单。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">WaterFlow() &#123;</span><br><span class="line">  ForEach(this.data, (title: string)=&gt;&#123;</span><br><span class="line">    FlowItem() &#123;</span><br><span class="line">      Text(title).textAlign(TextAlign.Center).fontSize(35)</span><br><span class="line">    &#125;.width(&apos;100%&apos;)</span><br><span class="line">    .height(Math.max(Math.random() * 300, 50))</span><br><span class="line">    .backgroundColor(Color.Red)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;.rowsGap(10).columnsGap(10)</span><br><span class="line">.layoutDirection(FlexDirection.Column).columnsTemplate(&apos;1fr 1fr&apos;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://dl-harmonyos.51cto.com/images/202505/13e8518436a5f99aeba673ad33be05e65bf666.png?x-oss-process=image/resize,w_172,h_944" alt="433.png"><br>将子组件的宽度改为随机，并设置WaterFlow的布局方向为横向，即可创建横向的瀑布流，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">WaterFlow() &#123;</span><br><span class="line">  ForEach(this.data, (title: string)=&gt;&#123;</span><br><span class="line">    FlowItem() &#123;</span><br><span class="line">      Text(title).textAlign(TextAlign.Center).fontSize(35)</span><br><span class="line">    &#125;.height(&apos;100%&apos;)</span><br><span class="line">    .width(Math.max(Math.random() * 300, 50))</span><br><span class="line">    .backgroundColor(Color.Red)</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;.rowsGap(10).columnsGap(10)</span><br><span class="line">.layoutDirection(FlexDirection.Row).rowsTemplate(&apos;1fr 1fr 1fr 1fr&apos;)</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://dl-harmonyos.51cto.com/images/202505/543a04d223800ac2d1808175e51e2a0ddce51c.png?x-oss-process=image/resize,w_176,h_940" alt="434.png"><br>WaterFlow的子组件必须时FlowItem，这种布局结构常用来渲染无限滚动的信息流，尤其是在有大量的图片信息时，由于图片的宽高比例不定，使用瀑布流布局效果会非常美观。在实际项目开发中，WaterFlow通常会和LazyForEach懒加载组合使用。<br>WaterFlow在构造时参数支持的配置项如下：<br>|配置项|类型|意义|<br>|-|-|-|<br>|footer|    CustomBuilder|    设置尾视图。|<br>|scroller|    Scroller|    滚动控制器。|<br>|sections|    WaterFlowSections|    分组控制器。|<br>|layoutMode|    WaterFlowLayoutMode|    瀑布流布局模式。|</p>
+<p>WaterFlow也支持配置尾视图以及分组，通过分组允许不同的组采用不同的布局规则，通过sections参数，我们可以为不同的分组设置不同的行/列数，不同的间距等。例如下面的示例代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">@Component</span><br><span class="line">struct WaterFlowLayout &#123;</span><br><span class="line">  data: string[] = (() =&gt; &#123;</span><br><span class="line">    let d: string[] = []</span><br><span class="line">    for (let i = 0; i &lt; 100; i++) &#123;</span><br><span class="line">      d.push(`$&#123;i&#125;`)</span><br><span class="line">    &#125;</span><br><span class="line">    return d</span><br><span class="line">  &#125;)()</span><br><span class="line"></span><br><span class="line">  sections = new WaterFlowSections()</span><br><span class="line"></span><br><span class="line">  aboutToAppear(): void &#123;</span><br><span class="line">    let sec1: SectionOptions = &#123;</span><br><span class="line">      itemsCount: 4,</span><br><span class="line">      crossCount: 2,</span><br><span class="line">      columnsGap: 5,</span><br><span class="line">      rowsGap: 5,</span><br><span class="line">      margin: &#123;top: 30&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    let sec2: SectionOptions = &#123;</span><br><span class="line">      itemsCount: 8,</span><br><span class="line">      crossCount: 4,</span><br><span class="line">      columnsGap: 10,</span><br><span class="line">      rowsGap: 10,</span><br><span class="line">      margin: &#123;top: 30&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    let sec3: SectionOptions = &#123;</span><br><span class="line">      itemsCount: 88,</span><br><span class="line">      crossCount: 1,</span><br><span class="line">      rowsGap: 15,</span><br><span class="line">      margin: &#123;top: 30&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    let sections = [</span><br><span class="line">      sec1, sec2, sec3</span><br><span class="line">    ]</span><br><span class="line">    this.sections.splice(0, 0, sections)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  build() &#123;</span><br><span class="line">    WaterFlow(&#123;sections: this.sections&#125;) &#123;</span><br><span class="line">      ForEach(this.data, (title: string)=&gt;&#123;</span><br><span class="line">        FlowItem() &#123;</span><br><span class="line">          Text(title).textAlign(TextAlign.Center).fontSize(35)</span><br><span class="line">        &#125;.width(&apos;100%&apos;)</span><br><span class="line">         .height(Math.max(Math.random() * 100, 50))</span><br><span class="line">        .backgroundColor(Color.Red)</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;.rowsGap(10).columnsGap(10)</span><br><span class="line">    .layoutDirection(FlexDirection.Column).columnsTemplate(&apos;1fr 1fr&apos;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其中WaterFlowSections可以理解为分组管理器，其中封装了方法来操作分组数据，如示例代码中的splice方法，此方法用来删除、替换或新增分组数据，第1个参数为要操作的分组索引起始位置，第2个参数为要删除的分组个数，第3个参数为添加一组分组数据。具体的分组数据由SectionOptions 类进行定义，此类中提供的配置属性如下：<br>|属性名|    类型|    意义|<br>|-|-|-|<br>|itemsCount|    number|    当前分组中的元素个数。|<br>|crossCount|    number|    轨数，即交叉轴方向上的行/列数。|<br>|columnsGap|    Dimension|    设置列间距。|<br>|rowsGap|    Dimension|    设置行间距。|<br>|margin    |Margin | Dimension|    设置当前分组的外边距。|</p>
+<p>WaterFlowSections实例操作分组的方法列举如下：<br>|方法名|    参数|    意义|<br>|-|-|-|<br>|splice|    start: number deleteCount: number sections: Array<sectionoptions>|    从指定的索引开始删除多个分组，同时添加多个分组。|<br>|push|    SectionOptions|    添加一个分组。|<br>|update|    sectionIndex: number section: SectionOptions|    更新指定位置的分组。|<br>|values|    无|    获取当前所有分组数据。|<br>|length|    无|    获取当前分组个数。|</sectionoptions></p>
+<p>上面的分组示例代码运行效果如图所示。<br><img src="https://dl-harmonyos.51cto.com/images/202505/8110cce391bb325654047967aa40a05d43d063.png?x-oss-process=image/resize,w_162,h_940" alt="435.png"></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2025/05/02/491.关于ArkUI状态管理的全面总结/" class="next-post btn btn-default" title='关于ArkUI状态管理的全面总结'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">关于ArkUI状态管理的全面总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#网格布局"><span class="toc-text">网格布局</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#瀑布流布局"><span class="toc-text">瀑布流布局</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

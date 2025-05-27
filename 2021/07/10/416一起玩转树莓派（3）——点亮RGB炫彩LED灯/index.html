@@ -1,0 +1,315 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（3）——点亮RGB炫彩LED灯 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（3）——点亮RGB炫彩LED灯">
+            
+	            一起玩转树莓派（3）——点亮RGB炫彩LED灯
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/07/10</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（3）——点亮RGB炫彩LED灯"><a href="#一起玩转树莓派（3）——点亮RGB炫彩LED灯" class="headerlink" title="一起玩转树莓派（3）——点亮RGB炫彩LED灯"></a>一起玩转树莓派（3）——点亮RGB炫彩LED灯</h1><p>在阅读本篇博客之前，如果你对树莓派的GPIO还没有基本的了解，我建议你先阅读本系列博客的上一篇，关于双色LED灯实验的。了解树莓派GPIO的基本用法是进行本篇博客实验的基础。上篇博客地址如下：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5123429" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5123429</a></p>
+<p>现在，如果你已经成功完成过树莓派双色LED灯实验，并且对深入树莓派玩法有更多的兴趣的话，那么我们在进一步，尝试点亮一个更加绚丽的LED灯：RGB3色LED灯。</p>
+<h2 id="一、认识RGB三原色LED灯并连线"><a href="#一、认识RGB三原色LED灯并连线" class="headerlink" title="一、认识RGB三原色LED灯并连线"></a>一、认识RGB三原色LED灯并连线</h2><p>通过前面的实验，我们已经知道，双色的LED灯内部封装了红绿两个发光二极管，其有3个引脚，其中1个引脚是共用的(共阴或共阳)，对于共阴型的双色LED灯，控制另外两个引脚的高低电平来分别点亮红灯或绿灯。对于RGB3色LED灯也类似，只是其内部封装了3个发光二极管，分别可以发出红光，绿光和蓝光。其有4个引脚，1个引脚共用和3个控制发光二极管的引脚。</p>
+<p>本次实验，我们依然采用共阴型的RGB3色LED灯，元件如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-49ede8533183d038436f5fa1c6ba00a9b7e.JPEG" alt></p>
+<p>共阴型的LED灯，GND引脚是其公共的阴极，接线的时候我们需要将此引脚接地，另外3个引脚分别接3个GPIO来控制亮灯。下面两种图，非常直观的演示了此LED灯的工作原理：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-b1304b74a0ad7187e624b765bc27563c4fb.png" alt><img src="https://oscimg.oschina.net/oscnet/up-e89603ce34e6093a564a8998b4e095947ac.png" alt></p>
+<p>在将LED灯连接到树莓派之前，我们需要预定几个要用的GPIO引脚，之后我们在编写代码时，依然采用物理编码，首先我们先确定要使用的GPIO引脚的BCM编码下的GPIO18，GPIO19和GPIO20，通常查看引脚编码对应图，我们可以找到其所对应的物理引脚分别为12，24和28。如果不使用扩展板，直接将原件上的对应引脚连接到树莓派的这些物理引脚上即可，如果使用的是BCM编码的扩展板，则我们在连线时无需关心这些物理引脚，直接连接即可，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e0348c7f0ae163621b3bb6b00b44e9053ec.JPEG" alt></p>
+<p>好了，现在我们已经完成了基本的连线工作。</p>
+<h2 id="二、三原色与脉冲宽度调制"><a href="#二、三原色与脉冲宽度调制" class="headerlink" title="二、三原色与脉冲宽度调制"></a>二、三原色与脉冲宽度调制</h2><p>三原色本指色彩中不能再分解的三种基本颜色，在光学上，红、绿、蓝为最基本的三原色。三原色经过混合后，可以组成各式各样的颜色。例如将三原色等比混合后将能组成白色，将红色和绿色组合后会生成黄色，将红色和蓝色混合后会得到紫色等等。如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e6794fc6def4e70f6090ccb7464147ed4f7.png" alt></p>
+<p>因此，从原理上说，我们只要可以控制RGB灯三种颜色的显示亮度，就可以让LED灯调制出各种颜色。控制LED等中各个发光二极管的亮和灭非常简单，我们只需要向其加高电平或低电平即可，那么如何控制发光二极管的亮度呢？我们需要使用到另外一种电流控制技术：PWM脉冲宽度调制。</p>
+<p>脉冲宽度调制(PWM)是一种模拟控制方式，其通过控制脉冲电压中高电压的占空比来控制流过元件的电流大小。PWM技术中有两个非常重要的参数：频率与占空比。频率用来控制脉冲信号的周期，如果频率过低，在控制LED灯的时候，灯就会进行闪烁，当频率足够高，人眼已无法分辨出其闪烁，看上起LED灯就是常亮的。占空比指的是在输出的脉冲信号中，高电平保持的时间与该脉冲信号的周期时间之比。例如，假设设置周期为100Hz，则其周期时间为10ms，如果设置的占空比为20%，则当前周期中，高电平的占比时间为2ms。</p>
+<p>Python的GPIO库中提供了PWM控制接口，使用也非常简单，使用如下方法可以获取某个引脚的PWM实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p = GPIO.PWM(channel, frequency)</span><br></pre></td></tr></table></figure>
+<p>其中，channel参数为引脚编码，frequency参数为设置的PWM频率。下面方法用来开启PWM脉冲：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p.start(dc)</span><br></pre></td></tr></table></figure>
+<p>其中，dc参数设置脉冲的高电平占空比，取值范围为0-100。</p>
+<p>通过下面的方法可以对PWM脉冲频率和占空比进行修改：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p.ChangeFrequency(freq) </span><br><span class="line">p.ChangeDutyCycle(dc)</span><br></pre></td></tr></table></figure>
+<p>需要结束PWM脉冲调制时，可以调用如下方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p.stop()</span><br></pre></td></tr></table></figure>
+<h2 id="三、点亮炫彩的三彩LED灯"><a href="#三、点亮炫彩的三彩LED灯" class="headerlink" title="三、点亮炫彩的三彩LED灯"></a>三、点亮炫彩的三彩LED灯</h2><p>现在，我们已经做好了所有准备工作，可以开始编码了。我们要实现这样一个功能，当程序运行时，先控制LED灯的红灯，绿灯，靛色灯分别亮2秒，之后通过脉冲混合，让LED灯进行各种颜色的炫彩闪烁，完整代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入GPIO控制薄块</span></span><br><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"><span class="comment"># 导入time模块</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="comment"># 导入系统模块</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义引脚(物理引脚)</span></span><br><span class="line">R,G,B = <span class="number">12</span>,<span class="number">35</span>,<span class="number">38</span></span><br><span class="line"><span class="comment"># 设置使用的引脚编码模式</span></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对要使用的引脚进行初始化</span></span><br><span class="line">GPIO.setup(R,GPIO.OUT)</span><br><span class="line">GPIO.setup(G,GPIO.OUT)</span><br><span class="line">GPIO.setup(B,GPIO.OUT)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用PWM脉冲宽度调制</span></span><br><span class="line">pR = GPIO.PWM(R, <span class="number">60</span>)</span><br><span class="line">pG = GPIO.PWM(G, <span class="number">60</span>)</span><br><span class="line">pB = GPIO.PWM(B, <span class="number">60</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启脉冲，默认的占空比为0，灯不亮</span></span><br><span class="line">pR.start(<span class="number">0</span>)</span><br><span class="line">pG.start(<span class="number">0</span>)</span><br><span class="line">pB.start(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始时，各种颜色点亮2秒</span></span><br><span class="line"><span class="comment"># 红灯先亮2秒</span></span><br><span class="line">pR.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line">pG.ChangeDutyCycle(<span class="number">0</span>)</span><br><span class="line">pB.ChangeDutyCycle(<span class="number">0</span>)</span><br><span class="line">time.sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换为绿灯亮2秒</span></span><br><span class="line">pR.ChangeDutyCycle(<span class="number">0</span>)</span><br><span class="line">pG.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line">pB.ChangeDutyCycle(<span class="number">0</span>)</span><br><span class="line">time.sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 替换为靛色灯亮2秒</span></span><br><span class="line">pR.ChangeDutyCycle(<span class="number">0</span>)</span><br><span class="line">pG.ChangeDutyCycle(<span class="number">0</span>)</span><br><span class="line">pB.ChangeDutyCycle(<span class="number">100</span>)</span><br><span class="line">time.sleep(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义要闪烁的时间 这里定义为10秒</span></span><br><span class="line">endTime = <span class="number">100</span></span><br><span class="line">current = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 开始进行炫彩闪烁</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    <span class="comment"># 通过占空比控制红色的占比</span></span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">101</span>, <span class="number">10</span>):</span><br><span class="line">        pR.ChangeDutyCycle(r)</span><br><span class="line">        <span class="comment"># 通过占空比控制绿色的占比</span></span><br><span class="line">        <span class="keyword">for</span> g <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">101</span>, <span class="number">10</span>):</span><br><span class="line">            pG.ChangeDutyCycle(g)</span><br><span class="line">            <span class="comment"># 空通过占空比控制蓝色的占比</span></span><br><span class="line">            <span class="keyword">for</span> b <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">101</span>, <span class="number">10</span>):</span><br><span class="line">                pB.ChangeDutyCycle(b)</span><br><span class="line">                time.sleep(<span class="number">0.1</span>)</span><br><span class="line">                current += <span class="number">1</span></span><br><span class="line">                <span class="comment"># 结束程序</span></span><br><span class="line">                <span class="keyword">if</span> (current &gt; endTime):</span><br><span class="line">                    pR.stop()</span><br><span class="line">                    pG.stop()</span><br><span class="line">                    pB.stop()</span><br><span class="line">                    GPIO.cleanup()</span><br><span class="line">                    sys.exit(<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>在树莓派上运行此程序，注意！小心不要被太亮的LED闪到了眼睛😝。</p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/07/13/417一起玩转树莓派（4）——用开关控制蜂鸣器发声/" class="pre-post btn btn-default" title='一起玩转树莓派（4）——用开关控制蜂鸣器发声'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（4）——用开关控制蜂鸣器发声</span>
+        </a>
+    
+    
+        <a href="/2021/07/07/415一起玩转树莓派（2）——从双色LED灯开始/" class="next-post btn btn-default" title='一起玩转树莓派（2）——从双色LED灯开始'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（2）——从双色LED灯开始</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（3）——点亮RGB炫彩LED灯"><span class="toc-text">一起玩转树莓派（3）——点亮RGB炫彩LED灯</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、认识RGB三原色LED灯并连线"><span class="toc-text">一、认识RGB三原色LED灯并连线</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、三原色与脉冲宽度调制"><span class="toc-text">二、三原色与脉冲宽度调制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、点亮炫彩的三彩LED灯"><span class="toc-text">三、点亮炫彩的三彩LED灯</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

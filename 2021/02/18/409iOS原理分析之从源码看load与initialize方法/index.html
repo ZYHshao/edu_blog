@@ -1,0 +1,367 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS原理分析之从源码看load与initialize方法 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS原理分析之从源码看load与initialize方法">
+            
+	            iOS原理分析之从源码看load与initialize方法
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/02/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS原理分析之从源码看load与initialize方法"><a href="#iOS原理分析之从源码看load与initialize方法" class="headerlink" title="iOS原理分析之从源码看load与initialize方法"></a>iOS原理分析之从源码看load与initialize方法</h1><h2 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h2><pre><code>在iOS开发中，NSObject类是万事万物的基类，其在Objective-C的整理类架构中非常重要，其中有两个很有名的方法：load方法与initialize方法。
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="keyword">void</span>)load;</span><br><span class="line">+ (<span class="keyword">void</span>)initialize;</span><br></pre></td></tr></table></figure>
+<p>说起这两个方法，你的第一反应一定是觉得太老套了，这两个方法的调用时机及作用几乎成为了iOS面试的必考题。其本身调用时机也非常简单：</p>
+<p>1. load方法在pre-main阶段被调用，每个类都会调用且只会调用一次。</p>
+<p>2. initialize方法在类或子类第一次进行方法调用前会调用。</p>
+<p>上面的两点说明本身是正确的，但是除此之外，还有许多问题值得我们深究，例如：</p>
+<p>1. 子类与父类的load方法的调用顺序是怎样的？</p>
+<p>2. 类与分类的load方法调用顺序是怎样的？</p>
+<p>3. 子类未实现load方法，会调用父类的么？</p>
+<p>4. 当有多个分类都实现了load方法时，会怎么样？</p>
+<p>5. 每个类的load方法的调用顺序是怎样的？</p>
+<p>6. 父类与子类的initialize的方法调用顺序是怎样的？</p>
+<p>7. 子类实现initialize方法后，还会调用父类的initialize方法么？</p>
+<p>8. 多个分类都实现了initialize方法后，会怎么样？</p>
+<p>9. …</p>
+<p>如上所提到的问题，你现在都能给出明确的答案么？其实，load与initialize方法本身还有许多非常有意思的特点，本篇博客，我们将结合Objective-C源码，对这两个方法的实现原理做深入的分析，相信，如果你对load与initialize还不够了解，不能完全明白上面所提出的问题，那么本篇博客将会使其收获满满。无论在以后的面试中，还是工作中使用到load和initialize方法时，都可能帮助你从源码上理解其执行原理。</p>
+<h2 id="二、实践出真知-先看load方法"><a href="#二、实践出真知-先看load方法" class="headerlink" title="二、实践出真知 - 先看load方法"></a>二、实践出真知 - 先看load方法</h2><pre><code>在开始分析之前，我们首先可以先创建一个测试工程，对load方法的执行时机先做一个简单的测试。首先，我们创建一个Xcode的命令行程序工程，在其中创建一些类、子类和分类，方便我们测试，目录结构如下图所示：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/up-80c97d2af95aa24b10cf29505a3b6b5012e.png" alt></p>
+<p>其中，MyObjectOne和MyObjectTwo都是继承自NSObject的类，MySubObjectOne是MyObjectOne的子类，MySubObjectTwo是MyObjectTwo的子类，同时我们还创建了3个分类，在类中实现load方法，并做打印处理，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="keyword">void</span>)load &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"load:%@"</span>, [<span class="keyword">self</span> className]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样，类似的也在分类中做实现：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="keyword">void</span>)load &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"load-category:%@"</span>, [<span class="keyword">self</span> className]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后我们在main函数中添加一个Log：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"Main"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行工程，打印结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">2021-02-18 14:33:46.773294+0800 KCObjc[21400:23090040] load:MyObjectOne</span><br><span class="line">2021-02-18 14:33:46.773867+0800 KCObjc[21400:23090040] load:MySubObjectOne</span><br><span class="line">2021-02-18 14:33:46.773959+0800 KCObjc[21400:23090040] load:MyObjectTwo</span><br><span class="line">2021-02-18 14:33:46.774008+0800 KCObjc[21400:23090040] load:MySubObjectTwo</span><br><span class="line">2021-02-18 14:33:46.774052+0800 KCObjc[21400:23090040] load-category:MyObjectTwo</span><br><span class="line">2021-02-18 14:33:46.774090+0800 KCObjc[21400:23090040] load-category:MyObjectOne</span><br><span class="line">2021-02-18 14:33:46.774127+0800 KCObjc[21400:23090040] load-category:MyObjectOne</span><br><span class="line">2021-02-18 14:33:46.774231+0800 KCObjc[21400:23090040] Main</span><br></pre></td></tr></table></figure>
+<p>从打印结果可以看出，load方法在main方法开始之前被调用，执行顺序上来说，先调用类的load方法，再调用分类的load方法，从父子类的关系上看来，先调用父类的load方法，再调用子类的load方法。</p>
+<pre><code>下面，我们就从源码上来分析下，系统如此调用load方法，是源自于什么样的奥妙。
+</code></pre><h2 id="三、从源码分析load方法的调用"><a href="#三、从源码分析load方法的调用" class="headerlink" title="三、从源码分析load方法的调用"></a>三、从源码分析load方法的调用</h2><pre><code>要深入的研究load方法，我们首先需要从Objective-C的初始化函数说起：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> _objc_init(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">bool</span> initialized = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (initialized) <span class="keyword">return</span>;</span><br><span class="line">    initialized = <span class="literal">true</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// fixme defer initialization until an objc-using image is found?</span></span><br><span class="line">    environ_init();</span><br><span class="line">    tls_init();</span><br><span class="line">    static_init();</span><br><span class="line">    runtime_init();</span><br><span class="line">    exception_init();</span><br><span class="line">    cache_init();</span><br><span class="line">    _imp_implementationWithBlock_init();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 其他的我们都不需要关注，只需要关注这行代码</span></span><br><span class="line">    _dyld_objc_notify_register(&amp;map_images, load_images, unmap_image);</span><br><span class="line"></span><br><span class="line"><span class="meta">#if __OBJC2__</span></span><br><span class="line">    didCallDyldNotifyRegister = <span class="literal">true</span>;</span><br><span class="line"><span class="meta">#endif</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>_objc_init函数定义在objc-os.mm文件中，这个函数用来做Objective-C程序的初始化，由引导程序进行调用，其调用实际会非常的早，并且是操作系统引导程序复杂调用驱动，对开发者无感。在_objc_init函数中，会进行环境的初始化，runtime的初始化以及缓存的初始化等等操作，其中很重要的一步操作是执行_dyld_objc_notify_register函数，这个函数会调用load_images函数来进行镜像的加载。</p>
+<pre><code>load方法的调用，其实就是类加载过程中的一步，首先，我们先来看一个load_images函数的实现：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">load_images(<span class="keyword">const</span> <span class="keyword">char</span> *path __unused, <span class="keyword">const</span> <span class="keyword">struct</span> mach_header *mh)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!didInitialAttachCategories &amp;&amp; didCallDyldNotifyRegister) &#123;</span><br><span class="line">        didInitialAttachCategories = <span class="literal">true</span>;</span><br><span class="line">        loadAllCategories();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Return without taking locks if there are no +load methods here.</span></span><br><span class="line">    <span class="keyword">if</span> (!hasLoadMethods((<span class="keyword">const</span> headerType *)mh)) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    recursive_mutex_locker_t lock(loadMethodLock);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Discover load methods</span></span><br><span class="line">    &#123;</span><br><span class="line">        mutex_locker_t lock2(runtimeLock);</span><br><span class="line">        prepare_load_methods((<span class="keyword">const</span> headerType *)mh);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Call +load methods (without runtimeLock - re-entrant)</span></span><br><span class="line">    call_load_methods();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>滤掉其中我们不关心的部分，与load方法调用相关的核心如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">load_images(<span class="keyword">const</span> <span class="keyword">char</span> *path __unused, <span class="keyword">const</span> <span class="keyword">struct</span> mach_header *mh)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 镜像中没有load方法，直接返回</span></span><br><span class="line">    <span class="keyword">if</span> (!hasLoadMethods((<span class="keyword">const</span> headerType *)mh)) <span class="keyword">return</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 准备load方法</span></span><br><span class="line">        prepare_load_methods((<span class="keyword">const</span> headerType *)mh);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 进行load方法的调用</span></span><br><span class="line">    call_load_methods();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最核心的部分在于load方法的准备与laod方法的调用，我们一步一步看，先来看load方法的准备(我们去掉了无关紧要的部分)：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> prepare_load_methods(<span class="keyword">const</span> headerType *mhdr)</span><br><span class="line">&#123;</span><br><span class="line">    size_t count, i;</span><br><span class="line">    <span class="comment">// 获取所有类 组成列表</span></span><br><span class="line">    classref_t <span class="keyword">const</span> *classlist = </span><br><span class="line">        _getObjc2NonlazyClassList(mhdr, &amp;count);</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">        <span class="comment">// 将所有类的load方法进行整理</span></span><br><span class="line">        schedule_class_load(remapClass(classlist[i]));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 获取所有的分类 组成列表</span></span><br><span class="line">    category_t * <span class="keyword">const</span> *categorylist = _getObjc2NonlazyCategoryList(mhdr, &amp;count);</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">        category_t *cat = categorylist[i];</span><br><span class="line">        <span class="comment">// 将分类的load方法进行整理</span></span><br><span class="line">        add_category_to_loadable_list(cat);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看到这里，我们基本就有头绪了，load方法的调用顺序，基本可以确定是由整理过程所决定的，并且我们可以发现，类的load方法整理与分类的load方法整理是互相独立的，因此也可以推断其调用的时机也是独立的。首先我们先来看类的load方法整理函数schedule_class_load(去掉无关代码后)：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> schedule_class_load(Class cls)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 类不存在或者已经加载过load，则return</span></span><br><span class="line">    <span class="keyword">if</span> (!cls) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span> (cls-&gt;data()-&gt;flags &amp; RW_LOADED) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保证加载顺序，递归进行父类加载</span></span><br><span class="line">    schedule_class_load(cls-&gt;superclass);</span><br><span class="line">    <span class="comment">// 将当前类的load方法加载进load方法列表中</span></span><br><span class="line">    add_class_to_loadable_list(cls);</span><br><span class="line">    <span class="comment">// 将当前类设置为已经加载过laod</span></span><br><span class="line">    cls-&gt;setInfo(RW_LOADED); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，schedule_class_load函数中使用了递归的方式演着继承链逐层向上，保证在加载load方法时，先加载父类，再加载子类。add_class_to_loadable_list是核心的load方法整理函数，如下(去掉了无关代码)：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> add_class_to_loadable_list(Class cls)</span><br><span class="line">&#123;</span><br><span class="line">    IMP method;</span><br><span class="line">    <span class="comment">// 读取类中的load方法</span></span><br><span class="line">    method = cls-&gt;getLoadMethod();</span><br><span class="line">    <span class="keyword">if</span> (!method) <span class="keyword">return</span>; <span class="comment">// 类中没有实现load方法，直接返回</span></span><br><span class="line">    <span class="comment">// 构建存储列表及扩容逻辑</span></span><br><span class="line">    <span class="keyword">if</span> (loadable_classes_used == loadable_classes_allocated) &#123;</span><br><span class="line">        loadable_classes_allocated = loadable_classes_allocated*<span class="number">2</span> + <span class="number">16</span>;</span><br><span class="line">        loadable_classes = (<span class="keyword">struct</span> loadable_class *)</span><br><span class="line">            realloc(loadable_classes,</span><br><span class="line">                              loadable_classes_allocated *</span><br><span class="line">                              <span class="keyword">sizeof</span>(<span class="keyword">struct</span> loadable_class));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 向列表中添加 loadable_class 结构体，这个结构体中存储了类与对应的laod方法</span></span><br><span class="line">    loadable_classes[loadable_classes_used].cls = cls;</span><br><span class="line">    loadable_classes[loadable_classes_used].method = method;</span><br><span class="line">    <span class="comment">// 标记列表index的指针移动</span></span><br><span class="line">    loadable_classes_used++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>loadable_clas结构体的定义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> loadable_class &#123;</span><br><span class="line">    Class cls;  <span class="comment">// may be nil</span></span><br><span class="line">    IMP method;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>getLoadMetho函数的实现主要是从类中获取到load方法的实现，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">IMP </span><br><span class="line">objc_class::getLoadMethod()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 获取方法列表</span></span><br><span class="line">    <span class="keyword">const</span> method_list_t *mlist;</span><br><span class="line">    mlist = ISA()-&gt;data()-&gt;ro()-&gt;baseMethods();</span><br><span class="line">    <span class="keyword">if</span> (mlist) &#123;</span><br><span class="line">        <span class="comment">// 遍历，找到load方法返回</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">const</span> auto&amp; meth : *mlist) &#123;</span><br><span class="line">            <span class="keyword">const</span> <span class="keyword">char</span> *name = sel_cname(meth.name);</span><br><span class="line">            <span class="keyword">if</span> (<span class="number">0</span> == strcmp(name, <span class="string">"load"</span>)) &#123;</span><br><span class="line">                <span class="keyword">return</span> meth.imp;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，关于类的load方法的准备逻辑已经非常清晰了，最终会按照先父类后子类的顺序将所有类的load方法添加进名为loadable_classes的列表中，loadable_classes这个名字你要注意一下，后面我们还会遇到它。</p>
+<pre><code>我们再来看分类的laod方法准备过程，其与我们上面介绍的类非常相似，add\_category\_to\_loadable\_list函数简化后如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> add_category_to_loadable_list(Category cat)</span><br><span class="line">&#123;</span><br><span class="line">    IMP method;</span><br><span class="line">    <span class="comment">// 获取当前分类的load方法</span></span><br><span class="line">    method = _category_getLoadMethod(cat);</span><br><span class="line">    <span class="keyword">if</span> (!method) <span class="keyword">return</span>;</span><br><span class="line">    <span class="comment">// 列表创建与扩容逻辑</span></span><br><span class="line">    <span class="keyword">if</span> (loadable_categories_used == loadable_categories_allocated) &#123;</span><br><span class="line">        loadable_categories_allocated = loadable_categories_allocated*<span class="number">2</span> + <span class="number">16</span>;</span><br><span class="line">        loadable_categories = (<span class="keyword">struct</span> loadable_category *)</span><br><span class="line">            realloc(loadable_categories,</span><br><span class="line">                              loadable_categories_allocated *</span><br><span class="line">                              <span class="keyword">sizeof</span>(<span class="keyword">struct</span> loadable_category));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 将分类与load方法进行存储</span></span><br><span class="line">    loadable_categories[loadable_categories_used].cat = cat;</span><br><span class="line">    loadable_categories[loadable_categories_used].method = method;</span><br><span class="line">    loadable_categories_used++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，最终分类的load方法是存储在了loadable_categories列表中。</p>
+<pre><code>准备好了load方法，我们再来分析下load方法的执行过程，call\_load\_methods函数的核心实现如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> call_load_methods(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">bool</span> more_categories;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="comment">// 先对 loadable_classes 进行遍历，loadable_classes_used这个字段可以理解为列表的元素个数</span></span><br><span class="line">        <span class="keyword">while</span> (loadable_classes_used &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            call_class_loads();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 再对类别进行遍历调用</span></span><br><span class="line">        more_categories = call_category_loads();</span><br><span class="line">       </span><br><span class="line">    &#125; <span class="keyword">while</span> (loadable_classes_used &gt; <span class="number">0</span>  ||  more_categories);</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>call_class_loads函数实现简化后如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> call_class_loads(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="comment">// loadable_classes列表</span></span><br><span class="line">    <span class="keyword">struct</span> loadable_class *classes = loadable_classes;</span><br><span class="line">    <span class="comment">// 需要执行load方法个数</span></span><br><span class="line">    <span class="keyword">int</span> used = loadable_classes_used;</span><br><span class="line">    <span class="comment">// 清理数据</span></span><br><span class="line">    loadable_classes = <span class="literal">nil</span>;</span><br><span class="line">    loadable_classes_allocated = <span class="number">0</span>;</span><br><span class="line">    loadable_classes_used = <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 循环进行执行 循环的循序是从前到后</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; used; i++) &#123;</span><br><span class="line">        <span class="comment">// 获取类</span></span><br><span class="line">        Class cls = classes[i].cls;</span><br><span class="line">        <span class="comment">// 获取对应load方法</span></span><br><span class="line">        load_method_t load_method = (load_method_t)classes[i].method;</span><br><span class="line">        <span class="keyword">if</span> (!cls) <span class="keyword">continue</span>; </span><br><span class="line">        <span class="comment">// 执行load方法</span></span><br><span class="line">        (*load_method)(cls, <span class="keyword">@selector</span>(load));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>call_category_loads函数的实现要复杂一些，简化后如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">bool</span> call_category_loads(<span class="keyword">void</span>)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">int</span> i, shift;</span><br><span class="line">    <span class="keyword">bool</span> new_categories_added = <span class="literal">NO</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取loadable_categories分类load方法列表</span></span><br><span class="line">    <span class="keyword">struct</span> loadable_category *cats = loadable_categories;</span><br><span class="line">    <span class="keyword">int</span> used = loadable_categories_used;</span><br><span class="line">    <span class="keyword">int</span> allocated = loadable_categories_allocated;</span><br><span class="line">    loadable_categories = <span class="literal">nil</span>;</span><br><span class="line">    loadable_categories_allocated = <span class="number">0</span>;</span><br><span class="line">    loadable_categories_used = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从前往后遍历进行load方法的调用</span></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; used; i++) &#123;</span><br><span class="line">        Category cat = cats[i].cat;</span><br><span class="line">        load_method_t load_method = (load_method_t)cats[i].method;</span><br><span class="line">        Class cls;</span><br><span class="line">        <span class="keyword">if</span> (!cat) <span class="keyword">continue</span>;</span><br><span class="line">        cls = _category_getClass(cat);</span><br><span class="line">        <span class="keyword">if</span> (cls  &amp;&amp;  cls-&gt;isLoadable()) &#123;</span><br><span class="line">            (*load_method)(cls, <span class="keyword">@selector</span>(load));</span><br><span class="line">            cats[i].cat = <span class="literal">nil</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> new_categories_added;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，我相信你已经对load方法为何类先调用，分类后调用，并且为何父类先调用，子类后调用。但是还有一点，我们不甚明了，即类之间或分类之间的调用顺序是怎么确定的，从源码中可以看到，类列表是通过_getObjc2NonlazyClassList函数获取的，同样分类的列表是通过_getObjc2NonlazyCategoryList函数获取的。这两个函数获取到的类或分类的顺序实际上是与类源文件的编译顺序有关的，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-8ef31810786ef312f5fedc6001fc20a1383.png" alt></p>
+<p>可以看到，打印的load方法的执行顺序与源代码的编译顺序是一直的。</p>
+<h2 id="四、initialize方法分析"><a href="#四、initialize方法分析" class="headerlink" title="四、initialize方法分析"></a>四、initialize方法分析</h2><pre><code>我们可以采用和分析load方法时一样的策略来对initialize方法的执行情况，进行测试，首先将测试工程中所有类中添加initialize方法的实现。此时如果直接运行工程，你会发现控制台没有任何输出，这是由于只有第一次调用类的方法时，才会执行initialize方法，在main函数中编写如下测试代码：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        [MySubObjectOne new];</span><br><span class="line">        [MyObjectOne new];</span><br><span class="line">        [MyObjectTwo new];</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"------------"</span>);</span><br><span class="line">        [MySubObjectOne new];</span><br><span class="line">        [MyObjectOne new];</span><br><span class="line">        [MyObjectTwo new];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码控制台打印效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2021-02-18 21:29:55.761897+0800 KCObjc[43834:23521232] initialize-cateOne:MyObjectOne</span><br><span class="line">2021-02-18 21:29:55.762526+0800 KCObjc[43834:23521232] initialize:MySubObjectOne</span><br><span class="line">2021-02-18 21:29:55.762622+0800 KCObjc[43834:23521232] initialize-cate:MyObjectTwo</span><br><span class="line">2021-02-18 21:29:55.762665+0800 KCObjc[43834:23521232] ------------</span><br></pre></td></tr></table></figure>
+<p>可以看到，打印数据都出现在分割线前，说明一旦一个类的initialize方法被调用后，后续再向这个类发送消息，也不会在调用initialize方法，还有一点需要注意，需要注意，如果对子类发送消息，父类的initialize会先调用，再调用子类的initialize，同时，分类中如果实现了initialize方法则会覆盖类本身的，并且分类的加载顺序靠后的会覆盖之前的。下面我们就通过源码来分析下initialize方法的这种调用特点。</p>
+<pre><code>首先，在调用类的类方法时，会执行runtime中的class_getClassMethod方法来寻找实现函数，这个方法在源码中的实现如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Method class_getClassMethod(Class cls, SEL sel)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!cls  ||  !sel) <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">    <span class="keyword">return</span> class_getInstanceMethod(cls-&gt;getMeta(), sel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过源码可以看到，调用一个类的类方法，实际上是调用其元类的示例方法，getMeta函数用来获取类的元类，关于类和元类的相关组织原理，我们这里先不扩展。我们需要关注的是class_getInstanceMethod这个函数，这个函数的实现也非常简单，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Method class_getInstanceMethod(Class cls, SEL sel)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!cls  ||  !sel) <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 做查询方法列表，尝试方法解析相关工作</span></span><br><span class="line">    lookUpImpOrForward(<span class="literal">nil</span>, sel, cls, LOOKUP_RESOLVER);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从类对象中获取方法</span></span><br><span class="line">    <span class="keyword">return</span> _class_getMethod(cls, sel);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在class_getInstanceMethod方法的实现中，_class_getMethod是最终获取要调用的方法的函数，在这之前，lookUpImpOrForward函数会做一些前置操作，其中就有initialize函数的调用逻辑，我们去掉无关的逻辑，lookUpImpOrForward中核心的实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">IMP lookUpImpOrForward(<span class="keyword">id</span> inst, SEL sel, Class cls, <span class="keyword">int</span> behavior)</span><br><span class="line">&#123;</span><br><span class="line">    IMP imp = <span class="literal">nil</span>;</span><br><span class="line">    <span class="comment">// 核心在于!cls-&gt;isInitialized() 如果当前类未初始化过，会执行initializeAndLeaveLocked函数</span></span><br><span class="line">    <span class="keyword">if</span> (slowpath((behavior &amp; LOOKUP_INITIALIZE) &amp;&amp; !cls-&gt;isInitialized())) &#123;</span><br><span class="line">        cls = initializeAndLeaveLocked(cls, inst, runtimeLock);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> imp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>initializeAndLeaveLocked会直接调用initializeAndMaybeRelock函数，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> Class initializeAndLeaveLocked(Class cls, <span class="keyword">id</span> obj, mutex_t&amp; lock)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> initializeAndMaybeRelock(cls, obj, lock, <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>initializeAndMaybeRelock函数中会做类的初始化逻辑，这个过程是线程安全的，其核心相关代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> Class initializeAndMaybeRelock(Class cls, <span class="keyword">id</span> inst,</span><br><span class="line">                                      mutex_t&amp; lock, <span class="keyword">bool</span> leaveLocked)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 如果已经初始化过，直接返回</span></span><br><span class="line">    <span class="keyword">if</span> (cls-&gt;isInitialized()) &#123;</span><br><span class="line">        <span class="keyword">return</span> cls;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 找到当前类的非元类</span></span><br><span class="line">    Class nonmeta = getMaybeUnrealizedNonMetaClass(cls, inst);</span><br><span class="line">    <span class="comment">// 进行初始化操作</span></span><br><span class="line">    initializeNonMetaClass(nonmeta);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> cls;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>initializeNonMetaClass函数会采用递归的方式沿着继承链向上查询，找到所有未初始化过的父类进行初始化，核心实现简化如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> initializeNonMetaClass(Class cls)</span><br><span class="line">&#123;</span><br><span class="line">    Class supercls;</span><br><span class="line">    <span class="comment">// 标记是否需要初始化</span></span><br><span class="line">    <span class="keyword">bool</span> reallyInitialize = <span class="literal">NO</span>;</span><br><span class="line">    <span class="comment">// 父类如果存在，并且没有初始化过，则递归进行父类的初始化</span></span><br><span class="line">    supercls = cls-&gt;superclass;</span><br><span class="line">    <span class="keyword">if</span> (supercls  &amp;&amp;  !supercls-&gt;isInitialized()) &#123;</span><br><span class="line">        initializeNonMetaClass(supercls);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    SmallVector&lt;_objc_willInitializeClassCallback, <span class="number">1</span>&gt; localWillInitializeFuncs;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 如果当前不是正在初始化，并且当前类没有初始化过</span></span><br><span class="line">        <span class="keyword">if</span> (!cls-&gt;isInitialized() &amp;&amp; !cls-&gt;isInitializing()) &#123;</span><br><span class="line">            <span class="comment">// 设置初始化标志，此类标记为初始化过</span></span><br><span class="line">            cls-&gt;setInitializing();</span><br><span class="line">            <span class="comment">// 标记需要进行初始化</span></span><br><span class="line">            reallyInitialize = <span class="literal">YES</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 是否需要进行初始化</span></span><br><span class="line">    <span class="keyword">if</span> (reallyInitialize) &#123;</span><br><span class="line">        <span class="keyword">@try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">// 调用初始化函数</span></span><br><span class="line">            callInitialize(cls);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">@catch</span> (...) &#123;</span><br><span class="line">            <span class="keyword">@throw</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>callInitialize函数最终会调用objc_msgSend函数来向类发送initialize初始化消息，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> callInitialize(Class cls)</span><br><span class="line">&#123;</span><br><span class="line">    ((<span class="keyword">void</span>(*)(Class, SEL))objc_msgSend)(cls, <span class="keyword">@selector</span>(initialize));</span><br><span class="line">    <span class="keyword">asm</span>(<span class="string">""</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意，initialize方法与load方法最大的区别在于其最终是通过objc_msgSend来实现的，每个类如果未初始化过，都会通过objc_msgSend来向类发送一次initialize消息，因此，如果子类没有对initialize实现，按照objc_msgSend的消息机制，其是会沿着继承链一路向上找到父类的实现进行调用的，所有initialize方法并不是只会被调用一次，假如父类中实现了这个方法，并且它有多个未实现此方法的子类，则当每个子类第一次接受消息时，都会调用一遍父类的initialize方法，这点非常重要，在实际开发中一定要牢记。</p>
+<h2 id="五、结语"><a href="#五、结语" class="headerlink" title="五、结语"></a>五、结语</h2><pre><code>load和initialize方法是iOS开发中非常简单也也非常常用的两个方法，然而其与普通的方法比起来，还有有一些特殊，通过对源码的解读，我们可以更加深刻的理解这些特殊之处的原因及原理，编程的过程就像修行，知其然也知其所以然，与大家共勉。
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：805263726</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/03/18/410[iOS初级教程之一]社会化分享实践/" class="pre-post btn btn-default" title='iOS初级教程之一:社会化分享实践'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS初级教程之一:社会化分享实践</span>
+        </a>
+    
+    
+        <a href="/2020/11/30/408SwiftUI直通车系列（6）—— 使用动画/" class="next-post btn btn-default" title='SwiftUI直通车系列（6）—— 使用动画'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">SwiftUI直通车系列（6）—— 使用动画</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS原理分析之从源码看load与initialize方法"><span class="toc-text">iOS原理分析之从源码看load与initialize方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、实践出真知-先看load方法"><span class="toc-text">二、实践出真知 - 先看load方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、从源码分析load方法的调用"><span class="toc-text">三、从源码分析load方法的调用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、initialize方法分析"><span class="toc-text">四、initialize方法分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、结语"><span class="toc-text">五、结语</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

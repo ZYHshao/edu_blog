@@ -1,0 +1,304 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发一款小巧简洁的日历控件 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发一款小巧简洁的日历控件">
+            
+	            iOS开发一款小巧简洁的日历控件
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/09/07</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发一款小巧简洁的日历控件"><a href="#iOS开发一款小巧简洁的日历控件" class="headerlink" title="iOS开发一款小巧简洁的日历控件"></a>iOS开发一款小巧简洁的日历控件</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>日 历是iOS开发中有时会用到的一个UI控件，网上开源的代码也很多，我浏览过一些，大致有两种模式，一种是日历的逻辑由开发者自己实现，通过计算闰年与平 年来确定月份天数，另外一种模式是通过NSDate这个时间类，来获取日历的信息。我个人认为后一种更加安全，代码性能也会更加优质，下面就是我用这种模 式实现的一个日历控件。
+</code></pre><h3 id="二、设计思路"><a href="#二、设计思路" class="headerlink" title="二、设计思路"></a>二、设计思路</h3><h4 id="1、先来看下效果吧"><a href="#1、先来看下效果吧" class="headerlink" title="1、先来看下效果吧"></a>1、先来看下效果吧</h4><p><img src="http://static.oschina.net/uploads/space/2015/0907/151734_UMxO_2340880.png" alt>        <img src="http://static.oschina.net/uploads/space/2015/0907/151735_BsEo_2340880.png" alt>           <img src="http://static.oschina.net/uploads/space/2015/0907/151735_ZUgv_2340880.png" alt></p>
+<h4 id="2、我们需要实现的功能"><a href="#2、我们需要实现的功能" class="headerlink" title="2、我们需要实现的功能"></a>2、我们需要实现的功能</h4><p>（1）每行7天，对应星期，列数为将当前月显示完全</p>
+<p>（2）今日标红</p>
+<p>（3）点击的日期背景填充</p>
+<p>（4）提供特殊标记，用于标记计划日，节日等</p>
+<p>（5）左右无限翻页，直到世界起源和末日</p>
+<h4 id="3、设计步骤"><a href="#3、设计步骤" class="headerlink" title="3、设计步骤"></a>3、设计步骤</h4><p>（1）设计一个日历模型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;YHBaseModel.h&quot;</span><br><span class="line"></span><br><span class="line">@interface YHBaseDateModel : YHBaseModel</span><br><span class="line">@property(nonatomic,strong)NSString * year;</span><br><span class="line">@property(nonatomic,strong)NSString * month;</span><br><span class="line">@property(nonatomic,strong)NSString * day;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>（2）向系统的NSDate类中添加一些扩展方法，便于我们使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">//头文件部分</span><br><span class="line">@interface NSDate (YHBaseCalendar)</span><br><span class="line">/**</span><br><span class="line"> *获取当前月的天数</span><br><span class="line"> */</span><br><span class="line">- (NSUInteger)YHBaseNumberOfDaysInCurrentMonth;</span><br><span class="line">/**</span><br><span class="line"> *获取本月第一天</span><br><span class="line"> */</span><br><span class="line">- (NSDate *)YHBaseFirstDayOfCurrentMonth;</span><br><span class="line">//下面这些方法用于获取各种整形的数据</span><br><span class="line">/**</span><br><span class="line"> *确定某天是周几</span><br><span class="line"> */</span><br><span class="line">-(int)YHBaseWeekly;</span><br><span class="line">/**</span><br><span class="line"> *年月日 时分秒</span><br><span class="line"> */</span><br><span class="line">-(int)getYear;</span><br><span class="line">-(int)getMonth;</span><br><span class="line">-(int)getDay;</span><br><span class="line">-(int)getHour;</span><br><span class="line">-(int)getMinute;</span><br><span class="line">-(int)getSecond;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//实现部分</span><br><span class="line">@implementation NSDate (YHBaseCalendar)</span><br><span class="line">-(NSUInteger)YHBaseNumberOfDaysInCurrentMonth&#123;</span><br><span class="line">     return [[NSCalendar currentCalendar] rangeOfUnit:NSDayCalendarUnit inUnit:NSMonthCalendarUnit forDate:self].length;  </span><br><span class="line">&#125;</span><br><span class="line">- (NSDate *)YHBaseFirstDayOfCurrentMonth</span><br><span class="line">&#123;</span><br><span class="line">    NSDate *startDate = nil;</span><br><span class="line">    BOOL ok = [[NSCalendar currentCalendar] rangeOfUnit:NSMonthCalendarUnit startDate:&amp;startDate interval:NULL forDate:self];</span><br><span class="line">    NSAssert1(ok, @&quot;Failed to calculate the first day of the month based on %@&quot;, self);</span><br><span class="line">    return startDate;</span><br><span class="line">&#125;</span><br><span class="line">-(int)YHBaseWeekly&#123;</span><br><span class="line">     return (int)[[NSCalendar currentCalendar] ordinalityOfUnit:NSDayCalendarUnit inUnit:NSWeekCalendarUnit forDate:self];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-(int)getYear&#123;</span><br><span class="line">    NSCalendar *calendar = [NSCalendar currentCalendar];</span><br><span class="line">    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;</span><br><span class="line">    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:self];</span><br><span class="line">    return (int)dateComponent.year;</span><br><span class="line">&#125;</span><br><span class="line">-(int)getMonth&#123;</span><br><span class="line">    NSCalendar *calendar = [NSCalendar currentCalendar];</span><br><span class="line">    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;</span><br><span class="line">    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:self];</span><br><span class="line">    return (int)dateComponent.month;</span><br><span class="line">&#125;</span><br><span class="line">-(int)getDay&#123;</span><br><span class="line">    NSCalendar *calendar = [NSCalendar currentCalendar];</span><br><span class="line">    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;</span><br><span class="line">    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:self];</span><br><span class="line">    return (int)dateComponent.day;</span><br><span class="line">&#125;</span><br><span class="line">-(int)getHour&#123;</span><br><span class="line">    NSCalendar *calendar = [NSCalendar currentCalendar];</span><br><span class="line">    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;</span><br><span class="line">    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:self];</span><br><span class="line">    return (int)dateComponent.hour;</span><br><span class="line">&#125;</span><br><span class="line">-(int)getMinute&#123;</span><br><span class="line">    NSCalendar *calendar = [NSCalendar currentCalendar];</span><br><span class="line">    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;</span><br><span class="line">    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:self];</span><br><span class="line">    return (int)dateComponent.minute;</span><br><span class="line">&#125;</span><br><span class="line">-(int)getSecond&#123;</span><br><span class="line">    NSCalendar *calendar = [NSCalendar currentCalendar];</span><br><span class="line">    NSUInteger unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit;</span><br><span class="line">    NSDateComponents *dateComponent = [calendar components:unitFlags fromDate:self];</span><br><span class="line">    return (int)dateComponent.second;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>（3）设计我们的UI控件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br></pre></td><td class="code"><pre><span class="line">//头文件部分</span><br><span class="line">@interface YHBaseCalendarView : YHBaseView</span><br><span class="line">@property(nonatomic,strong)NSDate * currentDate;</span><br><span class="line">//标记数组 用于标记特殊日期 这个数组中存放的必须是YHBaseDateModel 对象</span><br><span class="line">@property(nonatomic,strong)NSArray * markArray;</span><br><span class="line">@property(nonatomic,weak)id&lt;YHBaseCalendarViewDelegate&gt; delegate;</span><br><span class="line">@end</span><br><span class="line">//实现部分</span><br><span class="line">@interface YHBaseCalendarView()&lt;UIScrollViewDelegate&gt;</span><br><span class="line">&#123;</span><br><span class="line">    //星期</span><br><span class="line">    UIView * _headView;</span><br><span class="line">    //日历的展示</span><br><span class="line">    UIView * _bodyViewL;</span><br><span class="line">    UIView * _bodyViewM;</span><br><span class="line">    UIView * _bodyViewR;</span><br><span class="line">    //滑动功能的支持</span><br><span class="line">    UIScrollView * _scrollView;</span><br><span class="line">    NSDate * _today;</span><br><span class="line">    </span><br><span class="line">    YHBaseDateModel * _selectModel;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line">@implementation YHBaseCalendarView</span><br><span class="line">-(void)reloadView&#123;</span><br><span class="line">    _currentDate = [NSDate date];</span><br><span class="line">    _today = [NSDate date];</span><br><span class="line">    _selectModel = [[YHBaseDateModel alloc]init];</span><br><span class="line">    _selectModel.year = [NSString stringWithFormat:@&quot;%d&quot;,[_today getYear]];</span><br><span class="line">    _selectModel.month =[NSString stringWithFormat:@&quot;%d&quot;,[_today getMonth]];</span><br><span class="line">    _selectModel.day = [NSString stringWithFormat:@&quot;%d&quot;,[_today getDay]];</span><br><span class="line">    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, self.frame.size.width, self.frame.size.height)];</span><br><span class="line">    _scrollView.contentSize = CGSizeMake(3*self.frame.size.width, 0);</span><br><span class="line">    _scrollView.contentOffset = CGPointMake(self.frame.size.width, 0);</span><br><span class="line">    _scrollView.pagingEnabled=YES;</span><br><span class="line">    _scrollView.delegate=self;</span><br><span class="line">    [self addSubview:_scrollView];</span><br><span class="line">    _bodyViewL = [[UIView alloc]initWithFrame:CGRectMake(0, 0, _scrollView.frame.size.width, _scrollView.frame.size.height)];</span><br><span class="line">    [_scrollView addSubview:_bodyViewL];</span><br><span class="line">    _bodyViewM = [[UIView alloc]initWithFrame:CGRectMake(_scrollView.frame.size.width,0,  _scrollView.frame.size.width, _scrollView.frame.size.height)];</span><br><span class="line">    [_scrollView addSubview:_bodyViewM];</span><br><span class="line">    _bodyViewR = [[UIView alloc]initWithFrame:CGRectMake(_scrollView.frame.size.width*2, 0, _scrollView.frame.size.width, _scrollView.frame.size.height)];</span><br><span class="line">    [_scrollView addSubview:_bodyViewR];</span><br><span class="line">    //展示星期</span><br><span class="line">    _headView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, 30)];</span><br><span class="line">    _headView.backgroundColor = [UIColor redColor];</span><br><span class="line">    NSArray * weekArray = @[@&quot;SUN&quot;,@&quot;MON&quot;,@&quot;TUES&quot;,@&quot;WED&quot;,@&quot;THUR&quot;,@&quot;FRI&quot;,@&quot;SAT&quot;];</span><br><span class="line">    for (int i=0; i&lt;7; i++) &#123;</span><br><span class="line">        UILabel * label = [[UILabel alloc]initWithFrame:CGRectMake(self.frame.size.width/7*i, 0, self.frame.size.width/7, 30)];</span><br><span class="line">        if (i!=0&amp;&amp;i!=6) &#123;</span><br><span class="line">            label.backgroundColor = [UIColor redColor];</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            label.backgroundColor = [UIColor purpleColor];</span><br><span class="line">        &#125;</span><br><span class="line">        label.text=weekArray[i];</span><br><span class="line">        label.textAlignment = NSTextAlignmentCenter;</span><br><span class="line">        label.layer.borderWidth=1;</span><br><span class="line">        label.layer.borderColor = [[UIColor grayColor]CGColor];</span><br><span class="line">        label.font = [UIFont boldSystemFontOfSize:16];</span><br><span class="line">        label.layer.borderColor=[[UIColor grayColor] CGColor];</span><br><span class="line">        label.textColor = [UIColor whiteColor];</span><br><span class="line">        label.layer.borderWidth = 1;</span><br><span class="line">        [_headView addSubview:label];</span><br><span class="line">    &#125;</span><br><span class="line">    [self addSubview:_headView];</span><br><span class="line">    </span><br><span class="line">    [self creatViewWithData:_currentDate onView:_bodyViewM];</span><br><span class="line">    [self creatViewWithData:[YHBaseDateTools getPreviousframDate:_currentDate] onView:_bodyViewL];</span><br><span class="line">    [self creatViewWithData:[YHBaseDateTools getNextMonthframDate:_currentDate] onView:_bodyViewR];</span><br><span class="line">&#125;</span><br><span class="line">//核心的构造方法</span><br><span class="line">-(void)creatViewWithData:(id)data onView:(UIView *)bodyView&#123;</span><br><span class="line">    NSDate * currentDate = (NSDate *)data;</span><br><span class="line">    //获取当前月有多少天</span><br><span class="line">    int monthNum = (int)[currentDate YHBaseNumberOfDaysInCurrentMonth];</span><br><span class="line">    //获取第一天的日期</span><br><span class="line">    NSDate * firstDate = [currentDate YHBaseFirstDayOfCurrentMonth];</span><br><span class="line">    //确定这一天是周几</span><br><span class="line">    int weekday = [firstDate YHBaseWeekly];</span><br><span class="line">    //确定创建多少行</span><br><span class="line">    int weekRow=0;</span><br><span class="line">    int tmp=monthNum;</span><br><span class="line">    if (weekday!=7) &#123;</span><br><span class="line">        weekRow++;</span><br><span class="line">        tmp=monthNum-(7-weekday);</span><br><span class="line">    &#125;</span><br><span class="line">    weekRow += tmp/7;</span><br><span class="line">    weekRow += (tmp%7)?1:0;</span><br><span class="line">    //开始创建按钮</span><br><span class="line">    /**</span><br><span class="line">     *这里的逻辑是有问题的，应该设计成cell的复用机制，而不应该重复耗性能的创建 有时间在优化</span><br><span class="line">     */</span><br><span class="line">#warning 可以优化哦 </span><br><span class="line">    NSArray * array = [bodyView subviews];</span><br><span class="line">    for (UIView * v in array) &#123;</span><br><span class="line">        [v removeFromSuperview];</span><br><span class="line">    &#125;</span><br><span class="line">    int nextDate = 1;</span><br><span class="line">    //行</span><br><span class="line">    for (int i=0; i&lt;weekRow; i++) &#123;</span><br><span class="line">        //列</span><br><span class="line">        for (int j=0; j&lt;7; j++) &#123;</span><br><span class="line">            //先进行上个月余天的创建</span><br><span class="line">            UIButton * btn;</span><br><span class="line">            if (weekday!=7&amp;&amp;(i*7+j)&lt;weekday) &#123;</span><br><span class="line">                //获取上个月有多少天</span><br><span class="line">                NSDate * preDate = [YHBaseDateTools getPreviousframDate:currentDate];</span><br><span class="line">                int preDays = (int)[preDate YHBaseNumberOfDaysInCurrentMonth];</span><br><span class="line">                btn =[[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width/7*j, self.frame.size.width/7*i, self.frame.size.width/7, self.frame.size.width/7)];</span><br><span class="line">                [btn setTitle:[NSString stringWithFormat:@&quot;%d&quot;,preDays-weekday+j+1] forState:UIControlStateNormal];</span><br><span class="line">                [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];</span><br><span class="line">                [bodyView addSubview:btn];</span><br><span class="line">            &#125;else if((i*7+j+1-(weekday==7?0:weekday))&lt;=monthNum)&#123;</span><br><span class="line">                btn =[[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width/7*j, self.frame.size.width/7*i, self.frame.size.width/7, self.frame.size.width/7)];</span><br><span class="line">                [btn setTitle:[NSString stringWithFormat:@&quot;%d&quot;,(i*7+j+1-(weekday==7?0:weekday))] forState:UIControlStateNormal];</span><br><span class="line">                [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];</span><br><span class="line">                [bodyView addSubview:btn];</span><br><span class="line">            &#125;else&#123;</span><br><span class="line">                btn =[[UIButton alloc]initWithFrame:CGRectMake(self.frame.size.width/7*j, self.frame.size.width/7*i, self.frame.size.width/7, self.frame.size.width/7)];</span><br><span class="line">                [btn setTitle:[NSString stringWithFormat:@&quot;%d&quot;,nextDate++] forState:UIControlStateNormal];</span><br><span class="line">                [btn setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];</span><br><span class="line">                [bodyView addSubview:btn];</span><br><span class="line">            &#125;</span><br><span class="line">            //将今天的日期标出</span><br><span class="line">            if ([currentDate getYear]==[_today getYear]&amp;&amp;[currentDate getMonth]==[_today getMonth]&amp;&amp;[btn.titleLabel.text intValue]==[_today getDay]&amp;&amp;!CGColorEqualToColor([btn.titleLabel.textColor CGColor], [[UIColor grayColor] CGColor])) &#123;</span><br><span class="line">                [btn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];</span><br><span class="line">            &#125;</span><br><span class="line">            //是否进行自定义标记</span><br><span class="line">            /**</span><br><span class="line">             *if中的颜色比较 是为了让上月与下月的余日不产生bug</span><br><span class="line">             */</span><br><span class="line">            if (_markArray!=nil) &#123;</span><br><span class="line">                for (int i=0; i&lt;_markArray.count; i++) &#123;</span><br><span class="line">                    YHBaseDateModel * model = _markArray[i];</span><br><span class="line">                    if ([currentDate getYear]==[model.year intValue]&amp;&amp;[currentDate getMonth]==[model.month intValue]&amp;&amp;[btn.titleLabel.text intValue]==[model.day intValue]&amp;&amp;!CGColorEqualToColor([btn.titleLabel.textColor CGColor], [[UIColor grayColor] CGColor])) &#123;</span><br><span class="line">                        btn.layer.borderColor = [[UIColor grayColor]CGColor];</span><br><span class="line">                        btn.layer.borderWidth=1;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            //是否进行选中标记</span><br><span class="line">            if ([_selectModel.year intValue]==[currentDate getYear]&amp;&amp;[_selectModel.month intValue]==[currentDate getMonth]&amp;&amp;[_selectModel.day intValue]==[btn.titleLabel.text intValue]&amp;&amp;!CGColorEqualToColor([btn.titleLabel.textColor CGColor], [[UIColor grayColor] CGColor])) &#123;</span><br><span class="line">                btn.backgroundColor = [UIColor cyanColor];</span><br><span class="line">            &#125;</span><br><span class="line">            if (!CGColorEqualToColor([btn.titleLabel.textColor CGColor], [[UIColor grayColor] CGColor])) &#123;</span><br><span class="line">                //添加点击事件</span><br><span class="line">                [btn addTarget:self action:@selector(clickBtn:) forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">            &#125;</span><br><span class="line">           </span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line">//这个方法中进行重构</span><br><span class="line">-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView&#123;</span><br><span class="line">    if (scrollView.contentOffset.x==0) &#123;//向前翻页了</span><br><span class="line">        _currentDate = [YHBaseDateTools getPreviousframDate:_currentDate];</span><br><span class="line">        _scrollView.contentOffset=CGPointMake(scrollView.frame.size.width, 0);</span><br><span class="line">        </span><br><span class="line">        [self creatViewWithData:_currentDate onView:_bodyViewM];</span><br><span class="line">        [self creatViewWithData:[YHBaseDateTools getPreviousframDate:_currentDate] onView:_bodyViewL];</span><br><span class="line">        [self creatViewWithData:[YHBaseDateTools getNextMonthframDate:_currentDate] onView:_bodyViewR];</span><br><span class="line">        </span><br><span class="line">    &#125;else if (scrollView.contentOffset.x==scrollView.frame.size.width)&#123;</span><br><span class="line">        </span><br><span class="line">    &#125;else if (scrollView.contentOffset.x==scrollView.frame.size.width*2)&#123;</span><br><span class="line">        _currentDate = [YHBaseDateTools getNextMonthframDate:_currentDate];</span><br><span class="line">        _scrollView.contentOffset=CGPointMake(scrollView.frame.size.width, 0);</span><br><span class="line">        </span><br><span class="line">        [self creatViewWithData:_currentDate onView:_bodyViewM];</span><br><span class="line">        [self creatViewWithData:[YHBaseDateTools getPreviousframDate:_currentDate] onView:_bodyViewL];</span><br><span class="line">        [self creatViewWithData:[YHBaseDateTools getNextMonthframDate:_currentDate] onView:_bodyViewR];</span><br><span class="line">    &#125;</span><br><span class="line">    scrollView.userInteractionEnabled=YES;</span><br><span class="line">    if ([self.delegate respondsToSelector:@selector(YHBaseCalendarViewScrollEndToDate:)]) &#123;</span><br><span class="line">        YHBaseDateModel * model = [[YHBaseDateModel alloc]init];</span><br><span class="line">        model.year = [NSString stringWithFormat:@&quot;%d&quot;,[_currentDate getYear]];</span><br><span class="line">        model.month = [NSString stringWithFormat:@&quot;%d&quot;,[_currentDate getMonth]];</span><br><span class="line">        model.day = [NSString stringWithFormat:@&quot;%d&quot;,[_currentDate getDay]];</span><br><span class="line">        [self.delegate YHBaseCalendarViewScrollEndToDate:model];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-(void)scrollViewDidScroll:(UIScrollView *)scrollView&#123;</span><br><span class="line">    scrollView.userInteractionEnabled=NO;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//点击事件</span><br><span class="line">-(void)clickBtn:(UIButton *)btn&#123;</span><br><span class="line">    _selectModel.year = [NSString stringWithFormat:@&quot;%d&quot;,[_currentDate getYear]];</span><br><span class="line">    _selectModel.month = [NSString stringWithFormat:@&quot;%d&quot;,[_currentDate getMonth]];</span><br><span class="line">    _selectModel.day = btn.titleLabel.text;</span><br><span class="line">    [self creatViewWithData:_currentDate onView:_bodyViewM];</span><br><span class="line">    [self creatViewWithData:[YHBaseDateTools getPreviousframDate:_currentDate] onView:_bodyViewL];</span><br><span class="line">    [self creatViewWithData:[YHBaseDateTools getNextMonthframDate:_currentDate] onView:_bodyViewR];</span><br><span class="line">    if ([self.delegate respondsToSelector:@selector(YHBaseCalendarViewSelectAtDateModel:)]) &#123;</span><br><span class="line">        [self.delegate YHBaseCalendarViewSelectAtDateModel:_selectModel];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>（4）为用户交互设计的协议</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@protocol YHBaseCalendarViewDelegate&lt;NSObject&gt;</span><br><span class="line">-(void)YHBaseCalendarViewSelectAtDateModel:(YHBaseDateModel *)dateModel;</span><br><span class="line">-(void)YHBaseCalendarViewScrollEndToDate:(YHBaseDateModel *)dateModel;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h3 id="三、插个小广告"><a href="#三、插个小广告" class="headerlink" title="三、插个小广告"></a>三、插个小广告</h3><pre><code>控件的源码在[https://github.com/ZYHshao/YHBaseFoundationTest.git](https://github.com/ZYHshao/YHBaseFoundationTest.git)中，这是我封装的一套基于Cocoa与Foundation的更易用的开发框架，其中也对AFN，CRLabel，SDImage,MJRefresh进行了集成，有易用的下载框架，缓存框架，错误处理框架，皮肤管理框架等，也有支持加载HTML并且异步缓存图片的view，边下边播并做缓存的AVAudioPlayer，以及各种自定义性能很强的view控件，如用block创建的按钮，提示框以及对json和模型做相关映射的处理类，如果这些东西有帮到你，我很开心，如果你发现一些问题或者优化建议，请一定告知我，我将十分感激，QQ316045346
+</code></pre><blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/09/10/108我的女神——简洁实用的iOS代码调试框架/" class="pre-post btn btn-default" title='我的女神——简洁实用的iOS代码调试框架'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">我的女神——简洁实用的iOS代码调试框架</span>
+        </a>
+    
+    
+        <a href="/2015/09/03/106Objective-C使用位运算设计可复选的枚举/" class="next-post btn btn-default" title='Objective-C使用位运算设计可复选的枚举'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Objective-C使用位运算设计可复选的枚举</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发一款小巧简洁的日历控件"><span class="toc-text">iOS开发一款小巧简洁的日历控件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、设计思路"><span class="toc-text">二、设计思路</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、先来看下效果吧"><span class="toc-text">1、先来看下效果吧</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、我们需要实现的功能"><span class="toc-text">2、我们需要实现的功能</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、设计步骤"><span class="toc-text">3、设计步骤</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、插个小广告"><span class="toc-text">三、插个小广告</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

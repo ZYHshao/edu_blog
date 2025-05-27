@@ -1,0 +1,313 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>我的女神——简洁实用的iOS代码调试框架 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="我的女神——简洁实用的iOS代码调试框架">
+            
+	            我的女神——简洁实用的iOS代码调试框架
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/代码灵魂">
+            代码灵魂
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/09/10</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="我的女神——简洁实用的iOS代码调试框架"><a href="#我的女神——简洁实用的iOS代码调试框架" class="headerlink" title="我的女神——简洁实用的iOS代码调试框架"></a>我的女神——简洁实用的iOS代码调试框架</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>这篇博客的起源是接手了公司的一个已经完成的项目，来做代码优化，项目工程很大，并且引入了很多公司内部的SDK，要搞清楚公司内部的这套框架，的确不是件容易的事，并且由于这个项目是多人开发的，在调试阶段会打印出巨量的调试信息，使得浏览有用信息变的十分困难，更加恐怖的是，很多信息是SDK中的调试打印，将这些都进行注销是非常费劲甚至不可能的事，于是便有了这样一些需求：首先，我需要清楚了解各个controller之间的跳转关系，需要快速的弄清每个stroyBoard中各个controller的来龙去脉，其次，我想在不改变其他人的调试代码的情况下，屏蔽冗余的log信息，让我的调试数据更加清晰明了。于是我想到了如下的解决方案，同样，如果你有更好的方案或者你知道的优秀的解决办法，请告知我，十分感谢。
+</code></pre><h3 id="二、追踪程序的跳转路径"><a href="#二、追踪程序的跳转路径" class="headerlink" title="二、追踪程序的跳转路径"></a>二、追踪程序的跳转路径</h3><pre><code>这是一个很容易解决的问题，我们都知道，一个controller，如果要展现出来，一定会走生命周期中的viewWillAppear这个方法，我们只需要在这个方法中做些手脚就可以了，实现有两种思路，一种是采用工厂的设计模式，建立工厂类Controller，在其viewWillAppear中加入我们的调试代码，但这对于我的项目并不实用，首先我不确定所有controller都会继承于一个父类，其次，在我没有找到源头时，这些类已经在公司的framework中了，我根本没办法操作源码。而第二种方案就是runtime，对的，运行时的OC，没有不可能。关于runtime的详细说明，在[http://my.oschina.net/u/2340880/blog/489072](http://my.oschina.net/u/2340880/blog/489072)中有介绍。思路是我们可以写一个方法，替换掉系统的viewWillAppear，在其中加入我们的调试代码，这个方法就是Method Swizzing，代码设计如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">//新建一个conreoller的类别</span><br><span class="line">#import &quot;UIViewController+YHBaseTest.h&quot;</span><br><span class="line">#import &lt;objc/runtime.h&gt;</span><br><span class="line">@implementation UIViewController (YHBaseTest)</span><br><span class="line">+ (void)load &#123;</span><br><span class="line">    //只执行一次的线程</span><br><span class="line">    static dispatch_once_t onceToken;</span><br><span class="line">    dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">        Class class = [self class];</span><br><span class="line">        // When swizzling a class method, use the following:</span><br><span class="line">        // Class class = object_getClass((id)self);</span><br><span class="line">        //创建两个选择器 分别指向 系统的和我们要替换的函数</span><br><span class="line">        SEL originalSelector = @selector(viewWillAppear:);</span><br><span class="line">        SEL swizzledSelector = @selector(YHBaseViewWillAppear:);</span><br><span class="line">        //获取方法实例</span><br><span class="line">        Method originalMethod = class_getInstanceMethod(class, originalSelector);</span><br><span class="line">        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);</span><br><span class="line">        //现将方法加入</span><br><span class="line">        BOOL didAddMethod =</span><br><span class="line">        class_addMethod(class,</span><br><span class="line">                        originalSelector,</span><br><span class="line">                        method_getImplementation(swizzledMethod),</span><br><span class="line">                        method_getTypeEncoding(swizzledMethod));</span><br><span class="line">        //进行方法替换</span><br><span class="line">        if (didAddMethod) &#123;</span><br><span class="line">            class_replaceMethod(class,</span><br><span class="line">                                swizzledSelector,</span><br><span class="line">                                method_getImplementation(originalMethod),</span><br><span class="line">                                method_getTypeEncoding(originalMethod));</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            method_exchangeImplementations(originalMethod, swizzledMethod);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - Method Swizzling</span><br><span class="line"></span><br><span class="line">- (void)YHBaseViewWillAppear:(BOOL)animated &#123;</span><br><span class="line">//这里是是我加的一个控制调试锁 后面会介绍</span><br><span class="line">    [self YHBaseViewWillAppear:animated];</span><br><span class="line">    YHBaseProcessLog(@&quot;YHBaseTest:ViewWillAppear: %@&quot;, self);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、屏蔽冗余的log信息"><a href="#三、屏蔽冗余的log信息" class="headerlink" title="三、屏蔽冗余的log信息"></a>三、屏蔽冗余的log信息</h3><h4 id="1、系统的NSLog是个什么玩意"><a href="#1、系统的NSLog是个什么玩意" class="headerlink" title="1、系统的NSLog是个什么玩意"></a>1、系统的NSLog是个什么玩意</h4><pre><code>要战胜我们的敌人，首先应该了解我们的敌人，我们想要屏蔽NSLog的打印，先需要清楚NSLog到底是个什么玩意。
+
+首先，NSLog的定义如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FOUNDATION_EXPORT void NSLog(NSString *format, ...) NS_FORMAT_FUNCTION(1,2);</span><br><span class="line">FOUNDATION_EXPORT void NSLogv(NSString *format, va_list args) NS_FORMAT_FUNCTION(1,0);</span><br></pre></td></tr></table></figure>
+<p>这里面有两个函数，一个是使用多参的格式化字符串进行NSLog的打印，一个是通过参数指针进行打印。从这里我们可以看出，系统的NSLog是一个C风格的函数，所以，我们有思路了，我们可以通过定义一个NSLog宏来替换掉项目中所有的NSLog，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//...是省略参数的宏的写法，后面的__VA_ARGS__是系统定义好的一个宏，来声明不定参数</span><br><span class="line">#define NSLog(...) YHBaseTestLog(__VA_ARGS__)</span><br></pre></td></tr></table></figure>
+<h4 id="2、实现我们自己的NSLog"><a href="#2、实现我们自己的NSLog" class="headerlink" title="2、实现我们自己的NSLog"></a>2、实现我们自己的NSLog</h4><pre><code>通过上面的方法，在没有动源码的情况下，我们已经可以替换掉程序中所有的打印，可能你会疑问，程序中怎么会允许我们有两个NSLog呢，其实这没什么神奇的，要知道宏是一种预编译的指令，所有这些操作是在代码编译之前完成的，实际上程序中已经将NSLog简单替换成了我们的函数调用，程序中只有一个NSLog，这就是宏的强大之处，狸猫换太子，不错吧。
+
+下面我们来实现我们的这个函数，如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//不要忘了在.h文件中声明</span><br><span class="line">void YHBaseTestLog(NSString *str,...)&#123;</span><br><span class="line">//参数列</span><br><span class="line">    va_list list;</span><br><span class="line">    va_start(list, str);</span><br><span class="line">    //这个地方是一个锁，后面会介绍</span><br><span class="line">    if (![YHBaseTestLock sharedTheSingletion]-&gt;_customLock) &#123;</span><br><span class="line">    //进行打印</span><br><span class="line">           NSLogv(str, list);</span><br><span class="line">    &#125;</span><br><span class="line">    va_end(list);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个函数中其实并没有做什么，加了一个锁的判断，仅此而已，核心的控制，就交给我们的锁吧：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">//.h文件</span><br><span class="line">@interface YHBaseTestLock : NSObject&lt;YHSingletonProcotol&gt;</span><br><span class="line">&#123;</span><br><span class="line">    @public</span><br><span class="line">    BOOL _customLock;</span><br><span class="line">    BOOL _precessLock;</span><br><span class="line">&#125;</span><br><span class="line">+(void)customLock;</span><br><span class="line">+(void)customUnLock;</span><br><span class="line"></span><br><span class="line">+(void)processLogLock;</span><br><span class="line">+(void)processLogUnLock;</span><br><span class="line"></span><br><span class="line">//.m</span><br><span class="line">//单例方法</span><br><span class="line">+(instancetype)sharedTheSingletion&#123;</span><br><span class="line">    static YHBaseTestLock * sharedModel = nil;</span><br><span class="line">    static dispatch_once_t predicate;</span><br><span class="line">    dispatch_once(&amp;predicate, ^&#123;</span><br><span class="line">        sharedModel = [[YHBaseTestLock alloc] init];</span><br><span class="line">    &#125;);</span><br><span class="line">    return sharedModel;</span><br><span class="line">&#125;</span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">    //初始化 默认用户的打印都开起</span><br><span class="line">        _customLock=NO;</span><br><span class="line">        //默认 我们加的controller的打印屏蔽</span><br><span class="line">        _precessLock=YES;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line">//响应的设置</span><br><span class="line">+(void)customLock&#123;</span><br><span class="line">    [YHBaseTestLock sharedTheSingletion]-&gt;_customLock=YES;</span><br><span class="line">&#125;</span><br><span class="line">+(void)customUnLock&#123;</span><br><span class="line">      [YHBaseTestLock sharedTheSingletion]-&gt;_customLock=NO;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+(void)processLogLock&#123;</span><br><span class="line">     [YHBaseTestLock sharedTheSingletion]-&gt;_precessLock=YES;</span><br><span class="line">&#125;</span><br><span class="line">+(void)processLogUnLock&#123;</span><br><span class="line">    [YHBaseTestLock sharedTheSingletion]-&gt;_precessLock=NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="四、看看我们的杰作吧"><a href="#四、看看我们的杰作吧" class="headerlink" title="四、看看我们的杰作吧"></a>四、看看我们的杰作吧</h3><pre><code>做完上面的工作后，我们在appdelegate中如如下的简单配置：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">    // Override point for customization after application launch.</span><br><span class="line">    //将用户打印加锁</span><br><span class="line">    [YHBaseTestLock customLock];</span><br><span class="line">    //将流程打印解锁</span><br><span class="line">    [YHBaseTestLock processLogUnLock];</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们做如下测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@interface ViewController ()</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">   NSLog(@&quot;111111111111111111111111111111111111111111111111111111111111111&quot;);</span><br><span class="line">    [YHBaseTestLock customUnLock];</span><br><span class="line">    NSLog(@&quot;这个是有用的信息:%@==%d&quot;,@&quot;看我哦&quot;,__LINE__);</span><br><span class="line">    [YHBaseTestLock customLock];</span><br><span class="line">    NSLog(@&quot;32123213123214412312312&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我在viewController中的有用信息前后，打印了一些干扰信息，并且可以看到，这个NSLog的格式和系统的完全兼容，在打印有用信息前后解锁和加锁，结果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0910/214659_H6RY_2340880.png" alt></p>
+<p>可以看到，我们将没用的打印都屏蔽了，并且打印了程序的跳转流程。最重要的是，我们对源码一个字符都没有修改，同时不会影响与冲突其他人的开发。</p>
+<blockquote>
+<p>这篇博客开头，我称之为我的女神，真心实感，这个方法帮了我很大的忙，在我了解项目的结构框架前，每次调试打印都在控制区滚出一片片的信息着实让我头晕脑胀，现在一清凉，精神也清爽不少，^_^。</p>
+</blockquote>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/09/16/109iOS生成标准的注释工具——VVDocumenter/" class="pre-post btn btn-default" title='iOS生成标准的注释工具——VVDocumenter'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS生成标准的注释工具——VVDocumenter</span>
+        </a>
+    
+    
+        <a href="/2015/09/07/107iOS开发一款小巧简洁的日历控件/" class="next-post btn btn-default" title='iOS开发一款小巧简洁的日历控件'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发一款小巧简洁的日历控件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#我的女神——简洁实用的iOS代码调试框架"><span class="toc-text">我的女神——简洁实用的iOS代码调试框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、追踪程序的跳转路径"><span class="toc-text">二、追踪程序的跳转路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、屏蔽冗余的log信息"><span class="toc-text">三、屏蔽冗余的log信息</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、系统的NSLog是个什么玩意"><span class="toc-text">1、系统的NSLog是个什么玩意</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、实现我们自己的NSLog"><span class="toc-text">2、实现我们自己的NSLog</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、看看我们的杰作吧"><span class="toc-text">四、看看我们的杰作吧</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

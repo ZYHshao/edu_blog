@@ -1,0 +1,379 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS动画开发之五——炫酷的粒子效果 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS动画开发之五——炫酷的粒子效果">
+            
+	            iOS动画开发之五——炫酷的粒子效果
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/07/29</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS动画开发之五——炫酷的粒子效果"><a href="#iOS动画开发之五——炫酷的粒子效果" class="headerlink" title="iOS动画开发之五——炫酷的粒子效果"></a>iOS动画开发之五——炫酷的粒子效果</h2><pre><code>在上几篇博客中，我们对UIView层的动画以及iOS的核心动画做了介绍，基本已经可以满足iOS应用项目中所有的动画需求，如果你觉得那些都还不够炫酷，亦或是你灵光一现，想用UIKit框架写出一款炫酷的休闲游戏，那个有一个东西可以帮到你：iOS的粒子效果引擎。
+</code></pre><h3 id="一、粒子发射器"><a href="#一、粒子发射器" class="headerlink" title="一、粒子发射器"></a>一、粒子发射器</h3><pre><code>iOS中的粒子效果有两部分组成，一部分为发射器，设置例子发射的宏观属性，另一部分是粒子单元，用于设置相应的粒子属性。粒子发射器是基于Layer层，没错，又是Layer，他的全名叫做：
+</code></pre><p>CAEmitterLayer。其中常用的属性如下：</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>(copy) NSArray *emitterCells;</p>
+<pre><code>粒子单元数组，例如你在绘制火焰的效果时，你可以创建两个单元，一个单元负责烟雾，一个单元负责火苗。
+</code></pre><p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>  float birthRate;</p>
+<pre><code>粒子的创建速率，默认为1/s。
+</code></pre><p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a>  float lifetime;</p>
+<pre><code>粒子的存活时间。默认为1S。
+</code></pre><p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> CGPoint emitterPosition;</p>
+<pre><code>发射器在xy平面的中心位置
+</code></pre><p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> CGFloat emitterZPosition;</p>
+<pre><code>发射器在Z平面的位置
+</code></pre><p>@property CGSize emitterSize;</p>
+<pre><code>发射器的尺寸大小
+</code></pre><p>@property CGFloat emitterDepth;</p>
+<pre><code>发射器的深度，在某些模式下会产生立体效果
+</code></pre><p>@property(copy) NSString *emitterShape;</p>
+<pre><code>发射器的形状，这个参数的几个系统字符串如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">CA_EXTERN NSString * const kCAEmitterLayerPoint</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0); //点的形状，粒子从一个点发出</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerLine</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//线的形状，粒子从一条线发出</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerRectangle</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//矩形形状，粒子从一个矩形中发出</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerCuboid</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//立方体形状，会影响Z平面的效果</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerCircle</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//圆形，粒子会在圆形范围发射</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerSphere</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//球型</span><br></pre></td></tr></table></figure>
+<p>@property(copy) NSString *emitterMode;</p>
+<pre><code>发射器的发射模式，参数如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">CA_EXTERN NSString * const kCAEmitterLayerPoints</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//从发射器中发出</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerOutline</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//从发射器边缘发出</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerSurface</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//从发射器表面发出</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerVolume</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//从发射器中点发出</span><br></pre></td></tr></table></figure>
+<p>@property(copy) NSString *renderMode;</p>
+<pre><code>发射器渲染模式，参数如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CA_EXTERN NSString * const kCAEmitterLayerUnordered</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//这种模式下，粒子是无序出现的，多个发射源将混合</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerOldestFirst</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//这种模式下，声明久的粒子会被渲染在最上层</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerOldestLast</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//这种模式下，年轻的粒子会被渲染在最上层</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerBackToFront</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//这种模式下，粒子的渲染按照Z轴的前后顺序进行</span><br><span class="line">CA_EXTERN NSString * const kCAEmitterLayerAdditive</span><br><span class="line">    __OSX_AVAILABLE_STARTING (__MAC_10_6, __IPHONE_5_0);//这种模式会进行粒子混合</span><br></pre></td></tr></table></figure>
+<p>@property BOOL preservesDepth;</p>
+<pre><code>是否开启三维空间效果
+</code></pre><p>@property  float velocity;</p>
+<pre><code>粒子的运动速度
+</code></pre><p>@property  float scale;</p>
+<pre><code>粒子的缩放大小
+</code></pre><p>@property  float spin;</p>
+<pre><code>粒子的旋转位置
+</code></pre><p>@property  unsigned  int seed;</p>
+<pre><code>初始化随机的粒子种子
+</code></pre><h3 id="二、粒子单元"><a href="#二、粒子单元" class="headerlink" title="二、粒子单元"></a>二、粒子单元</h3><pre><code>设置好了粒子发射器，我们还需要初始化一些粒子单元，设置具体粒子的属性，我们使用到的类是CAEmitterCell这个类。
+</code></pre><p>+ (instancetype)emitterCell;</p>
+<p>类方法创建发射单元</p>
+<p>@property(copy) NSString *name;</p>
+<p>设置发射单元的名称</p>
+<p>@property(getter=isEnabled) BOOL enabled;</p>
+<p>是否允许发射器渲染</p>
+<p>@property  float birthRate;</p>
+<p>粒子的创建速率</p>
+<p>@property  float lifetime;</p>
+<p>粒子的生存时间</p>
+<p>@property float lifetimeRange;</p>
+<p>粒子的生存时间容差</p>
+<p>@property CGFloat emissionLatitude;</p>
+<p>粒子在Z轴方向的发射角度</p>
+<p>@property CGFloat emissionLongitude;</p>
+<p>粒子在xy平面的发射角度</p>
+<p>@property CGFloat emissionRange;</p>
+<p>粒子发射角度的容差</p>
+<p>@property CGFloat velocity;</p>
+<p>粒子的速度</p>
+<p>@property CGFloat velocityRange;</p>
+<p>粒子速度的容差</p>
+<p>@property CGFloat xAcceleration;</p>
+<p>@property CGFloat yAcceleration;</p>
+<p>@property CGFloat zAcceleration;</p>
+<p>x，y，z三个方向的加速度</p>
+<p>@property  CGFloat scale;</p>
+<p>@property CGFloat scaleRange;</p>
+<p>@property CGFloat scaleSpeed;</p>
+<p>缩放大小，缩放容差和缩放速度</p>
+<p>@property  CGFloat spin;</p>
+<p>@property CGFloat spinRange;</p>
+<p>旋转度与旋转容差</p>
+<p>@property  CGColorRef color;</p>
+<p>粒子的颜色</p>
+<p>@property  float redRange;</p>
+<p>@property  float greenRange;</p>
+<p>@property  float blueRange;</p>
+<p>@property  float alphaRange;</p>
+<p>粒子在rgb三个色相上的容差和透明度的容差</p>
+<p>@property  float redSpeed;</p>
+<p>@property  float greenSpeed;</p>
+<p>@property  float blueSpeed;</p>
+<p>@property  float alphaSpeed;</p>
+<p>粒子在RGB三个色相上的变化速度和透明度的变化速度</p>
+<p>@property(strong) id contents;</p>
+<p>渲染粒子，可以设置为一个CGImage的对象</p>
+<p>@property CGRect contentsRect;</p>
+<p>渲染的范围</p>
+<h3 id="三、让我们来“火”一把"><a href="#三、让我们来“火”一把" class="headerlink" title="三、让我们来“火”一把"></a>三、让我们来“火”一把</h3><pre><code>通过上面的介绍，我们来应用这些创造一团火，代码示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">@interface ViewController ()</span><br><span class="line">&#123;</span><br><span class="line">    CAEmitterLayer * _fireEmitter;//发射器对象</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation ViewController</span><br><span class="line"></span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    self.view.backgroundColor=[UIColor blackColor];</span><br><span class="line">    //设置发射器</span><br><span class="line">    _fireEmitter=[[CAEmitterLayer alloc]init];</span><br><span class="line">    _fireEmitter.emitterPosition=CGPointMake(self.view.frame.size.width/2,self.view.frame.size.height-20);</span><br><span class="line">    _fireEmitter.emitterSize=CGSizeMake(self.view.frame.size.width-100, 20);</span><br><span class="line">    _fireEmitter.renderMode = kCAEmitterLayerAdditive;</span><br><span class="line">    //发射单元</span><br><span class="line">    //火焰</span><br><span class="line">    CAEmitterCell * fire = [CAEmitterCell emitterCell];</span><br><span class="line">    fire.birthRate=800;</span><br><span class="line">    fire.lifetime=2.0;</span><br><span class="line">    fire.lifetimeRange=1.5;</span><br><span class="line">    fire.color=[[UIColor colorWithRed:0.8 green:0.4 blue:0.2 alpha:0.1]CGColor];</span><br><span class="line">    fire.contents=(id)[[UIImage imageNamed:@&quot;Particles_fire.png&quot;]CGImage];</span><br><span class="line">    [fire setName:@&quot;fire&quot;];</span><br><span class="line">    </span><br><span class="line">    fire.velocity=160;</span><br><span class="line">    fire.velocityRange=80;</span><br><span class="line">    fire.emissionLongitude=M_PI+M_PI_2;</span><br><span class="line">    fire.emissionRange=M_PI_2;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    fire.scaleSpeed=0.3;</span><br><span class="line">    fire.spin=0.2;</span><br><span class="line">    </span><br><span class="line">    //烟雾</span><br><span class="line">    CAEmitterCell * smoke = [CAEmitterCell emitterCell];</span><br><span class="line">    smoke.birthRate=400;</span><br><span class="line">    smoke.lifetime=3.0;</span><br><span class="line">    smoke.lifetimeRange=1.5;</span><br><span class="line">    smoke.color=[[UIColor colorWithRed:1 green:1 blue:1 alpha:0.05]CGColor];</span><br><span class="line">    smoke.contents=(id)[[UIImage imageNamed:@&quot;Particles_fire.png&quot;]CGImage];</span><br><span class="line">    [fire setName:@&quot;smoke&quot;];</span><br><span class="line">    </span><br><span class="line">    smoke.velocity=250;</span><br><span class="line">    smoke.velocityRange=100;</span><br><span class="line">    smoke.emissionLongitude=M_PI+M_PI_2;</span><br><span class="line">    smoke.emissionRange=M_PI_2;</span><br><span class="line">    </span><br><span class="line">    _fireEmitter.emitterCells=[NSArray arrayWithObjects:smoke,fire,nil];</span><br><span class="line">    [self.view.layer addSublayer:_fireEmitter];</span><br><span class="line">                </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0729/115815_A13M_2340880.png" alt></p>
+<p>看到效果了么？这次够炫酷了吧，改改其它属性，尽情的玩吧！</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/07/30/89iOS8新特性扩展(Extension)应用之一——Today扩展/" class="pre-post btn btn-default" title='iOS8新特性扩展(Extension)应用之一——Today扩展'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS8新特性扩展(Extension)应用之一——Today扩展</span>
+        </a>
+    
+    
+        <a href="/2015/07/28/87iOS动画开发之四——核心动画编程(CoreAnimation)/" class="next-post btn btn-default" title='iOS动画开发之四——核心动画编程(CoreAnimation)'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS动画开发之四——核心动画编程(CoreAnimation)</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS动画开发之五——炫酷的粒子效果"><span class="toc-text">iOS动画开发之五——炫酷的粒子效果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、粒子发射器"><span class="toc-text">一、粒子发射器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、粒子单元"><span class="toc-text">二、粒子单元</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、让我们来“火”一把"><span class="toc-text">三、让我们来“火”一把</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

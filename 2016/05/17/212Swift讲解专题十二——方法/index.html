@@ -1,0 +1,305 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift讲解专题十二——方法 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift讲解专题十二——方法">
+            
+	            Swift讲解专题十二——方法
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/17</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift讲解专题十二——方法"><a href="#Swift讲解专题十二——方法" class="headerlink" title="Swift讲解专题十二——方法"></a>Swift讲解专题十二——方法</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>方法只是一个术语，其实就是将函数与特定的类型结合，类、结构体、枚举都可以定义方法，方法又分为实例方法和类型方法，类型方法类似于Objective-C中的类方法。Swift和Objective-C的一大不同是，Objective-C只有在类中可以定义方法。
+</code></pre><h3 id="二、实例方法基础"><a href="#二、实例方法基础" class="headerlink" title="二、实例方法基础"></a>二、实例方法基础</h3><pre><code>实例方法的语法和函数完全一致，其和具体类型的实例所关联，实例方法在调用时由类型的实例点语法进行调用来完成一些功能模块。示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">class Math &#123;</span><br><span class="line">    //完成加法功能的实例方法</span><br><span class="line">    func add(param1:Double,param2:Double)-&gt;Double&#123;</span><br><span class="line">        return param1+param2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//创建类型实例</span><br><span class="line">var obj = Math()</span><br><span class="line">//调用方法进行计算</span><br><span class="line">obj.add(5, param2: 5)</span><br></pre></td></tr></table></figure>
+<p>与Objective-C类似，Swift中每一个类的实例中都隐藏含有一个self属性，self属性就是实例本身，开发者可以在实例方法中使用self来调用属性或者其他实例方法，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Math &#123;</span><br><span class="line">    //完成加法功能的实例方法</span><br><span class="line">    func add(param1:Double,param2:Double)-&gt;Double&#123;</span><br><span class="line">        return param1+param2</span><br><span class="line">    &#125;</span><br><span class="line">    func mul(param1:Double,param2:Double) -&gt; Double &#123;</span><br><span class="line">        //使用self调用实例方法</span><br><span class="line">        self.add(param1, param2: param2)</span><br><span class="line">        return param1*param2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然而，Swift并不要求开发者必须写self，默认情况下，开发者可以直接省略self来调用属性和方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Math &#123;</span><br><span class="line">    //完成加法功能的实例方法</span><br><span class="line">    func add(param1:Double,param2:Double)-&gt;Double&#123;</span><br><span class="line">        return param1+param2</span><br><span class="line">    &#125;</span><br><span class="line">    func mul(param1:Double,param2:Double) -&gt; Double &#123;</span><br><span class="line">        //使用self调用实例方法</span><br><span class="line">        add(param1, param2: param2)</span><br><span class="line">        return param1*param2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有一种情况需要注意，对于属性的调用，如果方法中的参数名和类实例的属性名相同，则必须使用self来调用类的实例属性，防止歧义的产生：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Math &#123;</span><br><span class="line">    var param1 = 10.0</span><br><span class="line">    //完成加法功能的实例方法</span><br><span class="line">    func add(param1:Double,param2:Double)-&gt;Double&#123;</span><br><span class="line">        //这里将使用param1=10，如果不加self 将使用参数中的param1</span><br><span class="line">        return self.param1+param2</span><br><span class="line">    &#125;</span><br><span class="line">    func mul(param1:Double,param2:Double) -&gt; Double &#123;</span><br><span class="line">        //使用self调用实例方法</span><br><span class="line">        add(param1, param2: param2)</span><br><span class="line">        return param1*param2</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、在实例方法中修改值类型的值"><a href="#三、在实例方法中修改值类型的值" class="headerlink" title="三、在实例方法中修改值类型的值"></a>三、在实例方法中修改值类型的值</h3><pre><code>首先需要清楚一个概念，Swift中有两种类型，值类型和引用类型，具体在类、结构体、枚举一节中有相关介绍，这里需要注意的是，对于值类型，即结构体和枚举，其并不能直接在实例方法中修改实例属性的值，Swift中提供了另一种方式，如果真有如此的需求，开发者可以使用mutating关键字将实例方法声明成可变的，实际上，如果在可变的实例方法中修改了值类型属性的值，是会创建一个新的实例来代替原来的实例的，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x:Double</span><br><span class="line">    var y:Double</span><br><span class="line">    mutating func move(x:Double,y:Double) &#123;</span><br><span class="line">        self.x+=x</span><br><span class="line">        self.y+=y</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">var point = Point(x: 1, y: 1)</span><br><span class="line">print(point)</span><br><span class="line">point.move(3, y: 3)</span><br><span class="line">print(point)</span><br></pre></td></tr></table></figure>
+<p>在值类型实例的可变方法中修改属性的值，实际上就是创建了一个新的实例，上面的写法和下面的写法原理是一样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x:Double</span><br><span class="line">    var y:Double</span><br><span class="line">    mutating func move(x:Double,y:Double) &#123;</span><br><span class="line">        self = Point(x: self.x+x,y: self.y+y)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="四、类型方法"><a href="#四、类型方法" class="headerlink" title="四、类型方法"></a>四、类型方法</h3><pre><code>正如实例方法是通过类型的实例来进行调用的，类型方法是通过类型直接来调用的，相比于实例方法，类型方法中的self指当前类型，同样开发者可以使用self来区别类型属性和类型方法中的参数。使用Static关键字来进行类型方法的创建：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">struct Point &#123;</span><br><span class="line">    var x:Double</span><br><span class="line">    var y:Double</span><br><span class="line">    mutating func move(x:Double,y:Double) &#123;</span><br><span class="line">        self = Point(x: self.x+x,y: self.y+y)</span><br><span class="line">    &#125;</span><br><span class="line">    static func name()&#123;</span><br><span class="line">        print(&quot;Point&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Point.name()</span><br></pre></td></tr></table></figure>
+<p>如果是在类中创建类型方法，若此方法可以被子类进行重写，则应该使用class关键字来创建，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Math &#123;</span><br><span class="line">    var param1 = 10.0</span><br><span class="line">    //完成加法功能的实例方法</span><br><span class="line">    func add(param1:Double,param2:Double)-&gt;Double&#123;</span><br><span class="line">        //这里将使用param1=10，如果不加self 将使用参数中的param1</span><br><span class="line">        return self.param1+param2</span><br><span class="line">    &#125;</span><br><span class="line">    func mul(param1:Double,param2:Double) -&gt; Double &#123;</span><br><span class="line">        //使用self调用实例方法</span><br><span class="line">        add(param1, param2: param2)</span><br><span class="line">        return param1*param2</span><br><span class="line">    &#125;</span><br><span class="line">    class func name()&#123;</span><br><span class="line">        print(&quot;Math&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">Math.name()</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/17/213Swift讲解专题十三——下标访问/" class="pre-post btn btn-default" title='Swift讲解专题十三——下标访问'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift讲解专题十三——下标访问</span>
+        </a>
+    
+    
+        <a href="/2016/05/16/211Swift讲解专题十一——属性/" class="next-post btn btn-default" title='Swift讲解专题十一——属性'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift讲解专题十一——属性</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift讲解专题十二——方法"><span class="toc-text">Swift讲解专题十二——方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、实例方法基础"><span class="toc-text">二、实例方法基础</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、在实例方法中修改值类型的值"><span class="toc-text">三、在实例方法中修改值类型的值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、类型方法"><span class="toc-text">四、类型方法</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

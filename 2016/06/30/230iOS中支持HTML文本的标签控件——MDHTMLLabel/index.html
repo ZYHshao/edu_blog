@@ -1,0 +1,303 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS中支持HTML文本的标签控件——MDHTMLLabel | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中支持HTML文本的标签控件——MDHTMLLabel">
+            
+	            iOS中支持HTML文本的标签控件——MDHTMLLabel
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS第三方库">
+            iOS第三方库
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/06/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中支持HTML文本的标签控件——MDHTMLLabel"><a href="#iOS中支持HTML文本的标签控件——MDHTMLLabel" class="headerlink" title="iOS中支持HTML文本的标签控件——MDHTMLLabel"></a>iOS中支持HTML文本的标签控件——MDHTMLLabel</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在iOS开发中对HTML的处理很多时候除了使用WebView外，还需要原生的控件对其进行渲染，例如将HTML字符串渲染为图文混排的View视图。Git上有很多轻量级的HTML渲染框架，列举一些如下：
+</code></pre><p>RTLabel：基于UIView的HTML文本渲染控件，git地址：<a href="https://github.com/honcheng/RTLabel" target="_blank" rel="noopener">https://github.com/honcheng/RTLabel</a>。</p>
+<p>RCLabel：与RTLabel思路相同，基于RCLabel之上，也是UIView的子类，支持了对HTML中的本地图片标签进行渲染。git地址：<a href="https://github.com/Janak-Nirmal/RichContentLabel" target="_blank" rel="noopener">https://github.com/Janak-Nirmal/RichContentLabel</a>。</p>
+<p>MDHTMLLabel：与RTLabel和RCLabel不同的是，其是UILabel的子类，更加轻量级，不能支持图片标签。git地址：<a href="https://github.com/mattdonnelly/MDHTMLLabel" target="_blank" rel="noopener">https://github.com/mattdonnelly/MDHTMLLabel</a>。</p>
+<pre><code>关于RCLabel对图片便签的支持，其只能支持本地的图片，不能支持远程URL图片链接，这在开发中将十分局限，以前我曾加RCLabel做了改造，加了支持远程图片URL的方法，我把它集成在了一个基础框架中，需要的伙伴可以参考下，git地址：[https://github.com/ZYHshao/YHBaseFoundationTest](https://github.com/ZYHshao/YHBaseFoundationTest)。配套的讲解博客地址如下：[http://my.oschina.net/u/2340880/blog/499311](http://my.oschina.net/u/2340880/blog/499311)。
+
+本篇博客主要讨论MDHTMLLabel的使用。
+</code></pre><h3 id="二、MDHTMLLabel的创建与设置"><a href="#二、MDHTMLLabel的创建与设置" class="headerlink" title="二、MDHTMLLabel的创建与设置"></a>二、MDHTMLLabel的创建与设置</h3><pre><code>MDHTMLLabel框架十分小巧，其中只有两个文件，总计2000余行代码。通过HTML字符串来创建一个MDHTMLLabel控件示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * kDemoText = <span class="string">@"&lt;a href='http://github.com/mattdonnelly/MDHTMLLabel'&gt;MDHTMLLabel&lt;/a&gt; is a lightweight, easy to use replacement for &lt;b&gt;UILabel&lt;/b&gt; which allows you to fully &lt;font face='Didot-Italic' size='19'&gt;customize&lt;/font&gt; the appearence of the text using HTML (with a few added features thanks to &lt;b&gt;CoreText&lt;/b&gt;), as well letting you handle whenever a user taps or holds down on link and automatically detects ones not wrapped in anchor tags/&gt;"</span>;</span><br><span class="line">MDHTMLLabel *htmlLabel = [[MDHTMLLabel alloc] initWithFrame:<span class="keyword">self</span>.view.frame];</span><br><span class="line">htmlLabel.numberOfLines = <span class="number">0</span>;</span><br><span class="line">htmlLabel.htmlText = kDemoText;</span><br><span class="line">[<span class="keyword">self</span>.view addSubview:htmlLabel];</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0630/105340_GU71_2340880.png" alt></p>
+<p>MDHTMLLabel中可以设置的一些属性解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置超链接文字的属性字典 和设置AttributeString方法一致</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSDictionary</span> *linkAttributes;</span><br><span class="line"><span class="comment">//设置超链接文字激活时的属性字典</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSDictionary</span> *activeLinkAttributes;</span><br><span class="line"><span class="comment">//设置超链接非激活时的属性字典</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSDictionary</span> *inactiveLinkAttributes;</span><br><span class="line"><span class="comment">//设置超链接文字触发长按事件的最小按下时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">NSTimeInterval</span> minimumPressDuration;</span><br><span class="line"><span class="comment">//设置label文件阴影的模糊半径</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> shadowRadius;</span><br><span class="line"><span class="comment">//设置label在高亮状态下的文字模糊半径 注：非高亮状态的由原生UILabel的属性设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> highlightedShadowRadius;</span><br><span class="line"><span class="comment">//设置label在高亮状态下的文字阴影偏移 注：非高亮状态的由原生UILabel的属性设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGSize</span> highlightedShadowOffset;</span><br><span class="line"><span class="comment">//设置在label高亮状态下的文字阴影颜色 注：非高亮状态的由原生UILabel的属性设置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">UIColor</span> *highlightedShadowColor;</span><br><span class="line"><span class="comment">//设置首行文字的缩进距离</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> firstLineIndent;</span><br><span class="line"><span class="comment">//设置文字的行间距</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> leading;</span><br><span class="line"><span class="comment">//设置行高的倍数</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">CGFloat</span> lineHeightMultiple;</span><br><span class="line"><span class="comment">//设置文字内容的边距</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">UIEdgeInsets</span> textInsets;</span><br><span class="line"><span class="comment">//设置文字垂直方向的对其模式 默认为居中对其 MDHTMLLabelVerticalAlignment枚举意义如下:</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSUInteger, MDHTMLLabelVerticalAlignment) &#123;</span></span><br><span class="line"><span class="comment">    MDHTMLLabelVerticalAlignmentCenter   = 0, //居中对其</span></span><br><span class="line"><span class="comment">    MDHTMLLabelVerticalAlignmentTop      = 1, //顶部对其</span></span><br><span class="line"><span class="comment">    MDHTMLLabelVerticalAlignmentBottom   = 2, //底部对其</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) MDHTMLLabelVerticalAlignment verticalAlignment;</span><br><span class="line"><span class="comment">//设置文字的截断模式</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSString</span> *truncationTokenString;</span><br><span class="line"><span class="comment">//根据内容获取控件尺寸</span></span><br><span class="line">+ (<span class="built_in">CGFloat</span>)sizeThatFitsHTMLString:(<span class="built_in">NSString</span> *)htmlString</span><br><span class="line">                         withFont:(<span class="built_in">UIFont</span> *)font</span><br><span class="line">                      constraints:(<span class="built_in">CGSize</span>)size</span><br><span class="line">           limitedToNumberOfLines:(<span class="built_in">NSUInteger</span>)numberOfLines;</span><br></pre></td></tr></table></figure>
+<p>关于HTML数据中的超链接的相应，MDHTMLLabel是通过代理回调的方式处理的，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">MDHTMLLabelDelegate</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line"><span class="keyword">@optional</span></span><br><span class="line"><span class="comment">//点击超链接的时候触发的方法</span></span><br><span class="line">- (<span class="keyword">void</span>)HTMLLabel:(MDHTMLLabel *)label didSelectLinkWithURL:(<span class="built_in">NSURL</span>*)URL;</span><br><span class="line"><span class="comment">//长按超链接时触发的方法</span></span><br><span class="line">- (<span class="keyword">void</span>)HTMLLabel:(MDHTMLLabel *)label didHoldLinkWithURL:(<span class="built_in">NSURL</span>*)URL;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/06/30/231iOS运行时函数替换框架——RSSwizzle/" class="pre-post btn btn-default" title='iOS运行时函数替换框架——RSSwizzle'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS运行时函数替换框架——RSSwizzle</span>
+        </a>
+    
+    
+        <a href="/2016/06/29/229iOS好用的第三方侧边栏控件——MMDrawerController/" class="next-post btn btn-default" title='iOS好用的第三方侧边栏控件——MMDrawerController'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS好用的第三方侧边栏控件——MMDrawerController</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中支持HTML文本的标签控件——MDHTMLLabel"><span class="toc-text">iOS中支持HTML文本的标签控件——MDHTMLLabel</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、MDHTMLLabel的创建与设置"><span class="toc-text">二、MDHTMLLabel的创建与设置</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,317 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift讲解专题九——枚举 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift讲解专题九——枚举">
+            
+	            Swift讲解专题九——枚举
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/15</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift讲解专题九——枚举"><a href="#Swift讲解专题九——枚举" class="headerlink" title="Swift讲解专题九——枚举"></a>Swift讲解专题九——枚举</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在Objective-C语言中，没有实际上是整型数据，Swift中的枚举则更加灵活，开发者可以不为其分配值类型把枚举作为独立的类型来使用，也可以为其分配值，可以是字符，字符串，整型或者浮点型数据。
+</code></pre><h3 id="二、枚举语法"><a href="#二、枚举语法" class="headerlink" title="二、枚举语法"></a>二、枚举语法</h3><pre><code>Swift中enum关键字来进行枚举的创建，使用case来创建每一个枚举值，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">//创建姓氏枚举,和Objective-C不同，Swift枚举不会默认分配值</span><br><span class="line">enum Surname &#123;</span><br><span class="line">    case 张</span><br><span class="line">    case 王</span><br><span class="line">    case 李</span><br><span class="line">    case 赵</span><br><span class="line">&#125;</span><br><span class="line">//创建一个枚举类型的变量</span><br><span class="line">var myName = Surname.张</span><br><span class="line">//如果可以自动推断出类型 则枚举类型可以省略</span><br><span class="line">myName = .李</span><br><span class="line">var myName2:Surname = .王</span><br></pre></td></tr></table></figure>
+<p>同样可以将枚举值都写在同一个case中，使用逗号分隔：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">enum Planet &#123;</span><br><span class="line">    case Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>枚举经常会和Switch语句结合使用，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">switch myName &#123;</span><br><span class="line">case .张:</span><br><span class="line">    print(&quot;姓氏张&quot;)</span><br><span class="line">case .王:</span><br><span class="line">    print(&quot;姓氏王&quot;)</span><br><span class="line">case .李:</span><br><span class="line">    print(&quot;姓氏李&quot;)</span><br><span class="line">case .赵:</span><br><span class="line">    print(&quot;姓氏赵&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、枚举的相关值"><a href="#三、枚举的相关值" class="headerlink" title="三、枚举的相关值"></a>三、枚举的相关值</h3><pre><code>Swift中的枚举有一个很有意思的特点，其可以设置一些相关值，通过相关值，开发者可以从公用的枚举值中获取到传递的额外相关值，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">enum Number &#123;</span><br><span class="line">    case one(count:Int)</span><br><span class="line">    case two(count:Int)</span><br><span class="line">    case three(count:Int)</span><br><span class="line">    case four(count:Int)</span><br><span class="line">&#125;</span><br><span class="line">var num = Number.one(count: 5)</span><br><span class="line">switch num &#123;</span><br><span class="line">    //获取num的相关值</span><br><span class="line">case Number.one(let count):</span><br><span class="line">    print(count)</span><br><span class="line">default:</span><br><span class="line">    print(num)</span><br><span class="line">&#125;</span><br><span class="line">//如果一个枚举值所有的相关中都是常量，let关键字也可以提取到括号外面</span><br><span class="line">switch num &#123;</span><br><span class="line">    //获取num的相关值</span><br><span class="line">case let Number.one(count):</span><br><span class="line">    print(count)</span><br><span class="line">default:</span><br><span class="line">    print(num)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有了相关值这样的句法，大大的增加了枚举的灵活性，例如一个形状枚举，可能的枚举值有矩形，圆形等，矩形的枚举值就可以提供宽高的相关值，圆形的枚举值就可以提供半径的相关值，是开发更加灵活。</p>
+<h3 id="四、枚举的原始值"><a href="#四、枚举的原始值" class="headerlink" title="四、枚举的原始值"></a>四、枚举的原始值</h3><pre><code>原始值也可以理解为为枚举设置一个具体类型，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum Char:String &#123;</span><br><span class="line">    case a = &quot;A&quot;</span><br><span class="line">    case b = &quot;B&quot;</span><br><span class="line">    case c = &quot;C&quot;</span><br><span class="line">&#125;</span><br><span class="line">//”A“</span><br><span class="line">var char = Char.a.rawValue</span><br></pre></td></tr></table></figure>
+<p>注意，如果枚举是Int类型的，则类似于Objective-C，枚举的原始值会从第一个开始之后依次递增：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum Char:Int&#123;</span><br><span class="line">    case a = 0</span><br><span class="line">    case b</span><br><span class="line">    case c</span><br><span class="line">&#125;</span><br><span class="line">//1</span><br><span class="line">var char = Char.b.rawValue</span><br></pre></td></tr></table></figure>
+<p>同样可以通过原始值的方式来进行枚举对象的创建，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">enum Char:Int&#123;</span><br><span class="line">    case a = 0</span><br><span class="line">    case b</span><br><span class="line">    case c</span><br><span class="line">&#125;</span><br><span class="line">//1</span><br><span class="line">var char = Char.b.rawValue</span><br><span class="line">//b</span><br><span class="line">var char2 = Char(rawValue:1)</span><br></pre></td></tr></table></figure>
+<p>在通过原始值进行枚举对象创建的时候，有可能创建失败，例如传入的原始值并不存在，这时会返回Optional值nil。</p>
+<h3 id="四、递归枚举"><a href="#四、递归枚举" class="headerlink" title="四、递归枚举"></a>四、递归枚举</h3><pre><code>递归枚举是Swift枚举中一个难于理解的地方，实际上也并非十分难于理解，开发者只要明白枚举的实质，递归枚举就很好理解。首先，递归是一种算法，可以简单理解为自己调用自己，而枚举实际上并不是函数，它并不执行某项运算，它只是表达一个数据或者说他也可以表达一种表达式，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum Expression &#123;</span><br><span class="line">    //表示加</span><br><span class="line">    case add</span><br><span class="line">    //表示减</span><br><span class="line">    case mul</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>前面有提到过相关值的概念，因此，对于上述例子，可以为add和mul枚举值添加两个相关值作为参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum Expression &#123;</span><br><span class="line">    //表示加</span><br><span class="line">    case add(Int,Int)</span><br><span class="line">    //表示减</span><br><span class="line">    case mul(Int,Int)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如此，如下的写法实际上就可以代表一个5+5的表达式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var exp = Expression.add(5, 5)</span><br></pre></td></tr></table></figure>
+<p>还是需要强调一点，这个exp只是表达了5+5这样一个约定的表达式，它并没有真正进行5+5的运算。现在问题就来了，使用如上的枚举，怎样来表达类似(5+5)*5这样的复合表达式呢？可以使用递归枚举来实现，即将(5+5)作为枚举值得相关值再次创建枚举，改造如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">enum Expression &#123;</span><br><span class="line">    //单值数据</span><br><span class="line">    case num(Int)</span><br><span class="line">    //表示加 indirect为递归枚举关键字</span><br><span class="line">    indirect case add(Expression,Expression)</span><br><span class="line">    //表示减</span><br><span class="line">    indirect case mul(Expression,Expression)</span><br><span class="line">&#125;</span><br><span class="line">var exp1 = Expression.num(5)</span><br><span class="line">var exp2 = Expression.num(5)</span><br><span class="line">var exp3 = Expression.add(exp1, exp2)</span><br><span class="line">var exp4 = Expression.mul(exp1, exp3)</span><br></pre></td></tr></table></figure>
+<p>上面exp4实际上就表达了(5+5)*5这样一个过程，注意递归的枚举值必须加上indirect关键字来声明。处理递归枚举最好的方式是通过递归函数，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">func expFunc(param:Expression) -&gt; Int &#123;</span><br><span class="line">    //进行枚举判断</span><br><span class="line">    switch param &#123;</span><br><span class="line">        //如果是单独数字 直接返回</span><br><span class="line">    case .num(let p):</span><br><span class="line">        return p</span><br><span class="line">        //如果是加法 则进行递归加</span><br><span class="line">    case .add(let one, let two):</span><br><span class="line">        return expFunc(one)+expFunc(two)</span><br><span class="line">        //如果是乘法 则进行递归乘</span><br><span class="line">    case .mul(let one, let two):</span><br><span class="line">        return expFunc(one)*expFunc(two)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">//50</span><br><span class="line">expFunc(exp4)</span><br></pre></td></tr></table></figure>
+<p>如果枚举中所有的case都是可递归的，可以将整个枚举声明为可递归的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">indirect enum Expression &#123;</span><br><span class="line">    //单值数据</span><br><span class="line">    case num(Int)</span><br><span class="line">    //表示加 indirect为递归枚举关键字</span><br><span class="line">    case add(Expression,Expression)</span><br><span class="line">    //表示减</span><br><span class="line">    case mul(Expression,Expression)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/16/210Swift讲解专题十——类与结构体/" class="pre-post btn btn-default" title='Swift讲解专题十——类与结构体'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift讲解专题十——类与结构体</span>
+        </a>
+    
+    
+        <a href="/2016/05/14/208Swift讲解专题八——闭包/" class="next-post btn btn-default" title='Swift讲解专题八——闭包'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift讲解专题八——闭包</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift讲解专题九——枚举"><span class="toc-text">Swift讲解专题九——枚举</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、枚举语法"><span class="toc-text">二、枚举语法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、枚举的相关值"><span class="toc-text">三、枚举的相关值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、枚举的原始值"><span class="toc-text">四、枚举的原始值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、递归枚举"><span class="toc-text">四、递归枚举</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

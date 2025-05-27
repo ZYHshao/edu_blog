@@ -1,0 +1,323 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS中表单视图第三方控件——FXForms | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中表单视图第三方控件——FXForms">
+            
+	            iOS中表单视图第三方控件——FXForms
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS第三方库">
+            iOS第三方库
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/07/04</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中表单视图第三方控件——FXForms"><a href="#iOS中表单视图第三方控件——FXForms" class="headerlink" title="iOS中表单视图第三方控件——FXForms"></a>iOS中表单视图第三方控件——FXForms</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>表单视图是移动开发中十分常用的一种UI方式。在iOS开发中，系统的UITableView可以用来创建表单视图，其界面的渲染与逻辑的处理需要开发者实现许多代理方法。FXForms是一个第三方的表单创建工具，其通过配置的方式来进行表单界面的创建，并且其中为开发者封装好了各种常用类型的表单cell。
+
+FXForms的github地址如下：[https://github.com/nicklockwood/FXForms](https://github.com/nicklockwood/FXForms)。
+</code></pre><h3 id="二、使用FXForms进行表单视图的创建"><a href="#二、使用FXForms进行表单视图的创建" class="headerlink" title="二、使用FXForms进行表单视图的创建"></a>二、使用FXForms进行表单视图的创建</h3><pre><code>FXForms框架中提供了一个FXFormViewController视图控制器类，开发者可以直接编写继承于这个类的ViewController来便捷的创建表单界面，首先，FXForms是通过节点配置的方式来进行表单的创建的，表单中每一个cell都是一个节点，这个节点可以是简单的单节点，也可以是父节点，点击父节点后，会跳转新的视图控制器，父节点中可以进行层层嵌套。对于每一个节点，开发者可以设置一个节点类型，不同的节点类型将展现不同的UI，实现不同的功能。
+
+FXForms中的节点由FXForm协议来进行配置，创建一个简单的表单视图，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//视图控制器类部分</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> : <span class="title">FXFormViewController</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">//节点信息设置</span></span><br><span class="line">    <span class="keyword">self</span>.formController.form = [MyForm new];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="comment">//节点类配置</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyForm</span> : <span class="title">NSObject</span>&lt;<span class="title">FXForm</span>&gt;</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">strong</span>)<span class="built_in">NSString</span> * email;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">strong</span>)<span class="built_in">NSString</span> * password;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>)<span class="built_in">BOOL</span> rememberMe;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyForm</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>上面的MyForm类中只定义了一些属性，并没有进行任何方法的实现，FXForms框架中实现了这样的功能，如果开发者不进行节点信息的配置，则FXForms会自动根据节点配置类中所有的属性来推断节点的类型，如上所示，NSString类型的属性会被自动推断成带文本框的cell，BOOL类型的属性会被自动推断成带UISwitch控件的cell。运行效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0704/113502_cL03_2340880.png" alt></p>
+<p>开发者可以为节点配置类中的每一个属性提供一个约定好的方法，在方法中对此属性对应的节点进行配置，这个约定好的方法名需要与属性对应，其格式是使用属性名加上Field，示例如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyForm</span></span></span><br><span class="line"><span class="comment">//方法名必须是 属性名+Field 返回为NSDictionary字典 字典中为节点的配置信息</span></span><br><span class="line">-(<span class="built_in">NSDictionary</span> *)emailField&#123;</span><br><span class="line">    <span class="comment">//配置节点的类型 点击后 将弹出时间选择控件</span></span><br><span class="line">    <span class="keyword">return</span> @&#123;FXFormFieldType:FXFormFieldTypeDate&#125;;</span><br><span class="line">&#125;</span><br><span class="line">-(<span class="built_in">NSDictionary</span> *)passwdField&#123;</span><br><span class="line">    <span class="comment">//设置节点名称</span></span><br><span class="line">    <span class="keyword">return</span> @&#123;FXFormFieldTitle:<span class="string">@"名称"</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line">-(<span class="built_in">NSDictionary</span> *)rememberMeField&#123;</span><br><span class="line">    <span class="comment">//设置节点头视图名称</span></span><br><span class="line">    <span class="keyword">return</span> @&#123;FXFormFieldHeader:<span class="string">@"配置"</span>&#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>运行工程，效果如下图所示：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0704/114842_GSRM_2340880.png" alt></p>
+<p>返回的配置字典中可以用来配置的属性定义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//配置此节点的标识符</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldKey;</span><br><span class="line"><span class="comment">//配置此节点的类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldType; </span><br><span class="line"><span class="comment">//指定当前节点属性对应的类 一般不需设置</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldClass;</span><br><span class="line"><span class="comment">//设置当前节点对应的cell类</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldCell;</span><br><span class="line"><span class="comment">//设置当前节点显示的名称</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTitle;</span><br><span class="line"><span class="comment">//设置当前节点的placeHolder</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldPlaceholder;</span><br><span class="line"><span class="comment">//设置节点上默认显示的文字</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldDefaultValue; </span><br><span class="line"><span class="comment">//设置选项数组 这个属性的设置 必须配合特定配型的cell使用</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldOptions;</span><br><span class="line"><span class="comment">//如果某个节点是一个数组 则FXFormFieldTemplate可以用来设置数组中节点的属性</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTemplate;</span><br><span class="line"><span class="comment">//进行类型转换</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldValueTransformer;</span><br><span class="line"><span class="comment">//设置节点的触发方法</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldAction;</span><br><span class="line"><span class="comment">//连接StoryboardSegue</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldSegue;</span><br><span class="line"><span class="comment">//设置节点头部内容</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldHeader;</span><br><span class="line"><span class="comment">//设置节点尾部内容</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldFooter;</span><br><span class="line"><span class="comment">//设置是否是内嵌节点 对于父节点或者数组类界定 这个如果设置为@YES 则会在当前界面中展示表单 如果设置为@NO，则会在新的视图控制器中展示</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldInline;</span><br><span class="line"><span class="comment">//对于数组类型的节点，设置是否支持排序 设置为@YES则为支持排序</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldSortable;</span><br><span class="line"><span class="comment">//设置选中cell后跳转的ViewController</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldViewController;</span><br></pre></td></tr></table></figure>
+<p>关于设置节点的类型，FXFormFieldType可以设置的值有如下几种：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//默认的节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeDefault;</span><br><span class="line"><span class="comment">//文本标签节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeLabel;</span><br><span class="line"><span class="comment">//输入框节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeText;</span><br><span class="line"><span class="comment">//长文本输入节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeLongText; </span><br><span class="line"><span class="comment">//URL节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeURL;</span><br><span class="line"><span class="comment">//Email节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeEmail; </span><br><span class="line"><span class="comment">//号码节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypePhone; </span><br><span class="line"><span class="comment">//密码框节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypePassword;</span><br><span class="line"><span class="comment">//数字节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeNumber;</span><br><span class="line"><span class="comment">//只允许输入整数的节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeInteger;</span><br><span class="line"><span class="comment">//无符号整数节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeUnsigned; </span><br><span class="line"><span class="comment">//浮点节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeFloat;</span><br><span class="line"><span class="comment">//BOOL节点类型 默认带UISwitch控件</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeBoolean;</span><br><span class="line"><span class="comment">//选项节点类型 默认带对号符号</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeOption;</span><br><span class="line"><span class="comment">//日期节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeDate;</span><br><span class="line"><span class="comment">//时间节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeTime;</span><br><span class="line"><span class="comment">//日期时间节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeDateTime;</span><br><span class="line"><span class="comment">//图片节点类型</span></span><br><span class="line"><span class="built_in">UIKIT_EXTERN</span> <span class="built_in">NSString</span> *<span class="keyword">const</span> FXFormFieldTypeImage;</span><br></pre></td></tr></table></figure>
+<p>FXForms中也提供了许多封装好的cell，列举如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//默认的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormDefaultCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带文本输入框的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormTextFieldCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UITextField</span> *textField;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带文本输入视图的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormTextViewCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UITextView</span> *textView;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带UISwitch控件的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormSwitchCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UISwitch</span> *switchControl;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带UIStepper控件的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormStepperCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UIStepper</span> *stepper;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带UISlider控件的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormSliderCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UISlider</span> *slider;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带日期选择控件的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormDatePickerCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UIDatePicker</span> *datePicker;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带图片选择控件的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormImagePickerCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UIImageView</span> *imagePickerView;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UIImagePickerController</span> *imagePickerController;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带自定义PickerView的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormOptionPickerCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UIPickerView</span> *pickerView;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//带UISegmentedControl控件的cell</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FXFormOptionSegmentsCell</span> : <span class="title">FXFormBaseCell</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">UISegmentedControl</span> *segmentedControl;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>还有一点需要注意，如果是继承与FXFormViewController的视图控制器，其节点设置的action方法要在视图控制器中进行实现。</p>
+<h3 id="三、通过协议方法来进行节点配置"><a href="#三、通过协议方法来进行节点配置" class="headerlink" title="三、通过协议方法来进行节点配置"></a>三、通过协议方法来进行节点配置</h3><pre><code>上面演示的创建表格视图的方式是在节点配置类中创建属性，分别配置属性的节点信息来创建每一个cell，开发者也可以不创建属性，或者创建属性但是不以属性为节点来进行cell配置，使用FXFrom协议的方法，也可以完成节点的创建和配置，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyForm</span> : <span class="title">NSObject</span>&lt;<span class="title">FXForm</span>&gt;</span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyForm</span></span></span><br><span class="line"><span class="comment">//创建与配置节点</span></span><br><span class="line">- (<span class="built_in">NSArray</span> *)fields</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> @[</span><br><span class="line">             <span class="comment">//这里面配置字典的方法和属性字典的配置方法一一致</span></span><br><span class="line">             @&#123;FXFormFieldKey: <span class="string">@"email"</span>, FXFormFieldTitle: <span class="string">@"email"</span>&#125;,</span><br><span class="line">             @&#123;FXFormFieldKey: <span class="string">@"phone"</span>, FXFormFieldTitle: <span class="string">@"phone"</span>&#125;,</span><br><span class="line">             @&#123;FXFormFieldKey: <span class="string">@"address"</span>, FXFormFieldTitle: <span class="string">@"address"</span>&#125;,</span><br><span class="line">             @&#123;FXFormFieldKey: <span class="string">@"name"</span>, FXFormFieldTitle: <span class="string">@"name"</span>&#125;</span><br><span class="line">             ];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0704/143132_JV8d_2340880.png" alt></p>
+<p>-(NSArray *)fields方法是FXForm协议中的一个方法，在这个方法中，可以直接进行节点的创建和配置，FXForm协议中还提供了两个方法，意义如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这个方法用于配置额外的节点，如果需要某些节点不对应任何属性，可以在这个方法中配置</span></span><br><span class="line">- (<span class="built_in">NSArray</span> *)extraFields;</span><br><span class="line"><span class="comment">//这个方法需要返回一个字符串数组，如果需要某些属性不对应节点，即有属性的存在，但是不生成cell，可以将属性名传入返回</span></span><br><span class="line">- (<span class="built_in">NSArray</span> *)excludedFields;</span><br></pre></td></tr></table></figure>
+<pre><code>节点也可以进行复合，例如可以将一个节点配置类作为属性设置给另一个节点配置类，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//子节点信息配置类</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">SubForm</span> : <span class="title">NSObject</span>&lt;<span class="title">FXForm</span>&gt;</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>)<span class="built_in">NSInteger</span> age;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>)<span class="built_in">NSDate</span> * date;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">SubForm</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//父节点信息配置类</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyForm</span> : <span class="title">NSObject</span>&lt;<span class="title">FXForm</span>&gt;</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">strong</span>)<span class="built_in">NSString</span> * email;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">strong</span>)<span class="built_in">NSString</span> * passwd;</span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">assign</span>)<span class="built_in">BOOL</span> rememberMe;</span><br><span class="line"><span class="comment">//其中有属性为子节点</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">strong</span>)SubForm * subForm;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyForm</span></span></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>子节点会被默认包装在新的视图控制器中，也可以设置FXFormFieldInline为@YES来使其复合进当前视图控制器，效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0704/144157_JXx3_2340880.png" alt>              <img src="http://static.oschina.net/uploads/space/2016/0704/144210_mGiO_2340880.png" alt></p>
+<h3 id="四、关于自定义视图控制器"><a href="#四、关于自定义视图控制器" class="headerlink" title="四、关于自定义视图控制器"></a>四、关于自定义视图控制器</h3><pre><code>如果开发者的视图控制器并不是继承于FXFormViewController，也可以使用FXForms来快捷的创建表单视图，开发者自定义的视图控制器需要遵守FXFormControllerDelegate协议，示例如下:
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> : <span class="title">UIViewController</span>&lt;<span class="title">FXFormControllerDelegate</span>&gt;</span></span><br><span class="line"><span class="comment">//系统的tableView</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">strong</span>)<span class="built_in">UITableView</span> * tableView;</span><br><span class="line"><span class="comment">//FX表单控制器</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>,<span class="keyword">strong</span>)FXFormController * formController;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="keyword">self</span>.tableView = [[<span class="built_in">UITableView</span> alloc]initWithFrame:<span class="keyword">self</span>.view.frame style:<span class="built_in">UITableViewStyleGrouped</span>];</span><br><span class="line">    <span class="keyword">self</span>.formController = [[FXFormController alloc] init];</span><br><span class="line">    <span class="keyword">self</span>.formController.tableView = <span class="keyword">self</span>.tableView;</span><br><span class="line">    <span class="keyword">self</span>.formController.delegate = <span class="keyword">self</span>;</span><br><span class="line">    <span class="keyword">self</span>.formController.form = [[MyForm alloc] init];</span><br><span class="line">    <span class="keyword">self</span>.formController.form = [MyForm new];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.tableView];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>上面的代码极大了简化了ViewController中的代码量。</p>
+<h3 id="五、对Cell进行属性设置"><a href="#五、对Cell进行属性设置" class="headerlink" title="五、对Cell进行属性设置"></a>五、对Cell进行属性设置</h3><pre><code>在进行节点属性字典的配置时，可以通过访问属性路径的方式来对cell的属性进行一些配置，例如：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="built_in">NSDictionary</span> *)passwdField&#123;</span><br><span class="line">    <span class="keyword">return</span> @&#123;<span class="string">@"textLabel.textColor"</span>:[<span class="built_in">UIColor</span> redColor]&#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/07/05/234iOS第三方左对齐布局类——UICollectionViewLeftAlignedLayout/" class="pre-post btn btn-default" title='iOS第三方左对齐布局类——UICollectionViewLeftAlignedLayout'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS第三方左对齐布局类——UICollectionViewLeftAlignedLayout</span>
+        </a>
+    
+    
+        <a href="/2016/07/01/232iOS中第三方有序字典框架——M13OrderedDictionary/" class="next-post btn btn-default" title='iOS中第三方有序字典框架——M13OrderedDictionary'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中第三方有序字典框架——M13OrderedDictionary</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中表单视图第三方控件——FXForms"><span class="toc-text">iOS中表单视图第三方控件——FXForms</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、使用FXForms进行表单视图的创建"><span class="toc-text">二、使用FXForms进行表单视图的创建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、通过协议方法来进行节点配置"><span class="toc-text">三、通过协议方法来进行节点配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、关于自定义视图控制器"><span class="toc-text">四、关于自定义视图控制器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、对Cell进行属性设置"><span class="toc-text">五、对Cell进行属性设置</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

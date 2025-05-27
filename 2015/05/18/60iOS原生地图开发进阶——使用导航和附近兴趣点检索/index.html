@@ -1,0 +1,336 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS原生地图开发进阶——使用导航和附近兴趣点检索 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS原生地图开发进阶——使用导航和附近兴趣点检索">
+            
+	            iOS原生地图开发进阶——使用导航和附近兴趣点检索
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/05/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS原生地图开发进阶——使用导航和附近兴趣点检索"><a href="#iOS原生地图开发进阶——使用导航和附近兴趣点检索" class="headerlink" title="iOS原生地图开发进阶——使用导航和附近兴趣点检索"></a>iOS原生地图开发进阶——使用导航和附近兴趣点检索</h2><p>iOS中的mapKit框架对国际化的支持非常出色。在前些篇博客中，对这个地图框架的基础用法和标注与覆盖物的添加进行了详细的介绍，这篇博客将介绍两个更加实用的功能的开发：线路导航与兴趣点搜索。前几篇博客的链接如下：</p>
+<p>地图基础用法详解：<a href="http://my.oschina.net/u/2340880/blog/415360" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/415360</a>。</p>
+<p>添加大头针与自定义标注：<a href="http://my.oschina.net/u/2340880/blog/415441" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/415441</a>。</p>
+<p>添加地图覆盖物：<a href="http://my.oschina.net/u/2340880/blog/415611" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/415611</a>。</p>
+<h3 id="一、线路导航"><a href="#一、线路导航" class="headerlink" title="一、线路导航"></a>一、线路导航</h3><h4 id="1、从几个类的关系说起"><a href="#1、从几个类的关系说起" class="headerlink" title="1、从几个类的关系说起"></a>1、从几个类的关系说起</h4><p>(1)MKPlacemark</p>
+<p>一个地点信息类，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">@interface MKPlacemark : CLPlacemark &lt;MKAnnotation&gt;</span><br><span class="line">//初始化方法，通过给定一个经纬度和地点信息字典</span><br><span class="line">- (instancetype)initWithCoordinate:(CLLocationCoordinate2D)coordinate</span><br><span class="line">                 addressDictionary:(NSDictionary *)addressDictionary;</span><br><span class="line">//国家编码</span><br><span class="line">@property (nonatomic, readonly) NSString *countryCode;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>(2)MKMapItem</p>
+<p>地点节点类，包含此节点的许多地点信息，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">@interface MKMapItem : NSObject</span><br><span class="line">//当前节点的地点信息对象</span><br><span class="line">@property (nonatomic, readonly) MKPlacemark *placemark;</span><br><span class="line">//是否是当前位置</span><br><span class="line">@property (nonatomic, readonly) BOOL isCurrentLocation;</span><br><span class="line">//节点名称</span><br><span class="line">@property (nonatomic, copy) NSString *name;</span><br><span class="line">//电话号码</span><br><span class="line">@property (nonatomic, copy) NSString *phoneNumber;</span><br><span class="line">//网址</span><br><span class="line">@property (nonatomic, strong) NSURL *url;</span><br><span class="line">//将当前位置创建为节点</span><br><span class="line">+ (MKMapItem *)mapItemForCurrentLocation;</span><br><span class="line">//由一个位置信息创建节点</span><br><span class="line">- (instancetype)initWithPlacemark:(MKPlacemark *)placemark;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>(3)MKDirectionsRequest</p>
+<p>导航请求类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@interface MKDirectionsRequest : NSObject</span><br><span class="line">//起点节点</span><br><span class="line">- (MKMapItem *)source NS_AVAILABLE(10_9, 6_0);</span><br><span class="line">- (void)setSource:(MKMapItem *)source NS_AVAILABLE(10_9, 7_0);</span><br><span class="line">//目的地节点</span><br><span class="line">- (MKMapItem *)destination NS_AVAILABLE(10_9, 6_0);</span><br><span class="line">- (void)setDestination:(MKMapItem *)destination NS_AVAILABLE(10_9, 7_0);</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>这个类还有一些扩展的设置属性：</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (nonatomic) MKDirectionsTransportType transportType;</p>
+<p>设置路线检索类型，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_OPTIONS(NSUInteger, MKDirectionsTransportType) &#123;</span><br><span class="line">    MKDirectionsTransportTypeAutomobile     = 1 &lt;&lt; 0,//适合驾车时导航</span><br><span class="line">    MKDirectionsTransportTypeWalking        = 1 &lt;&lt; 1,//适合步行时导航</span><br><span class="line">    MKDirectionsTransportTypeAny            = 0x0FFFFFFF//任何情况</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (nonatomic) BOOL requestsAlternateRoutes;</p>
+<p>设置是否搜索多条线路</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (nonatomic, copy) NSDate *departureDate;</p>
+<p>设置出发日期</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (nonatomic, copy) NSDate *arrivalDate;</p>
+<p>设置到达日期</p>
+<p>（4）MKDirections</p>
+<p>从apple服务器获取数据的连接类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@interface MKDirections : NSObject</span><br><span class="line">//初始化方法</span><br><span class="line">- (instancetype)initWithRequest:(MKDirectionsRequest *)request NS_DESIGNATED_INITIALIZER;</span><br><span class="line">//开始计算线路信息</span><br><span class="line">- (void)calculateDirectionsWithCompletionHandler:(MKDirectionsHandler)completionHandler;</span><br><span class="line">//开始计算时间信息</span><br><span class="line">- (void)calculateETAWithCompletionHandler:(MKETAHandler)completionHandler;</span><br><span class="line">//取消</span><br><span class="line">- (void)cancel;</span><br><span class="line">//是否正在计算</span><br><span class="line">@property (nonatomic, readonly, getter=isCalculating) BOOL calculating;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>(5)MKDirectionsResponse</p>
+<p>线路信息结果类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@interface MKDirectionsResponse : NSObject</span><br><span class="line">@property (nonatomic, readonly) MKMapItem *source;//起点</span><br><span class="line">@property (nonatomic, readonly) MKMapItem *destination;//终点</span><br><span class="line">@property (nonatomic, readonly) NSArray *routes; //线路规划数组</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>(6)MKETResponse</p>
+<p>时间信息结果类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@interface MKETAResponse : NSObject</span><br><span class="line">@property (nonatomic, readonly) MKMapItem *source;//起点</span><br><span class="line">@property (nonatomic, readonly) MKMapItem *destination;//终点</span><br><span class="line">@property (nonatomic, readonly) NSTimeInterval expectedTravelTime;//耗时</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>(7)MKRoute</p>
+<p>线路信息类，导航的线路结果是这个类型的对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">@interface MKRoute : NSObject</span><br><span class="line"></span><br><span class="line">@property (nonatomic, readonly) NSString *name; //线路名称</span><br><span class="line">@property (nonatomic, readonly) NSArray *advisoryNotices; //注意事项</span><br><span class="line">@property (nonatomic, readonly) CLLocationDistance distance; //距离</span><br><span class="line">@property (nonatomic, readonly) NSTimeInterval expectedTravelTime;//耗时</span><br><span class="line">@property (nonatomic, readonly) MKDirectionsTransportType transportType; //检索的类型</span><br><span class="line"></span><br><span class="line">@property (nonatomic, readonly) MKPolyline *polyline; // 线路覆盖物</span><br><span class="line"></span><br><span class="line">@property (nonatomic, readonly) NSArray *steps; // 线路详情数组</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>（8）MKRouteStep</p>
+<p>线路详情信息类，线路中每一步的信息都是这个类的对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@interface MKRouteStep : NSObject</span><br><span class="line"></span><br><span class="line">@property (nonatomic, readonly) NSString *instructions; // 节点信息</span><br><span class="line">@property (nonatomic, readonly) NSString *notice; // 注意事项</span><br><span class="line"></span><br><span class="line">@property (nonatomic, readonly) MKPolyline *polyline; //线路覆盖物</span><br><span class="line"></span><br><span class="line">@property (nonatomic, readonly) CLLocationDistance distance; // 距离</span><br><span class="line"></span><br><span class="line">@property (nonatomic, readonly) MKDirectionsTransportType transportType; // 导航类型</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>看到上面如此多的类，你可能会觉得一头雾水，那么不用着急，类虽然繁杂，但他们之间的逻辑非常清晰，下面就通过一个例子来进行线路导航。</p>
+<h4 id="2、进行线路导航"><a href="#2、进行线路导航" class="headerlink" title="2、进行线路导航"></a>2、进行线路导航</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    //地图初始化设置</span><br><span class="line">    mapView =[[MKMapView alloc]initWithFrame:self.view.frame];</span><br><span class="line">    mapView.region=MKCoordinateRegionMake(CLLocationCoordinate2DMake(39.26, 116.3), MKCoordinateSpanMake(5, 5));</span><br><span class="line">    mapView.mapType=MKMapTypeStandard;</span><br><span class="line">    mapView.delegate=self;</span><br><span class="line">    [self.view addSubview:mapView];</span><br><span class="line">    </span><br><span class="line">    //导航设置</span><br><span class="line">    CLLocationCoordinate2D fromcoor=CLLocationCoordinate2DMake(39.26, 116.3);</span><br><span class="line">    CLLocationCoordinate2D tocoor = CLLocationCoordinate2DMake(33.33, 113.33);</span><br><span class="line">    //创建出发点和目的点信息</span><br><span class="line">    MKPlacemark *fromPlace = [[MKPlacemark alloc] initWithCoordinate:fromcoor</span><br><span class="line">                                                       addressDictionary:nil];</span><br><span class="line">    MKPlacemark *toPlace = [[MKPlacemark alloc]initWithCoordinate:tocoor addressDictionary:nil];</span><br><span class="line">    //创建出发节点和目的地节点</span><br><span class="line">    MKMapItem * fromItem = [[MKMapItem alloc]initWithPlacemark:fromPlace];</span><br><span class="line">    MKMapItem * toItem = [[MKMapItem alloc]initWithPlacemark:toPlace];</span><br><span class="line">    //初始化导航搜索请求</span><br><span class="line">    MKDirectionsRequest *request = [[MKDirectionsRequest alloc]init];</span><br><span class="line">    request.source=fromItem;</span><br><span class="line">    request.destination=toItem;</span><br><span class="line">    request.requestsAlternateRoutes=YES;</span><br><span class="line">    //初始化请求检索</span><br><span class="line">    MKDirections *directions = [[MKDirections alloc]initWithRequest:request];</span><br><span class="line">    //开始检索，结果会返回在block中</span><br><span class="line">    [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) &#123;</span><br><span class="line">        if (error) &#123;</span><br><span class="line">            NSLog(@&quot;error:%@&quot;,error);</span><br><span class="line">        &#125;else&#123;</span><br><span class="line">            //提取导航线路结果中的一条线路</span><br><span class="line">            MKRoute *route =response.routes[0];</span><br><span class="line">            //将线路中的每一步详情提取出来</span><br><span class="line">            NSArray * stepArray = [NSArray arrayWithArray:route.steps];</span><br><span class="line">            //进行遍历</span><br><span class="line">            for (int i=0; i&lt;stepArray.count; i++) &#123;</span><br><span class="line">                //线路的详情节点</span><br><span class="line">                MKRouteStep * step = stepArray[i];</span><br><span class="line">                //在此节点处添加一个大头针</span><br><span class="line">                MKPointAnnotation * point = [[MKPointAnnotation alloc]init];</span><br><span class="line">                point.coordinate=step.polyline.coordinate;</span><br><span class="line">                point.title=step.instructions;</span><br><span class="line">                point.subtitle=step.notice;</span><br><span class="line">                [mapView addAnnotation:point];</span><br><span class="line">                //将此段线路添加到地图上</span><br><span class="line">                [mapView addOverlay:step.polyline];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];  </span><br><span class="line">&#125;</span><br><span class="line">//地图覆盖物的代理方法</span><br><span class="line">-(MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id&lt;MKOverlay&gt;)overlay&#123;</span><br><span class="line">    MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:overlay];</span><br><span class="line">    </span><br><span class="line">    renderer.strokeColor = [UIColor redColor];</span><br><span class="line">    </span><br><span class="line">    renderer.lineWidth = 4.0;</span><br><span class="line">    </span><br><span class="line">    return  renderer;</span><br><span class="line">&#125;</span><br><span class="line">//标注的代理方法</span><br><span class="line">-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id&lt;MKAnnotation&gt;)annotation&#123;</span><br><span class="line">    MKPinAnnotationView * view= [[MKPinAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:@&quot;anno&quot;];</span><br><span class="line">    view.canShowCallout=YES;</span><br><span class="line">    return view;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0518/132045_dJBv_2340880.png" alt></p>
+<h3 id="二、附近兴趣点检索"><a href="#二、附近兴趣点检索" class="headerlink" title="二、附近兴趣点检索"></a>二、附近兴趣点检索</h3><p>兴趣点检索的逻辑和导航线路检索的逻辑相似，直接通过代码来演示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">    //创建一个位置信息对象，第一个参数为经纬度，第二个为纬度检索范围，单位为米，第三个为经度检索范围，单位为米</span><br><span class="line">    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(tocoor, 5000, 5000);</span><br><span class="line">    //初始化一个检索请求对象</span><br><span class="line">    MKLocalSearchRequest * req = [[MKLocalSearchRequest alloc]init];</span><br><span class="line">    //设置检索参数</span><br><span class="line">    req.region=region;</span><br><span class="line">    //兴趣点关键字</span><br><span class="line">    req.naturalLanguageQuery=@&quot;hotal&quot;;</span><br><span class="line">    //初始化检索</span><br><span class="line">    MKLocalSearch * ser = [[MKLocalSearch alloc]initWithRequest:req];</span><br><span class="line">    //开始检索，结果返回在block中</span><br><span class="line">    [ser startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) &#123;</span><br><span class="line">        //兴趣点节点数组</span><br><span class="line">        NSArray * array = [NSArray arrayWithArray:response.mapItems];</span><br><span class="line">        for (int i=0; i&lt;array.count; i++) &#123;</span><br><span class="line">            MKMapItem * item=array[i];</span><br><span class="line">            MKPointAnnotation * point = [[MKPointAnnotation alloc]init];</span><br><span class="line">            point.title=item.name;</span><br><span class="line">            point.subtitle=item.phoneNumber;</span><br><span class="line">            point.coordinate=item.placemark.coordinate;</span><br><span class="line">            [mapView addAnnotation:point];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0518/132653_jZOv_2340880.png" alt></p>
+<p>如果疏漏 欢迎指正</p>
+<p>学习使用 欢迎转载</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/05/19/61iOS多线程编程之一——NSThread线程管理/" class="pre-post btn btn-default" title='iOS多线程编程之一——NSThread线程管理'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS多线程编程之一——NSThread线程管理</span>
+        </a>
+    
+    
+        <a href="/2015/05/16/59iOS原生地图开发指南再续——地图覆盖物的应用/" class="next-post btn btn-default" title='iOS原生地图开发指南再续——地图覆盖物的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS原生地图开发指南再续——地图覆盖物的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS原生地图开发进阶——使用导航和附近兴趣点检索"><span class="toc-text">iOS原生地图开发进阶——使用导航和附近兴趣点检索</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、线路导航"><span class="toc-text">一、线路导航</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、从几个类的关系说起"><span class="toc-text">1、从几个类的关系说起</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、进行线路导航"><span class="toc-text">2、进行线路导航</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、附近兴趣点检索"><span class="toc-text">二、附近兴趣点检索</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,306 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS获取通讯录联系人信息 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS获取通讯录联系人信息">
+            
+	            iOS获取通讯录联系人信息
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/28</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS获取系统通讯录联系人信息"><a href="#iOS获取系统通讯录联系人信息" class="headerlink" title="iOS获取系统通讯录联系人信息"></a>iOS获取系统通讯录联系人信息</h2><h3 id="一、权限注册"><a href="#一、权限注册" class="headerlink" title="一、权限注册"></a>一、权限注册</h3><p>随着apple对用户隐私的越来越重视，IOS系统的权限设置也更加严格，在获取系统通讯录之前，我们必须获得用户的授权。权限申请代码示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">    //这个变量用于记录授权是否成功，即用户是否允许我们访问通讯录</span><br><span class="line">    int __block tip=0;</span><br><span class="line">    //声明一个通讯簿的引用</span><br><span class="line">    ABAddressBookRef addBook =nil;</span><br><span class="line">    //因为在IOS6.0之后和之前的权限申请方式有所差别，这里做个判断</span><br><span class="line">    if ([[UIDevice currentDevice].systemVersion floatValue]&gt;=6.0) &#123;</span><br><span class="line">        //创建通讯簿的引用</span><br><span class="line">        addBook=ABAddressBookCreateWithOptions(NULL, NULL);</span><br><span class="line">        //创建一个出事信号量为0的信号</span><br><span class="line">        dispatch_semaphore_t sema=dispatch_semaphore_create(0);</span><br><span class="line">        //申请访问权限</span><br><span class="line">        ABAddressBookRequestAccessWithCompletion(addBook, ^(bool greanted, CFErrorRef error)        &#123;</span><br><span class="line">            //greanted为YES是表示用户允许，否则为不允许</span><br><span class="line">            if (!greanted) &#123;</span><br><span class="line">                tip=1;</span><br><span class="line">            &#125;</span><br><span class="line">            //发送一次信号</span><br><span class="line">            dispatch_semaphore_signal(sema);</span><br><span class="line">        &#125;);</span><br><span class="line">        //等待信号触发</span><br><span class="line">         dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);</span><br><span class="line">    &#125;else&#123;</span><br><span class="line">        //IOS6之前</span><br><span class="line">        addBook =ABAddressBookCreate();</span><br><span class="line">    &#125;</span><br><span class="line">    if (tip) &#123;</span><br><span class="line">    //做一个友好的提示</span><br><span class="line">        UIAlertView * alart = [[UIAlertView alloc]initWithTitle:@&quot;温馨提示&quot; message:@&quot;请您设置允许APP访问您的通讯录\nSettings&gt;General&gt;Privacy&quot; delegate:self cancelButtonTitle:@&quot;确定&quot; otherButtonTitles:nil, nil];</span><br><span class="line">        [alart show];</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>几点注意：1、dispatch_semaphore_t三个相关的操作为</p>
+<p>   dispatch_semaphore_create　　　创建一个信号<br>　　                  dispatch_semaphore_signal　　　发送一个信号<br>　　                  dispatch_semaphore_wait               等待信号触发   </p>
+<p> dispatch_semaphore_create()创建一个信号，后面可以跟一个参数，表示信号量，当信号量正值时，dispatch_semaphore_wait后面的代码会被执行，否则程序将会一直等待在dispatch_semaphore_wait。 dispatch_semaphore_signal的作用是发送一个信号，会使信号量加1，相对的，dispatch_semaphore_wait执行后会使信号量减1.</p>
+<pre><code>2、因为是否被授权是在ABAddressBookRequestAccessWithCompletion的block回调中获取的，所以我们需要在外面做一个线程等待。
+</code></pre><h3 id="二、获取通讯录联系人详细信息"><a href="#二、获取通讯录联系人详细信息" class="headerlink" title="二、获取通讯录联系人详细信息"></a>二、获取通讯录联系人详细信息</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">    //获取所有联系人的数组</span><br><span class="line">    CFArrayRef allLinkPeople = ABAddressBookCopyArrayOfAllPeople(addBook);</span><br><span class="line">    //获取联系人总数</span><br><span class="line">    CFIndex number = ABAddressBookGetPersonCount(addBook);</span><br><span class="line">    //进行遍历</span><br><span class="line">    for (NSInteger i=0; i&lt;number; i++) &#123;</span><br><span class="line">        //获取联系人对象的引用</span><br><span class="line">        ABRecordRef  people = CFArrayGetValueAtIndex(allLinkPeople, i);</span><br><span class="line">        //获取当前联系人名字</span><br><span class="line">        NSString*firstName=(__bridge NSString *)(ABRecordCopyValue(people, kABPersonFirstNameProperty));</span><br><span class="line">        //获取当前联系人姓氏</span><br><span class="line">        NSString*lastName=(__bridge NSString *)(ABRecordCopyValue(people, kABPersonLastNameProperty));</span><br><span class="line">        //获取当前联系人中间名</span><br><span class="line">        NSString*middleName=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonMiddleNameProperty));</span><br><span class="line">        //获取当前联系人的名字前缀</span><br><span class="line">        NSString*prefix=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonPrefixProperty));</span><br><span class="line">        //获取当前联系人的名字后缀</span><br><span class="line">        NSString*suffix=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonSuffixProperty));</span><br><span class="line">        //获取当前联系人的昵称</span><br><span class="line">        NSString*nickName=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonNicknameProperty));</span><br><span class="line">        //获取当前联系人的名字拼音</span><br><span class="line">        NSString*firstNamePhoneic=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonFirstNamePhoneticProperty));</span><br><span class="line">        //获取当前联系人的姓氏拼音</span><br><span class="line">        NSString*lastNamePhoneic=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonLastNamePhoneticProperty));</span><br><span class="line">        //获取当前联系人的中间名拼音</span><br><span class="line">        NSString*middleNamePhoneic=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonMiddleNamePhoneticProperty));</span><br><span class="line">        //获取当前联系人的公司</span><br><span class="line">        NSString*organization=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonOrganizationProperty));</span><br><span class="line">        //获取当前联系人的职位</span><br><span class="line">        NSString*job=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonJobTitleProperty));</span><br><span class="line">        //获取当前联系人的部门</span><br><span class="line">        NSString*department=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonDepartmentProperty));</span><br><span class="line">        //获取当前联系人的生日</span><br><span class="line">        NSString*birthday=(__bridge NSDate*)(ABRecordCopyValue(people, kABPersonBirthdayProperty));</span><br><span class="line">        NSMutableArray * emailArr = [[NSMutableArray alloc]init];</span><br><span class="line">        //获取当前联系人的邮箱 注意是数组</span><br><span class="line">        ABMultiValueRef emails= ABRecordCopyValue(people, kABPersonEmailProperty);</span><br><span class="line">        for (NSInteger j=0; j&lt;ABMultiValueGetCount(emails); j++) &#123;</span><br><span class="line">            [emailArr addObject:(__bridge NSString *)(ABMultiValueCopyValueAtIndex(emails, j))];</span><br><span class="line">        &#125;</span><br><span class="line">        //获取当前联系人的备注</span><br><span class="line">       NSString*notes=(__bridge NSString*)(ABRecordCopyValue(people, kABPersonNoteProperty));</span><br><span class="line">       //获取当前联系人的电话 数组</span><br><span class="line">        NSMutableArray * phoneArr = [[NSMutableArray alloc]init];</span><br><span class="line">        ABMultiValueRef phones= ABRecordCopyValue(people, kABPersonPhoneProperty);</span><br><span class="line">        for (NSInteger j=0; j&lt;ABMultiValueGetCount(phones); j++) &#123;</span><br><span class="line">            [phonerr addObject:(__bridge NSString *)(ABMultiValueCopyValueAtIndex(phones, j))];</span><br><span class="line">        &#125;</span><br><span class="line">        //获取创建当前联系人的时间 注意是NSDate</span><br><span class="line">        NSDate*creatTime=(__bridge NSDate*)(ABRecordCopyValue(people, kABPersonCreationDateProperty));</span><br><span class="line">        //获取最近修改当前联系人的时间</span><br><span class="line">        NSDate*alterTime=(__bridge NSDate*)(ABRecordCopyValue(people, kABPersonModificationDateProperty));</span><br><span class="line">        //获取地址</span><br><span class="line">        ABMultiValueRef address = ABRecordCopyValue(people, kABPersonAddressProperty);</span><br><span class="line">        for (int j=0; j&lt;ABMultiValueGetCount(address); j++) &#123;</span><br><span class="line">            //地址类型</span><br><span class="line">            NSString * type = (__bridge NSString *)(ABMultiValueCopyLabelAtIndex(address, j));</span><br><span class="line">            NSDictionary * temDic = (__bridge NSDictionary *)(ABMultiValueCopyValueAtIndex(address, j));</span><br><span class="line">            //地址字符串，可以按需求格式化</span><br><span class="line">            NSString * adress = [NSString stringWithFormat:@&quot;国家:%@\n省:%@\n市:%@\n街道:%@\n邮编:%@&quot;,[temDic valueForKey:(NSString*)kABPersonAddressCountryKey],[temDic valueForKey:(NSString*)kABPersonAddressStateKey],[temDic valueForKey:(NSString*)kABPersonAddressCityKey],[temDic valueForKey:(NSString*)kABPersonAddressStreetKey],[temDic valueForKey:(NSString*)kABPersonAddressZIPKey]];</span><br><span class="line">        &#125;</span><br><span class="line">        //获取当前联系人头像图片</span><br><span class="line">        NSData*userImage=(__bridge NSData*)(ABPersonCopyImageData(people));</span><br><span class="line">        //获取当前联系人纪念日</span><br><span class="line">        NSMutableArray * dateArr = [[NSMutableArray alloc]init];</span><br><span class="line">        ABMultiValueRef dates= ABRecordCopyValue(people, kABPersonDateProperty);</span><br><span class="line">        for (NSInteger j=0; j&lt;ABMultiValueGetCount(dates); j++) &#123;</span><br><span class="line">            //获取纪念日日期</span><br><span class="line">            NSDate * data =(__bridge NSDate*)(ABMultiValueCopyValueAtIndex(dates, j));</span><br><span class="line">            //获取纪念日名称</span><br><span class="line">            NSString * str =(__bridge NSString*)(ABMultiValueCopyLabelAtIndex(dates, j));</span><br><span class="line">            NSDictionary * temDic = [NSDictionary dictionaryWithObject:data forKey:str];</span><br><span class="line">            [dateArr addObject:temDic];</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>一点扩展：相同的方法，可以获取关联人信息，社交信息，邮箱信息，各种类型的电话信息，字段如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"> //相关人，组织字段</span><br><span class="line">const ABPropertyID kABPersonKindProperty; </span><br><span class="line">const CFNumberRef kABPersonKindPerson;</span><br><span class="line">const CFNumberRef kABPersonKindOrganization;</span><br><span class="line"></span><br><span class="line">// 电话相关字段</span><br><span class="line">AB_EXTERN const ABPropertyID kABPersonPhoneProperty;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonPhoneMobileLabel;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonPhoneIPhoneLabel </span><br><span class="line">AB_EXTERN const CFStringRef kABPersonPhoneMainLabel;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonPhoneHomeFAXLabel;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonPhoneWorkFAXLabel;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonPhoneOtherFAXLabel</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonPhonePagerLabel;</span><br><span class="line"></span><br><span class="line">// 即时聊天信息相关字段</span><br><span class="line">AB_EXTERN const ABPropertyID kABPersonInstantMessageProperty;    </span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceKey;    </span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceYahoo;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceJabber;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceMSN;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceICQ;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceAIM;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceQQ </span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceGoogleTalk;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceSkype;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceFacebook;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageServiceGaduGadu;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonInstantMessageUsernameKey; </span><br><span class="line"></span><br><span class="line">// 个人网页相关字段</span><br><span class="line">AB_EXTERN const ABPropertyID kABPersonURLProperty;</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonHomePageLabel; </span><br><span class="line">//相关人姓名字段</span><br><span class="line">AB_EXTERN const ABPropertyID kABPersonRelatedNamesProperty;   </span><br><span class="line">AB_EXTERN const CFStringRef kABPersonFatherLabel;    // Father</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonMotherLabel;    // Mother</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonParentLabel;    // Parent</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonBrotherLabel;   // Brother</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonSisterLabel;    // Sister</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonChildLabel;      // Child</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonFriendLabel;    // Friend</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonSpouseLabel;    // Spouse</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonPartnerLabel;   // Partner</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonAssistantLabel; // Assistant</span><br><span class="line">AB_EXTERN const CFStringRef kABPersonManagerLabel;   // Manager</span><br></pre></td></tr></table></figure>
+<h3 id="三、通讯录“写”的相关操作"><a href="#三、通讯录“写”的相关操作" class="headerlink" title="三、通讯录“写”的相关操作"></a>三、通讯录“写”的相关操作</h3><p>看到上面读取信息的代码，你可能觉得一阵目炫，其实只是字段比较长，逻辑还是很简单的，同样，写的操作与之类似，创建，修改，删除，是我们对通讯录“写”的常用操作。</p>
+<h4 id="1、创建一个联系人"><a href="#1、创建一个联系人" class="headerlink" title="1、创建一个联系人"></a>1、创建一个联系人</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">    //创建一个联系人引用</span><br><span class="line">    ABRecordRef person = ABPersonCreate();</span><br><span class="line">    NSString *firstName = @&quot;哈&quot;;</span><br><span class="line">    NSString *lastName = @&quot;哈&quot;;</span><br><span class="line">    // 电话号码数组</span><br><span class="line">    NSArray *phones = [NSArray arrayWithObjects:@&quot;123&quot;,@&quot;456&quot;,nil];</span><br><span class="line">    // 电话号码对应的名称</span><br><span class="line">    NSArray *labels = [NSArray arrayWithObjects:@&quot;iphone&quot;,@&quot;home&quot;,nil];</span><br><span class="line">    //这里的字段和上面的字段完全相同</span><br><span class="line">    // 设置名字属性</span><br><span class="line">    ABRecordSetValue(person, kABPersonFirstNameProperty,(__bridge CFStringRef)firstName, NULL);</span><br><span class="line">    // 设置姓氏属性</span><br><span class="line">    ABRecordSetValue(person, kABPersonLastNameProperty, (__bridge CFStringRef)lastName, NULL);</span><br><span class="line">    // 设置生日属性</span><br><span class="line">    ABRecordSetValue(person, kABPersonBirthdayProperty,(__bridge CFDateRef)birthday, NULL);</span><br><span class="line">    // 字典引用</span><br><span class="line">    ABMultiValueRef dic =ABMultiValueCreateMutable(kABMultiStringPropertyType);</span><br><span class="line">    // 添加电话号码与其对应的名称内容</span><br><span class="line">    for (int i = 0; i &lt; [phones count]; i ++) &#123;</span><br><span class="line">        ABMultiValueIdentifier obj = ABMultiValueAddValueAndLabel(dic,(__bridge CFStringRef)[phones objectAtIndex:i], (__bridge CFStringRef)[labels objectAtIndex:i], &amp;obj);</span><br><span class="line">    &#125;</span><br><span class="line">    // 设置phone属性</span><br><span class="line">    ABRecordSetValue(person, kABPersonPhoneProperty, dic, NULL);</span><br><span class="line">    // 将新建的联系人添加到通讯录中</span><br><span class="line">    ABAddressBookAddRecord(addBook, person, NULL);</span><br><span class="line">    // 保存通讯录数据</span><br><span class="line">    ABAddressBookSave(addBook, NULL);</span><br></pre></td></tr></table></figure>
+<h4 id="2、修改联系人"><a href="#2、修改联系人" class="headerlink" title="2、修改联系人"></a>2、修改联系人</h4><p>修改联系人的操作就是将获取和添加和在一起，先获取到相应的联系人引用，重设其属性字段即可。</p>
+<h4 id="3-删除联系人"><a href="#3-删除联系人" class="headerlink" title="3.删除联系人"></a>3.删除联系人</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">     //获取所有联系人</span><br><span class="line">     NSArray *array = (__bridge NSArray*)ABAddressBookCopyArrayOfAllPeople(addBook);</span><br><span class="line">    // 遍历所有的联系人</span><br><span class="line">    for (id obj in array) &#123;</span><br><span class="line">        ABRecordRef people = (__bridge ABRecordRef)obj;</span><br><span class="line">        NSString *firstName = (__bridge NSString*)ABRecordCopyValue(people, kABPersonFirstNameProperty);</span><br><span class="line">        NSString *lastName = (__bridge NSString*)ABRecordCopyValue(people, kABPersonLastNameProperty);</span><br><span class="line">        if ([firstName isEqualToString:@&quot;哈&quot;] &amp;&amp;[lastName isEqualToString:@&quot;哈&quot;]) &#123;</span><br><span class="line">            ABAddressBookRemoveRecord(addBook, people,NULL);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    // 保存修改的通讯录对象</span><br><span class="line">    ABAddressBookSave(addBook, NULL);</span><br></pre></td></tr></table></figure>
+<h3 id="四、重中之重-关于内存管理"><a href="#四、重中之重-关于内存管理" class="headerlink" title="四、重中之重-关于内存管理"></a>四、重中之重-关于内存管理</h3><p>上面的代码为了演示方便，创建的全部引用都没有释放，势必是造成内存泄露，在我们用ABAddressBookCreate()创建一个引用对象时，切记无论ARC还MRC，要用CFRelease()进行释放引用，例如上面的例子，我们需要加上这句代码</p>
+<p>CFRelease(addBook);</p>
+<p>如果你耐心的看到了这里，我想你一定明白了我为什么不在前边的代码里说明这个问题，因为在ARC项目普及的现在，这的确是重中之重。</p>
+<p>疏漏之处 欢迎指正</p>
+<p>学习使用 欢迎转载</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/28/37iOS代码运行的磨刀石-预编译指令/" class="pre-post btn btn-default" title='iOS代码运行的磨刀石-预编译指令'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS代码运行的磨刀石-预编译指令</span>
+        </a>
+    
+    
+        <a href="/2015/04/27/36iOS(CGGeometry)几何类方法总结/" class="next-post btn btn-default" title='iOS(CGGeometry)几何类方法总结'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS(CGGeometry)几何类方法总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS获取系统通讯录联系人信息"><span class="toc-text">iOS获取系统通讯录联系人信息</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、权限注册"><span class="toc-text">一、权限注册</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、获取通讯录联系人详细信息"><span class="toc-text">二、获取通讯录联系人详细信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、通讯录“写”的相关操作"><span class="toc-text">三、通讯录“写”的相关操作</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、创建一个联系人"><span class="toc-text">1、创建一个联系人</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、修改联系人"><span class="toc-text">2、修改联系人</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-删除联系人"><span class="toc-text">3.删除联系人</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、重中之重-关于内存管理"><span class="toc-text">四、重中之重-关于内存管理</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

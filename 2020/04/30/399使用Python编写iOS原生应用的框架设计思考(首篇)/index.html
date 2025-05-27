@@ -1,0 +1,339 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>使用Python编写iOS原生应用的框架设计思考(首篇) | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="使用Python编写iOS原生应用的框架设计思考(首篇)">
+            
+	            使用Python编写iOS原生应用的框架设计思考(首篇)
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/万言归宗">
+            万言归宗
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2020/04/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="使用Python编写iOS原生应用的框架设计思考-首篇"><a href="#使用Python编写iOS原生应用的框架设计思考-首篇" class="headerlink" title="使用Python编写iOS原生应用的框架设计思考(首篇)"></a>使用Python编写iOS原生应用的框架设计思考(首篇)</h1><h2 id="一、引子"><a href="#一、引子" class="headerlink" title="一、引子"></a>一、引子</h2><pre><code>使用Python编写iOS原生应用，为何有这样的想法，其实本来是源于对JS类的跨平台框架的学习。熟悉原生开发的同学们都知道，对于可跨平台的原生框架，使用JS实现的占了大半，其原因是由于Apple内置了JavaScriptCore这样一个JS引擎，使得JavaScript与Objective-C的交互变得非常容易，能够交互，我们就可以容易的编写出各种各样的桥来为JS端提供原生功能，随着原生端桥的全面支持和JS端组件的丰富，一个完整的矿平台框架就诞生了。虽说这是一个庞大的工程，但是实现思路并不深奥，之前也有博客也有介绍：
+</code></pre><p><a href="https://my.oschina.net/u/2340880/blog/856321" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/856321</a></p>
+<p>有了JavaScript框架实现思路的基础，那么不免就很容易想到，其实在语言层面，语言可以做的事情都是相似的，只要有对应的引擎可用，那么原则上说，任何语言都可以编写iOS应用程序，只有难以与方便与否的差别。对于Python来说，其的确有iOS版本的解释器可用。</p>
+<h2 id="二、在iOS平台使用Python解释器"><a href="#二、在iOS平台使用Python解释器" class="headerlink" title="二、在iOS平台使用Python解释器"></a>二、在iOS平台使用Python解释器</h2><pre><code>Github上有很多有趣的项目，其中有一个项目可以将Python源码编译成可以在iOS平台运行的Framework，其地址如下：
+</code></pre><p><a href="https://github.com/beeware/Python-Apple-support" target="_blank" rel="noopener">https://github.com/beeware/Python-Apple-support</a></p>
+<p>有了这个工具，我们可以选择任意版本的Python来将其打包成Framework在iOS平台运行，当然如果你对版本没有特殊的要求，你也可以直接从下面的地址下载已经打包好的Framewok使用：</p>
+<p><a href="https://github.com/pybee/Python-iOS-support/releases" target="_blank" rel="noopener">https://github.com/pybee/Python-iOS-support/releases</a></p>
+<p>下载完成后，会得到两个Framework，将他们添加进工程，并进行链接，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0df0eacfe4ed51435849bcbc1047b4d7caf.png" alt></p>
+<p>需要注意，对于Python.framework要更特殊一点，我们需要将其拷贝进工程的Bundle中，以便后续使用。</p>
+<h2 id="三、编写桥接文件"><a href="#三、编写桥接文件" class="headerlink" title="三、编写桥接文件"></a>三、编写桥接文件</h2><pre><code>这部分主要有Objective-C实现，用来启动Python引擎，加载Python业务代码的入口文件，做各种原生组件与Python组件的桥接等。首先编写一个头文件用来进行静态变量和宏的定义，如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//  BrdgeDefine.h</span></span><br><span class="line"><span class="comment">//  PyNativeDemo</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//  Created by 珲少 on 2020/4/30.</span></span><br><span class="line"><span class="comment">//  Copyright © 2020 jaki. All rights reserved.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#ifndef BrdgeDefine_h</span></span><br><span class="line"><span class="meta">#define BrdgeDefine_h</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;Python/Python.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#define INTERFACE_INSTANCE + (instancetype)sharedInstance;</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#define IMPLEMENTATION_INSTANCE             \</span></span><br><span class="line">+ (<span class="keyword">instancetype</span>)sharedInstance &#123;            \</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">id</span> instance = <span class="literal">nil</span>;               \</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;       \</span><br><span class="line">    <span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;            \</span><br><span class="line">        <span class="keyword">if</span> (!instance) &#123;                    \</span><br><span class="line">            instance = [[<span class="keyword">self</span> alloc] init]; \</span><br><span class="line">        &#125;                                   \</span><br><span class="line">    &#125;);                                     \</span><br><span class="line">    <span class="keyword">return</span> instance;                        \</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">#define SELF_INSTANCE [self.class sharedInstance]</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#endif /* BrdgeDefine_h */</span></span><br></pre></td></tr></table></figure>
+<p>编写Python桥的引擎类，如下：</p>
+<p>BridgeEnigine.h:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"BrdgeDefine.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">BridgeEngine</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">INTERFACE_INSTANCE</span><br><span class="line"></span><br><span class="line">+ (<span class="built_in">UIViewController</span> *)setupEngine;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_END</span></span><br></pre></td></tr></table></figure>
+<p>BridgeEnigine.m:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"BridgeEngine.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"DisplayRender.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"PythonRun.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">BridgeEngine</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">BridgeEngine</span></span></span><br><span class="line"></span><br><span class="line">IMPLEMENTATION_INSTANCE</span><br><span class="line"></span><br><span class="line">+ (<span class="built_in">UIViewController</span> *)setupEngine &#123;</span><br><span class="line">    [SELF_INSTANCE startEngine];</span><br><span class="line">    [SELF_INSTANCE loadLib];</span><br><span class="line">    [SELF_INSTANCE runMain];</span><br><span class="line">    <span class="keyword">return</span> [SELF_INSTANCE renderRoot];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)startEngine &#123;</span><br><span class="line">    <span class="built_in">NSString</span>* frameworkPath = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"%@/Resources"</span>,[SELF_INSTANCE p_pythonFrameworkPath]];</span><br><span class="line">    <span class="keyword">wchar_t</span> *pythonHome = [SELF_INSTANCE stingTowWchar_t:frameworkPath];</span><br><span class="line">    Py_SetPythonHome(pythonHome);</span><br><span class="line">    Py_Initialize();</span><br><span class="line">    PyEval_InitThreads();</span><br><span class="line">    <span class="keyword">if</span> (Py_IsInitialized()) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"😄初始化环境成功😄"</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"😢Python初始化环境失败😢"</span>);</span><br><span class="line">        exit(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)loadLib &#123;</span><br><span class="line">    <span class="built_in">NSString</span> *path = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"import sys\nsys.path.append(\"%@\")"</span>,[[<span class="built_in">NSBundle</span> mainBundle] resourcePath]];</span><br><span class="line">    PyRun_SimpleString([path UTF8String]);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"😄lib加载成功😄"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)runMain &#123;</span><br><span class="line">    PyObject * pModule = PyImport_ImportModule([<span class="string">@"main"</span> UTF8String]);<span class="comment">//导入模块</span></span><br><span class="line">    [PythonRun sharedInstance].mainItemDic = PyModule_GetDict(pModule);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIViewController</span> *)renderRoot &#123;</span><br><span class="line">    <span class="keyword">return</span> [[DisplayRender sharedInstance] renderRoot:<span class="string">@"Main"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">wchar_t</span> *)stingTowWchar_t:(<span class="built_in">NSString</span>*)string &#123;</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">wchar_t</span>*)[string cStringUsingEncoding:<span class="built_in">NSUTF32StringEncoding</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span>*)p_pythonFrameworkPath&#123;</span><br><span class="line">    <span class="built_in">NSString</span>* path = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"Python"</span> ofType:<span class="string">@"framework"</span>];</span><br><span class="line">    <span class="keyword">return</span> path;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    Py_Finalize();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>其中有使用到DisplayRender，由于Python没有办法主动调用原生，初步设想，让这个类通过帧刷新来负责对界面的渲染维护，编码如下：</p>
+<p>DisplayRender.h:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"BrdgeDefine.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">DisplayRender</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">INTERFACE_INSTANCE</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIViewController</span> *)renderRoot:(<span class="built_in">NSString</span> *)main;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_END</span></span><br></pre></td></tr></table></figure>
+<p>DisplayRender.m:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"DisplayRender.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"PythonRun.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"BridgeColor.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"ViewMaker.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">DisplayRender</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">UIViewController</span> *rootController;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSMutableArray</span>&lt;<span class="built_in">UIView</span> *&gt; *subViews;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">DisplayRender</span></span></span><br><span class="line"></span><br><span class="line">IMPLEMENTATION_INSTANCE</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIViewController</span> *)renderRoot:(<span class="built_in">NSString</span> *)main &#123;</span><br><span class="line">    <span class="built_in">NSDictionary</span> *root = [[PythonRun sharedInstance] run:[main UTF8String] method:[<span class="string">@"render_main_view"</span> UTF8String]];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"AppLaunchFinish🙅‍♀️"</span>);</span><br><span class="line">    [<span class="keyword">self</span> renderController:root];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.rootController;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)renderController:(<span class="built_in">NSDictionary</span> *)info &#123;</span><br><span class="line">    [<span class="keyword">self</span>.subViews enumerateObjectsUsingBlock:^(<span class="built_in">UIView</span> *  _Nonnull obj, <span class="built_in">NSUInteger</span> idx, <span class="built_in">BOOL</span> * _Nonnull stop) &#123;</span><br><span class="line">        [obj removeFromSuperview];</span><br><span class="line">    &#125;];</span><br><span class="line">    [<span class="keyword">self</span>.subViews removeAllObjects];</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">NSString</span> *bg = [info objectForKey:<span class="string">@"color"</span>];</span><br><span class="line">    <span class="keyword">self</span>.rootController.view.backgroundColor = [BridgeColor colorWith:bg];</span><br><span class="line">    <span class="built_in">NSArray</span> *views = [info objectForKey:<span class="string">@"subViews"</span>];</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">NSUInteger</span> i = <span class="number">0</span>; i &lt; views.count; i++) &#123;</span><br><span class="line">        <span class="keyword">id</span> view = [ViewMaker makerView:[views[i] objectForKey:<span class="string">@"name"</span>]];</span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">NSString</span> *key <span class="keyword">in</span> [views[i] allKeys]) &#123;</span><br><span class="line">            <span class="keyword">if</span> (![key isEqualToString:<span class="string">@"name"</span>]) &#123;</span><br><span class="line">                [view setValue:[views[i] objectForKey:key] forKey:key];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        [<span class="keyword">self</span>.subViews addObject:view];</span><br><span class="line">        [<span class="keyword">self</span>.rootController.view addSubview:view];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">UIViewController</span> *)rootController &#123;</span><br><span class="line">    <span class="keyword">if</span> (!_rootController) &#123;</span><br><span class="line">        _rootController = [[<span class="built_in">UIViewController</span> alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _rootController;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>PythonRun是一个工具类，起来调用Python解释器对Python代码进行执行，并通过数据与原生端进行交互，编码如下：</p>
+<p>PythonRun.h:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"BrdgeDefine.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">PythonRun</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">INTERFACE_INSTANCE</span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) PyObject *mainItemDic;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)run:(<span class="keyword">const</span> <span class="keyword">char</span> *)item method:(<span class="keyword">const</span> <span class="keyword">char</span> *)method;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_END</span></span><br></pre></td></tr></table></figure>
+<p>PythonRun.m:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"PythonRun.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">PythonRun</span></span></span><br><span class="line"></span><br><span class="line">IMPLEMENTATION_INSTANCE</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)run:(<span class="keyword">const</span> <span class="keyword">char</span> *)item method:(<span class="keyword">const</span> <span class="keyword">char</span> *)method &#123;</span><br><span class="line">    PyObject* pClassCalc = PyDict_GetItemString(<span class="keyword">self</span>.mainItemDic,item);</span><br><span class="line">    PyObject* pInstanceCalc = PyInstanceMethod_New(pClassCalc);</span><br><span class="line">    PyObject* pRet = PyObject_CallMethod(pClassCalc, method, <span class="string">"O"</span>, pInstanceCalc);</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> dumpInfo:pRet];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)dumpInfo:(PyObject *)pRet &#123;</span><br><span class="line">    <span class="comment">// 解析数据</span></span><br><span class="line">    <span class="keyword">char</span> * resultCString = <span class="literal">NULL</span>;</span><br><span class="line">    PyArg_Parse(pRet, <span class="string">"s"</span>, &amp;resultCString);</span><br><span class="line">    <span class="comment">//将python类型的返回值转换为c</span></span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">self</span> dumpString:resultCString];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSDictionary</span> *)dumpString:(<span class="keyword">const</span> <span class="keyword">char</span> *)resultCString &#123;</span><br><span class="line">    <span class="built_in">NSString</span> *jsonString = [<span class="built_in">NSString</span> stringWithCString:resultCString encoding:<span class="built_in">NSUTF8StringEncoding</span>];</span><br><span class="line">    <span class="built_in">NSDictionary</span> *info = [<span class="built_in">NSJSONSerialization</span> JSONObjectWithData:[jsonString dataUsingEncoding:<span class="built_in">NSUTF8StringEncoding</span>] options:<span class="built_in">NSJSONReadingMutableContainers</span> error:<span class="literal">nil</span>];</span><br><span class="line">    <span class="built_in">NSMutableDictionary</span> *dic = [<span class="built_in">NSMutableDictionary</span> dictionaryWithDictionary:info];</span><br><span class="line">    <span class="keyword">for</span> (<span class="built_in">NSString</span> *k <span class="keyword">in</span> dic.allKeys) &#123;</span><br><span class="line">        <span class="keyword">if</span> ([k isEqualToString:<span class="string">@"subViews"</span>]) &#123;</span><br><span class="line">            <span class="built_in">NSMutableArray</span> *array = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line">            <span class="keyword">for</span> (<span class="built_in">NSUInteger</span> i = <span class="number">0</span>; i &lt; [dic[k] count]; i++) &#123;</span><br><span class="line">                  [array addObject:[<span class="keyword">self</span> dumpString:[dic[k][i] UTF8String]]];</span><br><span class="line">            &#125;</span><br><span class="line">            dic[k] = [array <span class="keyword">copy</span>];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"dumpInfo❄️:%@"</span>, dic);</span><br><span class="line">    <span class="keyword">return</span> [dic <span class="keyword">copy</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>通过上面3个核心类，一个简易的Python引擎就完整了，下面还需要编写几个转换类，用来将Python对象转换成Objective-C的对象，编写BridgeColor类如下：</p>
+<p>BridgeColor.h:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">BridgeColor</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">+ (<span class="built_in">UIColor</span> *)colorWith:(<span class="built_in">NSString</span> *)c;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_END</span></span><br></pre></td></tr></table></figure>
+<p>BridgeColor.m:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"BridgeColor.h"</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">BridgeColor</span></span></span><br><span class="line"></span><br><span class="line">+ (<span class="built_in">UIColor</span> *)colorWith:(<span class="built_in">NSString</span> *)c &#123;</span><br><span class="line">    <span class="keyword">if</span> ([c isEqualToString:<span class="string">@"red"</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">UIColor</span> redColor];</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ([c isEqualToString:<span class="string">@"white"</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">UIColor</span> whiteColor];</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ([c isEqualToString:<span class="string">@"purple"</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span> [<span class="built_in">UIColor</span> purpleColor];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">UIColor</span> clearColor];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>BridgeLabel.h:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">BridgeLabel</span> : <span class="title">UILabel</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *left;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *top;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *width;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *height;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSNumber</span> *font_size;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *background_color;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *t;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *color;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_END</span></span><br></pre></td></tr></table></figure>
+<p>BridgeLabel.m:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"BridgeLabel.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"BridgeColor.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">BridgeLabel</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setLeft:(<span class="built_in">NSNumber</span> *)left &#123;</span><br><span class="line">    _left = left;</span><br><span class="line">    <span class="keyword">self</span>.frame = <span class="built_in">CGRectMake</span>(left.floatValue, <span class="keyword">self</span>.frame.origin.y, <span class="keyword">self</span>.frame.size.width, <span class="keyword">self</span>.frame.size.height);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setTop:(<span class="built_in">NSNumber</span> *)top &#123;</span><br><span class="line">    _top = top;</span><br><span class="line">    <span class="keyword">self</span>.frame = <span class="built_in">CGRectMake</span>(<span class="keyword">self</span>.frame.origin.x, top.floatValue, <span class="keyword">self</span>.frame.size.width, <span class="keyword">self</span>.frame.size.height);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setWidth:(<span class="built_in">NSNumber</span> *)width &#123;</span><br><span class="line">    _width = width;</span><br><span class="line">    <span class="keyword">self</span>.frame = <span class="built_in">CGRectMake</span>(<span class="keyword">self</span>.frame.origin.x, <span class="keyword">self</span>.frame.origin.y, width.floatValue, <span class="keyword">self</span>.frame.size.height);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setHeight:(<span class="built_in">NSNumber</span> *)height &#123;</span><br><span class="line">    _height = height;</span><br><span class="line">    <span class="keyword">self</span>.frame = <span class="built_in">CGRectMake</span>(<span class="keyword">self</span>.frame.origin.x, <span class="keyword">self</span>.frame.origin.y, <span class="keyword">self</span>.frame.size.width, height.floatValue);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setColor:(<span class="built_in">NSString</span> *)color &#123;</span><br><span class="line">    _color = color;</span><br><span class="line">    <span class="keyword">self</span>.textColor = [BridgeColor colorWith:color];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setT:(<span class="built_in">NSString</span> *)t &#123;</span><br><span class="line">    _t = t;</span><br><span class="line">    <span class="keyword">self</span>.text = t;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setFont_size:(<span class="built_in">NSNumber</span> *)font_size &#123;</span><br><span class="line">    _font_size = font_size;</span><br><span class="line">    <span class="keyword">self</span>.font = [<span class="built_in">UIFont</span> systemFontOfSize:font_size.intValue];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setBackground_color:(<span class="built_in">NSString</span> *)background_color &#123;</span><br><span class="line">    _background_color = background_color;</span><br><span class="line">    <span class="keyword">self</span>.backgroundColor = [BridgeColor colorWith:background_color];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>ViewMaker.h:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_BEGIN</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewMaker</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">id</span>)makerView:(<span class="built_in">NSString</span> *)name;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">NS_ASSUME_NONNULL_END</span></span><br></pre></td></tr></table></figure>
+<p>ViewMaker.m:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"ViewMaker.h"</span></span></span><br><span class="line"><span class="meta">#import <span class="meta-string">"BridgeLabel.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewMaker</span></span></span><br><span class="line"></span><br><span class="line">+ (<span class="keyword">id</span>)makerView:(<span class="built_in">NSString</span> *)name &#123;</span><br><span class="line">    <span class="keyword">if</span> ([name isEqualToString:<span class="string">@"Label"</span>]) &#123;</span><br><span class="line">        <span class="keyword">return</span> [[BridgeLabel alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h2 id="四、编写Python业务代码"><a href="#四、编写Python业务代码" class="headerlink" title="四、编写Python业务代码"></a>四、编写Python业务代码</h2><pre><code>在项目中添加两个Python文件，一个命名为main.py作为应用程序的入口文件，一个命名为label.py作为标签组件，main.py文件编写代码如下：
+</code></pre><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">from</span> label <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">application_Launch</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">render_main_view</span><span class="params">(self)</span>:</span></span><br><span class="line">        l = Label(<span class="string">"HelloWorld"</span>)</span><br><span class="line">        l.color = <span class="string">"red"</span></span><br><span class="line">        l.font_size = <span class="number">21</span></span><br><span class="line">        l.background_color = <span class="string">"white"</span></span><br><span class="line">        l.left = <span class="number">100</span></span><br><span class="line">        l.top = <span class="number">100</span></span><br><span class="line">        l.width = <span class="number">200</span></span><br><span class="line">        l.height = <span class="number">30</span></span><br><span class="line">        </span><br><span class="line">        l2 = Label(<span class="string">"hhahha"</span>)</span><br><span class="line">        l2.color = <span class="string">"red"</span></span><br><span class="line">        l2.font_size = <span class="number">21</span></span><br><span class="line">        l2.background_color = <span class="string">"white"</span></span><br><span class="line">        l2.left = <span class="number">100</span></span><br><span class="line">        l2.top = <span class="number">300</span></span><br><span class="line">        l2.width = <span class="number">200</span></span><br><span class="line">        l2.height = <span class="number">30</span></span><br><span class="line">        <span class="keyword">return</span> json.dumps(&#123;</span><br><span class="line">            <span class="string">"color"</span>: <span class="string">"purple"</span>,</span><br><span class="line">            <span class="string">"subViews"</span>: [l.render(), l2.render()]</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+<p>label.py编写代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Label</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, text)</span>:</span></span><br><span class="line">        self.t = text</span><br><span class="line">        self.color = <span class="string">""</span></span><br><span class="line">        self.left = <span class="number">0</span></span><br><span class="line">        self.top = <span class="number">0</span></span><br><span class="line">        self.width = <span class="number">0</span></span><br><span class="line">        self.height = <span class="number">0</span></span><br><span class="line">        self.font_size = <span class="number">0</span></span><br><span class="line">        self.background_color = <span class="string">""</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">render</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> json.dumps(&#123;</span><br><span class="line">            <span class="string">"name"</span>: <span class="string">"Label"</span>,</span><br><span class="line">            <span class="string">"t"</span>: self.t,</span><br><span class="line">            <span class="string">"color"</span>: self.color,</span><br><span class="line">            <span class="string">"left"</span>: self.left,</span><br><span class="line">            <span class="string">"top"</span>: self.top,</span><br><span class="line">            <span class="string">"width"</span>: self.width,</span><br><span class="line">            <span class="string">"height"</span>: self.height,</span><br><span class="line">            <span class="string">"font_size"</span>: self.font_size,</span><br><span class="line">            <span class="string">"background_color"</span>: self.background_color</span><br><span class="line">        &#125;)</span><br></pre></td></tr></table></figure>
+<p>到此，一个简易的Python iOS应用Demo工程就搭建完成了，上面代码创建了两个文本标签在页面上，并对组件的部分属性进行了配置，上面实现的每个类都非常简单，作为思路的演示，后续有时间会继续补充完善，并通过博客进行连载介绍，上面工程的运行效果如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-098fd329db2d64df1f9f8dc9945e0b2f8bd.png" alt></p>
+<h2 id="五、后续设想"><a href="#五、后续设想" class="headerlink" title="五、后续设想"></a>五、后续设想</h2><ol>
+<li>通过DisplayLink来进行页面的变更刷新，为组件增加ID，设计一种算法来实现高效的页面刷新。</li>
+<li>将组件的功能完善，添加更多原生组件的支持。</li>
+<li>将事件进行包装，定义回调函数，让Python端有用处理事件的能力。</li>
+<li>增加更多工具接口，如网络，数据文件操作等。</li>
+</ol>
+<p>本篇博客内容比较缩略，你可以在如下地址找到完整的Demo工程：</p>
+<p><a href="https://github.com/ZYHshao/PyNativeDemo/tree/master/PyNativeDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/PyNativeDemo/tree/master/PyNativeDemo</a></p>
+<p>需要注意，工程较大，原因是我将Python库也放了进去，这样可以保证你下载的代码是可运行的。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2020/05/12/400iOS录屏框架ReplayKit的应用总结/" class="pre-post btn btn-default" title='iOS录屏框架ReplayKit的应用总结'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS录屏框架ReplayKit的应用总结</span>
+        </a>
+    
+    
+        <a href="/2020/04/27/398属性“__attribute__”在Objective-C中的应用/" class="next-post btn btn-default" title='属性“__attribute__”在Objective-C中的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">属性“__attribute__”在Objective-C中的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#使用Python编写iOS原生应用的框架设计思考-首篇"><span class="toc-text">使用Python编写iOS原生应用的框架设计思考(首篇)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、引子"><span class="toc-text">一、引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、在iOS平台使用Python解释器"><span class="toc-text">二、在iOS平台使用Python解释器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、编写桥接文件"><span class="toc-text">三、编写桥接文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、编写Python业务代码"><span class="toc-text">四、编写Python业务代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、后续设想"><span class="toc-text">五、后续设想</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

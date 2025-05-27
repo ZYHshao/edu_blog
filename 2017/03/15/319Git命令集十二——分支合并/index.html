@@ -1,0 +1,291 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Git命令集十二——分支合并 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Git命令集十二——分支合并">
+            
+	            Git命令集十二——分支合并
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/GIT">
+            GIT
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/03/15</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Git命令集十二——分支合并"><a href="#Git命令集十二——分支合并" class="headerlink" title="Git命令集十二——分支合并"></a>Git命令集十二——分支合并</h2><h3 id="1-git-merge"><a href="#1-git-merge" class="headerlink" title="1.git merge "></a>1.git merge <branchname></branchname></h3><pre><code>将指定分支合并进当前分支。
+</code></pre><h3 id="2-git-merge-–commit"><a href="#2-git-merge-–commit" class="headerlink" title="2.git merge –commit "></a>2.git merge –commit <branchname></branchname></h3><pre><code>将指定分支合并进当前分支，并且直接提交。
+</code></pre><h3 id="3-git-merge-–no-commit"><a href="#3-git-merge-–no-commit" class="headerlink" title="3.git merge –no-commit "></a>3.git merge –no-commit <branchname></branchname></h3><pre><code>将指定分支合并进当前分支，并不自动提交。
+</code></pre><h3 id="4-git-merge-–edit"><a href="#4-git-merge-–edit" class="headerlink" title="4.git merge –edit "></a>4.git merge –edit <branchname></branchname></h3><pre><code>将指定分支合并进当前分支，在提交之前进行合并信息的编辑。
+</code></pre><h3 id="5-git-merge-–no-edit"><a href="#5-git-merge-–no-edit" class="headerlink" title="5.git merge –no-edit "></a>5.git merge –no-edit <branchname></branchname></h3><pre><code>将指定分支合并进当前分支，不进行提交信息的编辑。
+</code></pre><h3 id="6-git-merge-–no-ff-m"><a href="#6-git-merge-–no-ff-m" class="headerlink" title="6.git merge  –no-ff -m "></a>6.git merge <branchname> –no-ff -m <msg></msg></branchname></h3><pre><code>将指定分支合并进当前分支，在合并操作后提交一条合并信息。
+</code></pre><h3 id="7-git-merge"><a href="#7-git-merge" class="headerlink" title="7.git merge "></a>7.git merge <commit></commit></h3><pre><code>将某次提交合并进当前分支。
+</code></pre>
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/03/21/320 Git命令集十三——快照操作/" class="pre-post btn btn-default" title='Git命令集十三——快照操作'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Git命令集十三——快照操作</span>
+        </a>
+    
+    
+        <a href="/2017/03/14/318Git命令集十二——切换分支与还原文件/" class="next-post btn btn-default" title='Git命令集十二——切换分支与还原文件'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Git命令集十二——切换分支与还原文件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Git命令集十二——分支合并"><span class="toc-text">Git命令集十二——分支合并</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-git-merge"><span class="toc-text">1.git merge </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-git-merge-–commit"><span class="toc-text">2.git merge –commit </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-git-merge-–no-commit"><span class="toc-text">3.git merge –no-commit </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-git-merge-–edit"><span class="toc-text">4.git merge –edit </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-git-merge-–no-edit"><span class="toc-text">5.git merge –no-edit </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-git-merge-–no-ff-m"><span class="toc-text">6.git merge  –no-ff -m </span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-git-merge"><span class="toc-text">7.git merge </span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

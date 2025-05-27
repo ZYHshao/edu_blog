@@ -1,0 +1,337 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ">
+            
+	            自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/网络技术">
+            网络技术
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2022/03/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="自上而下的理解网络（6）——终篇！ARP与Ethernet-Ⅱ"><a href="#自上而下的理解网络（6）——终篇！ARP与Ethernet-Ⅱ" class="headerlink" title="自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ"></a>自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ</h1><p>本篇是本系列博客的最后一篇，回顾此系列文章的介绍过程，我们介绍了：</p>
+<p>1.网上冲浪的第一步：DNS域名解析协议</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5272671" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5272671</a></p>
+<p>2.离我们最近的应用层协议：HTTP</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5308979" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5308979</a></p>
+<p>3.高安全性，高可靠性的应用层协议：HTTPS</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5373824" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5373824</a></p>
+<p>4.可靠的传输层协议：TCP</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5420433" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5420433</a></p>
+<p>5.涉及路由与寻址的网络层协议：IP</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5465312" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5465312</a></p>
+<p>我们一步步的接近了网络传输的底层真相，大千世界，天涯咫尺。看似神奇的网络通信其实就是在这中分层的思想下变得纯粹和简单。本篇之所以是此系列文章的终篇，原因之一是到IP协议这一层后，我们基本已经从逻辑上可以清楚的理解了网络传输的过程，物理层的具体数据传输方式并不会影响我们逻辑上的理解。除此之外，更重要的原因是笔者学识薄浅，对链路层及以下的知识确实不甚了解，因此我们就到此为止。</p>
+<h2 id="一-为什么我们需要MAC地址"><a href="#一-为什么我们需要MAC地址" class="headerlink" title="一. 为什么我们需要MAC地址"></a>一. 为什么我们需要MAC地址</h2><p>本篇文章要从MAC地址说起，如果你认为当要传输的数据被完整的封装成IP报文，明确了源IP地址和目的IP地址后就万事大吉了，那只能说你还太年轻了。我们使用Wireshark来抓一个简单的TCP协议报文来看。如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-f9ebe2bca645c4903e81f91529d319f3011.png" alt></p>
+<p>可以看到，在IP协议这一层，是只关注IP地址的，但是再向下，到封装成数据链路层的数据帧时，已经被转换成了源MAC地址和目的MAC地址。你可能会有疑惑，按照我们前面的理解，通过IP地址已经可以唯一的定位到要进行网络通信的两端，为何要多此一举的又使用MAC地址呢？这样做究竟是什么目的又有什么必要性呢？本篇文章就来帮你解惑。</p>
+<h3 id="1-什么是MAC地址"><a href="#1-什么是MAC地址" class="headerlink" title="1. 什么是MAC地址"></a>1. 什么是MAC地址</h3><p>首先我们需要先了解下什么是MAC地址，MAC地址全称为Media Access Control Address，通常也将其叫做以太网地址或物理地址，是一个用来确定设备网络位置的地址。我们平时使用的可连接互联网的设备中，都会有一个网卡元件，每个网卡都会有一个全球唯一的MAC地址，是由网络设备制造商生产时烧录在元件内部的。</p>
+<p>MAC地址的长度为48位，即6个字节。一般在表示时，我们会以字节为组表示，中间使用冒号进行分割。你也可以查看下当前设备的MAC地址，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-5639e7d11b1d21ffc51709cfeb600e9e7c4.png" alt></p>
+<p>当数据报在网络中输出时，可能需要经过多个中间节点的转发才能最终到达目标节点，在初始节点，我们需要将目标节点的IP映射到中间节点的MAC地址，之后第二个节点根据IP来映射到下一个节点的MAC地址，依次进行映射，直到最终达到目标。因此，数据传输的关键是IP地址到MAC地址的映射，ARP协议就是来做这件事情的。</p>
+<h3 id="2-有了IP地址，为什么还需要MAC地址？"><a href="#2-有了IP地址，为什么还需要MAC地址？" class="headerlink" title="2. 有了IP地址，为什么还需要MAC地址？"></a>2. 有了IP地址，为什么还需要MAC地址？</h3><p>我想，这个问题是初次了解到MAC地址的同学都会有的一个问题，要解答这个问题，我们首先要清楚IP地址和MAC地址间的异同之处。</p>
+<p>IP地址和MAC地址最大的相同点是他们都是唯一的，我们主要看它们的不同之处：</p>
+<h4 id="·-IP地址是网络层使用的，MAC地址是链路层使用的"><a href="#·-IP地址是网络层使用的，MAC地址是链路层使用的" class="headerlink" title="· IP地址是网络层使用的，MAC地址是链路层使用的"></a>· IP地址是网络层使用的，MAC地址是链路层使用的</h4><p>这一点很容易理解，IP协议本身就是网络层的协议，虽然IP地址是唯一的，但其实基于网络拓扑而设计的，同一台设备修改IP地址很容易。MAC地址则是链路层的概念，其在硬件生产是就烧录好了，同一台设备一般无法变动。</p>
+<h4 id="·-长度不同"><a href="#·-长度不同" class="headerlink" title="· 长度不同"></a>· 长度不同</h4><p>IPv4版本的IP地址长度为32位，IPv6版本的IP地址长度为128位，而MAC地址的长度固定为48位。</p>
+<p>IP地址是逻辑上的地址，我们可以理解其作用是将数据从一个逻辑上的网络传递到另一个逻辑上的网络，而MAC地址是链路上的地址，其作用是将数据从一个设备节点传递到另一个设备节点。那么是否可以去掉MAC地址，只使用IP地址呢？理论上好像可行，但实际上却不行。核心的原因也在于IP是逻辑上的，当网卡接收到一块数据时，由于链路层属于下层无法获取上层的逻辑数据，网卡无法自主来过滤这块数据是否是发给我的，需要讲给CPU去运算，上层通过IP逻辑比较来确定的数据报的归属，这会大大的影响网络传输效率，当然如果干掉了分层的概念，可能只需要一个唯一地址就可以解决问题，但是至少对于目前的互联网架构这样是不可行的，这就比如有了域名，我们为什么还需要IP地址是一样的，本质是它们工作在不同的网络分层上。</p>
+<h2 id="二-如何获取目标的MAC地址"><a href="#二-如何获取目标的MAC地址" class="headerlink" title="二. 如何获取目标的MAC地址"></a>二. 如何获取目标的MAC地址</h2><p>现在我们知道了MAC地址是通信过程中所必须的，那么是如何获取到MAC地址呢。</p>
+<h3 id="1-缓存表"><a href="#1-缓存表" class="headerlink" title="1. 缓存表"></a>1. 缓存表</h3><p>和IP路由类似，我们的网络设备中还会存储两个与MAC地址相关的表。一个是ARP缓存表，一个是MAC地址表。当网络层的数据将要被封装成数据链路层的数据帧时，会通过ARP缓存表来查询IP地址与MAC地址的映射关系，当然如果没有缓存的话，会通过网络层的ARP协议来解析。MAC地址表则是存储着各端口的主机源MAC地址和端口号的映射，以便交换机将数据发送到指定的端口去。</p>
+<h3 id="2-ARP协议"><a href="#2-ARP协议" class="headerlink" title="2. ARP协议"></a>2. ARP协议</h3><p>上面所说的ARP缓存表，其中的数据实际上是通过ARP协议解析到的。ARP协议的核心作用是将IP地址解析成对应的MAC地址，回忆一下，这是否很像我们之前所介绍的DNS协议的作用。首先，ARP协议是IP协议簇中的成员之一，核心的工作原理是源主机在需要获取目的IP的MAC地址时，将目的IP组装成ARP数据报广播到局域网上的所有主机，并接收返回的数据，从而确定目标的MAC地址，接收到数据后，会将数据存储ARP缓存表中，下次查询时直接使用缓存，节省网络资源。这个过程就好比：</p>
+<p>1.A想要知道B的MAC地址，其首先会向周围所有网络设备广播如下内容：</p>
+<p>IP是A的设备要想知道IP是B的设备的MAC地址，你们谁知道，请发给我？</p>
+<p>2.M，N，P，Q可能都收到了此询问请求，M发现自己知道B设备的MAC地址，因此会回给A：</p>
+<p>IP是A的设备，我要将IP是B的设备的MAC地址发给你，请接收。</p>
+<p>3.A设备收到M设备的返回后，拿到自己想要的MAC地址，之后组装链路层数据帧进行发送。</p>
+<p>通过上面的过程你也可以发现，其实ARP本身并不是一个安全的协议，任何设备在接收到广播后都可以编造一个MAC地址进行返回，从而产生ARP欺诈风险，但这也并非完全无法防范，比如使用指定的安全的ARP服务器，建立静态的IP-MAC映射表等，我们这里不再讨论。</p>
+<h3 id="3-分析下ARP协议"><a href="#3-分析下ARP协议" class="headerlink" title="3. 分析下ARP协议"></a>3. 分析下ARP协议</h3><p>在访问网页时，你的设备可能随时会发起ARP请求和接收ARP响应，我们可以先抓一个ARP协议的请求和返回数据来简单看下ARP协议的结构，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-37c257b881cb4240636acf5080e46348576.png" alt></p>
+<p>如图中所示，抓到了两条ARP协议数据，其中第一条为ARP请求报文，第二条为ARP响应报文。可以看到请求报文的目标地址是广播地址，报文内包含硬件类型，协议类型，ARP类型，源MAC地址，源IP地址和目的IP地址。如果是响应报文，则其中还会包含目的MAC地址。相比较我们前面介绍的应用层的协议，ARP协议非常简单（越底层通常越简单与专注），协议格式如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-53608a272f98c20e6e17edd3a2e16c8bbe3.png" alt></p>
+<p>其中，ARP首部占了8个字节：</p>
+<p>前2个字节指定了硬件的类型，即链路层的协议，一般为1，表示以太网。</p>
+<p>第3和第4个字节指定了所使用的协议类型，其中0x0800表示IPv4协议。</p>
+<p>第5个字节表示链路层协议的地址长度，比如MAC地址长度为6个字节，这里的值是6。</p>
+<p>第6个字节表示所使用的协议地址长度，比如IPv4的长度为4个字节，，则这里的值是4。</p>
+<p>第7和第8个字节是Opcode码，是一个ARP操纵码，1表示ARP请求，2表示ARP响应。</p>
+<p>ARP协议的首部是固定的，数据部分是可边长的，依次排布着源链路层地址，源逻辑层地址，目标链路层地址和目标逻辑层地址。</p>
+<p>ARP协议本身简单，这里就不再过多阐述，还有一个与之对应的RARP协议，此协议是将MAC地址解析为IP地址，作用与ARP刚好相反，有兴趣的话，你也可以研究下。</p>
+<h2 id="三-以太网链路层Ethernet-Ⅱ帧"><a href="#三-以太网链路层Ethernet-Ⅱ帧" class="headerlink" title="三. 以太网链路层Ethernet Ⅱ帧"></a>三. 以太网链路层Ethernet Ⅱ帧</h2><p>最后，我们再简单了解下Ethernet Ⅱ帧的相关内容，其实拿到MAC地址后，网络传输整体架构中有关逻辑的部分就完全结束后，后面就是向数据包前拼装上链路层协议的相关数据，组装成Ethernet Ⅱ帧进行发送。从抓包工具可以看到，这一层只是向头部拼接了目标MAC地址，源MAC地址和所使用的网络层协议。有时候，在数据的最后也会加上数据帧校验序列，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-bea874de2f7dfa0590ee212208e710f1615.png" alt></p>
+<p>在底层的原理，我们这里就不再深究了。本系列博客也将暂时告一段落，希望能对你有所帮助。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ：316045346</p>
+<p>同时，如果本篇文章让你觉得有用，欢迎分享给更多朋友，请标明出处。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2022/06/18/445前端自动化构建之Gulp/" class="pre-post btn btn-default" title='前端自动化构建之Gulp'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">前端自动化构建之Gulp</span>
+        </a>
+    
+    
+        <a href="/2022/02/27/443自上而下的理解网络（5）——IP篇/" class="next-post btn btn-default" title='自上而下的理解网络（5）——IP篇'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（5）——IP篇</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#自上而下的理解网络（6）——终篇！ARP与Ethernet-Ⅱ"><span class="toc-text">自上而下的理解网络（6）——终篇！ARP与Ethernet Ⅱ</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-为什么我们需要MAC地址"><span class="toc-text">一. 为什么我们需要MAC地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-什么是MAC地址"><span class="toc-text">1. 什么是MAC地址</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-有了IP地址，为什么还需要MAC地址？"><span class="toc-text">2. 有了IP地址，为什么还需要MAC地址？</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#·-IP地址是网络层使用的，MAC地址是链路层使用的"><span class="toc-text">· IP地址是网络层使用的，MAC地址是链路层使用的</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#·-长度不同"><span class="toc-text">· 长度不同</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-如何获取目标的MAC地址"><span class="toc-text">二. 如何获取目标的MAC地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-缓存表"><span class="toc-text">1. 缓存表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-ARP协议"><span class="toc-text">2. ARP协议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-分析下ARP协议"><span class="toc-text">3. 分析下ARP协议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-以太网链路层Ethernet-Ⅱ帧"><span class="toc-text">三. 以太网链路层Ethernet Ⅱ帧</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

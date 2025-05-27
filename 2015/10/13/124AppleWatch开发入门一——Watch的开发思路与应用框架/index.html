@@ -1,0 +1,317 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>AppleWatch开发入门一——Watch的开发思路与应用框架 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="AppleWatch开发入门一——Watch的开发思路与应用框架">
+            
+	            AppleWatch开发入门一——Watch的开发思路与应用框架
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Apple Watch开发手记">
+            Apple Watch开发手记
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/10/13</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="AppleWatch开发入门一——Watch的开发思路与应用框架"><a href="#AppleWatch开发入门一——Watch的开发思路与应用框架" class="headerlink" title="AppleWatch开发入门一——Watch的开发思路与应用框架"></a>AppleWatch开发入门一——Watch的开发思路与应用框架</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>Apple Watch无疑是apple在智能手表领域的一次革命，如何在Watch上开发出实用且具有美感的应用，是iOS开发者们开始思考的一个问题，由于watch的随身性和快捷性，在某些方面，它有比iphone更加大的优势，要抓住watch的这些特点，开发出淋漓尽致的应用，就需要改变一些在iphone开发的思路，正如一句话：只有忘掉经验，才会有意想不到的突破。
+
+这一系列博客，首先是总结我在公司watch项目开发中的一些经验，其次，还会加入一些我的理解和想法，如有错误，欢迎指正，如果对你有帮助，也欢迎撒花，😄。
+</code></pre><h3 id="二、开发前我们需要准备什么"><a href="#二、开发前我们需要准备什么" class="headerlink" title="二、开发前我们需要准备什么"></a>二、开发前我们需要准备什么</h3><pre><code>如果你没有开发过iphone，直接来做watch，我建议你不要这么做，不是不可以，而是目前所有的第三方应用都必须基于iphone的扩展，原生的watch应用，苹果目前还没有开放给开发者，因此实际上，我们在watch上可以做的事情十分有限，或许后续apple会开放更多接口，但是目前，我们必须放弃iphone开发的思路，从新开始。
+</code></pre><h4 id="1、watch应用的架构"><a href="#1、watch应用的架构" class="headerlink" title="1、watch应用的架构"></a>1、watch应用的架构</h4><pre><code>如上所说，完全脱离iphone的原生watch应用，我们目前还不能开发，所有第三方的watch应用必须基于一个iphone的host app。我们可以通过创建一个watch应用来观察一下，首先，在Xcode6.3后虽然支持watch的开发，但watch模拟器并不十分好用，Xcode7进行了优化，通过模拟器，基本可以完成我们的开发。用Xcode新建一个项目，之后我们在Xcode菜单中创建一个target：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/1013/183409_QkG3_2340880.png" alt></p>
+<p>选择apple Watch中的项目：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1013/183625_Aoa0_2340880.png" alt></p>
+<p>在如下的设置中，我们先将include Notification和Include Glance都勾选上，他们也是watch应用的一种表现方式，后面我们再说：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1013/183652_Q271_2340880.png" alt></p>
+<p>之后可以看到，我们的项目中会多了这样的几个文件夹：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1013/183900_C7mc_2340880.png" alt></p>
+<p>我们只需要关注下结尾为Extension和App的这两个，从目录结构我们也可以看到，App文件夹中有Storyboard这个文件，Extension文件夹中主要是一些代码文件，这也正是我们需要了解的watch app的机制，实际运行与我们手表上的是App文件夹中的界面，而逻辑的代码实际上是运行在我们的手机中的，作为iphone App的扩展而存在，通过手机与手表的交互，来达到watch上的一些操作。</p>
+<pre><code>由此，我们可以理解，目前的第三方watch应用，watch类似于一个UI容器，通过与iphone的交互来达到一些逻辑和效果。
+</code></pre><h4 id="2、三种watch应用方式的用途"><a href="#2、三种watch应用方式的用途" class="headerlink" title="2、三种watch应用方式的用途"></a>2、三种watch应用方式的用途</h4><pre><code>在我们创建watch的扩展时，我们勾选了两个Scene，从字面我们也可以理解的差不多，这里加上我的理解，不是官方的解释：
+</code></pre><p>watch app：watch应用的主体，可以通过watch上的图标进入，可以与iphone进行交互与数据共享。</p>
+<p>Notification：watch通知，会和iphone通知同步，包括本地的和远程的，这里和iphone不同在于有长通知和短通知的分别，在实际开发中，我们可以通过在后台添加参数来区分。在storyboard中的界面如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1013/185620_Lmjj_2340880.png" alt>           </p>
+<p>Glance：预览界面，没有复杂的交互能力，也不能滑动，只能在单屏展示一些数据，点击后会进入主体watchApp中：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1013/185745_JRFu_2340880.png" alt></p>
+<h4 id="3、在模拟器上运行一个watch-app"><a href="#3、在模拟器上运行一个watch-app" class="headerlink" title="3、在模拟器上运行一个watch app"></a>3、在模拟器上运行一个watch app</h4><pre><code>选中我们的watch App工程，在Xcode7中运行如下：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/1013/190428_W7T7_2340880.png" alt></p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1013/190440_oJqH_2340880.png" alt></p>
+<p>如果你是以前版本的Xcode，可能需要在模拟器的Hardware中将其调出。</p>
+<p>运行后，我们可以在watch模拟器上使用command+H来回到watch的主界面。</p>
+<h3 id="三、几点watch-app的开发思路"><a href="#三、几点watch-app的开发思路" class="headerlink" title="三、几点watch app的开发思路"></a>三、几点watch app的开发思路</h3><p>1、优秀的watch app无疑必须是简单，朴素，快捷而时效的。</p>
+<p>2、watch上不能自定义手势，我们可以使用的只有滑动，点击和长按</p>
+<p>3、必须改变iphone布局的思想，完全接受新的watch布局特点，进行创新</p>
+<p>4、iphone的特点是界面的绚丽，watch则是简约</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/10/14/126AppleWatch开发入门三——代码交互与控制器生命周期/" class="pre-post btn btn-default" title='AppleWatch开发入门三——代码交互与控制器生命周期'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">AppleWatch开发入门三——代码交互与控制器生命周期</span>
+        </a>
+    
+    
+        <a href="/2015/10/10/123iOS在应用中添加自定义字体/" class="next-post btn btn-default" title='iOS在应用中添加自定义字体'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS在应用中添加自定义字体</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#AppleWatch开发入门一——Watch的开发思路与应用框架"><span class="toc-text">AppleWatch开发入门一——Watch的开发思路与应用框架</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、开发前我们需要准备什么"><span class="toc-text">二、开发前我们需要准备什么</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、watch应用的架构"><span class="toc-text">1、watch应用的架构</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、三种watch应用方式的用途"><span class="toc-text">2、三种watch应用方式的用途</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、在模拟器上运行一个watch-app"><span class="toc-text">3、在模拟器上运行一个watch app</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、几点watch-app的开发思路"><span class="toc-text">三、几点watch app的开发思路</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

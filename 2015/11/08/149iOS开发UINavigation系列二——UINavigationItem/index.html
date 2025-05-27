@@ -1,0 +1,335 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发UINavigation系列二——UINavigationItem | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发UINavigation系列二——UINavigationItem">
+            
+	            iOS开发UINavigation系列二——UINavigationItem
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS之UI控件">
+            iOS之UI控件
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/11/08</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发UINavigation系列二——UINavigationItem"><a href="#iOS开发UINavigation系列二——UINavigationItem" class="headerlink" title="iOS开发UINavigation系列二——UINavigationItem"></a>iOS开发UINavigation系列二——UINavigationItem</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>UINavigationItem是导航栏上用于管理导航项的类，在上一篇博客中，我们知道导航栏是通过push与pop的堆栈操作来对item进行管理的，同样，每一个Item自身也有许多属性可供我们进行自定制。这篇博客，主要讨论UINavigationItem的使用方法。
+</code></pre><p>UINavigationBar：<a href="http://my.oschina.net/u/2340880/blog/527706" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/527706</a>。</p>
+<h3 id="二、来说说UINavigationItem"><a href="#二、来说说UINavigationItem" class="headerlink" title="二、来说说UINavigationItem"></a>二、来说说UINavigationItem</h3><pre><code>Item，从英文上来理解，它可以解释为一个项目，因此，item不是一个简单的label标题，也不是一个简单的button按钮，它是导航栏中管理的一个项目的抽象。说起来有些难于理解，通过代码，我们就能很好的理解Item的意义。
+</code></pre><p>首先，我们创建一个item，用UINavigationBar导航栏push出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> UINavigationItem * item = [[UINavigationItem alloc]initWithTitle:@&quot;title&quot;];</span><br><span class="line"> UINavigationBar * bar = [[UINavigationBar alloc]initWithFrame:CGRectMake(0, 0, 320, 64)];</span><br><span class="line"> [bar pushNavigationItem:item animated:YES];</span><br></pre></td></tr></table></figure>
+<p>我们可以看到，在导航栏上的中间，有title这样一个item：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1108/204226_K0S9_2340880.png" alt></p>
+<p>除了创建一个标题item，我们也可以创建一个View类型的item：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">        UIView * view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 30, 30)];</span><br><span class="line">        view.backgroundColor = [UIColor brownColor];</span><br><span class="line">        item.titleView = view;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1108/204519_XTxZ_2340880.png" alt></p>
+<p>通过下面的属性，可以给这个Item添加一个说明文字，这段文字会显示在item的上方：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">item.prompt= @&quot;我是navigationItem的说明文字&quot;;</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2015/1108/204820_TpPd_2340880.png" alt></p>
+<p>上面我们看到的这些，实际上只是一个item的一部分，item还有许多其他的附件，如果我们使导航栏再push出一个item，这时导航栏的左边会出现一个返回按钮，这个返回按钮实际上是数据第一个item的，我们做如下的设置：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">        UINavigationItem * item = [[UINavigationItem alloc]initWithTitle:@&quot;title&quot;];</span><br><span class="line">        UINavigationItem * item2 = [[UINavigationItem alloc]initWithTitle:@&quot;title2&quot;];</span><br><span class="line">        item.backBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@&quot;title1&quot; style:nil target:nil action:nil];</span><br><span class="line">        [bar pushNavigationItem:item animated:YES];</span><br><span class="line">        [bar pushNavigationItem:item2 animated:YES];</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2015/1108/205424_aU5v_2340880.png" alt></p>
+<p>可以看出，虽然当前push出来的item是item2，但是左边的返回按钮是属于item的。这里有一点需要注意，虽然backBarButtonItem的标题我们可以自定义，但是方法和其他属性我们都不能定制，是系统实现好的。</p>
+<p>当然，我们也可以设置在push出来新的item的时候，隐藏前面的返回按钮，使用如下属性：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@property(nonatomic,assign) BOOL hidesBackButton;</span><br><span class="line">- (void)setHidesBackButton:(BOOL)hidesBackButton animated:(BOOL)animated;</span><br></pre></td></tr></table></figure>
+<p>默认为NO，设置为YES将会隐藏返回按钮。</p>
+<h3 id="三、关于UIBarButtonItem"><a href="#三、关于UIBarButtonItem" class="headerlink" title="三、关于UIBarButtonItem"></a>三、关于UIBarButtonItem</h3><pre><code>一个UINavigationItem中，还可以包含许多BarButtonItem，BarButtonItem是一系列的按钮，会出现在导航栏的左侧或者右侧。例如：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">        UIBarButtonItem * button = [[UIBarButtonItem alloc]initWithTitle:@&quot;按钮&quot; style:UIBarButtonItemStyleDone target:self action:@selector(click)];</span><br><span class="line">        item.leftBarButtonItem = button;</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2015/1108/210349_Qwcf_2340880.png" alt></p>
+<p>这个barButtonItem是一个按钮，可以触发一个方法，这有时候对我们来说十分有用。但是有一个你一定发现了，如果继续push出来Item，原来的返回按钮不见了，是否隐藏返回按钮，由下面这个属性控制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">item.leftItemsSupplementBackButton=YES;</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2015/1108/210752_ioge_2340880.png" alt></p>
+<p>我们也可以通过下面的方法设置右边的按钮，或者直接设置一组按钮：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@property(nullable, nonatomic,strong) UIBarButtonItem *leftBarButtonItem;</span><br><span class="line">@property(nullable, nonatomic,strong) UIBarButtonItem *rightBarButtonItem;</span><br><span class="line">- (void)setLeftBarButtonItem:(nullable UIBarButtonItem *)item animated:(BOOL)animated;</span><br><span class="line">- (void)setRightBarButtonItem:(nullable UIBarButtonItem *)item animated:(BOOL)animated;</span><br><span class="line"></span><br><span class="line">@property(nullable,nonatomic,copy) NSArray&lt;UIBarButtonItem *&gt; *leftBarButtonItems;</span><br><span class="line">@property(nullable,nonatomic,copy) NSArray&lt;UIBarButtonItem *&gt; *rightBarButtonItems;</span><br><span class="line">- (void)setLeftBarButtonItems:(nullable NSArray&lt;UIBarButtonItem *&gt; *)items animated:(BOOL)animated;</span><br><span class="line">- (void)setRightBarButtonItems:(nullable NSArray&lt;UIBarButtonItem *&gt; *)items animated:(BOOL)animated;</span><br></pre></td></tr></table></figure>
+<h3 id="四、再看UIBarButtonItem"><a href="#四、再看UIBarButtonItem" class="headerlink" title="四、再看UIBarButtonItem"></a>四、再看UIBarButtonItem</h3><pre><code>上面我们了解到了，一个NavigationItem基本上是有三大部分组成的，当前显示的部分，返回按钮部分，和ButtonItem部分，同样对于创建和设置UIBarButoonItem，也有很多方法供我们使用。
+
+首先是创建与初始化的方法：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithTitle:(nullable NSString *)title style:(UIBarButtonItemStyle)style target:(nullable id)target action:(nullable SEL)action;</span><br></pre></td></tr></table></figure>
+<p>这个方法通过一个标题创建ButtonItem，其中style参数可以设置一个风格，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UIBarButtonItemStyle) &#123;</span><br><span class="line">    UIBarButtonItemStylePlain,</span><br><span class="line">    UIBarButtonItemStyleDone,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>这两种风格差别并不大，如下是效果，Done风格的字体加粗一些：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1108/211623_hTPZ_2340880.png" alt></p>
+<p>我们因为可以通过一个图片来创建BarButtonItem：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithImage:(nullable UIImage *)image style:(UIBarButtonItemStyle)style target:(nullable id)target action:(nullable SEL)action;</span><br><span class="line">- (instancetype)initWithImage:(nullable UIImage *)image landscapeImagePhone:(nullable UIImage *)landscapeImagePhone style:(UIBarButtonItemStyle)style target:(nullable id)target action:(nullable SEL)action;</span><br></pre></td></tr></table></figure>
+<p>上面这两个方法中，第一个方法与使用文字创建的方法类似，第二个方法多了一个landscapeImagePhone的参数，这个参数可以设置设备横屏时的图片。</p>
+<p>我们也可以使用自定义的View来创建BarButtonItem：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)initWithCustomView:(UIView *)customView;</span><br></pre></td></tr></table></figure>
+<p>除了上面一些自定义的创建方法外，对于BarButtonItem这个对象，系统也封装好了许多原生的可以供我们使用，创建的时候使用如下方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UIBarButtonItem * button = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemCamera target:self action:nil];</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2015/1108/212911_VHfF_2340880.png" alt></p>
+<p>上面的SystemItem是系统为我们做好的许多buttonItem的类型，枚举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UIBarButtonSystemItem) &#123;</span><br><span class="line">    UIBarButtonSystemItemDone,//显示完成</span><br><span class="line">    UIBarButtonSystemItemCancel,//显示取消</span><br><span class="line">    UIBarButtonSystemItemEdit,  //显示编辑</span><br><span class="line">    UIBarButtonSystemItemSave, //显示保存 </span><br><span class="line">    UIBarButtonSystemItemAdd,//显示加号</span><br><span class="line">    UIBarButtonSystemItemFlexibleSpace,//什么都不显示，占位一个空间位置</span><br><span class="line">    UIBarButtonSystemItemFixedSpace,//和上一个类似</span><br><span class="line">    UIBarButtonSystemItemCompose,//显示写入按钮</span><br><span class="line">    UIBarButtonSystemItemReply,//显示循环按钮</span><br><span class="line">    UIBarButtonSystemItemAction,//显示活动按钮</span><br><span class="line">    UIBarButtonSystemItemOrganize,//显示组合按钮</span><br><span class="line">    UIBarButtonSystemItemBookmarks,//显示图书按钮</span><br><span class="line">    UIBarButtonSystemItemSearch,//显示查找按钮</span><br><span class="line">    UIBarButtonSystemItemRefresh,//显示刷新按钮</span><br><span class="line">    UIBarButtonSystemItemStop,//显示停止按钮</span><br><span class="line">    UIBarButtonSystemItemCamera,//显示相机按钮</span><br><span class="line">    UIBarButtonSystemItemTrash,//显示移除按钮</span><br><span class="line">    UIBarButtonSystemItemPlay,//显示播放按钮</span><br><span class="line">    UIBarButtonSystemItemPause,//显示暂停按钮</span><br><span class="line">    UIBarButtonSystemItemRewind,//显示退后按钮</span><br><span class="line">    UIBarButtonSystemItemFastForward,//显示前进按钮</span><br><span class="line">    UIBarButtonSystemItemUndo,//显示消除按钮</span><br><span class="line">    UIBarButtonSystemItemRedo ,//显示重做按钮</span><br><span class="line">    UIBarButtonSystemItemPageCurl ,//在tool上有效</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/11/09/150iOS开发UINavigation系列三——工具栏UIToolBar/" class="pre-post btn btn-default" title='iOS开发UINavigation系列三——工具栏UIToolBar'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发UINavigation系列三——工具栏UIToolBar</span>
+        </a>
+    
+    
+        <a href="/2015/11/08/148iOS开发UINavigation系列一——导航栏UINavigtionBar/" class="next-post btn btn-default" title='iOS开发UINavigation系列一——导航栏UINavigtionBar'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发UINavigation系列一——导航栏UINavigtionBar</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发UINavigation系列二——UINavigationItem"><span class="toc-text">iOS开发UINavigation系列二——UINavigationItem</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、来说说UINavigationItem"><span class="toc-text">二、来说说UINavigationItem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、关于UIBarButtonItem"><span class="toc-text">三、关于UIBarButtonItem</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、再看UIBarButtonItem"><span class="toc-text">四、再看UIBarButtonItem</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

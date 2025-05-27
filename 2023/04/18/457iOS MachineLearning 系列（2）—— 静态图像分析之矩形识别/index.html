@@ -1,0 +1,339 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（2）—— 静态图像分析之矩形识别 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（2）—— 静态图像分析之矩形识别">
+            
+	            iOS MachineLearning 系列（2）—— 静态图像分析之矩形识别
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/04/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（2）——-静态图像分析之矩形识别"><a href="#iOS-MachineLearning-系列（2）——-静态图像分析之矩形识别" class="headerlink" title="iOS MachineLearning 系列（2）—— 静态图像分析之矩形识别"></a>iOS MachineLearning 系列（2）—— 静态图像分析之矩形识别</h1><p>本系列文章将完整的介绍iOS中Machine Learning相关技术的应用。本篇文章开始，我们将先介绍一些与Machine Learning相关的API的应用。使用这些API可以快速方便的实现很多如图像识别，分析等复杂功能，且不会增加应用安装包的体积。</p>
+<p>本篇将首先介绍如何分析出静态图片中的矩形区域。矩形区域的是被非常重要，其通常用来对要分析的图片进行预处理，例如通过矩形分析截取其中的二维码，条形码部分后再进行精准的识别。</p>
+<h2 id="1-矩形分析示例"><a href="#1-矩形分析示例" class="headerlink" title="1 - 矩形分析示例"></a>1 - 矩形分析示例</h2><p>与视觉相关的大部分AI能力都封装在Vision框架中，本文要介绍的是通过发起矩形分析请求来分析图片，得到分析结果后将分析出来的矩形区域绘制回原图像上。</p>
+<p>首先定义一些属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 要分析的图片资源</span></span><br><span class="line"><span class="keyword">let</span> image = <span class="type">UIImage</span>(named: <span class="string">"image2"</span>)!</span><br><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> imageView = <span class="type">UIImageView</span>(image: image)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绘制的矩形区域</span></span><br><span class="line"><span class="keyword">var</span> boxViews: [<span class="type">UIView</span>] = []</span><br><span class="line"></span><br><span class="line"><span class="comment">// 图像分析请求句柄</span></span><br><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> imageRequestHandler = <span class="type">VNImageRequestHandler</span>(cgImage: image.cgImage!,</span><br><span class="line">                                                orientation: .up,</span><br><span class="line">                                                options: [:])</span><br><span class="line"></span><br><span class="line"><span class="comment">// 图像分析请求实例</span></span><br><span class="line"><span class="keyword">private</span> <span class="built_in">lazy</span> <span class="keyword">var</span> rectangleDetectionRequest: <span class="type">VNDetectRectanglesRequest</span> = &#123;</span><br><span class="line">    <span class="keyword">let</span> rectDetectRequest = <span class="type">VNDetectRectanglesRequest</span> &#123; request, error <span class="keyword">in</span></span><br><span class="line">        <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">            <span class="keyword">self</span>.drawTask(request: request <span class="keyword">as</span>! <span class="type">VNDetectRectanglesRequest</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 自定义一些配置项</span></span><br><span class="line">    <span class="comment">// 设置要分析的最大结果个数（矩形个数）</span></span><br><span class="line">    rectDetectRequest.maximumObservations = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 设置最低接受的可信值</span></span><br><span class="line">    rectDetectRequest.minimumConfidence = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 设置最小接受的纵横比</span></span><br><span class="line">    rectDetectRequest.minimumAspectRatio = <span class="number">0.1</span></span><br><span class="line">    <span class="keyword">return</span> rectDetectRequest</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+<p>其中VNDetectRectanglesRequest即是核心的图片分析请求类，VNImageRequestHandler是请求句柄，用来发起请求。后面我们会详细介绍。在开始请求分析之前，我们还需要定义个方法，用来进行矩形区域绘制：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="function"><span class="keyword">func</span> <span class="title">drawTask</span><span class="params">(request: VNDetectRectanglesRequest)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 将之前绘制的删除</span></span><br><span class="line">    boxViews.forEach &#123; v <span class="keyword">in</span></span><br><span class="line">        v.removeFromSuperview()</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 遍历分析结果</span></span><br><span class="line">    <span class="keyword">for</span> result <span class="keyword">in</span> request.results ?? [] &#123;</span><br><span class="line">        <span class="keyword">var</span> box = result.boundingBox</span><br><span class="line">        <span class="comment">// 坐标系转换</span></span><br><span class="line">        box.origin.y = <span class="number">1</span> - box.origin.y - box.size.height</span><br><span class="line">        <span class="keyword">let</span> v = <span class="type">UIView</span>()</span><br><span class="line">        v.backgroundColor = .clear</span><br><span class="line">        v.layer.borderColor = <span class="type">UIColor</span>.black.cgColor</span><br><span class="line">        v.layer.borderWidth = <span class="number">1</span></span><br><span class="line">        imageView.addSubview(v)</span><br><span class="line">        <span class="keyword">let</span> size = imageView.frame.size</span><br><span class="line">        v.frame = <span class="type">CGRect</span>(x: box.origin.x * size.width, y: box.origin.y * size.height, width: box.size.width * size.width, height: box.size.height * size.height)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意，Vision框架中的坐标系与CoreGraphics框架中的坐标系是一致的，其以左下角点为（0， 0）点，在UIKit框架中则是以左上角点为（0，0）点，记得进行坐标系的转换。</p>
+<p>最后，使用下面的代码来发起请求，静态图像的分析将会是一个耗时的过程，因此建议在非主线程中进行：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DispatchQueue</span>.global(qos: .userInitiated).async &#123;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="comment">// 发起分析请求</span></span><br><span class="line">        <span class="keyword">try</span> <span class="keyword">self</span>.imageRequestHandler.perform([<span class="keyword">self</span>.rectangleDetectionRequest])</span><br><span class="line">    &#125; <span class="keyword">catch</span> <span class="keyword">let</span> error <span class="keyword">as</span> <span class="type">NSError</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"Failed to perform image request: \(error)"</span>)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析的结果会在定义VNDetectRectanglesRequest时传入的回调中返回。</p>
+<p>你可以用几张图片来实验下检测效果，如下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-f53521d500087a848365283685172494d1a.png" alt></p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7cf831af13a5478f07b846830ce89e96057.png" alt></p>
+<p>上面图片中的黑色边框就是我们检测出的结果绘制的。</p>
+<h2 id="2-关于VNDetectRectanglesRequest类"><a href="#2-关于VNDetectRectanglesRequest类" class="headerlink" title="2 - 关于VNDetectRectanglesRequest类"></a>2 - 关于VNDetectRectanglesRequest类</h2><p>VNDetectRectanglesRequest类用来对核心的分析请求进行定义，并且设置结果回调。VNDetectRectanglesRequest类是专门创建矩形区域识别的请求类，继承自VNImageBasedRequest，VNImageBasedRequest类是静态图像分析请求的基类，继承自VNRequest类。</p>
+<p>我们先来看VNRequest类：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@available</span>(iOS <span class="number">11.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">VNRequest</span> : <span class="title">NSObject</span>, <span class="title">NSCopying</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 构造方法，无处理回调</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">convenience</span> <span class="keyword">init</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 构造方法其中回调参数定义如下</span></span><br><span class="line">    <span class="comment">// (VNRequest, Error?) -&gt; Void</span></span><br><span class="line">    <span class="comment">// VNRequest为当前实例本身 error是异常（如果有）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(completionHandler: <span class="type">VNRequestCompletionHandler</span>? = <span class="literal">nil</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 是否开启后台线程模式，此模式会占用更少的内存，CPU，GPU资源，给用户更好的渲染体验，但是会以耗时为代价</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> preferBackgroundProcessing: <span class="type">Bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 是否允许使用GPU进行加速</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> usesCPUOnly: <span class="type">Bool</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 分析结果列表，VNObservation是结果基类，不同的子类实现不同的功能</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> results: [<span class="type">VNObservation</span>]? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 处理回调，此回调中会传入当前Request对象，通过内部的results拿到结果</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> completionHandler: <span class="type">VNRequestCompletionHandler</span>? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 进行分析的特定算法版本</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> revision: <span class="type">Int</span></span><br><span class="line">    <span class="comment">// 所支持的算法版本集合</span></span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">var</span> <span class="title">supportedRevisions</span>: <span class="title">IndexSet</span> </span>&#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 默认的版本</span></span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">var</span> <span class="title">defaultRevision</span>: <span class="title">Int</span> </span>&#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 当前使用的算法版本</span></span><br><span class="line">    <span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">var</span> <span class="title">currentRevision</span>: <span class="title">Int</span> </span>&#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 取消分析请求</span></span><br><span class="line">    <span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">cancel</span><span class="params">()</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在VNRequest类中封装了一组VNObservation对象，当成功的完成了图像分析任务后，结果会被封装成VNObservation对象，不同的分析任务对应的结果对象也不同，VNObservation是这些结果的基类，其中封装了基础的信息，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@available</span>(iOS <span class="number">11.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">VNObservation</span> : <span class="title">NSObject</span>, <span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span>, <span class="title">VNRequestRevisionProviding</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 唯一标识id</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> uuid: <span class="type">UUID</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 此结果的可信度，取值0到1之间</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> confidence: <span class="type">VNConfidence</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 此结果的有效时间</span></span><br><span class="line">    <span class="meta">@available</span>(iOS <span class="number">14.0</span>, *)</span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> timeRange: <span class="type">CMTimeRange</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>VNImageBasedReques类是VNRequest的一个子类，其是静态图片分析请求类的基类，其中只封装了一个属性：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@available</span>(iOS <span class="number">11.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">VNImageBasedRequest</span> : <span class="title">VNRequest</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 矩形被标准化处理后的尺寸，默认为&#123;&#123; 0, 0 &#125;, &#123; 1, 1 &#125;&#125;</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> regionOfInterest: <span class="type">CGRect</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>regionOfInterest属性非常有用，其默认会把我们要处理的图像标准化为单位矩形，返回的结果中的坐标是以此单位矩形为标准的。</p>
+<p>最后，我们再来看下VNDetectRectanglesRequest类，这个类即使我们进行矩形区域识别的请求配置类，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@available</span>(iOS <span class="number">11.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">VNDetectRectanglesRequest</span> : <span class="title">VNImageBasedRequest</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 设置检测接受的矩形最小的纵横比 VNAspectRatio是Float类型的别名，取值0-1之间</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> minimumAspectRatio: <span class="type">VNAspectRatio</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置检测所接受的最大的纵横比，取值0-1之间</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> maximumAspectRatio: <span class="type">VNAspectRatio</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置矩形角度可以偏离90度的最大角度，取值0-45之间</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> quadratureTolerance: <span class="type">VNDegrees</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置允许检测到的最小的矩形尺寸，设置为相对原图像比例值0-1之间</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> minimumSize: <span class="type">Float</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置能够接受的最小可信度，0到1之间，小于此可信度的检测结果不会被返回</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> minimumConfidence: <span class="type">VNConfidence</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 设置允许检测出的最多结果数，默认为1，设置为0表示不限制，但是Vision框架目前最多支持16</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> maximumObservations: <span class="type">Int</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 结果数组</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> results: [<span class="type">VNRectangleObservation</span>]? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意，设置最大最小纵横比时，会总是以长的一边作为纵，短的一边作为横。</p>
+<h2 id="3-关于VNRectangleObservation类"><a href="#3-关于VNRectangleObservation类" class="headerlink" title="3 - 关于VNRectangleObservation类"></a>3 - 关于VNRectangleObservation类</h2><p>VNRectangleObservatio是矩形区域分析请求的结果类，继承自VNDetectedObjectObservation类，VNDetectedObjectObservation类是VNObservation的子类，其通常与对象的识别有关，其封装了与识别相关的属性，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@available</span>(iOS <span class="number">11.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">VNDetectedObjectObservation</span> : <span class="title">VNObservation</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 检测出的区域，注意原点在左下角</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> boundingBox: <span class="type">CGRect</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 缓冲区的图像数据</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> globalSegmentationMask: <span class="type">VNPixelBufferObservation</span>? &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>VNRectangleObservation类则封装了与矩形相关的属性数据：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@available</span>(iOS <span class="number">11.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">VNRectangleObservation</span> : <span class="title">VNDetectedObjectObservation</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 左上角位置</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> topLeft: <span class="type">CGPoint</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 右上角位置</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> topRight: <span class="type">CGPoint</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 左下角位置</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> bottomLeft: <span class="type">CGPoint</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">    <span class="comment">// 右下角位置</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> bottomRight: <span class="type">CGPoint</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>理解了请求配置类与分析结果类的用法，剩下的就是请求句柄了。</p>
+<h2 id="4-关于VNImageRequestHandler类"><a href="#4-关于VNImageRequestHandler类" class="headerlink" title="4 - 关于VNImageRequestHandler类"></a>4 - 关于VNImageRequestHandler类</h2><p>VNImageRequestHandler类是请求句柄类，更通俗的说，其为分析请求提供了图像数据源，并触发请求。其支持的构造方法如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@available</span>(iOS <span class="number">11.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">VNImageRequestHandler</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 构造方法</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(cvPixelBuffer pixelBuffer: <span class="type">CVPixelBuffer</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(cvPixelBuffer pixelBuffer: <span class="type">CVPixelBuffer</span>, orientation: <span class="type">CGImagePropertyOrientation</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(cgImage image: <span class="type">CGImage</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(cgImage image: <span class="type">CGImage</span>, orientation: <span class="type">CGImagePropertyOrientation</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(ciImage image: <span class="type">CIImage</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(ciImage image: <span class="type">CIImage</span>, orientation: <span class="type">CGImagePropertyOrientation</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(url imageURL: <span class="type">URL</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(url imageURL: <span class="type">URL</span>, orientation: <span class="type">CGImagePropertyOrientation</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(data imageData: <span class="type">Data</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(data imageData: <span class="type">Data</span>, orientation: <span class="type">CGImagePropertyOrientation</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(cmSampleBuffer sampleBuffer: <span class="type">CMSampleBuffer</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">init</span>(cmSampleBuffer sampleBuffer: <span class="type">CMSampleBuffer</span>, orientation: <span class="type">CGImagePropertyOrientation</span>, options: [<span class="type">VNImageOption</span> : <span class="type">Any</span>] = [:])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>VNImageRequestHandler类的构造方法很多，但归根结底是要提供三部分内容：</p>
+<ol>
+<li>图片数据源。</li>
+<li>图片的方向。</li>
+<li>额外参数。</li>
+</ol>
+<p>其中，图片的数据源可以从二进制数据加载，可以从网络加载，可以从CoreImage或CoreGraphics框架的图片对象加载等等，这里不多赘述。</p>
+<p>图片的方向需要在构造句柄实例对象时进行提供，枚举如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@frozen <span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">CGImagePropertyOrientation</span> : <span class="title">UInt32</span>, @<span class="title">unchecked</span> <span class="title">Sendable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">case</span> up = <span class="number">1</span> <span class="comment">// 正向 </span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> upMirrored = <span class="number">2</span> <span class="comment">// 水平镜像</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> down = <span class="number">3</span> <span class="comment">// 180度旋转</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> downMirrored = <span class="number">4</span> <span class="comment">// 竖直镜像</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> leftMirrored = <span class="number">5</span> <span class="comment">// 顺时针旋转90度后镜像</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">right</span> = <span class="number">6</span> <span class="comment">// 顺时针旋转90度</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> rightMirrored = <span class="number">7</span> <span class="comment">// 逆时针旋转90度后镜像</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">case</span> <span class="keyword">left</span> = <span class="number">8</span> <span class="comment">// 逆时针旋转90度</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>额外参数可以配置为一个字典对象，提供更多图片数据，支持配置的字段如下：</p>
+<p>properties：此键可配置为一个属性字典，参考CGImageSourceCopyPropertiesAtIndex。</p>
+<p>cameraIntrinsics：相机内部数据配置。</p>
+<p>ciContex：CIContext配置。</p>
+<p>最后，调用VNImageRequestHandler类的如下方法即可开始静态图像处理：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">perform</span><span class="params">(<span class="number">_</span> requests: [VNRequest])</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure>
+<p>同一个图像句柄可以同时发起多种图像处理请求。</p>
+<p>注：本文所介绍的示例代码可在如下仓库获取：</p>
+<p><a href="https://github.com/ZYHshao/MachineLearnDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/MachineLearnDemo</a></p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/04/22/458iOS MachineLearning 系列（3）—— 静态图像分析之区域识别/" class="pre-post btn btn-default" title='iOS MachineLearning 系列（3）—— 静态图像分析之区域识别'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（3）—— 静态图像分析之区域识别</span>
+        </a>
+    
+    
+        <a href="/2023/04/14/456iOS MachineLearning系列（1）——简介/" class="next-post btn btn-default" title='iOS MachineLearning系列（1）——简介'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning系列（1）——简介</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（2）——-静态图像分析之矩形识别"><span class="toc-text">iOS MachineLearning 系列（2）—— 静态图像分析之矩形识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-矩形分析示例"><span class="toc-text">1 - 矩形分析示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-关于VNDetectRectanglesRequest类"><span class="toc-text">2 - 关于VNDetectRectanglesRequest类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-关于VNRectangleObservation类"><span class="toc-text">3 - 关于VNRectangleObservation类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-关于VNImageRequestHandler类"><span class="toc-text">4 - 关于VNImageRequestHandler类</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>理解JavaScript中的“面向对象” | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="理解JavaScript中的“面向对象”">
+            
+	            理解JavaScript中的“面向对象”
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/前后端">
+            前后端
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2022/08/05</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="理解JavaScript中的“面向对象”"><a href="#理解JavaScript中的“面向对象”" class="headerlink" title="理解JavaScript中的“面向对象”"></a>理解JavaScript中的“面向对象”</h1><h2 id="一-引子"><a href="#一-引子" class="headerlink" title="一 引子"></a>一 引子</h2><p>面向对象，是程序开发者再熟悉不过的一个概念。一说到它，你首先会想到的是什么？类？继承？方法与属性？不同技术栈的开发者或许有不同的第一反应。面向对象本身只是一种编程方式，支持面向对象的语言很多，但其实现原理却并不都一样。大多数语言的面向对象特性都是基于“类”来实现的，例如C++，Objective-C，Java，Python等。在这些语言中，类是面向对象的基础，面向对象的继承，多态，封装也是通过类来实现的。</p>
+<p>本篇文章，我们要讲的是编程语言中的一个异类：JavaScript。JavaScript不仅是面向对象语言，而且是实实在在的面向对象，除了基础类型，你所用到的一些数据实例都是对象，包括函数。但是，JavaScript中的面向对象却并不是基于类来实现的，这对熟悉其他编程语言的开发者来说，是有些反直觉的。完全了解JavaScript中的面向对象， 能够帮助你更好的理解JavaScript这门语言的工作原理。现在，TypeScript越来越热门，越来越多的应用框架开始以TypeScript作为首选语言，TypeScript只是JavaScript基于编译层面的封装，因此了解了JavaScript的原理，也能让你更好更高效的使用TypeScript。</p>
+<h2 id="二-“面向对象”的编程方式是如何演进而来的"><a href="#二-“面向对象”的编程方式是如何演进而来的" class="headerlink" title="二 “面向对象”的编程方式是如何演进而来的"></a>二 “面向对象”的编程方式是如何演进而来的</h2><p>什么是面向对象编程？我们可以从其3个特点说起：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-be2fc50c1a290270c0b030944d87b4e24ae.png" alt></p>
+<blockquote>
+<p><strong>封装</strong></p>
+<p>封装是将数据和逻辑捆绑到一起，对象的某些数据和逻辑方法可以是私有的，不能被外界访问，以此实现对数据和逻辑方法不同级别的访问权限。防止了程序相互依赖性而带来的变动影响，面向对象的封装比传统语言的封装更为清晰、更为有力。有效实现了两个目标：对数据和行为的包装和信息隐藏。</p>
+</blockquote>
+<blockquote>
+<p><strong>继承</strong></p>
+<p>继承简单地说就是一种层次模型，这种层次模型能够被重用。层次结构的上层具有通用性，但是下层结构则具有特殊性。在继承的过程中类则可以从最顶层的部分继承一些方法和变量。类除了可以继承以外同时还能够进行修改或者添加。通过这样的方式能够有效提高工作效率。</p>
+</blockquote>
+<blockquote>
+<p><strong>多态</strong></p>
+<p>多态性是指相同的操作或函数、过程可作用于多种类型的对象上并获得不同的结果。不同的对象，收到同一消息可以产生不同的结果，这种现象称为多态性。</p>
+<p>封装，继承，多态组成了面向对象编程的基本特性，各种面向对象语言的设计也是围绕这3个特性展开的。</p>
+</blockquote>
+<p>我们可以通过一个简单的例子来理解。例如我们需要编写程序来计算一个圆的面积，我们知道，计算圆的面积需要两个参数，圆周率与半径。按照面向过程的思路，最原始的代码可能是这样的：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> radius = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">let</span> pi = <span class="number">3.14</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">area</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> pi * radius * radius;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(area());</span><br></pre></td></tr></table></figure>
+<p>此时，数据和逻辑非常分散且独立，为了更好的实现编程的封装性，我们可以将计算圆面积所使用的变量和方法都聚合到一个对象中，通过对象来整合数据与调用方法，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> circle = &#123;</span><br><span class="line">    radius:<span class="number">2</span>,</span><br><span class="line">    pi:<span class="number">3.14</span>,</span><br><span class="line">    s:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.pi * <span class="keyword">this</span>.radius * <span class="keyword">this</span>.radius</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(circle.s());</span><br></pre></td></tr></table></figure>
+<p>这样，我们其实就已经将面向过程的编程方式转换成了面向对象的编程方式。封装本身也是一种对现实生活事物的抽象，如上代码中所示，circle对象从意义上已经能够描述图形圆这样一种事物，它拥有半径，占有面积。从变量和函数到属性和方法，编程方式已经发生了转变。但是，直接创建对象的方式实现封装依然非常低级，思考一下，现实生活中会有各种各样的圆，半径不同的圆不可胜数，同样在程序中我们也会使用到各种各样的“圆”对象，每次都如此创建对象非常繁琐，且如果逻辑有了修改，所有的对象都要修改，代码将逐渐变得不可维护。因此，我们想到使用模板方法来创建对象“圆”，使得此对象的创建逻辑更加聚合，修改和扩展都将更方便。优化上面的代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Circle</span>(<span class="params">radius</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> circle = &#123;&#125;;</span><br><span class="line">    circle.radius = radius;</span><br><span class="line">    circle.pi = <span class="number">3.14</span>;</span><br><span class="line">    circle.s = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.radius * <span class="keyword">this</span>.radius * <span class="keyword">this</span>.pi;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> circle;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c1 = Circle(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> c2 = Circle(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(c1.s());</span><br><span class="line"><span class="built_in">console</span>.log(c2.s());</span><br></pre></td></tr></table></figure>
+<p>上面示例代码中对圆对象的创建进行了封装，这就好像Circle是一个模板，使用此模板我们可快速的创建出各种半径不同的圆对象，从另一个角度理解，Circle也可以理解为是一种类型，通过此类型生成的对象都是“圆”对象。引入了“类”的思想，编程便能更好的模拟现实事物了。到此，你会发现，在JavaScript中，“类”是可以通过函数的方式来实现的。那么现在，我们再来更深入的讨论基于“类”的更多优化技巧。</p>
+<p>通过函数实现“类”的编程方式已经进步了很多，但是还不够优秀。我们知道，无论是数据还是函数，都是要在内存中占据空间的，对象中有包装属性和方法，其实就是存储数据和函数，对于数据来说，每个对象中存储的可能不同，例如上面的圆半径，也可能所有对象存储的都一样，例如上面的圆周率。对于方法来说，应该是所有对象所共享的，就像所有圆的计算面积的方法都是一样的。如果每个对象中都存储完整的函数方法，则这不仅非常多余，更是增加了无谓的内存消耗。如何优化这一点呢，我们可以想到，设计模式中的原型模式正是为处理此类问题而生的。</p>
+<p>将方法放入原型对象中，通过对原型对象的引用来让所有实例对象共享原型对象中封装的方法。修改代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> prototype = &#123;</span><br><span class="line">    s:<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.radius * <span class="keyword">this</span>.radius * <span class="keyword">this</span>.pi;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Circle</span>(<span class="params">radius</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> circle = &#123;&#125;;</span><br><span class="line">    circle.radius = radius;</span><br><span class="line">    circle.pi = <span class="number">3.14</span>;</span><br><span class="line">    circle.s = prototype.s</span><br><span class="line">    <span class="keyword">return</span> circle;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c1 = Circle(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">var</span> c2 = Circle(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(c1.s());</span><br><span class="line"><span class="built_in">console</span>.log(c2.s());</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(c1.s === c2.s);</span><br></pre></td></tr></table></figure>
+<p>修改后的代码，无论生成多少对象，方法都是共享的。其他语言中如果要共享属性，通常提供的有类属性或静态属性的语法，核心原理是将共享的属性绑定到类上而不是对象上，JavaScript中也可以这么做，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> prototype = &#123;</span><br><span class="line">    s:<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.radius * <span class="keyword">this</span>.radius * Circle.pi;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Circle</span>(<span class="params">radius</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> circle = &#123;&#125;;</span><br><span class="line">    circle.radius = radius;</span><br><span class="line">    Circle.pi = <span class="number">3.14</span>;</span><br><span class="line">    circle.s = prototype.s</span><br><span class="line">    <span class="keyword">return</span> circle;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>最后，我们还要想办法实现继承和多态，这样才算比较完善的面向对象。多态比较简单，我们只要确定父子类方法的优先级关系，即可通过方法覆写实现多态，继承也很好理解，通过一种方式将父类的属性和方法关联到子类中，即可实现继承。我们可以编写如下代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">RedUnitCircle</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> circle = &#123;&#125;;</span><br><span class="line">    circle.parent = Circle(<span class="number">1</span>);</span><br><span class="line">    circle.radius = <span class="number">1</span>;</span><br><span class="line">    circle.color = <span class="string">"red"</span>;</span><br><span class="line">    <span class="keyword">return</span> circle;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> c3 = RedUnitCircle();</span><br><span class="line"><span class="keyword">if</span> (c3.s === <span class="literal">undefined</span>) &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(c3.parent.s());</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(c3.s());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>红色单位圆类是对圆类的一种派生，其内部增加了color属性，同样它也有计算面积的方法，我们使用parent属性来承接，实际上，在调用方法时，首先需要在当前对象上找，如果不存在，在向继承链上一层一层的递归寻找，直到最上层的基类。事实上，在JavaScript中，是通过原型链来实现继承关系的，我们下面将会介绍。</p>
+<h2 id="三-this究竟指向哪里"><a href="#三-this究竟指向哪里" class="headerlink" title="三 this究竟指向哪里"></a>三 this究竟指向哪里</h2><p>在使用JavaScript编程中，我们经常会使用到this，在JavaScript函数调用时，函数内部会默认被传入一个隐含的this参数，此this参数指向一个对象，我们可以称之为上下文对象，那么如何确定this指向的对象究竟是谁呢？可以分为如下几种情况来讨论。</p>
+<p>1. 当函数被直接调用时，this指向golbal全局对象（node.js中），如果是在浏览器环境运行，则指向window对象。</p>
+<p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">testFunc</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// global对象</span></span><br><span class="line">testFunc();</span><br></pre></td></tr></table></figure>
+<p>2. 当函数作为方法被调用时，this指向调用方法的对象。</p>
+<p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    name:<span class="string">"name"</span>,</span><br><span class="line">    log:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// name</span></span><br><span class="line">obj.log();</span><br></pre></td></tr></table></figure>
+<p>3. 当被作为构造函数被执行时，this指向新创建的对象。</p>
+<p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">CreateObj</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">"name"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> CreateObj();</span><br><span class="line"><span class="comment">// name</span></span><br><span class="line"><span class="built_in">console</span>.log(obj.name);</span><br></pre></td></tr></table></figure>
+<p>4. 使用bind，apply和call函数，能够显式的指定函数中的this指向。</p>
+<p>例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">    name:<span class="string">"name"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params">p</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log2</span>(<span class="params">p</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">log3</span>(<span class="params">p</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// name Param</span></span><br><span class="line">log.call(obj,<span class="string">'Param'</span>)</span><br><span class="line"><span class="comment">// name Param</span></span><br><span class="line">log2.apply(obj,[<span class="string">'Param'</span>]);</span><br><span class="line"><span class="keyword">var</span> newLog3 = log3.bind(obj);</span><br><span class="line"><span class="comment">// name Param</span></span><br><span class="line">newLog3(<span class="string">'Param'</span>);</span><br></pre></td></tr></table></figure>
+<p>其中，call和apply函数的作用基本一致，只是其传参的类型不同，bind函数用来生成一个新的函数，此函数中的this是被绑定到对应的对象上的。</p>
+<p>由于JavaScript的这种特性，我们在函数中使用this时，常常会收到运行时的调用环境影响。在ES6中提供了箭头函数的支持，在箭头函数中，this会被绑定为函数定义时的this指向，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">create</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">create2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f = &#123;<span class="attr">name</span>:<span class="string">"name"</span>, <span class="attr">log</span>:create(),<span class="attr">log2</span>:create2()&#125;;</span><br><span class="line"><span class="comment">//&#123;name: 'name', log: ƒ, log2: ƒ&#125;</span></span><br><span class="line">f.log();</span><br><span class="line"><span class="comment">// global</span></span><br><span class="line">f.log2();</span><br></pre></td></tr></table></figure>
+<p>TypeScript或其他支持EX6的编译器也会将箭头函数编译成如下样式，非常清楚的描述了this在箭头函数中的指向：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">create2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> _this = <span class="keyword">this</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(_this);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="四-理解JavaScript中的面向对象"><a href="#四-理解JavaScript中的面向对象" class="headerlink" title="四 理解JavaScript中的面向对象"></a>四 理解JavaScript中的面向对象</h2><p>前面说了这么多，我们终于要涉及到JavaScript是如何实现面向对象的特性了。前面有提到，我们可以使用函数来模拟类，构建出对象，继承和多态特性则是通过原型设计模式实现。JavaScript本身其实就有这样的一套能力，任何一个函数，当我们使用new关键字进行调用时，其都会被当成构造函数。构造函数的执行过程可以分为如下3步：</p>
+<p>1. 创建一个空的对象，并让构造函数内的this指向此对象。</p>
+<p>2. 将空对象的__proto__指向构造函数的prototype对象。</p>
+<p>3. 执行构造函数，如果构造函数结果返回的是基本数据类型（包括无返回语句），则会被忽略，直接返回创建的对象。如果返回的是对象类型，则忽略之前创建的对象。</p>
+<p>在使用对象访问属性或方法时，会先从当前对象中查找，如果没有找到，会再向原型__proto__中进行查找，一层层向上，直到找到对应的属性方法或没有更上层的原型对象。例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">People.prototype.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Hello I am "</span> + <span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> jaki = <span class="keyword">new</span> People(<span class="string">"Jaki"</span>);</span><br><span class="line"><span class="comment">// Hello I am Jaki</span></span><br><span class="line">jaki.sayHi();</span><br></pre></td></tr></table></figure>
+<p>要实现继承，可以通过修改原型来实现，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">People</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">People.prototype.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"Hello I am "</span> + <span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Teacher</span>(<span class="params">name, subject</span>) </span>&#123;</span><br><span class="line">    People.call(<span class="keyword">this</span>, name);</span><br><span class="line">    <span class="keyword">this</span>.subject = subject;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 修改子类原生指向</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">TeacherPrototype</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// 重写父类的方法</span></span><br><span class="line">    <span class="keyword">this</span>.sayHi = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 调用父类方法</span></span><br><span class="line">        TeacherPrototype.prototype.sayHi.call(<span class="keyword">this</span>);</span><br><span class="line">        <span class="comment">// 子类自己的实现</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"教学："</span>+<span class="keyword">this</span>.subject);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 子类原型设置</span></span><br><span class="line">TeacherPrototype.prototype = People.prototype</span><br><span class="line">Teacher.prototype = <span class="keyword">new</span> TeacherPrototype()</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> teacher = <span class="keyword">new</span> Teacher(<span class="string">"Jaki"</span>, <span class="string">"JavaScript"</span>);</span><br><span class="line"><span class="comment">//Hello I am Jaki</span></span><br><span class="line"><span class="comment">//教学：JavaScript</span></span><br><span class="line">teacher.sayHi();</span><br></pre></td></tr></table></figure>
+<p>从效果可以看到，JavaScript虽然没有类，但依然完成了面向对象的核心特性功能。</p>
+<h2 id="五-再来深入理解下原型链"><a href="#五-再来深入理解下原型链" class="headerlink" title="五 再来深入理解下原型链"></a>五 再来深入理解下原型链</h2><p>当我们创建一个空对象时，实际上是调用了Object构造方法，因此空对象的__proto__原型是指向Object函数的prototype的，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = &#123;&#125;;</span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> <span class="built_in">Object</span>();</span><br><span class="line"><span class="comment">// &#123;&#125; &#123;&#125;</span></span><br><span class="line"><span class="built_in">console</span>.log(a, b);</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(a.__proto__ === <span class="built_in">Object</span>.prototype);</span><br></pre></td></tr></table></figure>
+<p>在JavaScript中，函数本身也是对象，函数对象的原型是Function的prototype，如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> f = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> f2 = <span class="keyword">new</span> <span class="built_in">Function</span>();</span><br><span class="line"><span class="built_in">console</span>.log(f, f2);</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(f.__proto__ === <span class="built_in">Function</span>.prototype);</span><br></pre></td></tr></table></figure>
+<p>Object本身也是一个函数，因此Object的__proto__原型指向Function的prototype，同理，Function也是一种对象，因此Function的__proto__指向Object的prototype，在向上Object的prototype对象的__proto__就是null了，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.__proto__ === <span class="built_in">Function</span>.prototype);</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Function</span>.__proto__ === <span class="built_in">Function</span>.prototype);</span><br><span class="line"><span class="comment">// true</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Function</span>.prototype.__proto__ === <span class="built_in">Object</span>.prototype);</span><br><span class="line"><span class="comment">// null</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">Object</span>.prototype.__proto__);</span><br></pre></td></tr></table></figure>
+<p>原型链看上去有些复杂，借用网上的一张描述图，可以清晰的看出其间关系：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-c857a3778607dca5e7df785ad7d1601ea95.gif" alt></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>—— 珲少 QQ：316045346</p>
+<p>同时，如果本篇文章让你觉得有用，欢迎分享给更多朋友，请标明出处。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2022/08/17/451[iOS研习记]聊聊iOS中的Mach-O/" class="pre-post btn btn-default" title='聊聊iOS中的Mach-O'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">聊聊iOS中的Mach-O</span>
+        </a>
+    
+    
+        <a href="/2022/07/21/448 iOS单元测试的那些事儿/" class="next-post btn btn-default" title='iOS单元测试的那些事儿'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS单元测试的那些事儿</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#理解JavaScript中的“面向对象”"><span class="toc-text">理解JavaScript中的“面向对象”</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-引子"><span class="toc-text">一 引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-“面向对象”的编程方式是如何演进而来的"><span class="toc-text">二 “面向对象”的编程方式是如何演进而来的</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-this究竟指向哪里"><span class="toc-text">三 this究竟指向哪里</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-理解JavaScript中的面向对象"><span class="toc-text">四 理解JavaScript中的面向对象</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-再来深入理解下原型链"><span class="toc-text">五 再来深入理解下原型链</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

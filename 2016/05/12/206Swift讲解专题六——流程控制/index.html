@@ -1,0 +1,313 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift讲解专题六——流程控制 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift讲解专题六——流程控制">
+            
+	            Swift讲解专题六——流程控制
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift语法专题">
+            Swift语法专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/05/12</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Swift讲解专题六——流程控制"><a href="#Swift讲解专题六——流程控制" class="headerlink" title="Swift讲解专题六——流程控制"></a>Swift讲解专题六——流程控制</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>一种编程语言的强大与否，很大程度上取决于其提供的程序流程控制方案，就如使用汇编语言实现复杂的程序流程是一件痛苦的事情。Swift中提供了许多强大的流程控制语句，例如快速遍历for-in，while循环，repeat-while循环，switch选择等，需要注意的是，在Swift2.2中，for(a;b;c)循环已经被弃用掉，并且Swift中的Switch语句也更加强大，可以处理任意数据类型。
+</code></pre><h3 id="二、for-in循环"><a href="#二、for-in循环" class="headerlink" title="二、for-in循环"></a>二、for-in循环</h3><pre><code>配合范围运算符，for-in循环可以用来执行确定次数的循环，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">for index in 1...5 &#123;</span><br><span class="line">    print(index)</span><br><span class="line">&#125;</span><br><span class="line">//如果不需要获取循环中每次的循环次数 可以使用如下方式</span><br><span class="line">var sum=0;</span><br><span class="line">for _ in 1...3 &#123;</span><br><span class="line">    sum += 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>for-in循环也通常会用来遍历数组，字典，集合等，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var collection1:Array = [1,2,3,4]</span><br><span class="line">var collection2:Dictionary = [1:1,2:2,3:4,4:4]</span><br><span class="line">var collection3:Set = [1,2,3,4]</span><br><span class="line">for obj in collection1 &#123;</span><br><span class="line">    print(obj)</span><br><span class="line">&#125;</span><br><span class="line">for (key , value) in collection2 &#123;</span><br><span class="line">    print(key,value)</span><br><span class="line">&#125;</span><br><span class="line">for obj in collection3 &#123;</span><br><span class="line">    print(obj)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、while循环"><a href="#三、while循环" class="headerlink" title="三、while循环"></a>三、while循环</h3><pre><code>while语句进行循环操作，直到循环条件为false为止，这类型的循环通常适用于循环次数不定的循环需求，while循环提供两种语法格式，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var i=0</span><br><span class="line">//当i不小于10时跳出循环</span><br><span class="line">while i&lt;10 &#123;</span><br><span class="line">    print(&quot;while&quot;,i)</span><br><span class="line">    i+=1</span><br><span class="line">&#125;</span><br><span class="line">//先进行一次操作 在判断循环条件</span><br><span class="line">repeat &#123;</span><br><span class="line">    print(&quot;repeat while&quot;)</span><br><span class="line">&#125; while i&lt;10</span><br></pre></td></tr></table></figure>
+<h3 id="四、if语句"><a href="#四、if语句" class="headerlink" title="四、if语句"></a>四、if语句</h3><pre><code>if语句是程序开发中最常用的语句之一，通过if将判断一个条件是否成立来进行程序的流程控制，if语句通常会和else语句结合进行使用，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var c:Int</span><br><span class="line">if 1&gt;2 &#123;</span><br><span class="line">    c=1</span><br><span class="line">&#125;else if 1&lt;0 &#123;</span><br><span class="line">    c=2</span><br><span class="line">&#125;else&#123;</span><br><span class="line">    c=3</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="五、Switch语句"><a href="#五、Switch语句" class="headerlink" title="五、Switch语句"></a>五、Switch语句</h3><pre><code>Switch语句作为开关选择语句，用来处理一组值的分支选择，Swift中的Switch语句格外强大，相比于Objective-C，Swift中的Switch语句每个case后不需要使用break进行手动中断，当代码匹配到一个case后语句将自行中断。用法示例代码如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">var charac:Character = &quot;b&quot;</span><br><span class="line">//使用switch语句进行字符分支判断</span><br><span class="line">switch charac &#123;</span><br><span class="line">case &quot;a&quot;:</span><br><span class="line">    print(&quot;chara is a&quot;)</span><br><span class="line">case &quot;b&quot;:</span><br><span class="line">    print(&quot;chara is b&quot;)</span><br><span class="line">case &quot;c&quot;:</span><br><span class="line">    print(&quot;chara is c&quot;)</span><br><span class="line">default ://default用于处理其他额外情况</span><br><span class="line">    print(&quot;no charac&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//同一个case中可以包含多个分支</span><br><span class="line">switch charac &#123;</span><br><span class="line">case &quot;a&quot;,&quot;b&quot;,&quot;c&quot; :</span><br><span class="line">    print(&quot;chara is word&quot;)</span><br><span class="line">case &quot;1&quot;,&quot;2&quot;,&quot;3&quot; :</span><br><span class="line">    print(&quot;chara is num&quot;)</span><br><span class="line">default :</span><br><span class="line">    print(&quot;no charac&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//在case中也可以使用一个范围</span><br><span class="line">var num = 3</span><br><span class="line">switch num &#123;</span><br><span class="line">case 1...3 :</span><br><span class="line">    print(&quot;1&lt;=num&lt;=3&quot;)</span><br><span class="line">case 4 :</span><br><span class="line">    print(&quot;chara is num&quot;)</span><br><span class="line">default :</span><br><span class="line">    print(&quot;no charac&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//使用Switch语句进行元组的匹配</span><br><span class="line">var tuple = (0,0)</span><br><span class="line">switch tuple &#123;</span><br><span class="line">case (0,1):</span><br><span class="line">    print(&quot;Sure&quot;)</span><br><span class="line">    //也可以只对元组中的某个元素进行匹配</span><br><span class="line">case (_,1):</span><br><span class="line">    print(&quot;Sim&quot;)</span><br><span class="line">    //也可以对元组中的元素进行范围匹配</span><br><span class="line">case(0...3,0...3):</span><br><span class="line">    print(&quot;SIM&quot;)</span><br><span class="line">default:</span><br><span class="line">    print(&quot;&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//进行数据绑定</span><br><span class="line">switch tuple &#123;</span><br><span class="line">case (let a,1):</span><br><span class="line">    print(a)</span><br><span class="line">case (let b,0):</span><br><span class="line">    print(b)</span><br><span class="line">    //let(a,b) 与 (let a,let b)意义相同</span><br><span class="line">case let(a,b):</span><br><span class="line">    print(a,b)</span><br><span class="line">default:</span><br><span class="line">    print(&quot;&quot;)</span><br><span class="line">&#125;</span><br><span class="line">//对于进行了数据绑定的Switch语句 可以使用where关键字来进行条件判断</span><br><span class="line">switch tuple &#123;</span><br><span class="line">case (let a,1):</span><br><span class="line">    print(a)</span><br><span class="line">case (let b,0):</span><br><span class="line">    print(b)</span><br><span class="line">//let(a,b) 与 (let a,let b)意义相同</span><br><span class="line">case let(a,b) where a==b:</span><br><span class="line">    print(a,b)</span><br><span class="line">default:</span><br><span class="line">    print(&quot;&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="六、跳转语句"><a href="#六、跳转语句" class="headerlink" title="六、跳转语句"></a>六、跳转语句</h3><pre><code>Swift中提供了5种跳转语句，continue，break，fallthrough，return，throw。
+</code></pre><p>continue：跳出到循环起始位置，直接开始下次循环。</p>
+<p>break：break如果在循环语句中则是直接中断循环，跳出，若是在Switch结构中，则立即跳出Switch结构。</p>
+<p>fallthrough语句需要和switch语句配合使用，在case中使用fallthrough，则会继续执行下一个case，需要注意，在下一个case中有进行数据绑定的，不可以使用fallthrough，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">var tuple = (0,0)</span><br><span class="line">switch tuple &#123;</span><br><span class="line">case (0,0):</span><br><span class="line">    print(&quot;Sure&quot;)</span><br><span class="line">    //fallthrough会继续执行下面的case</span><br><span class="line">    fallthrough</span><br><span class="line">    //也可以只对元组中的某个元素进行匹配</span><br><span class="line">case (_,0):</span><br><span class="line">    print(&quot;Sim&quot;)</span><br><span class="line">    fallthrough</span><br><span class="line">    //也可以对元组中的元素进行范围匹配</span><br><span class="line">case(0...3,0...3):</span><br><span class="line">    print(&quot;SIM&quot;)</span><br><span class="line">default:</span><br><span class="line">    print(&quot;&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>return：return语句直接从函数中返回。</p>
+<p>throw：throw用于抛出异常。</p>
+<pre><code>Swift还支持另一种语法，可以为while循环设置一个tip标签，使用break和continue等关键字来进行流程的控制，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var tmp = 0;</span><br><span class="line">tip:while tmp&lt;10 &#123;</span><br><span class="line">    print(&quot;ccc&quot;)</span><br><span class="line">    tmp+=1</span><br><span class="line">    switch tmp &#123;</span><br><span class="line">    case 3:</span><br><span class="line">        break tip</span><br><span class="line">    default:</span><br><span class="line">        break</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code>Swift2.0之后，提供了一种新的语法，guard-else，这也被称作守护语句，只有当条件不满足时，才执行else后面的代码，示例如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var name = &quot;HS&quot;</span><br><span class="line">func nameChange(name:String) &#123;</span><br><span class="line">    guard name==&quot;HS&quot; else&#123;</span><br><span class="line">        print(name)</span><br><span class="line">        return</span><br><span class="line">    &#125;</span><br><span class="line">    print(&quot;name is HS&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">nameChange(name)</span><br></pre></td></tr></table></figure>
+<p>在开发中，函数中常常会需要检查传入的参数是否符合标准，guard-else语句就是为这种需求所生，正如其名，它用于守护函数执行的精确度。</p>
+<h3 id="七、系统版本检查"><a href="#七、系统版本检查" class="headerlink" title="七、系统版本检查"></a>七、系统版本检查</h3><pre><code>使用如下示例代码进行系统支持版本的检查：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if #available(iOS 9, *)&#123;</span><br><span class="line">    print(&quot;iOS 9&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/05/13/207Swift讲解专题七——函数/" class="pre-post btn btn-default" title='Swift讲解专题七——函数'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Swift讲解专题七——函数</span>
+        </a>
+    
+    
+        <a href="/2016/05/11/205Swift讲解专题五——集合类型/" class="next-post btn btn-default" title='Swift讲解专题五——集合类型'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Swift讲解专题五——集合类型</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Swift讲解专题六——流程控制"><span class="toc-text">Swift讲解专题六——流程控制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、for-in循环"><span class="toc-text">二、for-in循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、while循环"><span class="toc-text">三、while循环</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、if语句"><span class="toc-text">四、if语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、Switch语句"><span class="toc-text">五、Switch语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、跳转语句"><span class="toc-text">六、跳转语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#七、系统版本检查"><span class="toc-text">七、系统版本检查</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

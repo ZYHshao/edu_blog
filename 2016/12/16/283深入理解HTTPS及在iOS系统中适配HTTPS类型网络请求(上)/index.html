@@ -1,0 +1,380 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求(上) | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求(上)">
+            
+	            深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求(上)
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/12/16</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求"><a href="#深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求" class="headerlink" title="深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求"></a>深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>本篇博客主要讨论如何在客户端与服务端之间进行HTTPS网络传输，为了深入理解网络传输的基础原理，更加灵活的校验证书，博客的前半部分也将介绍一些HTTPS网络传输原理。当然，文章中有不正和疏漏之处，还望朋友不吝指正，感谢！
+</code></pre><h3 id="二、HTTP与HTTPS"><a href="#二、HTTP与HTTPS" class="headerlink" title="二、HTTP与HTTPS"></a>二、HTTP与HTTPS</h3><pre><code>我们都知道，HTTP是一种常用的网络传输协议，它是基于TCP的一种应用层协议，应用层是什么样的一个概念，通过下面这张示意图可以很好的理解：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/1216/180738_v5vY_2340880.png" alt></p>
+<p>HTTP协议的网络传输十分常见，例如网易的主页<a href="http://www.163.com/。HTTP类型的网络传输使用十分方便，但是其在安全性上却有很大问题，列举如下：" target="_blank" rel="noopener">http://www.163.com/。HTTP类型的网络传输使用十分方便，但是其在安全性上却有很大问题，列举如下：</a></p>
+<p>1.HTTP协议在传输数据时是明文的，任何人通过一个简单的抓包工具，就可以截获到所有传输数据。</p>
+<p>2.HTTP协议在传输数据时无法保证数据的完整，在截获到明文数据后，很容易就可以将其篡改，这也是一些网页总是被植入恶意广告的原因。</p>
+<p>3.HTTP协议在传输数据时无法保证真实性，这也是最恐怖的一点。误入了域名欺骗的钓鱼网站，极容易对用户带来财产损失。</p>
+<p>基于上面3点安全性的考虑，一种更加安全的网络传输协议势必要推行，那就是HTTPS。</p>
+<pre><code>要理解HTTPS协议，首先需要明白什么是SSL/TLS。SSL全称“Secure Sockets Layer”，意思为安全套接层。其实由网景公司为了解决HTTP传输协议在安全方面的缺陷而设计的。后来被标准化，更名为TLS，全称“Transport Layer Security”，意思为传输层安全协议。
+
+  那么现在就好理解了，其实HTTPS就是将HTTP协议与TLS协议组合起来，在不改变HTTP协议原设计的基础上，为其添加安全性校验并对传输的数据进行加密。那么TLS究竟在网络传输的那一层进行了处理了，下图可以很好的表示：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/1216/181011_7aze_2340880.png" alt></p>
+<h3 id="三、证书"><a href="#三、证书" class="headerlink" title="三、证书"></a>三、证书</h3><pre><code>  通过前面所介绍，我们知道HTTPS主要是为了解决3个问题：数据加密、数据完整、数据真实。那么下一步就是如何解决这些问题，数据加密在发送数据前依赖SSL层对数据进行加密，数据完整与真实性则要靠另一种关键技术：数字证书。
+
+  通过一个小例子可以很容易的理解证书的作用，这个例子的来源是&lt;编程随想&gt;的作者，我这里暂且借用一下：A公司的a到B公司办事，为了证明a确实是A公司的职员而不是商业间谍，A公司会为a提供一个带有公章的证明，当B公司看到这个证明时，就可以信任办事员a。对比网络传输，这个证明就是证书，证书可以保证这个网站的真实性。我们继续往后分析，当B公司与越来越多的公司进行商业合作时，就又有新的问题出现了，比如C公司的c来B公司办事，就需要拿C公司带公章的证明，D公司的d来B公司办事就需要拿D公司带公章的证明...这样一来，B公司要存放好多公司的公章和证明的模板，才能够完成校验。这样未免也太麻烦了，对应到网络传输中，客户端就是B公司，各个网站都有自己的证书文件，这样客户端需要安装信任大量的证书，为了解决这样的问题，就有了第三方CA机构。第三方CA机构是由大家公认信任的机构，例如R公司为第三方信任机构，其业务是为其他公司提供公章证明，这样一来，B公司只要保有这个R公司的公章证明副本，其他A，C，D公司的办事员也只需要从R公司申请到一个公章证明就可以到B公司来交流业务了。
+
+CA的全称是“Certificate Authority”，意为证书授权中心。大部分CA机构颁发的证书都是需要付费的，CA机构颁发的证书一般都是根证书，根证书也比较容易理解，首先证书是有链式信任关系的，例如Y证书是由CA机构颁发的根证书，由这个Y证书还可以创建出许多子证书，子证书可以继续创建子证书，只要根证书是受信任的，其下所有的子证书都是受信任的，如下图：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/1216/181117_IgEB_2340880.png" alt></p>
+<pre><code>我们可以打开开源中国博客的主页：[https://www.oschina.net/blog](https://www.oschina.net/blog)。在Chrome浏览器地址栏左边可以查看证书信息，如下：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/1216/181156_7klS_2340880.png" alt></p>
+<p>点击证书信息，可以看到完整的证书链，如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/181242_THrb_2340880.png" alt></p>
+<p>从图中可以看到，根证书是由CA机构VerSign公司颁发的。此处还可以看到当前证书是否有效以及过期时间，如果证书无效则说明此网页信息有可能被篡改过，用户在访问时就要小心了。</p>
+<pre><code>除了CA机构可以签发证书外，个人其实也是可以创建证书的，当然个人创建的证书也是不被信任的，我们姑且把这类证书叫做自签名证书，如果用自签名证书搭建了HTTPS的服务，则客户端需要安装对应的证书信任，才可以进行此服务的访问。后面我们会进一步讨论自签名证书的使用。
+</code></pre><h3 id="四、搭建一个本地的HTTPS服务"><a href="#四、搭建一个本地的HTTPS服务" class="headerlink" title="四、搭建一个本地的HTTPS服务"></a>四、搭建一个本地的HTTPS服务</h3><pre><code>使用Node.js可以快速的搭建前端服务，我们这里使借助Express框架来搭建本地的HTTPS服务，用于测试我们后边将要进行HTTPS通讯。Express搭建搭建项目模板的过程在以前的一篇博客中有详细的介绍，这里就不再重复了，地址如下：
+</code></pre><p>使用Express搭建前端项目：<a href="https://my.oschina.net/u/2340880/blog/794928" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/794928</a>。</p>
+<pre><code>根据前面所述，搭建HTTPS服务需要有证书凭证，两种证书我们可以选择，一种是CA机构签发的证书，还有一种是我们自己制作的自签名证书，在Mac电脑上打开钥匙串访问应用，打开其中的证书助理，如下图所示：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/1216/181342_fdRw_2340880.png" alt></p>
+<p>选择其中的为您自己创建证书选项，如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/181420_JjLk_2340880.png" alt></p>
+<p>在之后的界面中，输入证书的名称，选择证书类型，如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/181501_CpTC_2340880.png" alt></p>
+<p>上面，我把证书的名字创建成了珲少，身份类型选择的是自签名的根证书，证书类型选择SSL服务器，之后点击创建即可完成证书的创建。</p>
+<pre><code>创建完成后，在钥匙串访问的登录证书中，可以看到已经有了珲少这个自签名的证书，如下图：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/1216/181606_ZBdu_2340880.png" alt></p>
+<p>在证书上点击右键，选择导出选项，名字我将其取名为huishao，文件类型要选择.p12，如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/181658_lGT8_2340880.png" alt></p>
+<p>点击存储后，需要设置一个访问密码，这个密码将来将用于从.p12文件中获取证书和密钥，如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/181745_rJu7_2340880.png" alt></p>
+<p>之后，系统有可能会让你再次输入一个密码，将入下图所示，注意，这里需要输入的是系统的登录密码：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/181822_yqxL_2340880.png" alt></p>
+<p>完成上面操作后，我们已经将一个.p12文件导出到了桌面。那么这个.p12文件到底是个什么东西呢，它和证书之间又有什么关系呢，其实.p12文件一个复合文件，其中包装了私钥与证书信息，使用OpenSSL工具可以将其中的信息进行提取，搭建一个HTTPS的服务器需要两个文件，分别问证书文件和私钥文件，下面我们来从.p12文件中提取这些需要的文件。</p>
+<pre><code>打开终端，cd到huishao.p12文件所在的目录下，使用如下命令可以将.p12文件中的私钥分解出来：
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="keyword">in</span> huishao.p12 -nocerts -out privateKey.pem -nodes</span><br></pre></td></tr></table></figure>
+<p>之间会要求输入导出.p12文件时所设置的密码。</p>
+<p>使用如下命令将.p12文件中的证书分解出来：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl pkcs12 -<span class="keyword">in</span> huishao.p12 -nokeys -out cert.pem -nodes</span><br></pre></td></tr></table></figure>
+<p>之间也会要求输入导出.p12文件时所设置的密码。完成上面两部操作后，可以看到当前文件夹下多了两个文件，分别为cert.pem与privateKey.pem，他们分别是证书文件与密钥文件，将他们拷贝到Express项目的bin文件夹下，使得Express项目的结构看起来如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/140315_1XeC_2340880.png" alt></p>
+<p>下面我们来配置Express项目。</p>
+<pre><code>在生成好的Express项目中的www文件的末尾添加如下代码：
+</code></pre><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">HTTPS</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">'https'</span>);</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">密钥文件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">var</span> privatekey = fs.readFileSync(<span class="string">'./privateKey.pem'</span>, <span class="string">'utf8'</span>);  </span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">证书文件</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">var</span> certificate = fs.readFileSync(<span class="string">'./cert.pem'</span>, <span class="string">'utf8'</span>);  </span><br><span class="line"><span class="keyword">var</span> options=&#123;<span class="attr">key</span>:privatekey, <span class="attr">cert</span>:certificate&#125;;  </span><br><span class="line"><span class="keyword">var</span> serverHttps = https.createServer(options, app);  </span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">绑定端口</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">serverHttps.listen(<span class="number">8080</span>,<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'Https server listening on port '</span> + <span class="number">8080</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>用终端在bin文件夹下运行 node www，效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/142118_dYVk_2340880.png" alt></p>
+<p>在浏览器打开：<a href="https://localhost:8080/users，如果服务器搭建成功，Chrome中会出现如下效果：" target="_blank" rel="noopener">https://localhost:8080/users，如果服务器搭建成功，Chrome中会出现如下效果：</a></p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/143206_UCj3_2340880.png" alt></p>
+<p>点击高级，点击其中的继续访问，可以正常获取到服务器返回的数据。到此，我们的HTTPS服务就搭建成功了。</p>
+<h3 id="五、iOS开发中通过配置info-plist文件来允许HTTP协议类型的通讯"><a href="#五、iOS开发中通过配置info-plist文件来允许HTTP协议类型的通讯" class="headerlink" title="五、iOS开发中通过配置info.plist文件来允许HTTP协议类型的通讯"></a>五、iOS开发中通过配置info.plist文件来允许HTTP协议类型的通讯</h3><pre><code>前面扯了太多，终于提到重点部分了。Apple在iOS9中就已经漏出一些强制HTTPS通讯的端倪，只是给了开发者一些过渡，在iOS10及以后的审核机制中，Apple对于强制HTTPS的推动将会越来越强，如何让自己的应用程序尽快的适配HTTPS相关的标准，是iOS开发者必须面对的任务。
+
+通过前面的分析我们了解，CA机构签发的证书是被默认信任的，这就是说，如果你的公司比较有钱，愿意花钱从CA机构申请一个付费的证书，那么很幸运，你的iOS工程是不需要做任何修改的，这些CA机构签发的证书是默认受信任的，因此你可以直接在程序中进行HTTPS类型的请求，所需要修改的只是将请求url改成https开头。但是另一种情况，无论出于什么原因，你的后台服务用的是自签名的证书，就想我们上面搭建的HTTPS服务一样，如果在不做任何处理的情况下在项目中访问这样的服务，就会出现问题了，原因是我们自己创建的自签名证书是不受信任的，系统默认拒绝了请求，示例如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)normalHttps&#123;</span><br><span class="line">    <span class="built_in">NSURLRequest</span> * req = [<span class="built_in">NSURLRequest</span> requestWithURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://localhost:8080/users"</span>]];</span><br><span class="line">    <span class="built_in">NSURLSessionConfiguration</span> * config = [<span class="built_in">NSURLSessionConfiguration</span> defaultSessionConfiguration];</span><br><span class="line">    <span class="built_in">NSURLSession</span> * session = [<span class="built_in">NSURLSession</span> sessionWithConfiguration:config delegate:<span class="literal">nil</span> delegateQueue:[<span class="built_in">NSOperationQueue</span> mainQueue]];</span><br><span class="line">    [[session dataTaskWithRequest:req completionHandler:^(<span class="built_in">NSData</span> * _Nullable data, <span class="built_in">NSURLResponse</span> * _Nullable response, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@,%@"</span>,[[<span class="built_in">NSString</span> alloc]initWithData:data encoding:<span class="built_in">NSUTF8StringEncoding</span>],error);</span><br><span class="line">    &#125;] resume];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行工程后可以看到，并没有获取到相关数据，Xcode提示为：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSURLSession/NSURLConnection HTTP load failed (kCFStreamErrorDomainSSL, -<span class="number">9802</span>)</span><br></pre></td></tr></table></figure>
+<p>好了，那么我们先不管HTTPS的问题，如果我们直接对HTTP协议的服务进行请求，会不会有问题呢，将代码修改如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)normalHttps&#123;</span><br><span class="line">    <span class="built_in">NSURLRequest</span> * req = [<span class="built_in">NSURLRequest</span> requestWithURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"http://localhost:3000/users"</span>]];</span><br><span class="line">    <span class="built_in">NSURLSessionConfiguration</span> * config = [<span class="built_in">NSURLSessionConfiguration</span> defaultSessionConfiguration];</span><br><span class="line">    <span class="built_in">NSURLSession</span> * session = [<span class="built_in">NSURLSession</span> sessionWithConfiguration:config delegate:<span class="literal">nil</span> delegateQueue:[<span class="built_in">NSOperationQueue</span> mainQueue]];</span><br><span class="line">    [[session dataTaskWithRequest:req completionHandler:^(<span class="built_in">NSData</span> * _Nullable data, <span class="built_in">NSURLResponse</span> * _Nullable response, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@,%@"</span>,[[<span class="built_in">NSString</span> alloc]initWithData:data encoding:<span class="built_in">NSUTF8StringEncoding</span>],error);</span><br><span class="line">    &#125;] resume];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意：Express在进行项目模板的创建时，会默认帮我们绑定一个3000端口的HTTP服务。</p>
+<p>运行工程后，可以发现HTTP协议的请求也无法访问，报错如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">App Transport Security has blocked a cleartext HTTP (http://) resource load since it is insecure. Temporary exceptions can be configured via your app&apos;s Info.plist file.</span><br></pre></td></tr></table></figure>
+<p>其意思大致是说应用程序传输安全要求强制使用HTTPS类型的服务，但是开发者可以通过配置info.plsit文件来回避这一政策。这就是我们这节的重点，通过文件配置的方式来跳过应用安全传输协议。</p>
+<pre><code>在iOS9之后，开发者可以在Info.plist文件中添加如下键：NSAppTransportSecurity。这个键用来配置APP传输安全的相关策略，是字典类型，其中可以设置的键有五个，如下：
+</code></pre><p>NSAllowsArbitraryLoads：布尔值，默认为NO，设置为YES则代表除了NSExceptionDomains中设置的域名外，其他所有请求的协议类型都不受限制，也就是说可以支持HTTP类型的请求，这个键的作用域是全局的，App内所有的请求都受影响，但是如果开发者设置为了YES，在提交审核时需要说明原因。</p>
+<p>NSAllowsArbitraryLoadsForMedia：布尔值，默认为NO，设置为YES的话，则应用程序内所有的媒体数据的加载将不受协议类型的限制，同样如果开发者设置为了YES，则在提交审核时需要说明原因。</p>
+<p>NSAllowsArbitraryLoadsInWebContent：布尔值，默认为NO。如果设置为YES，则应用程序内所有WebView的请求加载不受协议类型的限制，开发者设置为了YES，则在提交审核时需要说明原因。</p>
+<p>NSAllowsLocalNetworking：布尔值，默认为NO，如果设置为YES，则在加载本地资源时不受安全传输协议的限制。</p>
+<p>NSExceptionDomains：字典，其主要对某些特殊域名做限制。其中结构可以表示如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">NSAppTransportSecurity : Dictionary &#123;</span><br><span class="line">    NSAllowsArbitraryLoads : <span class="built_in">Boolean</span></span><br><span class="line">    NSAllowsArbitraryLoadsForMedia : <span class="built_in">Boolean</span></span><br><span class="line">    NSAllowsArbitraryLoadsInWebContent : <span class="built_in">Boolean</span></span><br><span class="line">    NSAllowsLocalNetworking : <span class="built_in">Boolean</span></span><br><span class="line">    <span class="comment">//对某些域名做特殊限制</span></span><br><span class="line">    NSExceptionDomains : Dictionary &#123;</span><br><span class="line">        &lt;domain-name-string&gt; : Dictionary &#123;</span><br><span class="line">            NSIncludesSubdomains : <span class="built_in">Boolean</span></span><br><span class="line">            NSExceptionAllowsInsecureHTTPLoads : <span class="built_in">Boolean</span></span><br><span class="line">            NSExceptionMinimumTLSVersion : <span class="built_in">String</span></span><br><span class="line">            NSExceptionRequiresForwardSecrecy : <span class="built_in">Boolean</span>   <span class="comment">// Default value is YES</span></span><br><span class="line">            NSRequiresCertificateTransparency : <span class="built_in">Boolean</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>NSIncludesSubdomains：布尔值，这个键的作用是设置此域名下的所有子域名是否采用和父域名相同的配置。</p>
+<p>NSExceptionAllowsInsecureHTTPLoads：布尔值，设置是否允许此域名使用自签名的证书进行请求，默认为NO，如果设置为YES，则在提交时需要说明原因。</p>
+<p>NSExceptionMinimumTLSVersion：设置所使用的TLS版本。</p>
+<p>NSExceptionRequiresForwardSecret：设置为NO，则不允许向前加密方式。</p>
+<p>NSRequiresCertificateTransparency：如果设置为YES，则服务端的证书要有有效的透明时间戳。</p>
+<h3 id="六、iOS中使用自签名的证书进行HTTPS请求校验"><a href="#六、iOS中使用自签名的证书进行HTTPS请求校验" class="headerlink" title="六、iOS中使用自签名的证书进行HTTPS请求校验"></a>六、iOS中使用自签名的证书进行HTTPS请求校验</h3><pre><code>通过Info.plist文件我们是可以绕过安全传输协议的，但是不幸的是，从文档上看，无论开发者通过哪种方式来绕过安全传输协议，Apple都要求开发者在提审时提供合适的理由，这就是说：如果你使用了HTTP协议的请求，没有充足理由的话，你的App有很大的可能被审核拒绝。因此，更加保险的一种方式是将所有的服务都换成HTTPS协议的，如果有CA证书，当然完事大吉，如果没有，我们也可以通过验证自签名证书的方式来适配HTTPS协议。
+
+在进行HTTPS请求时，服务端会先将证书文件返回给客户端，如果客户端的证书信任列表中包含这个证书，则此请求可以正常进行，如果没有，则请求会被拒绝。因此，在iOS中适配自签名证书的HTTPS请求实际上就是将这个自签名的证书安装进客户端的信任列表。iOS中需要使用的证书是der格式的，可以使用如下命令将pem格式的证书转换成der格式的证书：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -inform PEM -in cert.pem -outform DER -out cert.der</span><br></pre></td></tr></table></figure>
+<p>将生成的cert文件添加进工程中，修改请求如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)normalHttps&#123;</span><br><span class="line">    <span class="built_in">NSURLRequest</span> * req = [<span class="built_in">NSURLRequest</span> requestWithURL:[<span class="built_in">NSURL</span> URLWithString:<span class="string">@"https://localhost:8080/users"</span>]];</span><br><span class="line">    <span class="built_in">NSURLSessionConfiguration</span> * config = [<span class="built_in">NSURLSessionConfiguration</span> defaultSessionConfiguration];</span><br><span class="line">    <span class="built_in">NSURLSession</span> * session = [<span class="built_in">NSURLSession</span> sessionWithConfiguration:config delegate:<span class="keyword">self</span> delegateQueue:[<span class="built_in">NSOperationQueue</span> mainQueue]];</span><br><span class="line">    <span class="built_in">NSURLSessionTask</span> * task = [session dataTaskWithRequest:req completionHandler:^(<span class="built_in">NSData</span> * _Nullable data, <span class="built_in">NSURLResponse</span> * _Nullable response, <span class="built_in">NSError</span> * _Nullable error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@,%@"</span>,[[<span class="built_in">NSString</span> alloc]initWithData:data encoding:<span class="built_in">NSUTF8StringEncoding</span>],error);</span><br><span class="line">    &#125;];</span><br><span class="line">    [task resume];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>除此之外，需要实现一个SURLSessionDelegate的协议方法如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)URLSession:(<span class="built_in">NSURLSession</span> *)session didReceiveChallenge:(<span class="built_in">NSURLAuthenticationChallenge</span> *)challenge</span><br><span class="line"> completionHandler:(<span class="keyword">void</span> (^)(<span class="built_in">NSURLSessionAuthChallengeDisposition</span> disposition, <span class="built_in">NSURLCredential</span> * _Nullable credential))completionHandler &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"证书认证"</span>);</span><br><span class="line">    <span class="comment">//先判断证书是否有效</span></span><br><span class="line">    <span class="keyword">if</span> ([[[challenge protectionSpace] authenticationMethod] isEqualToString: <span class="built_in">NSURLAuthenticationMethodServerTrust</span>]) &#123;</span><br><span class="line">        <span class="comment">//证书验证请求</span></span><br><span class="line">        SecTrustRef serverTrust = [[challenge protectionSpace] serverTrust];</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         *  导入多张CA证书（Certification Authority，支持SSL证书以及自签名的CA）</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="built_in">NSString</span> *cerPath = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"cert"</span> ofType:<span class="string">@"der"</span>];<span class="comment">//自签名证书</span></span><br><span class="line">        <span class="built_in">NSData</span>* caCert = [<span class="built_in">NSData</span> dataWithContentsOfFile:cerPath];</span><br><span class="line">        <span class="comment">//可以添加多张证书</span></span><br><span class="line">        <span class="built_in">NSArray</span> *caArray = @[caCert];</span><br><span class="line">        <span class="comment">//验证规则</span></span><br><span class="line">        <span class="built_in">NSMutableArray</span> *policies = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line">        [policies addObject:(__bridge_transfer <span class="keyword">id</span>)SecPolicyCreateBasicX509()];</span><br><span class="line">        SecTrustSetPolicies(serverTrust, (__bridge <span class="built_in">CFArrayRef</span>)policies);</span><br><span class="line">        <span class="built_in">NSMutableArray</span> *pinnedCertificates = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line">        <span class="comment">//进行自签名证书的添加</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="built_in">NSData</span> *certificateData <span class="keyword">in</span> caArray) &#123;</span><br><span class="line">            [pinnedCertificates addObject:(__bridge_transfer <span class="keyword">id</span>)SecCertificateCreateWithData(<span class="literal">NULL</span>, (__bridge <span class="built_in">CFDataRef</span>)certificateData)];</span><br><span class="line">        &#125;</span><br><span class="line">        SecTrustSetAnchorCertificates(serverTrust, (__bridge <span class="built_in">CFArrayRef</span>)pinnedCertificates);</span><br><span class="line">        SecTrustResultType result = <span class="number">-1</span>;</span><br><span class="line">        <span class="comment">//通过本地导入的证书来验证服务器的证书是否可信</span></span><br><span class="line">        SecTrustEvaluate(serverTrust, &amp;result);</span><br><span class="line">        <span class="built_in">NSURLCredential</span> *credential = [<span class="built_in">NSURLCredential</span> credentialForTrust:serverTrust];</span><br><span class="line">        completionHandler(<span class="built_in">NSURLSessionAuthChallengeUseCredential</span>,credential);</span><br><span class="line">        <span class="keyword">return</span> [[challenge sender] useCredential: credential</span><br><span class="line">                      forAuthenticationChallenge: challenge];</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如上修改后，再次运行工程，可以看到已经成功请求到了HTTPS自签名证书服务提供的数据：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/1216/165455_bErP_2340880.png" alt></p>
+<p>介于篇幅过长，关于NSURLAuthenticationChallenge相关类的更多探讨和常用网络库AFNetworking中HTTPS的适配，下篇博客会继续介绍。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/12/18/284深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求(下)/" class="pre-post btn btn-default" title='深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求(下)'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求(下)</span>
+        </a>
+    
+    
+        <a href="/2016/12/14/282Bootstrap响应式前端框架笔记十二——巨幕与缩略图/" class="next-post btn btn-default" title='Bootstrap响应式前端框架笔记十二——巨幕与缩略图'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Bootstrap响应式前端框架笔记十二——巨幕与缩略图</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求"><span class="toc-text">深入理解HTTPS及在iOS系统中适配HTTPS类型网络请求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、HTTP与HTTPS"><span class="toc-text">二、HTTP与HTTPS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、证书"><span class="toc-text">三、证书</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、搭建一个本地的HTTPS服务"><span class="toc-text">四、搭建一个本地的HTTPS服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、iOS开发中通过配置info-plist文件来允许HTTP协议类型的通讯"><span class="toc-text">五、iOS开发中通过配置info.plist文件来允许HTTP协议类型的通讯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、iOS中使用自签名的证书进行HTTPS请求校验"><span class="toc-text">六、iOS中使用自签名的证书进行HTTPS请求校验</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

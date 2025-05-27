@@ -1,0 +1,332 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS NSTimer 定时器用法总结 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS NSTimer 定时器用法总结">
+            
+	            iOS NSTimer 定时器用法总结
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS编程技巧">
+            iOS编程技巧
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+                    <a href="/tags/iOS编程" title='iOS编程'>
+                        iOS编程
+                    </a>
+                
+                    <a href="/tags/NSTimer" title='NSTimer'>
+                        NSTimer
+                    </a>
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/04/10</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <p>NSTimer在IOS开发中会经常用到，尤其是小型游戏，然而对于初学者时常会注意不到其中的内存释放问题，将其基本用法总结如下：</p>
+<p>一、初始化方法：有五种初始化方法，分别是</p>
+<p>+ (NSTimer <em>)timerWithTimeInterval:(NSTimeInterval)ti invocation:(NSInvocation </em>)invocation repeats:(BOOL)yesOrNo;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    //初始化一个Invocation对象</span><br><span class="line">    NSInvocation * invo = [NSInvocation invocationWithMethodSignature:[[self class] instanceMethodSignatureForSelector:@selector(init)]];</span><br><span class="line">    [invo setTarget:self];</span><br><span class="line">    [invo setSelector:@selector(myLog)];</span><br><span class="line">    NSTimer * timer = [NSTimer timerWithTimeInterval:1 invocation:invo repeats:YES];</span><br><span class="line">    //加入主循环池中</span><br><span class="line">    [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSDefaultRunLoopMode];</span><br><span class="line">    //开始循环</span><br><span class="line">    [timer fire];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>+ (NSTimer <em>)scheduledTimerWithTimeInterval:(NSTimeInterval)ti invocation:(NSInvocation </em>)invocation repeats:(BOOL)yesOrNo;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">  NSTimer * timer = [NSTimer scheduledTimerWithTimeInterval:1 invocation:invo repeats:YES];</span><br></pre></td></tr></table></figure>
+<p>+ (NSTimer *)timerWithTimeInterval:(NSTimeInterval)ti target:(id)aTarget selector:(SEL)aSelector userInfo:(id)userInfo repeats:(BOOL)yesOrNo;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSTimer * timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(myLog) userInfo:nil repeats:NO]</span><br></pre></td></tr></table></figure>
+<p>+ (NSTimer *)scheduledTimerWithTimeInterval:(NSTimeInterval)ti target:(id)aTarget selector:(SEL)aSelector userInfo:(id)userInfo repeats:(BOOL)yesOrNo;</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSTimer * timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(myLog:) userInfo:@&quot;123&quot; repeats:YES]</span><br></pre></td></tr></table></figure>
+<p>- (instancetype)initWithFireDate:(NSDate *)date interval:(NSTimeInterval)ti target:(id)t selector:(SEL)s userInfo:(id)ui repeats:(BOOL)rep </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> NSTimer * timer = [[NSTimer alloc]initWithFireDate:[NSDate distantPast] interval:1 target:self selector:@selector(myLog:) userInfo:nil repeats:YES];</span><br><span class="line">    [[NSRunLoop mainRunLoop]addTimer:timer forMode:NSDefaultRunLoopMode];</span><br></pre></td></tr></table></figure>
+<p>注意：这五种初始化方法的异同：</p>
+<pre><code>1、参数repeats是指定是否循环执行，YES将循环，NO将只执行一次。
+
+2、timerWithTimeInterval这两个类方法创建出来的对象如果不用 addTimer: forMode方法手动加入主循环池中，将不会循环执行。并且如果不手动调用fair，则定时器不会启动。
+
+3、scheduledTimerWithTimeInterval这两个方法不需要手动调用fair，会自动执行，并且自动加入主循环池。
+
+4、init方法需要手动加入循环池，它会在设定的启动时间启动。
+</code></pre><p>二、成员变量</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (copy) NSDate *fireDate;</p>
+<p>这是设置定时器的启动时间，常用来管理定时器的启动与停止</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    //启动定时器</span><br><span class="line">    timer.fireDate = [NSDate distantPast];</span><br><span class="line">    //停止定时器</span><br><span class="line">    timer.fireDate = [NSDate distantFuture];</span><br></pre></td></tr></table></figure>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (readonly) NSTimeInterval timeInterval;</p>
+<p>这个是一个只读属性，获取定时器调用间隔时间。</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> NSTimeInterval tolerance;</p>
+<p>这是7.0之后新增的一个属性，因为NSTimer并不完全精准，通过这个值设置误差范围。</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (readonly, getter=isValid) BOOL valid;</p>
+<p>获取定时器是否有效</p>
+<p><a href="http://my.oschina.net/property" target="_blank" rel="noopener">@property</a> (readonly, retain) id userInfo;</p>
+<p>获取参数信息</p>
+<p>三、关于内存释放</p>
+<p>如果我们启动了一个定时器，在某个界面释放前，将这个定时器停止，甚至置为nil，都不能是这个界面释放，原因是系统的循环池中还保有这个对象。所以我们需要这样做：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">-(void)dealloc&#123;</span><br><span class="line">    NSLog(@&quot;dealloc:%@&quot;,[self class]);</span><br><span class="line">&#125;</span><br><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    timer= [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(myLog:) userInfo:nil repeats:YES];</span><br><span class="line">    UIButton *btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, 100)];</span><br><span class="line">    btn.backgroundColor=[UIColor redColor];</span><br><span class="line">    [btn addTarget:self action:@selector(btn) forControlEvents:UIControlEventTouchUpInside];</span><br><span class="line">    [self.view addSubview:btn];</span><br><span class="line">&#125;</span><br><span class="line">-(void)btn&#123;</span><br><span class="line">    if (timer.isValid) &#123;</span><br><span class="line">        [timer invalidate];</span><br><span class="line">    &#125;</span><br><span class="line">    timer=nil;</span><br><span class="line">    [self dismissViewControllerAnimated:YES completion:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在官方文档中我们可以看到 [timer invalidate]是唯一的方法将定时器从循环池中移除。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/04/10/09iOS NSInvocation应用与理解/" class="pre-post btn btn-default" title='iOS NSInvocation应用与理解'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS NSInvocation应用与理解</span>
+        </a>
+    
+    
+        <a href="/2015/04/09/08iOS 中block结构的简单用法/" class="next-post btn btn-default" title='iOS 中block结构的简单用法'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS 中block结构的简单用法</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <p>暂无目录</p>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

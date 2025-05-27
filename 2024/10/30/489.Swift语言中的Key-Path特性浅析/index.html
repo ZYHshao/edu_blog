@@ -1,0 +1,301 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Swift语言中的Key-Path特性浅析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Swift语言中的Key-Path特性浅析">
+            
+	            Swift语言中的Key-Path特性浅析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Swift">
+            Swift
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2024/10/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="Swift语言中的Key-Path特性浅析"><a href="#Swift语言中的Key-Path特性浅析" class="headerlink" title="Swift语言中的Key-Path特性浅析"></a>Swift语言中的Key-Path特性浅析</h1><h2 id="引"><a href="#引" class="headerlink" title="引"></a>引</h2><p>Key-Path字面理解为键路径，熟悉Objective-C语言的同学知道，OC中有一种语法叫做KVC，即简直编码，其作用是允许开发者通过字符串路径来访问对象的属性，这也是Objective-C语言动态化的一种特性。总所周知，Swift是一种强调静态类型与编码安全的语言，因此动态化本身在Swift语言中并不是一种受欢迎的特性，静态化的编程可以让更多的异常问题在编译时被检查出来，并且从开发直觉上来说，静态化也比动态化的代码逻辑更容易理解。</p>
+<p>然而，动态化确实也可以代码极大的好处，尤其是一些特殊的应用场景中，动态化可以允许开发者在运行时决定要操作数据，可以使用简洁的代码编写出非常强大的功能逻辑。</p>
+<p>回归正题，文本主要讨论Swift编程语言中的Key-Path特性，Key-Path与Objective-C中的KVC有些类似，其为Swift增加了一种动态访问对象属性的能力，但对KVC的完全动态化又进行了一些限制，Swift中定义了一种特殊的类型来描述对象键的路径，这就是Key-Path。那么它有什么用？怎么用呢？这是本文要介绍的重点，希望能给你带来启发。</p>
+<h2 id="什么是Key-Path"><a href="#什么是Key-Path" class="headerlink" title="什么是Key-Path"></a>什么是Key-Path</h2><p>编程的本质是使用特定的语言来描述算法或数据。Key-Path是Swift中内置的一种类型，定义如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">KeyPath</span>&lt;<span class="title">Root</span>, <span class="title">Value</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到这个Key-Path类的定义关联了两个泛型，Root描述的是支持此Key-Path的对象本身的类型，Value描述的是此Key-Path对应的路径的属性的类型。这么讲可能有些抽象，我们通过一个小例子来看就比较清晰了。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// k是一个key-path对象</span></span><br><span class="line"><span class="keyword">let</span> k: <span class="type">KeyPath</span>&lt;<span class="type">String</span>, <span class="type">Int</span>&gt; = \<span class="type">String</span>.<span class="built_in">count</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> str = <span class="string">"Hello World"</span></span><br><span class="line"><span class="comment">// 将读取到str的count属性</span></span><br><span class="line"><span class="keyword">let</span> value = str[keyPath: k]</span><br><span class="line"><span class="comment">// 11</span></span><br><span class="line"><span class="built_in">print</span>(value)</span><br></pre></td></tr></table></figure>
+<p>Key-Path在定义时，语法是使用\符号，之后跟上对象类型与属性名，属性名是支持链式描述的。</p>
+<p>自定义的类型也可以很方便的使用Key-Path，例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Subject</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Teacher</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span></span><br><span class="line">    <span class="keyword">var</span> age: <span class="type">Int</span></span><br><span class="line">    <span class="keyword">var</span> subject: <span class="type">Subject</span></span><br><span class="line">    <span class="keyword">var</span> students: [<span class="type">Student</span>]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> t = <span class="type">Teacher</span>(name: <span class="string">"Teacher Wang"</span>, age: <span class="number">34</span>, subject: .<span class="keyword">init</span>(name: <span class="string">"Math"</span>), students: [.<span class="keyword">init</span>(name: <span class="string">"Xiaoming"</span>), .<span class="keyword">init</span>(name: <span class="string">"Linlin"</span>)])</span><br><span class="line"><span class="comment">// Teacher Wang</span></span><br><span class="line"><span class="built_in">print</span>(t[keyPath: \<span class="type">Teacher</span>.name])</span><br><span class="line"><span class="comment">// Math</span></span><br><span class="line"><span class="built_in">print</span>(t[keyPath: \<span class="type">Teacher</span>.subject.name])</span><br><span class="line"><span class="comment">// Linlin</span></span><br><span class="line"><span class="built_in">print</span>(t[keyPath: \<span class="type">Teacher</span>.students[<span class="number">1</span>].name])</span><br></pre></td></tr></table></figure>
+<p>可以看到，Key-Path路径除了可以链式定义，还支持数组下标。另外，如果在上下文中是可以推断出Key-Path的Root泛型具体类型时，也可以省略对象的类型部分，例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 34</span></span><br><span class="line"><span class="built_in">print</span>(t[keyPath: \.age])</span><br></pre></td></tr></table></figure>
+<p>在属性路径中也支持使用self来描述对象本身，例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当前Teacher对象本身：t</span></span><br><span class="line"><span class="built_in">print</span>(t[keyPath: \.<span class="keyword">self</span>])</span><br></pre></td></tr></table></figure>
+<p>如果路径中的某个属性是可选的，那么在定义Key-Path时，也可以类似可选链的方式进行拆包，如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Class</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> t: <span class="type">Teacher</span>?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="built_in">c</span> = <span class="type">Class</span>()</span><br><span class="line"><span class="comment">// nil</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">c</span>[keyPath: \.t?.name])</span><br></pre></td></tr></table></figure>
+<h2 id="Key-Path的一些应用"><a href="#Key-Path的一些应用" class="headerlink" title="Key-Path的一些应用"></a>Key-Path的一些应用</h2><p>从语法层面上来看，Key-Path的写法非常简洁，在某些场景下，我们可以用其来代替闭包或函数。最常见的应用场景为filter、map这些方法。例如：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> teachers = [<span class="type">Teacher</span>(name: <span class="string">"A"</span>, age: <span class="number">30</span>, subject: .<span class="keyword">init</span>(name: <span class="string">"A"</span>), students: []),</span><br><span class="line">                <span class="type">Teacher</span>(name: <span class="string">"B"</span>, age: <span class="number">20</span>, subject: .<span class="keyword">init</span>(name: <span class="string">"B"</span>), students: []),</span><br><span class="line">                <span class="type">Teacher</span>(name: <span class="string">"C"</span>, age: <span class="number">33</span>, subject: .<span class="keyword">init</span>(name: <span class="string">"C"</span>), students: [])]</span><br><span class="line"><span class="comment">// 会将所有Teacher的name map出来</span></span><br><span class="line"><span class="keyword">let</span> names = teachers.<span class="built_in">map</span>(\.name)</span><br><span class="line"><span class="comment">// ["A", "B", "C"]</span></span><br><span class="line"><span class="built_in">print</span>(names)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2025/03/28/490.ArkUI中图片与视频多媒体组件的应用/" class="pre-post btn btn-default" title='ArkUI中图片与视频多媒体组件的应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">ArkUI中图片与视频多媒体组件的应用</span>
+        </a>
+    
+    
+        <a href="/2024/09/30/488.Server-Sent Events(SSE)协议原理与实践/" class="next-post btn btn-default" title='Server-Sent Events(SSE)协议原理与实践'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Server-Sent Events(SSE)协议原理与实践</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Swift语言中的Key-Path特性浅析"><span class="toc-text">Swift语言中的Key-Path特性浅析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#引"><span class="toc-text">引</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Key-Path"><span class="toc-text">什么是Key-Path</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Key-Path的一些应用"><span class="toc-text">Key-Path的一些应用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

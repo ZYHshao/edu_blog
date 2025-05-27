@@ -1,0 +1,314 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS8新特性扩展(Extension)应用之一——Today扩展 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS8新特性扩展(Extension)应用之一——Today扩展">
+            
+	            iOS8新特性扩展(Extension)应用之一——Today扩展
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/07/30</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS8新特性扩展-Extension-应用之一——Today扩展"><a href="#iOS8新特性扩展-Extension-应用之一——Today扩展" class="headerlink" title="iOS8新特性扩展(Extension)应用之一——Today扩展"></a>iOS8新特性扩展(Extension)应用之一——Today扩展</h2><h3 id="一、理解扩展"><a href="#一、理解扩展" class="headerlink" title="一、理解扩展"></a>一、理解扩展</h3><h4 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h4><pre><code>基于iOS系统的安全性考虑，其应用的数据存储是通过沙盒模式进行的，要实现应用之间的数据共享十分困难，功能共享就更加棘手。在iOS8系统中，apple为我们提供了一个革命性的功能：扩展。我们可以通过扩展来使app间数据甚至功能进行共享。
+</code></pre><h4 id="2、几种扩展模式"><a href="#2、几种扩展模式" class="headerlink" title="2、几种扩展模式"></a>2、几种扩展模式</h4><h5 id="（1）今日视图扩展-today"><a href="#（1）今日视图扩展-today" class="headerlink" title="（1）今日视图扩展:today"></a>（1）今日视图扩展:today</h5><pre><code>这个扩展也被叫做 widget。该扩展可以将今日发生的简短消息放到消息中心的「今日」视图里。这个功能类似于安卓系统中的小控件，只是安卓的可以直接放在桌面上，更加自由。示例如下：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/0730/110439_3xEr_2340880.png" alt></p>
+<h5 id="（2）分享功能扩展"><a href="#（2）分享功能扩展" class="headerlink" title="（2）分享功能扩展"></a>（2）分享功能扩展</h5><pre><code>该扩展允许应用向在线服务上传照片、链接或者其他文件。在以前版本中，我们若要实现分享功能，必须进行复杂的操作。
+</code></pre><h5 id="（3）个性操作"><a href="#（3）个性操作" class="headerlink" title="（3）个性操作"></a>（3）个性操作</h5><pre><code>通过这个功能，可以实现两个APP中共享一些内容，例如编辑文字中的图片，翻译网页中的文字。
+</code></pre><h5 id="（4）照片操作"><a href="#（4）照片操作" class="headerlink" title="（4）照片操作"></a>（4）照片操作</h5><pre><code>这个类型的扩展可以允许我们在ipone相机中拍摄的照片使用其他图片编辑软件进行编辑。
+</code></pre><h5 id="（5）文件分享"><a href="#（5）文件分享" class="headerlink" title="（5）文件分享"></a>（5）文件分享</h5><pre><code>该扩展可以让软件将文件保存在各种云存储服务商。
+</code></pre><h5 id="（6）自定义键盘"><a href="#（6）自定义键盘" class="headerlink" title="（6）自定义键盘"></a>（6）自定义键盘</h5><pre><code>允许用户使用第三方的键盘输入法。
+</code></pre><h3 id="二、ToDay扩展的创建"><a href="#二、ToDay扩展的创建" class="headerlink" title="二、ToDay扩展的创建"></a>二、ToDay扩展的创建</h3><pre><code>扩展是一个独立的构成，和其有关的两个概念是宿主APP和主机APP，宿主APP是扩展存放的地方，与扩展可以实现资源共享，主机APP是扩展运行的程序，例如ToDay扩展有抽屉中的Today应用进行运行。要创建一个ToDay扩展，首先我们需要创建一个宿主APP：
+</code></pre><p>新建一个工程：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/112000_OjFF_2340880.png" alt></p>
+<p>选择xcode工具栏中的File-&gt;new-&gt;target</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/112158_NBCa_2340880.png" alt></p>
+<p>在Application Extension中有上面提到的6中扩展，我们选择Today。</p>
+<p>这是我们的项目中会多了一个扩展的文件夹：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/112405_XDFb_2340880.png" alt></p>
+<p>这个文件夹中有一个ViewController，我们可以在里面进行布局，还有一个plist文件，可是配置扩展的一些属性。</p>
+<p>我们创建一个按钮：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> UIButton * btn = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 100, 30)];</span><br><span class="line">    [btn setTitle:@&quot;231&quot; forState:UIControlStateNormal];</span><br><span class="line">    [self.view addSubview:btn];</span><br></pre></td></tr></table></figure>
+<p>之后我们运行这个扩展：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/112628_X6SW_2340880.png" alt></p>
+<p>xcode会让我们选择运行扩展的主机程序，因为这是一个today类型的扩展，我们选择Today：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/112737_MJvy_2340880.png" alt></p>
+<p>运行后，在系统的通知抽屉中，就会出现我们的这个扩展：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0730/112842_TP6R_2340880.png" alt></p>
+<p>同样，我们可以创建tableView，imageView以及其他复杂的视图效果，我们也可以编写很多逻辑功能，跳转APP等。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/07/30/90iOS8新特性扩展(Extension)应用之二——分享插件/" class="pre-post btn btn-default" title='iOS8新特性扩展(Extension)应用之二——分享插件'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS8新特性扩展(Extension)应用之二——分享插件</span>
+        </a>
+    
+    
+        <a href="/2015/07/29/88iOS动画开发之五——炫酷的粒子效果/" class="next-post btn btn-default" title='iOS动画开发之五——炫酷的粒子效果'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS动画开发之五——炫酷的粒子效果</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS8新特性扩展-Extension-应用之一——Today扩展"><span class="toc-text">iOS8新特性扩展(Extension)应用之一——Today扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、理解扩展"><span class="toc-text">一、理解扩展</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、简介"><span class="toc-text">1、简介</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、几种扩展模式"><span class="toc-text">2、几种扩展模式</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#（1）今日视图扩展-today"><span class="toc-text">（1）今日视图扩展:today</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#（2）分享功能扩展"><span class="toc-text">（2）分享功能扩展</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#（3）个性操作"><span class="toc-text">（3）个性操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#（4）照片操作"><span class="toc-text">（4）照片操作</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#（5）文件分享"><span class="toc-text">（5）文件分享</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#（6）自定义键盘"><span class="toc-text">（6）自定义键盘</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、ToDay扩展的创建"><span class="toc-text">二、ToDay扩展的创建</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

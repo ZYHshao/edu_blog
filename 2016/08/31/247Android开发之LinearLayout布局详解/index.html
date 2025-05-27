@@ -1,0 +1,294 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Android开发之LinearLayout布局详解 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android开发之LinearLayout布局详解">
+            
+	            Android开发之LinearLayout布局详解
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Android小记">
+            Android小记
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/08/31</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Android开发之LinearLayout布局详解"><a href="#Android开发之LinearLayout布局详解" class="headerlink" title="Android开发之LinearLayout布局详解"></a>Android开发之LinearLayout布局详解</h2><pre><code>LinaerLayout又被称为线性布局，是Android界面开发中常用的一种容器视图控件。可以使用XML布局文件配置和代码动态创建两种方式来使用LinearLayout。使用LinearLayout可以十分轻松的布局出横向或者纵向线性堆叠界面，并且，嵌套使用LinearLayout也可以方便的布局出复杂的平面组合布局，通常情况下，ScrollView会与LinearLayout进行结合使用。在iOS9中推出的UIStackView、在watchOS开发中使用和核心布局模型Group与LinearLayout的思路十分一致，可见这种线性堆叠的布局方式在一定场景下十分有优势。
+
+使用代码动态创建LinearLayout示例如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">       <span class="comment">//创建对象</span></span><br><span class="line">       LinearLayout linearLayout = <span class="keyword">new</span> LinearLayout(<span class="keyword">this</span>);</span><br><span class="line">       linearLayout.setBackgroundColor(Color.WHITE);</span><br><span class="line">       setContentView(linearLayout);</span><br><span class="line">       <span class="comment">//设置布局方向 </span></span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">         支持水平和竖直两种</span></span><br><span class="line"><span class="comment">         public static final int HORIZONTAL = 0;  水平线性布局</span></span><br><span class="line"><span class="comment">         public static final int VERTICAL = 1;    竖直线性布局</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">       linearLayout.setOrientation(LinearLayout.VERTICAL);</span><br><span class="line">       <span class="comment">//设置显示分割线的模式</span></span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">         public static final int SHOW_DIVIDER_NONE = 0; 不显示分割线</span></span><br><span class="line"><span class="comment">         public static final int SHOW_DIVIDER_BEGINNING = 1;  在开始处显示分割线</span></span><br><span class="line"><span class="comment">         public static final int SHOW_DIVIDER_MIDDLE = 2;  在子视图之间显示分割线</span></span><br><span class="line"><span class="comment">         public static final int SHOW_DIVIDER_END = 4;   在结束尾部显示分割线</span></span><br><span class="line"><span class="comment">       */</span></span><br><span class="line">       linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);</span><br><span class="line">       <span class="comment">//设置分割线Drawable</span></span><br><span class="line">       linearLayout.setDividerDrawable(ResourcesCompat.getDrawable(getResources(),R.drawable.line,<span class="keyword">null</span>));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>LinearLayout中常用属性与方法，列举如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取分割线Drawable对象</span></span><br><span class="line"><span class="function">Drawable <span class="title">getDividerDrawable</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取分割线的padding值</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getDividerPadding</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取子视图布局模式</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getGravity</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取线性布局方向</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getOrientation</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取展示分割线模式</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">getShowDividers</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//获取布局权重和</span></span></span><br><span class="line"><span class="function"><span class="keyword">float</span> <span class="title">getWeightSum</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置是否允许计量最大子元素 与权重有关</span></span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isMeasureWithLargestChildEnabled</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置分割线Drawable</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setDividerDrawable</span> <span class="params">(Drawable divider)</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置分割线padding值</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setDividerPadding</span> <span class="params">(<span class="keyword">int</span> padding)</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置子视图布局模式</span></span></span><br><span class="line"><span class="function"><span class="comment">/*</span></span></span><br><span class="line"><span class="function"><span class="comment">可选参数</span></span></span><br><span class="line"><span class="function"><span class="comment">AXIS_CLIP   //原始对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">AXIS_PULL_AFTER  </span></span></span><br><span class="line"><span class="function"><span class="comment">AXIS_PULL_BEFORE</span></span></span><br><span class="line"><span class="function"><span class="comment">AXIS_SPECIFIED</span></span></span><br><span class="line"><span class="function"><span class="comment">AXIS_X_SHIFT</span></span></span><br><span class="line"><span class="function"><span class="comment">AXIS_Y_SHIFT</span></span></span><br><span class="line"><span class="function"><span class="comment">BOTTOM   //下对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">CENTER   //居中对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">CENTER_HORIZONTAL // 水平居中对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">CENTER_VERTICAL   // 竖直居中对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">CLIP_HORIZONTAL</span></span></span><br><span class="line"><span class="function"><span class="comment">CLIP_VERTICAL</span></span></span><br><span class="line"><span class="function"><span class="comment">DISPLAY_CLIP_HORIZONTAL</span></span></span><br><span class="line"><span class="function"><span class="comment">DISPLAY_CLIP_VERTICAL</span></span></span><br><span class="line"><span class="function"><span class="comment">END  //末尾对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">FILL //充满</span></span></span><br><span class="line"><span class="function"><span class="comment">FILL_HORIZONTAL //水平充满</span></span></span><br><span class="line"><span class="function"><span class="comment">FILL_VERTICAL   //竖直充满</span></span></span><br><span class="line"><span class="function"><span class="comment">HORIZONTAL_GRAVITY_MASK</span></span></span><br><span class="line"><span class="function"><span class="comment">LEFT   //左对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">NO_GRAVITY //空模式</span></span></span><br><span class="line"><span class="function"><span class="comment">RELATIVE_HORIZONTAL_GRAVITY_MASK</span></span></span><br><span class="line"><span class="function"><span class="comment">RELATIVE_LAYOUT_DIRECTION</span></span></span><br><span class="line"><span class="function"><span class="comment">RIGHT  //右对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">START  //起始对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">TOP   //上对齐</span></span></span><br><span class="line"><span class="function"><span class="comment">VERTICAL_GRAVITY_MASK</span></span></span><br><span class="line"><span class="function"><span class="comment">*/</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setGravity</span> <span class="params">(<span class="keyword">int</span> gravity)</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置水平布局模式</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setHorizontalGravity</span> <span class="params">(<span class="keyword">int</span> horizontalGravity)</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置布局方向</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setOrientation</span> <span class="params">(<span class="keyword">int</span> orientation)</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置竖直布局模式</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setVerticalGravity</span> <span class="params">(<span class="keyword">int</span> verticalGravity)</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置布局权重和</span></span></span><br><span class="line"><span class="function"><span class="comment">/*</span></span></span><br><span class="line"><span class="function"><span class="comment">当布局容器内子视图是通过权重来计算所占比例时 这个值表示权重总和</span></span></span><br><span class="line"><span class="function"><span class="comment">*/</span></span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setWeightSum</span> <span class="params">(<span class="keyword">float</span> weightSum)</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置子视图的触摸事件是否延迟执行</span></span></span><br><span class="line"><span class="function"><span class="comment">/*</span></span></span><br><span class="line"><span class="function"><span class="comment">这个属性用于类型ScrollView，ListView可以滑动的视图中，避免手势冲突</span></span></span><br><span class="line"><span class="function"><span class="comment">*/</span></span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">shouldDelayChildPressedState</span> <span class="params">()</span></span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：435043639</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/09/02/248Android开发之FrameLayout布局/" class="pre-post btn btn-default" title='Android开发之FrameLayout布局'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Android开发之FrameLayout布局</span>
+        </a>
+    
+    
+        <a href="/2016/08/27/246iOS开发中行高灵活可变的UITableView的性能优化/" class="next-post btn btn-default" title='iOS开发中行高灵活可变的UITableView的性能优化'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发中行高灵活可变的UITableView的性能优化</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android开发之LinearLayout布局详解"><span class="toc-text">Android开发之LinearLayout布局详解</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

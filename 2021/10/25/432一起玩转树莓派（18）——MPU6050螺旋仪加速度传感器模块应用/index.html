@@ -1,0 +1,467 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用">
+            
+	            一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Linux">
+            Linux
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/10/25</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用"><a href="#一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用" class="headerlink" title="一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用"></a>一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用</h1><h2 id="一-引言"><a href="#一-引言" class="headerlink" title="一. 引言"></a>一. 引言</h2><p>现在智能手机的功能已经非常强大，除了基础的通信功能外，测位测速，空间角度等数据的测量也非常方便，这在线路导航，地图，体感游戏等应用中十分重要。不知你是否想过，智能设备是如何获取到其所在的空间状态与加速度等数据的呢？MPU6050就是提供这类数据测量的一种传感器模块。</p>
+<p>首先，通过树莓派来读取MPU6050传感器模块的数据并不复杂，MPU60X0是一款扩展性极强的数字运动处理器，我们本次实验使用的是封装好的功能模块，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-46de4615905b7262788f75b61486a081fb8.png" alt></p>
+<p>MPU6050芯片本身有24个引脚，每边有6个引脚，功能较多，引脚功能与定位如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-3c5b3168aaa96b6c02c518f2f7e0bee5dff.png" alt></p>
+<p>关于MPU6050的高级用法，可以通过查看芯片手册获取，本篇博客我们着重与在树莓派上对其进行应用。我们只需要关注所使用的模块的8个引脚即可。</p>
+<h2 id="二-连线与准备工作"><a href="#二-连线与准备工作" class="headerlink" title="二. 连线与准备工作"></a>二. 连线与准备工作</h2><p>本次实验我们使用的模块有8个引脚，只需要使用其中4个引脚即可实现功能。对于树莓派I2C协议总线的应用，本系列博客之前已经有非常多的实验有过应用。首先连接传感器模块与树莓派如下表：</p>
+<table>
+<thead>
+<tr>
+<th>传感器模块</th>
+<th>树莓派</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>VCC</td>
+<td>+5V</td>
+</tr>
+<tr>
+<td>GND</td>
+<td>GND</td>
+</tr>
+<tr>
+<td>SCL</td>
+<td>SCL</td>
+</tr>
+<tr>
+<td>SDA</td>
+<td>SDA</td>
+</tr>
+</tbody>
+</table>
+<p>开始使用I2C总线前，莫忘了开启树莓派的I2C功能，对I2C总线用法如果不太了解，可以阅读以下博客：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/5142788" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/5142788</a></p>
+<p>连线完成后，在树莓派的终端输入如下指令可以查看已经连接的I2C设备：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo i2cdetect -y 1</span><br></pre></td></tr></table></figure>
+<p>如果连接无误，终端输出结果将如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e2d68ef38e62734b55ec7a353ad33ca5882.png" alt></p>
+<p>可以看到，图中显示的68即为我们所连接的传感器的地址。</p>
+<p>下面，是时候了解下MPU6050传感器该如何使用了，我们知道，通过I2C总线，我们可以方便的读取设备中某个寄存器的数据，也可以向设备的某个寄存器写入数据，因此，使用MPU6050传感器的核心是了解其中寄存器的使用方法。我们将以使用到的几个寄存器为例做介绍，完整的寄存器用法可以从芯片手册上得到。</p>
+<h3 id="1-电源管理寄存器"><a href="#1-电源管理寄存器" class="headerlink" title="1. 电源管理寄存器"></a>1. 电源管理寄存器</h3><p>电源管理寄存器的地址为107，对应十六进制数0x6b，它是一个8位的寄存器，其中第4位为保留位不能使用，功能如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-6597945173494ba16d2aa018aae5cdd9837.png" alt></p>
+<p>DECIVE_RESET: 这一位的作用是重置传感器，将传感器内部所有寄存器复位为初始状态，复位完成后，这一位会清零。</p>
+<p>SLEEP: 睡眠控制位，当此位为1时，传感器将处于睡眠模式。需要注意，传感器启动时默认是睡眠模式，我们需要手动将其唤醒。</p>
+<p>CYCLE:当设备设置为非睡眠模式时，即SLEEP位不为1，此为如果设置为1，传感器将处于循环模式，会按照寄存器108设置的速度进行数据循环采样。</p>
+<p>TEMP_DIS:是否禁用温度传感器，设置为1时，禁用温度传感器。</p>
+<p>CLKSEL:3位无符号数值，用来指令时钟源。</p>
+<p>对于CLKSEL选项，其设置方式如下：</p>
+<table>
+<thead>
+<tr>
+<th>CLKSEL值</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>使用内部的8MHz的振荡器</td>
+</tr>
+<tr>
+<td>1</td>
+<td>使用陀螺仪X轴的频率</td>
+</tr>
+<tr>
+<td>2</td>
+<td>使用陀螺仪Y轴的频率</td>
+</tr>
+<tr>
+<td>3</td>
+<td>使用陀螺仪X轴的频率</td>
+</tr>
+<tr>
+<td>4</td>
+<td>使用外部的32.768kHz频率</td>
+</tr>
+<tr>
+<td>5</td>
+<td>使用外部19.2MHz频率</td>
+</tr>
+<tr>
+<td>6</td>
+<td>保留值</td>
+</tr>
+<tr>
+<td>7</td>
+<td>停止时钟并使振荡器保持复位状态</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-陀螺仪数据寄存器"><a href="#2-陀螺仪数据寄存器" class="headerlink" title="2. 陀螺仪数据寄存器"></a>2. 陀螺仪数据寄存器</h3><p>陀螺仪数据寄存器的地址为67到72，共48个二进制位，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-2af9c86b2fc96521ceb67ac09c3e343ea2c.png" alt></p>
+<p>这些寄存器都是只读的，不能写入。</p>
+<p>67和68寄存器存储16位数据，为陀螺仪X轴的测量数据。其中68寄存器存储低8位，67寄存器存储高8位。</p>
+<p>69和70寄存器存储16位数据，为陀螺仪Y轴的测量数据。其中70寄存器存储低8位，69寄存器存储高8位。</p>
+<p>71和72寄存器存储16位数据，为陀螺仪Z轴的测量数据。其中72寄存器存储低8位，71寄存器存储高8位。</p>
+<p>需要注意，从这些寄存器取出的数据都是原始数据，要得到真正的陀螺仪测量的旋转角度，需要进行转换，其转换的单位与总量程有关，量程在寄存器27进行配置。</p>
+<h3 id="3-陀螺仪配置寄存器"><a href="#3-陀螺仪配置寄存器" class="headerlink" title="3. 陀螺仪配置寄存器"></a>3. 陀螺仪配置寄存器</h3><p>陀螺仪配置寄存器的地址为27，是一个可读可写的寄存器，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-2e6377325cb8fb2c029e77aca3420ee875f.png" alt></p>
+<p>XG_ST，YG_ST与ZG_ST这3位用来设置陀螺仪执行自检。FS_SEL用来设置陀螺仪的量程范围，低3位为保留位，无需使用。FS_SEL可设置的量程范围如下：</p>
+<table>
+<thead>
+<tr>
+<th>FS_SEL</th>
+<th>量程范围</th>
+<th>灵敏度参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>±250 °/s</td>
+<td>131</td>
+</tr>
+<tr>
+<td>1</td>
+<td>±500 °/s</td>
+<td>65.5</td>
+</tr>
+<tr>
+<td>2</td>
+<td>±1000 °/s</td>
+<td>32.8</td>
+</tr>
+<tr>
+<td>3</td>
+<td>±2000 °/s</td>
+<td>16.4</td>
+</tr>
+</tbody>
+</table>
+<p>对于不同的量程范围，我们获取到原始数据后，需要除以对应的灵敏度参数才能得到最终的陀螺仪数据。</p>
+<h3 id="4-加速计数据寄存器"><a href="#4-加速计数据寄存器" class="headerlink" title="4. 加速计数据寄存器"></a>4. 加速计数据寄存器</h3><p>加速计数据寄存器的地址为59到64，共48个二进制位，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e096f60db4d930f8efd345a0243fcb5df23.png" alt></p>
+<p>其使用方法与陀螺仪数据寄存器类似，同样需要在寄存器28来对加速计进行配置与设置量程，通过量程对应的灵敏度来计算得到真实的加速度值。</p>
+<h3 id="5-加速计配置寄存器"><a href="#5-加速计配置寄存器" class="headerlink" title="5. 加速计配置寄存器"></a>5. 加速计配置寄存器</h3><p>陀螺仪配置寄存器的地址为28，是一个可读可写的寄存器，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0d99b471b2c12904a3b756b4dc3cdf2eb01.png" alt></p>
+<p>XA_ST，YA_ST，ZA_ST都是自检执行控制位，AFS_SEL用来设置量程，其与灵敏度对应关系如下：</p>
+<table>
+<thead>
+<tr>
+<th>AFS_SEL</th>
+<th>量程范围</th>
+<th>灵敏度参数</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>±2</td>
+<td>16384</td>
+</tr>
+<tr>
+<td>1</td>
+<td>±4g</td>
+<td>8192</td>
+</tr>
+<tr>
+<td>2</td>
+<td>±8g</td>
+<td>4096</td>
+</tr>
+<tr>
+<td>3</td>
+<td>±16g</td>
+<td>2048</td>
+</tr>
+</tbody>
+</table>
+<h3 id="6-温度数据寄存器"><a href="#6-温度数据寄存器" class="headerlink" title="6. 温度数据寄存器"></a>6. 温度数据寄存器</h3><p>温度数据寄存器的地址为65到66，共16个二进制位，如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-c272adcb44c15850c247c846c5be69ce179.png" alt></p>
+<p>对于测量到的温度数据为有符号数，需要采用如下的计算公式得到真实的摄氏度数据：</p>
+<p>摄氏温度 = TEMP_OUT / 340 + 36.53</p>
+<p>除此之外，还有许多功能传感器，如采样率配置等，有需要可以从芯片手册查到。</p>
+<h2 id="三-编写代码"><a href="#三-编写代码" class="headerlink" title="三. 编写代码"></a>三. 编写代码</h2><p>完成了前面的基础准备工作，编写代码获取传感器模块的数据则非常容易，示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> smbus</span><br><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 电源控制寄存器地址</span></span><br><span class="line">power_regist = <span class="number">0x6b</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># I2C模块初始化</span></span><br><span class="line">bus = smbus.SMBus(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 外接I2C设备的地址</span></span><br><span class="line">address = <span class="number">0x68</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 封装一些读取数据的功能函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取一个字长度的数据(16位)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readWord</span><span class="params">(adr)</span>:</span></span><br><span class="line">    high = bus.read_byte_data(address, adr)</span><br><span class="line">    low = bus.read_byte_data(address, adr+<span class="number">1</span>)</span><br><span class="line">    val = (high &lt;&lt; <span class="number">8</span>) + low</span><br><span class="line">    <span class="keyword">return</span> val</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将读取到的数据转换为原码 (有符号数本身是采用补码方式存储的)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">readWordReal</span><span class="params">(adr)</span>:</span></span><br><span class="line">    val = readWord(adr)</span><br><span class="line">    x = <span class="number">0xffff</span></span><br><span class="line">    <span class="comment"># 首位为1 表示是负数</span></span><br><span class="line">    <span class="keyword">if</span> (val &gt;= <span class="number">0x8000</span>):</span><br><span class="line">        <span class="comment"># 求原码</span></span><br><span class="line">        <span class="keyword">return</span> -((x - val)+<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> val</span><br><span class="line"></span><br><span class="line"><span class="comment"># 已知加速度求角度值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dist</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> math.sqrt((a*a)+(b*b))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getRotationX</span><span class="params">(x, y, z)</span>:</span></span><br><span class="line">    radians = math.atan2(y, dist(x,z))</span><br><span class="line">    <span class="keyword">return</span> math.degrees(radians)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getRotationY</span><span class="params">(x, y, z)</span>:</span></span><br><span class="line">    radians = math.atan2(x, dist(y,z))</span><br><span class="line">    <span class="keyword">return</span> math.degrees(radians)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置电源模式</span></span><br><span class="line">bus.write_byte_data(address, power_regist, <span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">    time.sleep(<span class="number">0.5</span>)</span><br><span class="line">    print(<span class="string">"螺旋仪数据-----------"</span>)</span><br><span class="line">    gyroX = readWordReal(<span class="number">0x43</span>)</span><br><span class="line">    gyroY = readWordReal(<span class="number">0x45</span>)</span><br><span class="line">    gyroZ = readWordReal(<span class="number">0x47</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"X轴陀螺仪原始数据："</span>, gyroX, <span class="string">"X轴每秒旋转度数："</span>, gyroX/<span class="number">131</span>)</span><br><span class="line">    print(<span class="string">"Y轴陀螺仪原始数据："</span>, gyroY, <span class="string">"Y轴每秒旋转度数："</span>, gyroY/<span class="number">131</span>)</span><br><span class="line">    print(<span class="string">"Z轴陀螺仪原始数据："</span>, gyroZ, <span class="string">"Z轴每秒旋转度数："</span>, gyroZ/<span class="number">131</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"加速度数据----------"</span>)</span><br><span class="line">    accelX = readWordReal(<span class="number">0x3b</span>)</span><br><span class="line">    accelY = readWordReal(<span class="number">0x3d</span>)</span><br><span class="line">    accelZ = readWordReal(<span class="number">0x3f</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"X轴加速度原始数据："</span>, accelX, <span class="string">"X轴加速度："</span>, accelX/<span class="number">16384</span>)</span><br><span class="line">    print(<span class="string">"Y轴加速度原始数据："</span>, accelY, <span class="string">"Y轴加速度："</span>, accelY/<span class="number">16384</span>)</span><br><span class="line">    print(<span class="string">"Z轴加速度原始数据："</span>, accelZ, <span class="string">"Z轴加速度："</span>, accelZ/<span class="number">16384</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"摄氏温度数据--------"</span>)</span><br><span class="line">    temp = readWordReal(<span class="number">0x41</span>)</span><br><span class="line">    print(<span class="string">"温度原始数据："</span>, temp, <span class="string">"摄氏度："</span>, temp/<span class="number">340</span> + <span class="number">36.53</span>)</span><br><span class="line"></span><br><span class="line">    print(<span class="string">"旋转家角度数据-------"</span>)</span><br><span class="line">    print(<span class="string">"X轴旋转度数："</span>, getRotationX(accelX/<span class="number">16384</span>, accelY/<span class="number">16384</span>, accelZ/<span class="number">16384</span>))</span><br><span class="line">    print(<span class="string">"Y轴旋转度数："</span>, getRotationX(accelX/<span class="number">16384</span>, accelY/<span class="number">16384</span>, accelZ/<span class="number">16384</span>))</span><br></pre></td></tr></table></figure>
+<p>在树莓派上运行上面代码，效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-aa69ce03b3d9db48873e833dbd41f37c652.png" alt></p>
+<blockquote>
+<p>专注技术，懂的热爱，愿意分享，做个朋友</p>
+<p>QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/11/10/433自上而下的理解网络（2）——HTTP篇/" class="pre-post btn btn-default" title='自上而下的理解网络（2）——HTTP篇'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（2）——HTTP篇</span>
+        </a>
+    
+    
+        <a href="/2021/10/10/431自上而下的理解网络（1）——DNS篇/" class="next-post btn btn-default" title='自上而下的理解网络（1）——DNS篇'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">自上而下的理解网络（1）——DNS篇</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用"><span class="toc-text">一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-引言"><span class="toc-text">一. 引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-连线与准备工作"><span class="toc-text">二. 连线与准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-电源管理寄存器"><span class="toc-text">1. 电源管理寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-陀螺仪数据寄存器"><span class="toc-text">2. 陀螺仪数据寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-陀螺仪配置寄存器"><span class="toc-text">3. 陀螺仪配置寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-加速计数据寄存器"><span class="toc-text">4. 加速计数据寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-加速计配置寄存器"><span class="toc-text">5. 加速计配置寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-温度数据寄存器"><span class="toc-text">6. 温度数据寄存器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-编写代码"><span class="toc-text">三. 编写代码</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

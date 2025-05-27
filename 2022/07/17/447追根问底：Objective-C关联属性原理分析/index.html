@@ -1,0 +1,325 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>追根问底：Objective-C关联属性原理分析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="追根问底：Objective-C关联属性原理分析">
+            
+	            追根问底：Objective-C关联属性原理分析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/编程珠玑">
+            编程珠玑
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2022/07/17</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="追根问底：Objective-C关联属性原理分析"><a href="#追根问底：Objective-C关联属性原理分析" class="headerlink" title="追根问底：Objective-C关联属性原理分析"></a>追根问底：Objective-C关联属性原理分析</h1><h2 id="一-引子"><a href="#一-引子" class="headerlink" title="一.引子"></a>一.引子</h2><p>Objective-C是一种动态性很强的语言，所谓动态能力，也可以理解为运行时能力。对于Objective-C开发者来说，动态性所带来的编程便利无处不在。例如通过Category类别来扩展已有类的功能。可以使已有类拥有新的方法和属性。但是，如果你有使用Category来扩展类的属性，你一定了解并非简单的使用@property进行声明即可。例如下面的代码：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyObject</span> : <span class="title">NSObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyObject</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">MyObject</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *addProperty;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyObject</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        MyObject *object = [[MyObject alloc] init];</span><br><span class="line">        object.addProperty = <span class="string">@"HelloWorld"</span>;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, object.addProperty);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码在编译时不会有任何问题，但是如果运行，就会出现未定义的方法异常。因此如果要扩展类的属性，我们通常会这样实现：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;objc/runtime.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyObject</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="built_in">NSString</span> *kAddPropertyKey = <span class="string">@"kAddPropertyKey"</span>;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setAddProperty:(<span class="built_in">NSString</span> *)addProperty &#123;</span><br><span class="line">    objc_setAssociatedObject(<span class="keyword">self</span>, kAddPropertyKey, addProperty, OBJC_ASSOCIATION_COPY);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)addProperty &#123;</span><br><span class="line">    <span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, kAddPropertyKey);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>再次运行，就可以正常的对addProperty属性进行存取值了。这里其实就使用到了Objective-C运行时的特性，在Objective-C中，类对象在创建时其所占用的内存空间就已经确定，那么你有没有想过，通过objc_setAssociatedObject这个运行时方法所存储的属性值是如何与当前对象关联起来的，这些数据又是存在哪里的？幸运的时，从objc源码可以清楚的了解关联属性的实现逻辑，这也是我们本篇文章要讨论的重点，了解这里的原理可能不能对你使用关联属性提供多大的帮助，但是这种设计思路定会使你在日常开发中受益匪浅。</p>
+<h2 id="二-objc-setAssociatedObject方法的核心原理"><a href="#二-objc-setAssociatedObject方法的核心原理" class="headerlink" title="二. objc_setAssociatedObject方法的核心原理"></a>二. objc_setAssociatedObject方法的核心原理</h2><p>通过objc的runtime源码，我们可以看到objc_setAssociatedObject的方法实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">objc_setAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key, <span class="keyword">id</span> value, objc_AssociationPolicy policy)</span><br><span class="line">&#123;</span><br><span class="line">    _object_set_associative_reference(object, key, value, policy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这一步无需过多解释，只是调用了一个内部函数，_object_set_associative_reference内部函数是关联属性实现的核心，此函数解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">_object_set_associative_reference(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key, <span class="keyword">id</span> value, uintptr_t policy)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1.安全性检查，要关联的对象和要关联的值不能为空</span></span><br><span class="line">    <span class="keyword">if</span> (!object &amp;&amp; !value) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2.检查当前对象是否不允许关联属性，某些类不允许其实例有关联属性</span></span><br><span class="line">    <span class="keyword">if</span> (object-&gt;getIsa()-&gt;forbidsAssociatedObjects())</span><br><span class="line">        _objc_fatal(<span class="string">"objc_setAssociatedObject called on instance (%p) of class %s which does not allow associated objects"</span>, object, object_getClassName(object));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 3.创建一个包装对象指针的结构对象，存储要关联的对象指针</span></span><br><span class="line">    DisguisedPtr&lt;objc_object&gt; disguised&#123;(objc_object *)object&#125;;</span><br><span class="line">    <span class="comment">// 4.创建一个包装关联策略和被关联值的对象</span></span><br><span class="line">    ObjcAssociation association&#123;policy, value&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5.根据关联策略来对值进行引用（retain或copy）</span></span><br><span class="line">    association.acquireValue();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">bool</span> isFirstAssociation = <span class="literal">false</span>;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 6.获取关联管理器及其中的关联表对象</span></span><br><span class="line">        AssociationsManager manager;</span><br><span class="line">        AssociationsHashMap &amp;associations(manager.get());</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 7.值如果存在，则进行关联</span></span><br><span class="line">        <span class="keyword">if</span> (value) &#123;</span><br><span class="line">            <span class="comment">// 8.尝试向表中插入当前要关联的对象和值，如果已经存在，则什么都不做</span></span><br><span class="line">            auto refs_result = associations.try_emplace(disguised, ObjectAssociationMap&#123;&#125;);</span><br><span class="line">            <span class="comment">// 9. 检查try_emplace方法的插入结果，如果做了插入操作，则标记首次关联为true</span></span><br><span class="line">            <span class="keyword">if</span> (refs_result.second) &#123;</span><br><span class="line">                isFirstAssociation = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 10.将表中存储的值与key进行关联</span></span><br><span class="line">            auto &amp;refs = refs_result.first-&gt;second;</span><br><span class="line">            auto result = refs.try_emplace(key, std::move(association));</span><br><span class="line">            <span class="comment">// 11.如果key已经存在，则进行关联策略和关联值的交换</span></span><br><span class="line">            <span class="keyword">if</span> (!result.second) &#123;</span><br><span class="line">                association.swap(result.first-&gt;second);</span><br><span class="line">            &#125;</span><br><span class="line">        <span class="comment">// 12. 要关联的值为nil，则为清除操作</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 13. 查找到关联到此对象的属性对</span></span><br><span class="line">            auto refs_it = associations.find(disguised);</span><br><span class="line">            <span class="keyword">if</span> (refs_it != associations.end()) &#123;</span><br><span class="line">                <span class="comment">// 14.有关联属性，获取存储key的表</span></span><br><span class="line">                auto &amp;refs = refs_it-&gt;second;</span><br><span class="line">                <span class="comment">// 15.查找对应key是否存在</span></span><br><span class="line">                auto it = refs.find(key);</span><br><span class="line">                <span class="keyword">if</span> (it != refs.end()) &#123;</span><br><span class="line">                    <span class="comment">// 16.存在则进行关联数据的替换，包括关联策略和值，此时实际上是将值清空了</span></span><br><span class="line">                    association.swap(it-&gt;second);</span><br><span class="line">                    <span class="comment">// 17.相关擦除操作</span></span><br><span class="line">                    refs.erase(it);</span><br><span class="line">                    <span class="keyword">if</span> (refs.size() == <span class="number">0</span>) &#123;</span><br><span class="line">                        associations.erase(refs_it);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 18.判断是否为此类实例对象的第一次关联，如果是，则修改标记位，标明已经有关联属性</span></span><br><span class="line">    <span class="keyword">if</span> (isFirstAssociation)</span><br><span class="line">        object-&gt;setHasAssociatedObjects();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 19.将旧的值进行release，如果需要的话</span></span><br><span class="line">    association.releaseHeldValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，整个关联属性的过程非常清晰，对于新值是否需要retain以及旧值是否需要release，是由关联策略决定的：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> &#123;</span><br><span class="line">    OBJC_ASSOCIATION_SETTER_ASSIGN      = <span class="number">0</span>,    <span class="comment">// assgin属性</span></span><br><span class="line">    OBJC_ASSOCIATION_SETTER_RETAIN      = <span class="number">1</span>,    <span class="comment">// 设置值的时候需要retain</span></span><br><span class="line">    OBJC_ASSOCIATION_SETTER_COPY        = <span class="number">3</span>,    <span class="comment">// 设置值的时候需要copy</span></span><br><span class="line">    OBJC_ASSOCIATION_GETTER_READ        = (<span class="number">0</span> &lt;&lt; <span class="number">8</span>), <span class="comment">// readonly的属性</span></span><br><span class="line">    OBJC_ASSOCIATION_GETTER_RETAIN      = (<span class="number">1</span> &lt;&lt; <span class="number">8</span>), <span class="comment">// 获取值的时候需要retain</span></span><br><span class="line">    OBJC_ASSOCIATION_GETTER_AUTORELEASE = (<span class="number">2</span> &lt;&lt; <span class="number">8</span>), <span class="comment">// 获取值的时候需要autorelease</span></span><br><span class="line">    OBJC_ASSOCIATION_SYSTEM_OBJECT      = _OBJC_ASSOCIATION_SYSTEM_OBJECT, <span class="comment">// 1 &lt;&lt; 16</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>acquireValue方法实现如下，其只是判断是否需要retain和copy，之后调用对应的函数：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">inline</span> <span class="keyword">void</span> acquireValue() &#123;</span><br><span class="line">    <span class="keyword">if</span> (_value) &#123;</span><br><span class="line">        <span class="keyword">switch</span> (_policy &amp; <span class="number">0xFF</span>) &#123;</span><br><span class="line">        <span class="keyword">case</span> OBJC_ASSOCIATION_SETTER_RETAIN:</span><br><span class="line">            _value = objc_retain(_value);</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> OBJC_ASSOCIATION_SETTER_COPY:</span><br><span class="line">            _value = ((<span class="keyword">id</span>(*)(<span class="keyword">id</span>, SEL))objc_msgSend)(_value, <span class="keyword">@selector</span>(<span class="keyword">copy</span>));</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上面第8步中，有调用try_emplace方法来将数据插入到表结构中，此函数插入时会判断要插入的数据是否存在，其返回值会告知调用者是否产生了插入操作，如果已经存在，则此函数会什么都不做。</p>
+<h2 id="三-获取和移除关联属性的原理"><a href="#三-获取和移除关联属性的原理" class="headerlink" title="三. 获取和移除关联属性的原理"></a>三. 获取和移除关联属性的原理</h2><p>现在，我们已经基本清楚了关联属性是如何设置和存储的，再来理解如果获取和移除就非常容易了。</p>
+<p>获取关联属性的值是使用objc_getAssociatedObject运行时方法实现的，此方法实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">id</span></span><br><span class="line">objc_getAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> _object_get_associative_reference(object, key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们还是主要来解析下其调用的_object_get_associative_reference内部方法：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">id</span></span><br><span class="line">_object_get_associative_reference(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1.创建关联对象结构</span></span><br><span class="line">    ObjcAssociation association&#123;&#125;;</span><br><span class="line">    &#123;   </span><br><span class="line">        <span class="comment">// 2.获取关联管理器及全局的Hash表</span></span><br><span class="line">        AssociationsManager manager;</span><br><span class="line">        AssociationsHashMap &amp;associations(manager.get());</span><br><span class="line">        <span class="comment">// 3.尝试查找当前传入对象的关联属性</span></span><br><span class="line">        AssociationsHashMap::iterator i = associations.find((objc_object *)object);</span><br><span class="line">        <span class="keyword">if</span> (i != associations.end()) &#123;</span><br><span class="line">            <span class="comment">// 4.如果当前对象有关联属性，尝试查找存储key的列表中是否存在传入的key</span></span><br><span class="line">            ObjectAssociationMap &amp;refs = i-&gt;second;</span><br><span class="line">            ObjectAssociationMap::iterator j = refs.find(key);</span><br><span class="line">            <span class="keyword">if</span> (j != refs.end()) &#123;</span><br><span class="line">                <span class="comment">// 5.如果可以查到，对association进行赋值</span></span><br><span class="line">                association = j-&gt;second;</span><br><span class="line">                <span class="comment">// 6.根据关联策略来决定是否对返回的值进行retain</span></span><br><span class="line">                association.retainReturnedValue();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 7.根据返回策略来决定是否需要autorelease，如果没有查到，会返回nil值</span></span><br><span class="line">    <span class="keyword">return</span> association.autoreleaseReturnedValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于已经关联了属性的对象，我们也可以调用objc_removeAssociatedObjects方法来将关联的所有属性进行移除，此方法实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> objc_removeAssociatedObjects(<span class="keyword">id</span> object) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 对象存在，并且已经标记过关联属性</span></span><br><span class="line">    <span class="keyword">if</span> (object &amp;&amp; object-&gt;hasAssociatedObjects()) &#123;</span><br><span class="line">        _object_remove_assocations(object, <span class="comment">/*deallocating*/</span><span class="literal">false</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>_object_remove_assocation内部函数的实现也不复杂，解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">_object_remove_assocations(<span class="keyword">id</span> object, <span class="keyword">bool</span> deallocating)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1.创建关联对象</span></span><br><span class="line">    ObjectAssociationMap refs&#123;&#125;;</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="comment">// 2.获取关联管理器及Hash表</span></span><br><span class="line">        AssociationsManager manager;</span><br><span class="line">        AssociationsHashMap &amp;associations(manager.get());</span><br><span class="line">        <span class="comment">// 3.查找传入对象的关联属性</span></span><br><span class="line">        AssociationsHashMap::iterator i = associations.find((objc_object *)object);</span><br><span class="line">        <span class="keyword">if</span> (i != associations.end()) &#123;</span><br><span class="line">            <span class="comment">// 4.查找到后，用空值进行交换</span></span><br><span class="line">            refs.swap(i-&gt;second);</span><br><span class="line">            <span class="comment">// 5.如果是系统对象，则需要保留关联</span></span><br><span class="line">            <span class="keyword">bool</span> didReInsert = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">if</span> (!deallocating) &#123;</span><br><span class="line">                <span class="keyword">for</span> (auto &amp;ref: refs) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (ref.second.policy() &amp; OBJC_ASSOCIATION_SYSTEM_OBJECT) &#123;</span><br><span class="line">                        i-&gt;second.insert(ref);</span><br><span class="line">                        didReInsert = <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 6.无需保留关联，则直接清除数据</span></span><br><span class="line">            <span class="keyword">if</span> (!didReInsert)</span><br><span class="line">                associations.erase(i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 7.对旧值进行release操作</span></span><br><span class="line">    SmallVector&lt;ObjcAssociation *, <span class="number">4</span>&gt; laterRefs;</span><br><span class="line">    <span class="keyword">for</span> (auto &amp;i: refs) &#123;</span><br><span class="line">        <span class="keyword">if</span> (i.second.policy() &amp; OBJC_ASSOCIATION_SYSTEM_OBJECT) &#123;</span><br><span class="line">            <span class="comment">// If we are not deallocating, then RELEASE_LATER associations don't get released.</span></span><br><span class="line">            <span class="keyword">if</span> (deallocating)</span><br><span class="line">                laterRefs.append(&amp;i.second);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            i.second.releaseHeldValue();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (auto *later: laterRefs) &#123;</span><br><span class="line">        later-&gt;releaseHeldValue();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="四-关联属性如何进行内存管理？"><a href="#四-关联属性如何进行内存管理？" class="headerlink" title="四. 关联属性如何进行内存管理？"></a>四. 关联属性如何进行内存管理？</h2><p>通过前面的介绍，我们知道在关联属性时，可以通过关联策略来设置一些和内存管理相关的选项，在设置关联属性时，如果需要的话，其内部会根据内存管理策略对旧值进行release操作，但是你是否有想过，当对象正常的生命周期结束后，这些关联属性占用的的内存是如何回收的？这就需要我们从系统的dealloc方法中寻找答案了。</p>
+<p>系统对象在销毁时，dealloc方法最终会执行到一个名为objc_destructInstance的内部函数，此函数实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> *objc_destructInstance(<span class="keyword">id</span> obj) </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (obj) &#123;</span><br><span class="line">        <span class="keyword">bool</span> cxx = obj-&gt;hasCxxDtor();</span><br><span class="line">        <span class="comment">// 通过标记获取此对象是否有关联属性</span></span><br><span class="line">        <span class="keyword">bool</span> assoc = obj-&gt;hasAssociatedObjects();</span><br><span class="line">        <span class="keyword">if</span> (cxx) object_cxxDestruct(obj);</span><br><span class="line">        <span class="comment">// 移除掉此对象的关联属性</span></span><br><span class="line">        <span class="keyword">if</span> (assoc) _object_remove_assocations(obj, <span class="comment">/*deallocating*/</span><span class="literal">true</span>);</span><br><span class="line">        obj-&gt;clearDeallocating();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> obj;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中会判断要销毁的对象是否有关联属性，如果有，又会调用到_object_remove_assocation函数来进行关联属性的移除，这个函数前面介绍过，内部会处理内存管理问题。</p>
+<h2 id="五-关联管理器与表的创建时机"><a href="#五-关联管理器与表的创建时机" class="headerlink" title="五.关联管理器与表的创建时机"></a>五.关联管理器与表的创建时机</h2><p>在整个关联属性实现方案中，还有一点我们没有闭环介绍，即全局的关联管理器和Hash表是怎么创建的，何时创建的。我们目前只看到，当要设置或获取关联属性时，直接拿到管理器和Hash表进行使用，并无初始化。其实，这些全局数据结构的创建在runtime初始化时就已经完成，流程路径如下：</p>
+<p>1. 调用runtime入口函数_objc_init</p>
+<p>2. 通知调用map_images函数</p>
+<p>3. 调用map_images_nolock函数</p>
+<ol start="4">
+<li>map_images_nolock其中会调用arr_init函数，此函数实现如下：</li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> arr_init(<span class="keyword">void</span>) </span><br><span class="line">&#123;</span><br><span class="line">    AutoreleasePoolPage::init();</span><br><span class="line">    SideTablesMap.init();</span><br><span class="line">    _objc_associations_init();</span><br><span class="line">    <span class="keyword">if</span> (DebugScanWeakTables)</span><br><span class="line">        startWeakTableScan();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此函数会进行自动释放池，关联属性等逻辑的初始化。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>—— 珲少 QQ：316045346</p>
+<p>同时，如果本篇文章让你觉得有用，欢迎分享给更多朋友，请标明出处。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2022/07/21/448 iOS单元测试的那些事儿/" class="pre-post btn btn-default" title='iOS单元测试的那些事儿'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS单元测试的那些事儿</span>
+        </a>
+    
+    
+        <a href="/2022/06/19/446Clang代码覆盖率检测（插桩技术）/" class="next-post btn btn-default" title='Clang代码覆盖率检测（插桩技术）'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Clang代码覆盖率检测（插桩技术）</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#追根问底：Objective-C关联属性原理分析"><span class="toc-text">追根问底：Objective-C关联属性原理分析</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-引子"><span class="toc-text">一.引子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-objc-setAssociatedObject方法的核心原理"><span class="toc-text">二. objc_setAssociatedObject方法的核心原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-获取和移除关联属性的原理"><span class="toc-text">三. 获取和移除关联属性的原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-关联属性如何进行内存管理？"><span class="toc-text">四. 关联属性如何进行内存管理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-关联管理器与表的创建时机"><span class="toc-text">五.关联管理器与表的创建时机</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

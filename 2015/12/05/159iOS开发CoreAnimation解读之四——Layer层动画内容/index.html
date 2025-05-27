@@ -1,0 +1,328 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发CoreAnimation解读之四——Layer层动画内容 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发CoreAnimation解读之四——Layer层动画内容">
+            
+	            iOS开发CoreAnimation解读之四——Layer层动画内容
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/12/05</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发CoreAnimation解读之四——Layer层动画内容"><a href="#iOS开发CoreAnimation解读之四——Layer层动画内容" class="headerlink" title="iOS开发CoreAnimation解读之四——Layer层动画内容"></a>iOS开发CoreAnimation解读之四——Layer层动画内容</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>通过前几篇博客的介绍，我们可以了解到layer层可以设置许多与控件UI相关的属性，并且对于iOS开发，UIView层的属性是会映射到CALayer的，因此，可以通过UIKit和CoreAnimation两个框架来设置控件的UI相关属性，当属性发生变化时，我们可以使其展示一个动画效果。
+</code></pre><h3 id="二、CAAnimation动画体系的介绍"><a href="#二、CAAnimation动画体系的介绍" class="headerlink" title="二、CAAnimation动画体系的介绍"></a>二、CAAnimation动画体系的介绍</h3><pre><code>CAAnimation是CoreAnimation框架中执行动画对象的基类，下面有一张图，是我手画的，不太美观，但是可以将与CAAnimation相关的几个动画类的关系表达清楚：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/1204/172312_5Zup_2340880.png" alt></p>
+<p>从上图中可以看到，从CAAnimation中继承出三个子类，分别是用于创建属性动画的CAPropertyAnimation，创建转场动画的CATransition和创建组合动画的CAAnimationGroup。</p>
+<p>我们就先从根类开始探讨。</p>
+<h4 id="1-CAAnimation属性和方法"><a href="#1-CAAnimation属性和方法" class="headerlink" title="1.CAAnimation属性和方法"></a>1.CAAnimation属性和方法</h4><p>CAAnimation作为动画对象的基类，其中封装了动画的基础属性，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//通过类方法创建一个CAAnimation对象</span><br><span class="line">+ (instancetype)animation;</span><br><span class="line">//动画执行的时序模式</span><br><span class="line">@property(nullable, strong) CAMediaTimingFunction *timingFunction;</span><br><span class="line">//代理</span><br><span class="line">@property(nullable, strong) id delegate;</span><br><span class="line">//是否动画完成时将动画对象移除掉</span><br><span class="line">@property(getter=isRemovedOnCompletion) BOOL removedOnCompletion;</span><br></pre></td></tr></table></figure>
+<p>timingFunction定义了动画执行的时序效果，CAMediaTimingFunction的创建方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">name参数决定的执行的效果，可选参数如下</span><br><span class="line">//线性执行</span><br><span class="line"> NSString * const kCAMediaTimingFunctionLinear;</span><br><span class="line"> //淡入  在动画开始时 淡入效果</span><br><span class="line"> NSString * const kCAMediaTimingFunctionEaseIn;</span><br><span class="line"> //淡出 在动画结束时 淡出效果</span><br><span class="line"> NSString * const kCAMediaTimingFunctionEaseOut;</span><br><span class="line"> //淡入淡出</span><br><span class="line"> NSString * const kCAMediaTimingFunctionEaseInEaseOut;</span><br><span class="line"> //默认效果</span><br><span class="line"> NSString * const kCAMediaTimingFunctionDefault;</span><br><span class="line">*/</span><br><span class="line">+ (instancetype)functionWithName:(NSString *)name;</span><br></pre></td></tr></table></figure>
+<p>CAAnimation的代理方法入如下几个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//动画开始时执行的回调</span><br><span class="line">- (void)animationDidStart:(CAAnimation *)anim;</span><br><span class="line">//动画结束后执行的回调</span><br><span class="line">- (void)animationDidStop:(CAAnimation *)anim finished:(BOOL)flag;</span><br></pre></td></tr></table></figure>
+<h4 id="2-CAPropertyAnimation属性与方法"><a href="#2-CAPropertyAnimation属性与方法" class="headerlink" title="2.CAPropertyAnimation属性与方法"></a>2.CAPropertyAnimation属性与方法</h4><pre><code>CAPropertyAnimation是继承于CAAnimation专门用来创建与属性相关的动画的类：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">//创建对象 参数中的path就是我们要执行动画的属性</span><br><span class="line">//例如，如果传入@&quot;backgroundColor&quot; 当layer的背景颜色改变时，就会执行我们设置的动画</span><br><span class="line">+ (instancetype)animationWithKeyPath:(nullable NSString *)path;</span><br><span class="line">//这个属性确定动画执行的状态是否叠加在控件的原状态上</span><br><span class="line">//默认设置为NO，如果我们执行两次位置移动的动画，会从同一位置执行两次</span><br><span class="line">//如果设置为YES，则会在第一次执行的基础上执行第二次动画</span><br><span class="line">@property(getter=isAdditive) BOOL additive;</span><br><span class="line">//这个属性对重复执行的动画有效果</span><br><span class="line">//默认为NO，重复执行的动画每次都是从起始状态开始</span><br><span class="line">//如果设置为yes，则为此执行都会在上一次执行的基础上执行</span><br><span class="line">@property(getter=isCumulative) BOOL cumulative;</span><br><span class="line">//这个属性和transfron属性的动画执行相关</span><br><span class="line">@property(nullable, strong) CAValueFunction *valueFunction;</span><br></pre></td></tr></table></figure>
+<p>上面这些属性中，只有一个需要我们注意，valueFunction是专门为了transform动画而设置的，因为我们没有办法直接改变transform3D中的属性，通过这个参数，可以帮助我们直接操作transfrom3D属性变化产生动画效果，举例如下，一个绕Z轴旋转的动画：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> //绕z轴旋转的动画</span><br><span class="line">    CABasicAnimation * ani = [CABasicAnimation animationWithKeyPath:@&quot;transform&quot;];</span><br><span class="line">    //从0度开始</span><br><span class="line">    ani.fromValue = @0;</span><br><span class="line">    //旋转到180度</span><br><span class="line">    ani.toValue = [NSNumber numberWithFloat:M_PI];</span><br><span class="line">    //时间2S</span><br><span class="line">    ani.duration = 2;</span><br><span class="line">    //设置为z轴旋转</span><br><span class="line">    ani.valueFunction = [CAValueFunction functionWithName:kCAValueFunctionRotateZ];</span><br><span class="line">    //执行动画</span><br><span class="line">    [layer addAnimation:ani forKey:@&quot;&quot;];</span><br></pre></td></tr></table></figure>
+<p>实际上，使用点的方式也是可以访问到相应属性的，如果不设置valueFunction，使用如下方法也是可以进行绕Z轴旋转的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//绕z轴旋转的动画</span><br><span class="line">    CABasicAnimation * ani = [CABasicAnimation animationWithKeyPath:@&quot;transform.rotation.z&quot;];</span><br><span class="line">    //从0度开始</span><br><span class="line">    ani.fromValue = @0;</span><br><span class="line">    //旋转到180度</span><br><span class="line">    ani.toValue = [NSNumber numberWithFloat:M_PI];</span><br><span class="line">    //时间2S</span><br><span class="line">    ani.duration = 2;</span><br><span class="line">    //执行动画</span><br><span class="line">    [layer addAnimation:ani forKey:@&quot;&quot;];</span><br></pre></td></tr></table></figure>
+<h4 id="3-CABasicAnimation属性"><a href="#3-CABasicAnimation属性" class="headerlink" title="3.CABasicAnimation属性"></a>3.CABasicAnimation属性</h4><pre><code>CABasicAnimaton是CAPropertyAnimation分出来的一个子类，创建基础的属性变化动画，例如我们上面的示例代码，其中属性如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@property(nullable, strong) id fromValue;</span><br><span class="line">@property(nullable, strong) id toValue;</span><br><span class="line">@property(nullable, strong) id byValue;</span><br></pre></td></tr></table></figure>
+<p>上面三个属性都是来确定动画的起始与结束位置，有如下的含义：</p>
+<p>fromValue和toValue不为空：动画的值由fromValue变化到toValue</p>
+<p>fromValue和byValue不为空：动画的值由fromValue变化到fromValue+byValue</p>
+<p>byValue和toValue不为空：动画的值由toValue-byValue变化到toValue</p>
+<p>只有fromValue不为空：动画的值由fromValue变化到layer的当前状态值</p>
+<p>只有toValue不为空：动画的值由layer当前的值变化到toValue</p>
+<p>只有byValue不为空：动画的值由layer当前的值变化到layer当前的值+byValue</p>
+<h4 id="4-CAKeyframeAnimation关键帧动画"><a href="#4-CAKeyframeAnimation关键帧动画" class="headerlink" title="4.CAKeyframeAnimation关键帧动画"></a>4.CAKeyframeAnimation关键帧动画</h4><pre><code>CAKeyframeAnimation也是继承与CAPropertyAnimation的一个子类，其与CABasicAnimation的不同之处在于虽然其都是改变layer层属性的动画，但是CABasicAnimation只能设置初始与结束状态，这之间我们没办法控制，而CAKeyframeAnimation可以让我们设置一些关键帧再整个动画的过程中。属性方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">//关键帧的值数组 例如我们想让控件沿某个路径移动，这里面存放每个移动的点</span><br><span class="line">@property(nullable, copy) NSArray *values;</span><br><span class="line">//直接设置路径，作用域values类似</span><br><span class="line">@property(nullable) CGPathRef path;</span><br><span class="line">//设置每一帧执行的时间长短 这个的取值为0-1，代表占用时间的比例</span><br><span class="line">@property(nullable, copy) NSArray&lt;NSNumber *&gt; *keyTimes;</span><br><span class="line">//每一帧执行过程中的时序效果 上面有提过</span><br><span class="line">@property(nullable, copy) NSArray&lt;CAMediaTimingFunction *&gt; *timingFunctions;</span><br><span class="line">/*</span><br><span class="line">设置帧的中间值如何计算</span><br><span class="line"> NSString * const kCAAnimationLinear;</span><br><span class="line"> NSString * const kCAAnimationDiscrete;</span><br><span class="line"> NSString * const kCAAnimationPaced;</span><br><span class="line"> NSString * const kCAAnimationCubic;</span><br><span class="line"> NSString * const kCAAnimationCubicPaced;</span><br><span class="line">*/</span><br><span class="line">@property(copy) NSString *calculationMode;</span><br></pre></td></tr></table></figure>
+<p>示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    CAKeyframeAnimation * ani = [CAKeyframeAnimation animationWithKeyPath:@&quot;position&quot;];</span><br><span class="line">    ani.values = @[[NSValue valueWithCGPoint:CGPointMake(100, 100)],[NSValue valueWithCGPoint:CGPointMake(120, 100)],[NSValue valueWithCGPoint:CGPointMake(120, 200)],[NSValue valueWithCGPoint:CGPointMake(200, 200)]];</span><br><span class="line">    ani.duration = 3;</span><br><span class="line">    [layer addAnimation:ani forKey:@&quot;&quot;];</span><br></pre></td></tr></table></figure>
+<h4 id="5-CASpringAnimation阻尼动画"><a href="#5-CASpringAnimation阻尼动画" class="headerlink" title="5.CASpringAnimation阻尼动画"></a>5.CASpringAnimation阻尼动画</h4><pre><code>通过CASpringAnimation，可以帮助开发者很轻松的创建出有弹簧效果的动画，主要属性如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//这个属性设置弹簧重物的质量 会影响惯性 必须大于0 默认为1</span><br><span class="line">@property CGFloat mass;</span><br><span class="line">//设置弹簧的刚度系数，必须大于0 默认为100  这个越大 则回弹越快</span><br><span class="line">@property CGFloat stiffness;</span><br><span class="line">//阻尼系数 默认为10 必须大于0 这个值越大 回弹的幅度越小</span><br><span class="line">@property CGFloat damping;</span><br><span class="line">//初始速度</span><br><span class="line">@property CGFloat initialVelocity;</span><br><span class="line">//获取动画停下来需要的时间</span><br><span class="line">@property(readonly) CFTimeInterval settlingDuration;</span><br></pre></td></tr></table></figure>
+<h4 id="6-CATransition转场动画"><a href="#6-CATransition转场动画" class="headerlink" title="6.CATransition转场动画"></a>6.CATransition转场动画</h4><pre><code>CATransition和CAPropertyAnimation的不同之处在于当layer层出现时，会产生动画效果，而并不是属性改变时，属性如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">设置动画类型</span><br><span class="line">//淡入</span><br><span class="line"> NSString * const kCATransitionFade;</span><br><span class="line"> //移入</span><br><span class="line"> NSString * const kCATransitionMoveIn;</span><br><span class="line"> //压入</span><br><span class="line"> NSString * const kCATransitionPush;</span><br><span class="line"> //溶解</span><br><span class="line"> NSString * const kCATransitionReveal;</span><br><span class="line">*/</span><br><span class="line">@property(copy) NSString *type;</span><br><span class="line">/*</span><br><span class="line">设置动画的方向</span><br><span class="line">//从右侧进</span><br><span class="line"> NSString * const kCATransitionFromRight;</span><br><span class="line"> //从左侧进</span><br><span class="line"> NSString * const kCATransitionFromLeft;</span><br><span class="line"> //从上侧进</span><br><span class="line"> NSString * const kCATransitionFromTop;</span><br><span class="line"> //从下侧进</span><br><span class="line"> NSString * const kCATransitionFromBottom;</span><br><span class="line">*/</span><br><span class="line">@property(nullable, copy) NSString *subtype;</span><br></pre></td></tr></table></figure>
+<p>其实，关于type定义的动画效果，出来官方定义的，我们还可以使用一些私有的参数，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pageCurl   翻页</span><br><span class="line">rippleEffect 滴水效果</span><br><span class="line">suckEffect 收缩效果，如一块布被抽走</span><br><span class="line">cube 立方体效果</span><br><span class="line">oglFlip 上下翻转效果</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">    CATransition * ani = [CATransition animation];</span><br><span class="line">    ani.type =  @&quot;pageCurl&quot;;</span><br><span class="line">    ani.subtype = kCATransitionFromRight;</span><br><span class="line">    [layer addAnimation:ani forKey:@&quot;&quot;];</span><br></pre></td></tr></table></figure>
+<h4 id="7-CAAnimationGroup动画组"><a href="#7-CAAnimationGroup动画组" class="headerlink" title="7.CAAnimationGroup动画组"></a>7.CAAnimationGroup动画组</h4><pre><code>CAAnimationGroup本身并没有定义动画，他可以将我们上面提到的相关动画进行组合：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property(nullable, copy) NSArray&lt;CAAnimation *&gt; *animations;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/12/06/160iOS开发CoreAnimation解读之五——高级动画技巧/" class="pre-post btn btn-default" title='iOS开发CoreAnimation解读之五——高级动画技巧'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发CoreAnimation解读之五——高级动画技巧</span>
+        </a>
+    
+    
+        <a href="/2015/12/02/158iOS运用runtime全局修改UILabel的默认字体/" class="next-post btn btn-default" title='iOS运用runtime全局修改UILabel的默认字体'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS运用runtime全局修改UILabel的默认字体</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发CoreAnimation解读之四——Layer层动画内容"><span class="toc-text">iOS开发CoreAnimation解读之四——Layer层动画内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、CAAnimation动画体系的介绍"><span class="toc-text">二、CAAnimation动画体系的介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-CAAnimation属性和方法"><span class="toc-text">1.CAAnimation属性和方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-CAPropertyAnimation属性与方法"><span class="toc-text">2.CAPropertyAnimation属性与方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-CABasicAnimation属性"><span class="toc-text">3.CABasicAnimation属性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-CAKeyframeAnimation关键帧动画"><span class="toc-text">4.CAKeyframeAnimation关键帧动画</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-CASpringAnimation阻尼动画"><span class="toc-text">5.CASpringAnimation阻尼动画</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-CATransition转场动画"><span class="toc-text">6.CATransition转场动画</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-CAAnimationGroup动画组"><span class="toc-text">7.CAAnimationGroup动画组</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

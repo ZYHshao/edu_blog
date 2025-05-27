@@ -1,0 +1,320 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型">
+            
+	            iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/05/25</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（18）——-PoseNet，DeeplabV3与FCRN-DepthPrediction模型"><a href="#iOS-MachineLearning-系列（18）——-PoseNet，DeeplabV3与FCRN-DepthPrediction模型" class="headerlink" title="iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型"></a>iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型</h1><p>本篇文章将再介绍三个官方的CoreML模型：PoseNet，DeeplabV3和FCRN-DepthPrediction。</p>
+<p>PoseNet是人体姿势分析模型，可以识别图片中的人体部分，然后以17个基准点来描述人体的姿势。关于人体姿势的识别，其实Vision框架本来就有此能力，本文主要介绍使用自定义的模型如何实现。Vision框架的用法可以参见如下文章：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8681809" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/8681809</a></p>
+<p>DeeplabV3是一个图像分割模型，主要用来实现抠图需求，Vision框架中也有对应的能力，可参加如下文章：</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8695980" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/8695980</a></p>
+<p>FCRN-DepthPrediction模型用来进行图片景深的预测，这是Vision框架所不具备的能力。</p>
+<p>在此地址可以下载到这三个模型：</p>
+<p><a href="https://developer.apple.com/machine-learning/models/" target="_blank" rel="noopener">https://developer.apple.com/machine-learning/models/</a></p>
+<h2 id="1-PoseNet模型"><a href="#1-PoseNet模型" class="headerlink" title="1 - PoseNet模型"></a>1 - PoseNet模型</h2><p>PoseNet模型可以检测17个人体的关键部位或关节，通过这些关键点来构建出完整的人体姿势。</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-9c894f7d63116016c44bd351cd7b0e16769.png" alt></p>
+<p>PoseNet最大的模型在6MB左右，相比Vision框架提供的姿势识别，直接使用模型来做会比较麻烦，但是Vision框架也有局限性，其姿势识别的API是在iOS 14之后引入的，如果要支持更低的版本，还是需要我们自己来实现。</p>
+<p>首先观察下PoseNet模型在Xcode中的介绍，我们主要专注在输入输出部分：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-5f74c1788492c055d37be19aa5fd025cb24.png" alt></p>
+<p>其中输入部分比较简单，为图片数据。输出部分我们需要关注的是offsets和heatmap两个。其中offsets存储了特征点的位置信息，heatmap存储了特征点的可信度信息。</p>
+<p>从模型介绍可以看出，这是一个17*33*33的多维数组。其中最外层的一维17分别对应了人体的17个特征位置，每个特征位置对应一个33*33的矩阵，这就好比，把原始图片横纵等距的画上32条分割线，将图片在水平方向和竖直方向上各均分成33个部分，这里存储的数据即是此人体特征点在当前图片部分上的可信度是多少。换句话说，我们其实就是遍历第一维的数据（17个特征点），然后分别找到每个特征点可信度最大的区块位置即可。要找到特征点的具体位置，需要使用返回的offsets数据，此属性是一个34*33*33的多维数组，也很好理解，对第一维来说，前17个元素表示的是每个特征点的y方向偏移，后17个元素表示的是每个特征点的x方向的偏移。每个元素都是一个33*33的矩阵，我们需要查找第一步找到的可信度最高的区块内的偏移。首先封装一些数据模型类如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 人体特征点类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Joint</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 特征点名字枚举，这里的顺序和模型多维数组中的顺序是一致的</span></span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">Name</span>: <span class="title">Int</span>, <span class="title">CaseIterable</span> </span>&#123;</span><br><span class="line">        <span class="keyword">case</span> nose</span><br><span class="line">        <span class="keyword">case</span> leftEye</span><br><span class="line">        <span class="keyword">case</span> rightEye</span><br><span class="line">        <span class="keyword">case</span> leftEar</span><br><span class="line">        <span class="keyword">case</span> rightEar</span><br><span class="line">        <span class="keyword">case</span> leftShoulder</span><br><span class="line">        <span class="keyword">case</span> rightShoulder</span><br><span class="line">        <span class="keyword">case</span> leftElbow</span><br><span class="line">        <span class="keyword">case</span> rightElbow</span><br><span class="line">        <span class="keyword">case</span> leftWrist</span><br><span class="line">        <span class="keyword">case</span> rightWrist</span><br><span class="line">        <span class="keyword">case</span> leftHip</span><br><span class="line">        <span class="keyword">case</span> rightHip</span><br><span class="line">        <span class="keyword">case</span> leftKnee</span><br><span class="line">        <span class="keyword">case</span> rightKnee</span><br><span class="line">        <span class="keyword">case</span> leftAnkle</span><br><span class="line">        <span class="keyword">case</span> rightAnkle</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 名字</span></span><br><span class="line">    <span class="keyword">let</span> name: <span class="type">Name</span></span><br><span class="line">    <span class="comment">// 可信度</span></span><br><span class="line">    <span class="keyword">var</span> confidence: <span class="type">Double</span></span><br><span class="line">    <span class="comment">// 所在图片上的位置</span></span><br><span class="line">    <span class="keyword">var</span> position: <span class="type">CGPoint</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">init</span>(name: <span class="type">Name</span>,</span><br><span class="line">         position: <span class="type">CGPoint</span> = .zero,</span><br><span class="line">         confidence: <span class="type">Double</span> = <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.name = name</span><br><span class="line">        <span class="keyword">self</span>.position = position</span><br><span class="line">        <span class="keyword">self</span>.confidence = confidence</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PoseModel</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 共17个特征点</span></span><br><span class="line">    <span class="keyword">let</span> jointCount = <span class="number">17</span></span><br><span class="line">    <span class="comment">// 此模型会将图片分割成33*33的区块</span></span><br><span class="line">    <span class="keyword">let</span> xBlocks = <span class="number">33</span></span><br><span class="line">    <span class="keyword">let</span> yBlicks = <span class="number">33</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 所有特征组成的字典</span></span><br><span class="line">    <span class="keyword">var</span> joints: [<span class="type">Joint</span>.<span class="type">Name</span>: <span class="type">Joint</span>] = [</span><br><span class="line">        .nose: <span class="type">Joint</span>(name: .nose),</span><br><span class="line">        .leftEye: <span class="type">Joint</span>(name: .leftEye),</span><br><span class="line">        .leftEar: <span class="type">Joint</span>(name: .leftEar),</span><br><span class="line">        .leftShoulder: <span class="type">Joint</span>(name: .leftShoulder),</span><br><span class="line">        .leftElbow: <span class="type">Joint</span>(name: .leftElbow),</span><br><span class="line">        .leftWrist: <span class="type">Joint</span>(name: .leftWrist),</span><br><span class="line">        .leftHip: <span class="type">Joint</span>(name: .leftHip),</span><br><span class="line">        .leftKnee: <span class="type">Joint</span>(name: .leftKnee),</span><br><span class="line">        .leftAnkle: <span class="type">Joint</span>(name: .leftAnkle),</span><br><span class="line">        .rightEye: <span class="type">Joint</span>(name: .rightEye),</span><br><span class="line">        .rightEar: <span class="type">Joint</span>(name: .rightEar),</span><br><span class="line">        .rightShoulder: <span class="type">Joint</span>(name: .rightShoulder),</span><br><span class="line">        .rightElbow: <span class="type">Joint</span>(name: .rightElbow),</span><br><span class="line">        .rightWrist: <span class="type">Joint</span>(name: .rightWrist),</span><br><span class="line">        .rightHip: <span class="type">Joint</span>(name: .rightHip),</span><br><span class="line">        .rightKnee: <span class="type">Joint</span>(name: .rightKnee),</span><br><span class="line">        .rightAnkle: <span class="type">Joint</span>(name: .rightAnkle)</span><br><span class="line">    ]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">var</span> data: <span class="type">PoseNetMobileNet100S16FP16Output</span></span><br><span class="line">    <span class="comment">// 每个区块的宽高</span></span><br><span class="line">    <span class="keyword">var</span> blockWidth: <span class="type">Double</span></span><br><span class="line">    <span class="keyword">var</span> blockHeight: <span class="type">Double</span></span><br><span class="line">    <span class="comment">// 使用此输出模型来解析</span></span><br><span class="line">    <span class="keyword">init</span>(data: <span class="type">PoseNetMobileNet100S16FP16Output</span>, width: <span class="type">Double</span>, height: <span class="type">Double</span>) &#123;</span><br><span class="line">        <span class="keyword">self</span>.data = data</span><br><span class="line">        <span class="keyword">self</span>.blockWidth = width</span><br><span class="line">        <span class="keyword">self</span>.blockHeight = height</span><br><span class="line">        <span class="comment">// 对每个节点进行解析</span></span><br><span class="line">        joints.values.forEach &#123; joint <span class="keyword">in</span></span><br><span class="line">            cofigure(joint: joint)</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        joints.values.forEach &#123; joint <span class="keyword">in</span></span><br><span class="line">            <span class="comment">// 打印每个特征点的可信度</span></span><br><span class="line">            <span class="built_in">print</span>(joint.name, joint.confidence)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">cofigure</span><span class="params">(joint: Joint)</span></span> &#123;</span><br><span class="line">        <span class="comment">// 解析出可信度最高的block 记录可信度和区块位置</span></span><br><span class="line">        <span class="keyword">var</span> bastConfidence = <span class="number">0.0</span></span><br><span class="line">        <span class="keyword">var</span> bastBlockX = <span class="number">0</span></span><br><span class="line">        <span class="keyword">var</span> bastBlockY = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="number">0</span> ..&lt; xBlocks &#123;</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="number">0</span> ..&lt; yBlicks &#123;</span><br><span class="line">                <span class="keyword">let</span> multiArrayIndex = [<span class="type">NSNumber</span>(integerLiteral: joint.name.rawValue), <span class="type">NSNumber</span>(integerLiteral: y), <span class="type">NSNumber</span>(integerLiteral: x)]</span><br><span class="line">                <span class="keyword">let</span> confidence = data.heatmap[multiArrayIndex].doubleValue</span><br><span class="line">                <span class="keyword">if</span> confidence &gt; bastConfidence  &#123;</span><br><span class="line">                    bastConfidence = confidence</span><br><span class="line">                    bastBlockX = x</span><br><span class="line">                    bastBlockY = y</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        joint.confidence = bastConfidence</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 获取详细的坐标位置，offsets多维数组中存放的是对应特征点的偏移位置，前17个为y偏移，后17个为x偏移。</span></span><br><span class="line">        <span class="keyword">let</span> yOffsetIndex = [<span class="type">NSNumber</span>(integerLiteral: joint.name.rawValue), <span class="type">NSNumber</span>(integerLiteral: bastBlockY), <span class="type">NSNumber</span>(integerLiteral: bastBlockX)]</span><br><span class="line">        <span class="keyword">let</span> xOffsetIndex = [<span class="type">NSNumber</span>(integerLiteral: joint.name.rawValue + jointCount), <span class="type">NSNumber</span>(integerLiteral: bastBlockY), <span class="type">NSNumber</span>(integerLiteral: bastBlockX)]</span><br><span class="line">        <span class="keyword">let</span> offsetX = data.offsets[xOffsetIndex].doubleValue</span><br><span class="line">        <span class="keyword">let</span> offsetY = data.offsets[yOffsetIndex].doubleValue</span><br><span class="line">        <span class="comment">// 通过偏移量加上区块的起始位置来确定最终位置</span></span><br><span class="line">        joint.position = <span class="type">CGPoint</span>(x: <span class="type">Double</span>(bastBlockX) * blockWidth + offsetX, y: <span class="type">Double</span>(bastBlockY) * blockHeight + offsetY)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，整个解析的过程还是比较复杂，一旦搞定了解析，其使用逻辑就非常简单了，示例如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PoseModelViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> image = <span class="type">UIImage</span>(named: <span class="string">"man"</span>)!</span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> imageView: <span class="type">UIImageView</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> v = <span class="type">UIImageView</span>()</span><br><span class="line">        v.image = image</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        view.backgroundColor = .white</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">let</span> scale = image.size.width / image.size.height</span><br><span class="line">        </span><br><span class="line">        imageView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">100</span>, width: view.frame.width, height: view.frame.width / scale)</span><br><span class="line">        view.addSubview(imageView)</span><br><span class="line">        <span class="comment">// 这些模型都是Xcode自动生成的</span></span><br><span class="line">        <span class="keyword">let</span> model = <span class="keyword">try</span>! <span class="type">PoseNetMobileNet100S16FP16</span>(configuration: <span class="type">MLModelConfiguration</span>())</span><br><span class="line">        <span class="keyword">let</span> input = <span class="keyword">try</span>! <span class="type">PoseNetMobileNet100S16FP16Input</span>(imageWith: image.cgImage!)</span><br><span class="line">        <span class="keyword">let</span> output = <span class="keyword">try</span>! model.prediction(input: input)</span><br><span class="line">        handleOutPut(outPut: output)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">handleOutPut</span><span class="params">(outPut: PoseNetMobileNet100S16FP16Output)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> pose = <span class="type">PoseModel</span>(data: outPut, width: <span class="type">Double</span>(imageView.frame.width) / <span class="number">33</span>, height: <span class="type">Double</span>(imageView.frame.height) / <span class="number">33</span>)</span><br><span class="line">        <span class="keyword">for</span> joint <span class="keyword">in</span> pose.joints.values &#123;</span><br><span class="line">            <span class="keyword">let</span> v = <span class="type">UIView</span>()</span><br><span class="line">            v.frame = <span class="type">CGRect</span>(x: joint.position.x - <span class="number">3</span>, y: joint.position.y - <span class="number">3</span>, width: <span class="number">6</span>, height: <span class="number">6</span>)</span><br><span class="line">            v.backgroundColor = .red</span><br><span class="line">            v.layer.cornerRadius = <span class="number">3</span></span><br><span class="line">            imageView.addSubview(v)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0e6b50e62e5b219881e29247607853f8e25.png" alt></p>
+<h2 id="2-DeeplabV3模型"><a href="#2-DeeplabV3模型" class="headerlink" title="2 - DeeplabV3模型"></a>2 - DeeplabV3模型</h2><p>DeeplabV3模型用来检测物体的轮廓，简单来说，其是一个用来进行抠图应用的模型。</p>
+<p>同样DeeplabV3模型的使用也不像Vision框架那么方便，其模型介绍如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-ef518a0c0a943a8b7578b7cdc0a422b4b90.png" alt></p>
+<p>我们只关注其输入和输出，可以看到，此模型会将输入的图片格式化成513*513的点阵，输出的也是一个513*513的二维点阵，当这些点的取值要么是0要么是1，我们转换到原图按照0和1的排布进行有色和无色的渲染即可得到蒙层图。使用示例如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> CoreML</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SegModelViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> image = <span class="type">UIImage</span>(named: <span class="string">"seg.jpeg"</span>)!</span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> imageView: <span class="type">UIImageView</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> v = <span class="type">UIImageView</span>()</span><br><span class="line">        v.image = image</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> imageView2: <span class="type">UIImageView</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> v = <span class="type">UIImageView</span>()</span><br><span class="line">        v.image = image</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line">        view.backgroundColor = .white</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">let</span> scale = image.size.width / image.size.height</span><br><span class="line">        </span><br><span class="line">        imageView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">100</span>, width: view.frame.width, height: view.frame.width / scale)</span><br><span class="line">        view.addSubview(imageView)</span><br><span class="line">        </span><br><span class="line">        imageView2.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">100</span> + imageView.frame.height, width: view.frame.width, height: view.frame.width / scale)</span><br><span class="line">        view.addSubview(imageView2)</span><br><span class="line">        <span class="comment">// 创建模型</span></span><br><span class="line">        <span class="keyword">let</span> model = <span class="keyword">try</span>! <span class="type">DeepLabV3</span>(configuration: <span class="type">MLModelConfiguration</span>())</span><br><span class="line">        <span class="comment">// 创建输入数据结构</span></span><br><span class="line">        <span class="keyword">let</span> input = <span class="keyword">try</span>! <span class="type">DeepLabV3Input</span>(imageWith: image.cgImage!)</span><br><span class="line">        <span class="comment">// 进行处理</span></span><br><span class="line">        <span class="keyword">let</span> output = <span class="keyword">try</span>! model.prediction(input: input)</span><br><span class="line">        <span class="comment">// 对输出做解析</span></span><br><span class="line">        handleOutPut(outPut: output)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">handleOutPut</span><span class="params">(outPut: DeepLabV3Output)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> width = imageView2.frame.width / <span class="number">513</span></span><br><span class="line">        <span class="keyword">let</span> height = imageView2.frame.height / <span class="number">513</span></span><br><span class="line">        <span class="keyword">let</span> shape = <span class="type">CAShapeLayer</span>()</span><br><span class="line">        shape.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">0</span>, width: imageView2.frame.width, height: imageView2.frame.height)</span><br><span class="line">        shape.anchorPoint = <span class="type">CGPoint</span>(x: <span class="number">0.5</span>, y: <span class="number">0.5</span>)</span><br><span class="line">        imageView2.layer.addSublayer(shape)</span><br><span class="line">        <span class="keyword">var</span> path = <span class="type">CGMutablePath</span>()</span><br><span class="line">        <span class="comment">// 对513*513的点阵进行行列遍历</span></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> <span class="number">0</span> ..&lt; <span class="number">513</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> column <span class="keyword">in</span> <span class="number">0</span> ..&lt; <span class="number">513</span> &#123;</span><br><span class="line">                <span class="comment">// 从模型的返回结果中来取值</span></span><br><span class="line">                <span class="keyword">let</span> black = outPut.semanticPredictions[[<span class="type">NSNumber</span>(integerLiteral: line), <span class="type">NSNumber</span>(integerLiteral: column)]]</span><br><span class="line">                <span class="keyword">if</span> black == <span class="number">0</span> &#123;</span><br><span class="line">                    path.addRect(<span class="type">CGRect</span>(x: <span class="type">CGFloat</span>(column) * width, y: <span class="type">CGFloat</span>(line) * height, width: width, height: height))</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        shape.fillColor = <span class="type">UIColor</span>.black.cgColor</span><br><span class="line">        shape.path = path</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a2b29468ebfc657e04b5a3a387d77a073cb.png" alt></p>
+<h2 id="3-FCRN-DepthPredictio模型"><a href="#3-FCRN-DepthPredictio模型" class="headerlink" title="3 - FCRN-DepthPredictio模型"></a>3 - FCRN-DepthPredictio模型</h2><p> FCRN模型进行图片的景物深度预测，即对于平面的图片，此模型可以预测出其中物体离我们的远近。iOS的Vision框架中并没有提供类似的功能接口，因此如果需要分析景深，使用FCRN模型是不错的选择。其实，景深分析在增强现实方面有着很重要的应用。首先，我们还是先看此模型的输入输出：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-a60ed5aefeb7c88483da34ce782477b5e48.png" alt></p>
+<p>可以看到，其讲输入一张图片，并将图片分割成128*160的点阵，将每个点的预测深度返回，其返回的结果越大表示离我们越近，越小则表示离我们越远。完整的示例代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> UIKit</span><br><span class="line"><span class="keyword">import</span> CoreML</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DeppModelViewController</span>: <span class="title">UIViewController</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">let</span> image = <span class="type">UIImage</span>(named: <span class="string">"deep2"</span>)!</span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> imageView: <span class="type">UIImageView</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> v = <span class="type">UIImageView</span>()</span><br><span class="line">        v.image = image</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">lazy</span> <span class="keyword">var</span> imageView2: <span class="type">UIImageView</span> = &#123;</span><br><span class="line">        <span class="keyword">let</span> v = <span class="type">UIImageView</span>()</span><br><span class="line">        v.image = image</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    &#125;()</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">viewDidLoad</span><span class="params">()</span></span> &#123;</span><br><span class="line">        <span class="keyword">super</span>.viewDidLoad()</span><br><span class="line"></span><br><span class="line">        view.backgroundColor = .white</span><br><span class="line">       </span><br><span class="line">        <span class="keyword">let</span> scale = image.size.width / image.size.height</span><br><span class="line">        </span><br><span class="line">        imageView.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">100</span>, width: view.frame.width, height: view.frame.width / scale)</span><br><span class="line">        view.addSubview(imageView)</span><br><span class="line">        </span><br><span class="line">        imageView2.frame = <span class="type">CGRect</span>(x: <span class="number">0</span>, y: <span class="number">100</span> + imageView.frame.height, width: view.frame.width, height: view.frame.width / scale)</span><br><span class="line">        view.addSubview(imageView2)</span><br><span class="line">        <span class="comment">// 使用模型进行分析</span></span><br><span class="line">        <span class="keyword">let</span> model = <span class="keyword">try</span>! <span class="type">FCRN</span>(configuration: <span class="type">MLModelConfiguration</span>())</span><br><span class="line">        <span class="keyword">let</span> input = <span class="keyword">try</span>! <span class="type">FCRNInput</span>(imageWith: image.cgImage!)</span><br><span class="line">        <span class="keyword">let</span> output = <span class="keyword">try</span>! model.prediction(input: input)</span><br><span class="line">        handleOutPut(outPut: output)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">handleOutPut</span><span class="params">(outPut: FCRNOutput)</span></span> &#123;</span><br><span class="line">        <span class="keyword">let</span> width = imageView2.frame.width / <span class="number">160</span></span><br><span class="line">        <span class="keyword">let</span> height = imageView2.frame.height / <span class="number">128</span></span><br><span class="line">        <span class="comment">// 遍历点阵，根据景深来绘制不同的颜色</span></span><br><span class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> <span class="number">0</span> ..&lt; <span class="number">128</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> column <span class="keyword">in</span> <span class="number">0</span> ..&lt; <span class="number">160</span> &#123;</span><br><span class="line">                <span class="keyword">let</span> black = outPut.depthmap[[<span class="type">NSNumber</span>(integerLiteral: <span class="number">0</span>), <span class="type">NSNumber</span>(integerLiteral: line), <span class="type">NSNumber</span>(integerLiteral: column)]].doubleValue</span><br><span class="line">                <span class="keyword">let</span> v = <span class="type">UIView</span>()</span><br><span class="line">                v.frame = <span class="type">CGRect</span>(x: <span class="type">CGFloat</span>(column) * width, y: <span class="type">CGFloat</span>(line) * height, width: width, height: height)</span><br><span class="line">                <span class="comment">// 这里除2是为了将数据映射到0-1之间</span></span><br><span class="line">                v.backgroundColor = <span class="type">UIColor</span>(red: black / <span class="number">2</span>, green: black / <span class="number">2</span>, blue: black / <span class="number">2</span>, alpha: <span class="number">1</span>)</span><br><span class="line">                imageView2.addSubview(v)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://oscimg.oschina.net/oscnet/up-adc6cab724f7d7df69a251b5e8ee44d28e7.png" alt></p>
+<p>图中颜色越深的区域表示离我们越近。</p>
+<p>FCRN模型虽然补充了iOS Vision框架的能力，但其模型大小超过200M，也将会对应用的包体积造成额外的负担。</p>
+<p>到此，我们将官方推荐的一些CoreML模型中与视觉有关的就介绍完了，在官方的CoreML模型库中，还提供了一个与文本处理相关的模型，我们将在后续文章中介绍。</p>
+<p>本中所涉及到的代码，都可以在如下 Demo 中找到：</p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2FZYHshao%2FMachineLearnDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/MachineLearnDemo</a></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/05/28/474iOS MachineLearning 系列（19）—— 分析文本中的问题答案/" class="pre-post btn btn-default" title='iOS MachineLearning 系列（19）—— 分析文本中的问题答案'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（19）—— 分析文本中的问题答案</span>
+        </a>
+    
+    
+        <a href="/2023/05/22/472iOS MachineLearning 系列（17）—— 几个常用的对象识别 CoreML 模型/" class="next-post btn btn-default" title='iOS MachineLearning 系列（17）—— 几个常用的对象识别 CoreML 模型'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（17）—— 几个常用的对象识别 CoreML 模型</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（18）——-PoseNet，DeeplabV3与FCRN-DepthPrediction模型"><span class="toc-text">iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3与FCRN-DepthPrediction模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-PoseNet模型"><span class="toc-text">1 - PoseNet模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-DeeplabV3模型"><span class="toc-text">2 - DeeplabV3模型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-FCRN-DepthPredictio模型"><span class="toc-text">3 - FCRN-DepthPredictio模型</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,345 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型">
+            
+	            iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/07/26</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（22）——将其他三方模型转换成CoreML模型"><a href="#iOS-MachineLearning-系列（22）——将其他三方模型转换成CoreML模型" class="headerlink" title="iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型"></a>iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型</h1><p>本篇文章将是本系列文章的最后一篇。本专题将iOS中有关Machine Learning的相关内容做了整体梳理。下面是专题中的其他文章地址，希望如果你有需要，本专题可以帮助到你。</p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8660282" target="_blank" rel="noopener">iOS MachineLearning 系列（1）—— 简介</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8671152" target="_blank" rel="noopener">iOS MachineLearning 系列（2）—— 静态图像分析之矩形识别</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8681809" target="_blank" rel="noopener">iOS MachineLearning 系列（3）—— 静态图像分析之区域识别</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8694846" target="_blank" rel="noopener">iOS MachineLearning 系列（4）—— 静态图像分析之物体识别与分类</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8695239" target="_blank" rel="noopener">iOS MachineLearning 系列（5）—— 视频中的物体运动跟踪</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8695726" target="_blank" rel="noopener">iOS MachineLearning 系列（6）—— 视频中的物体轨迹分析</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8695891" target="_blank" rel="noopener">iOS MachineLearning 系列（7）—— 图片相似度分析</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8695939" target="_blank" rel="noopener">iOS MachineLearning 系列（8）—— 图片热区分析</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8695980" target="_blank" rel="noopener">iOS MachineLearning 系列（9）—— 人物蒙版图生成</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8703599" target="_blank" rel="noopener">iOS MachineLearning 系列（10）—— 自然语言分析之文本拆解</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8705432" target="_blank" rel="noopener">iOS MachineLearning 系列（11）—— 自然语言识别与文本分析</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8709156" target="_blank" rel="noopener">iOS MachineLearning 系列（12）—— 自然语言之词句相似性分析</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8721474" target="_blank" rel="noopener">iOS MachineLearning 系列（13）—— 语音与音频相关的 AI 能力</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8740535" target="_blank" rel="noopener">iOS MachineLearning 系列（14）—— 使用官方模型进行预测</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8749962" target="_blank" rel="noopener">iOS MachineLearning 系列（15）—— 可进行个性化更新的 CoreML 模型</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8761463" target="_blank" rel="noopener">iOS MachineLearning 系列（16）—— 几个常用的图片分类 CoreML 模型</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/8867228" target="_blank" rel="noopener">iOS MachineLearning 系列（17）—— 几个常用的对象识别 CoreML 模型</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/9038544" target="_blank" rel="noopener">iOS MachineLearning 系列（18）—— PoseNet，DeeplabV3 与 FCRN-DepthPrediction 模型</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/9268546" target="_blank" rel="noopener">iOS MachineLearning 系列（19）—— 分析文本中的问题答案</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/9377371" target="_blank" rel="noopener">iOS MachineLearning 系列（20）—— 训练生成 CoreML 模型</a></p>
+<p><a href="https://my.oschina.net/u/2340880/blog/10090735" target="_blank" rel="noopener">iOS MachineLearning 系列（21）——CoreML 模型的更多训练模板</a></p>
+<p>专题中，从iOS中Machine Learning相关的API开始介绍，后续扩展到如何使用模型进行预测，如何自定义的训练模型。其实CoreML框架只是Machine Learning领域内的一个框架而已，市面上还有许多流行的用来训练模型的框架。如TensorFlow，PyTorch，LibSVM等。在iOS平台中直接使用这些框架训练完成的模型是比较困难的，但是Core ML Tools提供了一些工具可以方便的将这些模型转换成CoreML模型进行使用，大大降低了模型的训练成本。</p>
+<p>此工具官网：</p>
+<p><a href="https://coremltools.readme.io/docs" target="_blank" rel="noopener">https://coremltools.readme.io/docs</a></p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_7aea1320100b47ecbe9c326f9b940c5e.png" alt="截屏2023-07-25 16.40.04.png"></p>
+<p>首先需要有安装Python运行环境，从Core ML Tools4.1版本开始将不再支持Python2，因此建议直接使用Python3。安装Python会默认安装pip工具，使用如下命令来安装Core ML Tools:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install coremltools</span><br></pre></td></tr></table></figure>
+<p>coremltools模块并不包含三方库（如TensorFlow），因此安装会比加快。</p>
+<p>要使用三方的模型，需要做如下几步操作：</p>
+<ol>
+<li>下载三方模型。</li>
+<li>将三方模型转换为CoreML格式。</li>
+<li>设置CoreML模型的元数据。</li>
+<li>进行测试验证。</li>
+<li>存储模型，之后在Xcode中进行使用即可。</li>
+</ol>
+<p>其中最核心的是模型的转换和元数据的写入。</p>
+<p>以TensorFlow的MobileNetV2模型为例，我们下面尝试将其转换成CoreML模型。要转换TensorFlow格式的模型，首先需要安装对应的框架，使用pip来安装如下依赖：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tensorflow h5py pillow</span><br></pre></td></tr></table></figure>
+<p>第一步，下载三方模型，使用tensorflow框架提供的API可以将模型加载的到内存中去，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf </span><br><span class="line"></span><br><span class="line">keras_model = tf.keras.applications.MobileNetV2(</span><br><span class="line">    weights=<span class="string">"imagenet"</span>, </span><br><span class="line">    input_shape=(<span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>,),</span><br><span class="line">    classes=<span class="number">1000</span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>其中applications.MobileNetV2是tensorflow框架中提供好的API，在此文档中可以查看这个API的更多用法：</p>
+<p><a href="https://www.tensorflow.org/api_docs/python/tf/keras/applications/mobilenet_v2/MobileNetV2" target="_blank" rel="noopener">https://www.tensorflow.org/api_docs/python/tf/keras/applications/mobilenet_v2/MobileNetV2</a></p>
+<p>同时我们还需要下载一个索引文件，此文件定义了模型所能预测的标签数据，Python代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="comment"># 模型对应的索引文件地址</span></span><br><span class="line">label_url = <span class="string">'https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt'</span></span><br><span class="line">class_labels = urllib.request.urlopen(label_url).read().splitlines()</span><br><span class="line">class_labels = class_labels[<span class="number">1</span>:]</span><br><span class="line"><span class="keyword">assert</span> len(class_labels) == <span class="number">1000</span></span><br><span class="line"><span class="keyword">for</span> i, label <span class="keyword">in</span> enumerate(class_labels):</span><br><span class="line">  <span class="keyword">if</span> isinstance(label, bytes):</span><br><span class="line">    class_labels[i] = label.decode(<span class="string">"utf8"</span>)</span><br></pre></td></tr></table></figure>
+<p>下面进行模型的转换，直接使用coremltools模块提供的API即可，如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> coremltools <span class="keyword">as</span> ct</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义输入</span></span><br><span class="line">image_input = ct.ImageType(shape=(<span class="number">1</span>, <span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>,),</span><br><span class="line">                           bias=[<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>], scale=<span class="number">1</span>/<span class="number">127</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置可预测的标签</span></span><br><span class="line">classifier_config = ct.ClassifierConfig(class_labels)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行模型转换</span></span><br><span class="line">model = ct.convert(</span><br><span class="line">    keras_model, </span><br><span class="line">    inputs=[image_input], </span><br><span class="line">    classifier_config=classifier_config,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p>这一步做完成，实际上已经完整了核心的转换部分，我们还需要为model实例追加一些元数据，你应该还记得，将CoreML模型引入Xcode工程后，可以在Xcode中看到模型的简介和使用方法等信息，这些信息就是通过追加元数据写入的。上面实例代码中，默认将其转换成neuralnetwork（神经网络）模式的模型，转换模型时我们也可以选择了添加conver_to参数为mlprogram，这表示将模型转换成CoreML程序模式的。</p>
+<p>写入元数据实例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 写入元数据</span></span><br><span class="line">model.input_description[<span class="string">"input_1"</span>] = <span class="string">"输入要分类的图片"</span></span><br><span class="line">model.output_description[<span class="string">"classLabel"</span>] = <span class="string">"最可靠的结果"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型作者</span></span><br><span class="line">model.author = <span class="string">"TensorFlow转换"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 许可</span></span><br><span class="line">model.license = <span class="string">"Please see https://github.com/tensorflow/tensorflow for license information, and https://github.com/tensorflow/models/tree/master/research/slim/nets/mobilenet for the original source of the model."</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 描述</span></span><br><span class="line">model.short_description = <span class="string">"图片识别模型"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 版本号</span></span><br><span class="line">model.version = <span class="string">"1.0"</span></span><br></pre></td></tr></table></figure>
+<p>最后，就可以进行模型的导出了，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 存储模型</span></span><br><span class="line">model.save(<span class="string">"MobileNetV2.mlmodel"</span>)</span><br></pre></td></tr></table></figure>
+<p>需要注意，此时导出的模型格式，与前面转换成设置的模型类型有关，转换为mlprogram模式的模型需要导出mlpackage格式的，转换为neuralnetwork的模型需要导出为mlmodel格式的。</p>
+<p>完整的Python文件代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tensorflow <span class="keyword">as</span> tf </span><br><span class="line"><span class="comment"># 加载模型</span></span><br><span class="line">keras_model = tf.keras.applications.MobileNetV2(</span><br><span class="line">    weights=<span class="string">"imagenet"</span>, </span><br><span class="line">    input_shape=(<span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>,),</span><br><span class="line">    classes=<span class="number">1000</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="comment"># 模型对应的索引文件地址</span></span><br><span class="line">label_url = <span class="string">'https://storage.googleapis.com/download.tensorflow.org/data/ImageNetLabels.txt'</span></span><br><span class="line">class_labels = urllib.request.urlopen(label_url).read().splitlines()</span><br><span class="line">class_labels = class_labels[<span class="number">1</span>:]</span><br><span class="line"><span class="keyword">assert</span> len(class_labels) == <span class="number">1000</span></span><br><span class="line"><span class="keyword">for</span> i, label <span class="keyword">in</span> enumerate(class_labels):</span><br><span class="line">  <span class="keyword">if</span> isinstance(label, bytes):</span><br><span class="line">    class_labels[i] = label.decode(<span class="string">"utf8"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> coremltools <span class="keyword">as</span> ct</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义输入</span></span><br><span class="line">image_input = ct.ImageType(shape=(<span class="number">1</span>, <span class="number">224</span>, <span class="number">224</span>, <span class="number">3</span>,),</span><br><span class="line">                           bias=[<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>], scale=<span class="number">1</span>/<span class="number">127</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置可预测的标签</span></span><br><span class="line">classifier_config = ct.ClassifierConfig(class_labels)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进行模型转换</span></span><br><span class="line">model = ct.convert(</span><br><span class="line">    keras_model, </span><br><span class="line">    inputs=[image_input], </span><br><span class="line">    classifier_config=classifier_config,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 写入元数据</span></span><br><span class="line">model.input_description[<span class="string">"input_1"</span>] = <span class="string">"输入要分类的图片"</span></span><br><span class="line">model.output_description[<span class="string">"classLabel"</span>] = <span class="string">"最可靠的结果"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 模型作者</span></span><br><span class="line">model.author = <span class="string">"TensorFlow转换"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 许可</span></span><br><span class="line">model.license = <span class="string">"Please see https://github.com/tensorflow/tensorflow for license information, and https://github.com/tensorflow/models/tree/master/research/slim/nets/mobilenet for the original source of the model."</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 描述</span></span><br><span class="line">model.short_description = <span class="string">"图片识别模型"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 版本号</span></span><br><span class="line">model.version = <span class="string">"1.0"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 存储模型</span></span><br><span class="line">model.save(<span class="string">"XMobileNetV2.mlmodel"</span>)</span><br></pre></td></tr></table></figure>
+<p>运行此Python脚本，如果没有报错，则会在当前脚本的同级目录下生成模型文件，下面我们可以将此模型文件引入到Xcode中，如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_04281b6205f44225aee67bcc94a5020c.png" alt="截屏2023-07-25 17.27.35.png"></p>
+<p>下面可以尝试下此模型的预测效果，如下：</p>
+<p><img src="https://ucc.alicdn.com/pic/developer-ecology/ww5utkr4n4ptw_de40bd74d29b4cd885f914788c56b797.png" alt="截屏2023-07-25 17.28.52.png"></p>
+<p>可以看到，将三方模型转成成CoreML模型非常简单，同理对于PyTroch，LibSVM等模型也类似，安装对应的三方模块，读取模型后进行转换即可。</p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/07/30/478Mac部署AIGC图片生成服务——基于stable-diffusion/" class="pre-post btn btn-default" title='Mac部署AIGC图片生成服务——基于stable-diffusion'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Mac部署AIGC图片生成服务——基于stable-diffusion</span>
+        </a>
+    
+    
+        <a href="/2023/07/25/476iOS MachineLearning 系列（21）——CoreML模型的更多训练模板/" class="next-post btn btn-default" title='iOS MachineLearning 系列（21）——CoreML模型的更多训练模板'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（21）——CoreML模型的更多训练模板</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（22）——将其他三方模型转换成CoreML模型"><span class="toc-text">iOS MachineLearning 系列（22）——将其他三方模型转换成CoreML模型</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

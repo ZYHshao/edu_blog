@@ -1,0 +1,315 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS MachineLearning 系列（5）—— 视频中的物体运动追踪 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS MachineLearning 系列（5）—— 视频中的物体运动追踪">
+            
+	            iOS MachineLearning 系列（5）—— 视频中的物体运动追踪
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/从机器学习到AI">
+            从机器学习到AI
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2023/04/26</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="iOS-MachineLearning-系列（5）——-视频中的物体运动追踪"><a href="#iOS-MachineLearning-系列（5）——-视频中的物体运动追踪" class="headerlink" title="iOS MachineLearning 系列（5）—— 视频中的物体运动追踪"></a>iOS MachineLearning 系列（5）—— 视频中的物体运动追踪</h1><p>本系列的前面几篇文章中，我们将静态图片分析相关的API做了详尽的介绍。在Vision框架中，还提供了视频中物体追踪的能力。</p>
+<p>仔细想来，其实视频的分析和静态图片的分析本质上并无太大的区别，我们可以将视频拆解成图片帧，之后再对图片进行静态分析。将所有图片帧的分析结果反馈到视频上，即实现了对视频的分析能力。</p>
+<p>视频中物体运动的跟踪常在一些AR游戏中应用，这些现实增强类的应用常常需要实时追踪显示中的物体。</p>
+<h2 id="1-先看一个简单的示例"><a href="#1-先看一个简单的示例" class="headerlink" title="1 - 先看一个简单的示例"></a>1 - 先看一个简单的示例</h2><p>我们以矩形区域追踪为例，与前面文章介绍的静态分析类似，运动追踪实现的核心点也只有三个：</p>
+<p>1. 请求操作句柄。</p>
+<p>2. 构建请求。</p>
+<p>3. 处理分析请求的回调。</p>
+<p>首先我们先来构建操作句柄：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> handler = <span class="type">VNSequenceRequestHandler</span>()</span><br></pre></td></tr></table></figure>
+<p>构建请求：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">lazy</span> <span class="keyword">var</span> request: <span class="type">VNTrackRectangleRequest</span> = &#123;    </span><br><span class="line">    <span class="keyword">let</span> req = <span class="type">VNTrackRectangleRequest</span>(rectangleObservation: observation) &#123; result, error <span class="keyword">in</span></span><br><span class="line">        <span class="comment">// 处理结果</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> error &#123;</span><br><span class="line">            <span class="built_in">print</span>(error)</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 处理结果</span></span><br><span class="line">        <span class="keyword">self</span>.handleResult(request: result <span class="keyword">as</span>! <span class="type">VNTrackRectangleRequest</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 选择快速模式</span></span><br><span class="line">    req.trackingLevel = .fast</span><br><span class="line">    <span class="keyword">return</span> req</span><br><span class="line">&#125;()</span><br></pre></td></tr></table></figure>
+<p>在构建请求时，需要我们传入一个初始的描述矩形区域的VNRectangleObservation对象，之后的追踪会以参数为对象。VNRectangleObservation的构建示例如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 预检测得到的</span></span><br><span class="line">var observation = VNRectangleObservation(boundingBox: <span class="built_in">CGRect</span>(x: <span class="number">0.3728713095188141</span>, y: <span class="number">0.833836019039154</span>, width: <span class="number">0.16493645310401917</span>, height: <span class="number">0.07572066783905029</span>))</span><br></pre></td></tr></table></figure>
+<p>需要注意，这里的数据是我使用静态分析预先处理视频首帧得到的，实际应用中，我们也可以先对首帧进行静态分析，找到要追踪的矩形区域。</p>
+<p>之外，我们还需要对视频资源进行一些处理，简单来说，即是解析视频帧，之后逐帧进行分析，示例代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">readVideo</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 视频路径</span></span><br><span class="line">    <span class="keyword">let</span> videoURL = <span class="type">URL</span>(fileURLWithPath: <span class="type">Bundle</span>.main.path(forResource: <span class="string">"video1"</span>, ofType: <span class="string">".mp4"</span>)!)</span><br><span class="line">    <span class="comment">// 读取视频资源</span></span><br><span class="line">    <span class="keyword">let</span> videoAsset = <span class="type">AVURLAsset</span>(url: videoURL)</span><br><span class="line">    <span class="comment">// 创建视频资源解析器</span></span><br><span class="line">    <span class="keyword">let</span> videoProcessor = <span class="type">AVAssetImageGenerator</span>(asset: videoAsset)</span><br><span class="line">    videoProcessor.requestedTimeToleranceBefore = <span class="type">CMTime</span>.zero</span><br><span class="line">    videoProcessor.requestedTimeToleranceAfter = <span class="type">CMTime</span>.zero</span><br><span class="line">    <span class="comment">// 获取视频时长</span></span><br><span class="line">    <span class="keyword">let</span> durationSeconds: <span class="type">Float64</span> = <span class="type">CMTimeGetSeconds</span>(videoAsset.duration)</span><br><span class="line">    <span class="comment">// 存储要截取的视频帧时间点</span></span><br><span class="line">    <span class="keyword">var</span> times = [<span class="type">NSValue</span>]()</span><br><span class="line">    <span class="comment">// 以每秒60帧为标准，获取总帧数</span></span><br><span class="line">    <span class="keyword">let</span> totalFrames: <span class="type">Float64</span> = durationSeconds * <span class="number">60</span></span><br><span class="line">    <span class="comment">// 定义 CMTime 即请求缩略图的时间间隔</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="number">0</span>...<span class="type">Int</span>(totalFrames) &#123;</span><br><span class="line">       <span class="keyword">let</span> timeFrame = <span class="type">CMTimeMake</span>(value: <span class="type">Int64</span>(i), timescale: <span class="number">60</span>)</span><br><span class="line">       <span class="keyword">let</span> timeValue = <span class="type">NSValue</span>(time: timeFrame)</span><br><span class="line">       times.append(timeValue)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 进行图片解析</span></span><br><span class="line">    videoProcessor.generateCGImagesAsynchronously(forTimes: times) &#123; time, cgImage, actualTime, resultCode, error  <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> cgImage = cgImage &#123;</span><br><span class="line">            <span class="keyword">let</span> image = <span class="type">UIImage</span>(cgImage: cgImage)</span><br><span class="line">            <span class="keyword">self</span>.images.append(image)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当所有视频帧处理完成后，我们即可以对其进行矩形追踪，示例方法如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">start</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">count</span> = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 这里定时器的作用是逐帧的刷新页面，同时进行追踪</span></span><br><span class="line">    <span class="type">Timer</span>.scheduledTimer(withTimeInterval: <span class="number">0.03</span>, repeats: <span class="literal">true</span>) &#123; t <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">count</span> &lt; <span class="keyword">self</span>.images.<span class="built_in">count</span> &#123;</span><br><span class="line">            <span class="comment">// 设置页面展示的图片</span></span><br><span class="line">            <span class="keyword">self</span>.imageView.image = <span class="keyword">self</span>.images[<span class="built_in">count</span>]</span><br><span class="line">            <span class="comment">// 将inputObservation设置为上一次的分析结果</span></span><br><span class="line">            <span class="keyword">self</span>.request.inputObservation = <span class="keyword">self</span>.observation</span><br><span class="line">            <span class="comment">// 进行追踪分析</span></span><br><span class="line">            <span class="keyword">try</span>? <span class="keyword">self</span>.handler.perform([<span class="keyword">self</span>.request], on: <span class="keyword">self</span>.images[<span class="built_in">count</span>].cgImage!, orientation: .up)</span><br><span class="line">            <span class="built_in">count</span> += <span class="number">1</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 当循环结束时，设置isLastFrame表情请求已经到了最后一帧</span></span><br><span class="line">            <span class="keyword">self</span>.request.isLastFrame = <span class="literal">true</span></span><br><span class="line">            <span class="comment">// 停止定时器</span></span><br><span class="line">            t.invalidate()</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"end"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">print</span>(images.<span class="built_in">count</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>需要注意，追踪分析的本质是对矩形区域的前后状态进行比较，将其运行情况进行分析。因此，每次进行分析请求时需要将上一次的结果作为inputObservation进行输入，当视频结束时，设置起isLastFrame来结束分析，释放资源。</p>
+<p>最后，分析结果的处理很简单：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handleResult</span><span class="params">(request: VNTrackRectangleRequest)</span></span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(request.results)</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> request.results ?? [] &#123;</span><br><span class="line">        <span class="keyword">guard</span> <span class="keyword">let</span> result = r <span class="keyword">as</span>? <span class="type">VNRectangleObservation</span> <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        observation = result</span><br><span class="line">        <span class="keyword">var</span> box = result.boundingBox</span><br><span class="line">        <span class="comment">// 坐标系转换</span></span><br><span class="line">        box.origin.y = <span class="number">1</span> - box.origin.y - box.size.height</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"box:"</span>, result.boundingBox)</span><br><span class="line">        <span class="type">DispatchQueue</span>.main.async &#123;</span><br><span class="line">            <span class="keyword">let</span> size = <span class="keyword">self</span>.imageView.frame.size</span><br><span class="line">            <span class="keyword">self</span>.boxView.frame = <span class="type">CGRect</span>(x: box.origin.x * size.width, y: box.origin.y * size.height, width: box.size.width * size.width, height: box.size.height * size.height)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，box是我们定义好的一个UIView蒙层，用来表示追踪的结果，效果如下GIF图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-fdbe3e75a3d2e4e441ac414d429f6cf89ab.gif" alt></p>
+<p>其中，白色的色块是原始视频中的矩形物体，红色的色块是我们的追踪结果。</p>
+<h2 id="2-几个重要的类"><a href="#2-几个重要的类" class="headerlink" title="2 - 几个重要的类"></a>2 - 几个重要的类</h2><p>VNSequenceRequestHandle类无需多说了，它的作用就是发起请求，其与VNImageRequestHandler类的最大区别在于VNSequenceRequestHandle在创建对象时无需设置一个图片资源，VNSequenceRequestHandle主要是用来分析一系列图片的，因此其是在请求执行时设置图片资源的。</p>
+<p>VNTrackRectangleRequest类用来创建矩形区域追踪请求，继承自VNTrackingRequest类，VNTrackingRequest的定义如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">open</span> <span class="class"><span class="keyword">class</span> <span class="title">VNTrackingRequest</span> : <span class="title">VNImageBasedRequest</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 输入追踪区域的Observation对象 每次根据中要刷新</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> inputObservation: <span class="type">VNDetectedObjectObservation</span></span><br><span class="line">    <span class="comment">// 追踪模式</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> trackingLevel: <span class="type">VNRequestTrackingLevel</span></span><br><span class="line">    <span class="comment">// 是否是最后一帧，如果设置为true，将停止后续分析</span></span><br><span class="line">    <span class="keyword">open</span> <span class="keyword">var</span> isLastFrame: <span class="type">Bool</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中trackingLevel用了设置追踪的算法模式：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">VNRequestTrackingLevel</span> : <span class="title">UInt</span>, @<span class="title">unchecked</span> <span class="title">Sendable</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 精准优先</span></span><br><span class="line">    <span class="keyword">case</span> accurate = <span class="number">0</span></span><br><span class="line">    <span class="comment">// 速度优先</span></span><br><span class="line">    <span class="keyword">case</span> fast = <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>更多时候，我们要追踪的物体可能不是规则的矩形，也可能是会进行翻转和形变的物体，例如行驶中的汽车，飞行中的足球，奔跑中的人等。对于这类需求，我们需要使用VNTrackObjectRequest来进行追踪，其用法与VNTrackRectangleRequest几乎完全一致，这里就不再赘述，示例代码可以在下面找到：</p>
+<p><a href="https://www.oschina.net/action/GoToLink?url=https%3A%2F%2Fgithub.com%2FZYHshao%2FMachineLearnDemo" target="_blank" rel="noopener">https://github.com/ZYHshao/MachineLearnDemo</a></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2023/04/27/461iOS MachineLearning 系列（6）—— 视频中的物体轨迹分析/" class="pre-post btn btn-default" title='iOS MachineLearning 系列（6）—— 视频中的物体轨迹分析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（6）—— 视频中的物体轨迹分析</span>
+        </a>
+    
+    
+        <a href="/2023/04/25/459iOS MachineLearning 系列（4）—— 静态图像分析之物体识别与分类/" class="next-post btn btn-default" title='iOS MachineLearning 系列（4）—— 静态图像分析之物体识别与分类'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS MachineLearning 系列（4）—— 静态图像分析之物体识别与分类</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#iOS-MachineLearning-系列（5）——-视频中的物体运动追踪"><span class="toc-text">iOS MachineLearning 系列（5）—— 视频中的物体运动追踪</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-先看一个简单的示例"><span class="toc-text">1 - 先看一个简单的示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-几个重要的类"><span class="toc-text">2 - 几个重要的类</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

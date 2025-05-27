@@ -1,0 +1,333 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Clang代码覆盖率检测（插桩技术） | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Clang代码覆盖率检测（插桩技术）">
+            
+	            Clang代码覆盖率检测（插桩技术）
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/编程珠玑">
+            编程珠玑
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2022/06/19</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="Clang代码覆盖率检测（插桩技术）"><a href="#Clang代码覆盖率检测（插桩技术）" class="headerlink" title="Clang代码覆盖率检测（插桩技术）"></a>Clang代码覆盖率检测（插桩技术）</h1><p>Clang的全称是C Language Family Frontend for LLVM，即基于LLVM的C系列语言的前端编译器。iOS应用的前端编译，即是采用Clang完成的。本篇文章，我们主要介绍Clang内置的一个简单的代码覆盖率检测功能，对于iOS开发来说，此功能更多用于Objective-C的方法插桩，为二进制重排提供支持，优化应用启动速度。但代码覆盖率检测功能并不仅仅只能应用与二进制重排，其本质是对于函数级、基本块级或代码边缘级插入回调，我们可以基于这一原理更灵活的实现所需要的功能。</p>
+<h2 id="1-Tracing-PCs-with-guards"><a href="#1-Tracing-PCs-with-guards" class="headerlink" title="1. Tracing PCs with guards"></a>1. Tracing PCs with guards</h2><p>开启Clang代码覆盖率检查功能，需要配置-fsanitize-coverage编译参数，你可以创建一个iOS模板工程做测试，在Build Settings-&gt;Apple Clang - Custom Complier Flags-&gt;Other C Flags下面配置。如图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-704be2272e99bcdcdc523eb6511dc385ac4.png" alt></p>
+<p>trace-pc-guard模式下，所有代码块首部都会被插入如下回调函数：</p>
+<p>void __sanitizer_cov_trace_pc_guard(uint32_t *guard)</p>
+<p>此回调函数是需要开发者自定义的，除此之外，还需要实现对应初始化的回调函数：</p>
+<p>void __sanitizer_cov_trace_pc_guard_init(uint32_t *start, uint32_t *stop)</p>
+<p>在示例工程的main.m文件中定义这两个回调如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __sanitizer_cov_trace_pc_guard(uint32_t *guard) &#123;</span><br><span class="line">    <span class="keyword">void</span> *PC = __builtin_return_address(<span class="number">0</span>);</span><br><span class="line">    Dl_info info;</span><br><span class="line">    dladdr(PC, &amp;info);</span><br><span class="line">    printf(<span class="string">"%s \n"</span>,info.dli_sname);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> __sanitizer_cov_trace_pc_guard_init(uint32_t *start, uint32_t *stop) &#123;</span><br><span class="line">    <span class="keyword">static</span> uint64_t N;</span><br><span class="line">    <span class="keyword">if</span> (start == stop || *start) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">for</span> (uint32_t *x = start; x &lt; stop; x++) &#123;</span><br><span class="line">        *x = ++N;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"INIT Count: %llu \n"</span>, N);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，__sanitizer_cov_trace_pc_guard_init为初始化回调，通过其中参数可以获取到符号个数，__sanitizer_cov_trace_pc_guard是插桩函数，每个代码块开始调用时，都会首先调用此插桩函数。</p>
+<p>直接运行代码，控制台输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">INIT Count: 14 </span><br><span class="line">main </span><br><span class="line">-[AppDelegate application:didFinishLaunchingWithOptions:] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate setWindow:] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate scene:willConnectToSession:options:] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[ViewController viewDidLoad] </span><br><span class="line">-[SceneDelegate sceneWillEnterForeground:] </span><br><span class="line">-[SceneDelegate sceneDidBecomeActive:]</span><br></pre></td></tr></table></figure>
+<p>可以看到，输出的结果就是按照项目中方法的调用顺序排序的。你可能看到有许多重复的符号，这是由于trace-pc-guard设定的，其会对源码中任意的代码块开始执行时进行插桩函数回调，包括if判断，while循环以及Block调用等，例如你可以尝试在ViewController.m文件的viewDidLoad方法中添加一些代码，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    printf(<span class="string">"开始Block==================\n"</span>);</span><br><span class="line">    <span class="keyword">void</span>(^block)(<span class="keyword">void</span>) = ^&#123;</span><br><span class="line"></span><br><span class="line">    &#125;;</span><br><span class="line">    block();</span><br><span class="line">    printf(<span class="string">"开始循环==================\n"</span>);</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        n--;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"开始分支判断==================\n"</span>);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">10</span>) &#123;</span><br><span class="line">        n++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行项目，输出效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">INIT Count: 18 </span><br><span class="line">main </span><br><span class="line">-[AppDelegate application:didFinishLaunchingWithOptions:] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate setWindow:] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate scene:willConnectToSession:options:] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[SceneDelegate window] </span><br><span class="line">-[ViewController viewDidLoad] </span><br><span class="line">开始Block==================</span><br><span class="line">__29-[ViewController viewDidLoad]_block_invoke </span><br><span class="line">开始循环==================</span><br><span class="line">-[ViewController viewDidLoad] </span><br><span class="line">-[ViewController viewDidLoad] </span><br><span class="line">-[ViewController viewDidLoad] </span><br><span class="line">开始分支判断==================</span><br><span class="line">-[ViewController viewDidLoad] </span><br><span class="line">-[SceneDelegate sceneWillEnterForeground:] </span><br><span class="line">-[SceneDelegate sceneDidBecomeActive:]</span><br></pre></td></tr></table></figure>
+<p>有时候并非所有的代码块都需要插桩，例如做二进制重排时，只需要方法和函数的插桩，也有配置方式，我们后面介绍。</p>
+<h2 id="2-Inline-8bit-counters"><a href="#2-Inline-8bit-counters" class="headerlink" title="2. Inline 8bit-counters"></a>2. Inline 8bit-counters</h2><p>此模式需要配置成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-fsanitize-coverage=inline-8bit-counters</span><br></pre></td></tr></table></figure>
+<p>此模式与trace-pc-guard类似，只是其在代码块开始时不会进行回调，而是简单的增加内置计数器的计数。同样，在此模式下，用户需要实现如下自定义函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">void __sanitizer_cov_8bit_counters_init(char *start, char *end) &#123;</span><br><span class="line">  // [start,end) is the array of 8-bit counters created for the current DSO.</span><br><span class="line">  // Capture this array in order to read/modify the counters.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>此函数对应计数器的初始化。</p>
+<h2 id="3-Inline-bool-flag"><a href="#3-Inline-bool-flag" class="headerlink" title="3. Inline bool-flag"></a>3. Inline bool-flag</h2><p>此模式与inline-8bit-counters模式类似，需要配置成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-fsanitize-coverage=inline-bool-flag</span><br></pre></td></tr></table></figure>
+<p>在此模式下，在代码块开始时会将一个内置的布尔值置为true，而不是增加计数器的计数。需要实现如下函数来捕获此变量：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __sanitizer_cov_bool_flag_init(<span class="keyword">bool</span> *start, <span class="keyword">bool</span> *end) &#123;</span><br><span class="line">  <span class="comment">// [start,end) is the array of boolean flags created for the current DSO.</span></span><br><span class="line">  <span class="comment">// Capture this array in order to read/modify the flags.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-Tracing-PCs"><a href="#4-Tracing-PCs" class="headerlink" title="4. Tracing PCs"></a>4. Tracing PCs</h2><p>此模式在代码块的开始出会回调__sanitizer_cov_trace_pc() 函数，也是插桩回调，此模式可配置为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-fsanitize-coverage=trace-pc</span><br></pre></td></tr></table></figure>
+<p>对应实现自定义的插桩函数如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> __sanitizer_cov_trace_pc(<span class="keyword">void</span>*a) &#123;</span><br><span class="line">    <span class="keyword">void</span> *PC = __builtin_return_address(<span class="number">0</span>);</span><br><span class="line">    Dl_info info;</span><br><span class="line">    dladdr(PC, &amp;info);</span><br><span class="line">    printf(<span class="string">"%s %p \n"</span>,info.dli_sname, info.dli_saddr);</span><br><span class="line">    printf(<span class="string">"__sanitizer_cov_trace_pc:%p\n"</span>,a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于此模式，我们可以配置一个额外的参数来区别间接调用，例如修改ViewController.m文件中的代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">"ViewController.h"</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ViewController</span> ()</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">ViewController</span></span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    printf(<span class="string">"开始Block==================\n"</span>);</span><br><span class="line">    <span class="keyword">void</span>(^block)(<span class="keyword">void</span>) = ^&#123;</span><br><span class="line"></span><br><span class="line">    &#125;;</span><br><span class="line">    block();</span><br><span class="line">    printf(<span class="string">"开始循环==================\n"</span>);</span><br><span class="line">    <span class="keyword">int</span> n = <span class="number">3</span>;</span><br><span class="line">    <span class="keyword">while</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        n--;</span><br><span class="line">    &#125;</span><br><span class="line">    printf(<span class="string">"开始分支判断==================\n"</span>);</span><br><span class="line">    <span class="keyword">if</span> (n &lt; <span class="number">10</span>) &#123;</span><br><span class="line">        n++;</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">self</span> log];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)log &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>新定义了一个log函数，并在ViewDidLoad中进行了调用，配置编译选项如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-fsanitize-coverage=trace-pc,indirect-calls</span><br></pre></td></tr></table></figure>
+<p>对应实现间接调用的插桩回调如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void __sanitizer_cov_trace_pc_indir(void *callee) &#123;</span><br><span class="line">    printf(&quot;__sanitizer_cov_trace_pc_indirect:%p\n&quot;,callee);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行代码，控制台输出如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">main 0x105f5dee0 </span><br><span class="line">__sanitizer_cov_trace_pc:0x1</span><br><span class="line">-[AppDelegate application:didFinishLaunchingWithOptions:] 0x105f5dae0 </span><br><span class="line">__sanitizer_cov_trace_pc:0x6000019241f0</span><br><span class="line">-[SceneDelegate window] 0x105f5e200 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[SceneDelegate setWindow:] 0x105f5e240 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[SceneDelegate window] 0x105f5e200 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[SceneDelegate window] 0x105f5e200 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[SceneDelegate scene:willConnectToSession:options:] 0x105f5df80 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[SceneDelegate window] 0x105f5e200 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[SceneDelegate window] 0x105f5e200 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[SceneDelegate window] 0x105f5e200 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[ViewController viewDidLoad] 0x105f5d940 </span><br><span class="line">__sanitizer_cov_trace_pc:0x7fec54f08490</span><br><span class="line">-[ViewController viewDidLoad] 0x105ffa2c8 </span><br><span class="line">__sanitizer_cov_trace_pc_indirect:0x7fff20183600</span><br><span class="line">开始Block==================</span><br><span class="line">-[ViewController viewDidLoad] 0x105ffa2c8 </span><br><span class="line">__sanitizer_cov_trace_pc_indirect:0x105f5da80</span><br><span class="line">__29-[ViewController viewDidLoad]_block_invoke 0x105f5da80 </span><br><span class="line">__sanitizer_cov_trace_pc:0x105f60040</span><br><span class="line">开始循环==================</span><br><span class="line">-[ViewController viewDidLoad] 0x105f5d940 </span><br><span class="line">__sanitizer_cov_trace_pc:0x7fff864ab328</span><br><span class="line">-[ViewController viewDidLoad] 0x105f5d940 </span><br><span class="line">__sanitizer_cov_trace_pc:0x7fff864ab328</span><br><span class="line">-[ViewController viewDidLoad] 0x105f5d940 </span><br><span class="line">__sanitizer_cov_trace_pc:0x7fff864ab328</span><br><span class="line">开始分支判断==================</span><br><span class="line">-[ViewController viewDidLoad] 0x105f5d940 </span><br><span class="line">__sanitizer_cov_trace_pc:0x7fff864ab328</span><br><span class="line">-[ViewController viewDidLoad] 0x105ffa2c8 </span><br><span class="line">__sanitizer_cov_trace_pc_indirect:0x7fff201833c0</span><br><span class="line">-[ViewController log] 0x105f5dab0 </span><br><span class="line">__sanitizer_cov_trace_pc:0x7fec54f08490</span><br><span class="line">-[SceneDelegate sceneWillEnterForeground:] 0x105f5e140 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br><span class="line">-[SceneDelegate sceneDidBecomeActive:] 0x105f5e080 </span><br><span class="line">__sanitizer_cov_trace_pc:0x600001b1ffc0</span><br></pre></td></tr></table></figure>
+<h2 id="5-不同级别的检测"><a href="#5-不同级别的检测" class="headerlink" title="5. 不同级别的检测"></a>5. 不同级别的检测</h2><p>前面我们介绍的编译模式，会对函数，Block和逻辑代码块进行检测，有时候我们不需要这个细粒度的检测，例如在二进制重排时，我们仅仅想检测方法和函数，只想对方法函数进行插桩，此时就可以配置检测级别参数，支持的级别参数有三种：</p>
+<p>1. edge：默认的级别，细粒度最高的级别，函数，Block和代码块都会被插桩。</p>
+<p>2. bb：基础的块级代码会被插桩。</p>
+<p>3. func：仅仅函数块会被插桩。</p>
+<p>通常我们在做二进制重排时，更关注的是函数的调用顺序，使用func等级即可，编译设置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-fsanitize-coverage=trace-pc,func</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>—— 珲少 QQ：316045346</p>
+<p>同时，如果本篇文章让你觉得有用，欢迎分享给更多朋友，请标明出处。</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2022/07/17/447追根问底：Objective-C关联属性原理分析/" class="pre-post btn btn-default" title='追根问底：Objective-C关联属性原理分析'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">追根问底：Objective-C关联属性原理分析</span>
+        </a>
+    
+    
+        <a href="/2022/06/18/445前端自动化构建之Gulp/" class="next-post btn btn-default" title='前端自动化构建之Gulp'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">前端自动化构建之Gulp</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Clang代码覆盖率检测（插桩技术）"><span class="toc-text">Clang代码覆盖率检测（插桩技术）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Tracing-PCs-with-guards"><span class="toc-text">1. Tracing PCs with guards</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Inline-8bit-counters"><span class="toc-text">2. Inline 8bit-counters</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Inline-bool-flag"><span class="toc-text">3. Inline bool-flag</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Tracing-PCs"><span class="toc-text">4. Tracing PCs</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-不同级别的检测"><span class="toc-text">5. 不同级别的检测</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

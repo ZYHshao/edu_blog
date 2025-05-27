@@ -1,0 +1,343 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>自己动手设计一款iOS自动构建发布工具 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="自己动手设计一款iOS自动构建发布工具">
+            
+	            自己动手设计一款iOS自动构建发布工具
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/小码工具">
+            小码工具
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/07/24</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="自己动手设计一款iOS自动构建发布工具"><a href="#自己动手设计一款iOS自动构建发布工具" class="headerlink" title="自己动手设计一款iOS自动构建发布工具"></a>自己动手设计一款iOS自动构建发布工具</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在iOS开发中，你可能经常会遇到这样的场景：
+</code></pre><blockquote>
+<p>自己负责的功能模块开发完成后，将其合并到测试分支，然后打测试包给测试安装。测试发现bug，这时你可能正在开发分支上做其他的事情，但是你需要修改了bug，提交到测试分支，再次打测试包给测试人员使用。反反复复的切换分支，反反复复的构建打包将浪费你大量的时间，作为一名工程师，最不能容忍的便是在重复的事情上浪费时间。于是，你想，我可以自己动手写一个自动构建发布的小工具。</p>
+</blockquote>
+<pre><code>本篇博客就是基于上面的想法，给大家介绍编写一个简洁的自动化工具的具体步骤与核心要点。在编写本博客时，我也基于这样的想法开发了一款Mac上的iOS自动构建，打包，发布工具，并且将代码开源在Github，如果有兴趣，你也可以作为参考。
+</code></pre><h3 id="二、需求分析"><a href="#二、需求分析" class="headerlink" title="二、需求分析"></a>二、需求分析</h3><pre><code>开发工具也是一种产品，在开始做一件产品之前，需求分析是十分重要的步骤。商业产品的需求者是用户，而开发工具的需求者就是你自己。首先，结合工作需要，一款自动化构建工具应该至少满足如下这些功能需求：
+
+1.它应该支持多个项目同时进行自动化构建。 
+
+2.应该可以方便的新增与删除项目。
+
+3.它应该具备Git操作能力，自动选择合适的分支进行构建。
+
+4.它需要调用Xcode命令来完成打包工作。
+
+5.它具备发布到第三方平台的能力(例如蒲公英)。
+
+6.它可以灵活的进行模式配置，Git模块，Xcode构建模块和发布模块可以自由组合。
+
+7.它应该有一个输出窗口，可以让使用者获取构建的进度以及log日志。
+
+8.它有记忆功能，会将配置信息保存到本地。
+</code></pre><p>上面列出的功能点是这个自动化构建工具的一些基础功能，实现了这些功能，你的软件便可以正式的投入使用，但是它并不完善，你可以在自己规划的第二版，第三版中继续丰富功能，优化体验。</p>
+<h3 id="三、技术分析"><a href="#三、技术分析" class="headerlink" title="三、技术分析"></a>三、技术分析</h3><pre><code>明确了需求，你下一步需要考虑的便是实现这些需求所需要的技术。
+</code></pre><h4 id="1-支持多个项目同时进行自动化构建。"><a href="#1-支持多个项目同时进行自动化构建。" class="headerlink" title="1.支持多个项目同时进行自动化构建。"></a>1.支持多个项目同时进行自动化构建。</h4><pre><code>在界面上，可以采用列表的方式进行已添加项目的展示。NSTableView是一个很好选择，其使用方便，结合xib文件来编写cell，其开发效率也十分高。关于进行多个项目的同时构建，可以采用多线程编程技术，在Objective-C中，NSOperationQueue可以方便的进行多线程任务管理，我们可以使用它来实现异步编程。
+</code></pre><h4 id="2-新增与删除项目。"><a href="#2-新增与删除项目。" class="headerlink" title="2.新增与删除项目。"></a>2.新增与删除项目。</h4><pre><code>对于iOS工程的自动构建，新增和删除项目无非就是保存或删除xcode文件的路径，当然，你可以也需要一些附带的数据用于显示，例如项目名等。
+</code></pre><h4 id="3-操作Git。"><a href="#3-操作Git。" class="headerlink" title="3.操作Git。"></a>3.操作Git。</h4><pre><code>安装了Xcode工具，Git工具会被自动的安装。你可以直接在终端通过命令行来调用Git命令，你可以使用Foundation框架中的NSAppleScript类来在OS X平台软件中执行脚本命令，关于Git模块，你需要使用到的命令如下：
+
+①拉取项目所有分支：git branch
+
+②进行分支的切换：git checkout \[分支名\]
+
+③从远端拉取代码：git pull
+</code></pre><h4 id="4-使用Xcode命令来进行工程的构建。"><a href="#4-使用Xcode命令来进行工程的构建。" class="headerlink" title="4.使用Xcode命令来进行工程的构建。"></a>4.使用Xcode命令来进行工程的构建。</h4><pre><code>和操作Git命令类似，你需要使用到的Xcode的构建命令如下：
+
+①清理工程：xcodebuild clean -\[工程类型\] \[工程地址\] -scheme \[scheme名称\] CONFIGURATION=\[DEBUG模式\]
+
+②导出archive文件：xcodebuild archive -\[工程类型\] \[工程地址\] -scheme \[scheme名称\] -archivePath \[导出路径\] CONFIGURATION=\[DEBUG模式\]
+
+③导出IPA安装包：xcodebuild -exportArchive -archivePath \[archive文件路径\] -exportPath \[导出路径\] exportOptionsPlist \[配置plist文件\]
+</code></pre><h4 id="5-发布到第三方平台"><a href="#5-发布到第三方平台" class="headerlink" title="5.发布到第三方平台"></a>5.发布到第三方平台</h4><pre><code>这一步其实就是IPA安装包的上传，你可以长传到蒲公英平台作为私有项目供测试人员使用，你也可以上传到公司自己的服务器，AFNetworking是一个同时支持iOS和OS X的网络第三方库，你可以选择使用它来上传文件。
+</code></pre><h4 id="6-灵活的组合模块。"><a href="#6-灵活的组合模块。" class="headerlink" title="6.灵活的组合模块。"></a>6.灵活的组合模块。</h4><pre><code>这部分就完全是代码逻辑了，在设计时，你可以将每个模块封装成具体的任务，任务之间只能顺序进行执行，然后自由组合这些任务即可。
+</code></pre><h4 id="7-输出窗口。"><a href="#7-输出窗口。" class="headerlink" title="7.输出窗口。"></a>7.输出窗口。</h4><pre><code>使用NSTextView来显示输出信息，无论是执行脚本，还是上传文件，如果出错，都会有信息反馈。
+</code></pre><h4 id="8-记忆功能。"><a href="#8-记忆功能。" class="headerlink" title="8.记忆功能。"></a>8.记忆功能。</h4><pre><code>你可以选择使用数据库来存储每个项目的信息，因为数据量并不大，我在开发这个软件时，采用的是归档的原理来进行数据的持久化。
+</code></pre><h3 id="四、界面设计"><a href="#四、界面设计" class="headerlink" title="四、界面设计"></a>四、界面设计</h3><pre><code>在Xcode中，使用storyboard开发界面是一件什么畅快的事情。在开发项目的主界面时，我参照了SourceTress的设计，也感谢 [@魔笛](https://my.oschina.net/u/157488) 提供的界面思路。我想作为开发者的工具无需绚丽的外表，简约是实用，然后看上去舒服就算达到要求。主页面截图如下，其也十分简单，只是作为数据的展示。
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2017/0724/144737_29Rh_2340880.png" alt></p>
+<p>添加工程界面我采用的是弹出窗口的模式，正如上面分析，添加工程的实质就是拿到Xcode项目文件的地址，界面效果如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0724/144911_Fce3_2340880.png" alt></p>
+<p>项目详情界面略微复杂，其中需要配置编译模块，Git模块和发布模块，界面如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0724/145300_7qKC_2340880.png" alt></p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0724/145321_v8WU_2340880.png" alt></p>
+<p><img src="https://static.oschina.net/uploads/space/2017/0724/145338_ONFv_2340880.png" alt></p>
+<p>关于逻辑与功能的编写，代码较多，需要的朋友可以自动查看源码。</p>
+<h3 id="五、扩展与源码"><a href="#五、扩展与源码" class="headerlink" title="五、扩展与源码"></a>五、扩展与源码</h3><pre><code>Jenkins是一个持续集成与发布软件的平台。后续你可以为你的自动构建工具添加轮询打包的功能，将其运行在一台作为服务器的Mac电脑上，它就是具有了持续集成功能。
+
+软件下载地址：http://zyhshao.github.io/AutoBuild/welcome.html。
+
+github源码：https://github.com/ZYHshao/AutoBuild。 欢迎starO(∩_∩)O
+</code></pre><p><strong><em>欢迎指教 共同学习</em></strong></p>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/07/24/352OS X开发：下拉菜单按钮NSPopUpButton应用/" class="pre-post btn btn-default" title='OS X开发：下拉菜单按钮NSPopUpButton应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">OS X开发：下拉菜单按钮NSPopUpButton应用</span>
+        </a>
+    
+    
+        <a href="/2017/07/21/351OS X开发：NSProgressIndicator进度指示器控件/" class="next-post btn btn-default" title='OS X开发：NSProgressIndicator进度指示器控件'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">OS X开发：NSProgressIndicator进度指示器控件</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#自己动手设计一款iOS自动构建发布工具"><span class="toc-text">自己动手设计一款iOS自动构建发布工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、需求分析"><span class="toc-text">二、需求分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、技术分析"><span class="toc-text">三、技术分析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-支持多个项目同时进行自动化构建。"><span class="toc-text">1.支持多个项目同时进行自动化构建。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-新增与删除项目。"><span class="toc-text">2.新增与删除项目。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-操作Git。"><span class="toc-text">3.操作Git。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-使用Xcode命令来进行工程的构建。"><span class="toc-text">4.使用Xcode命令来进行工程的构建。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-发布到第三方平台"><span class="toc-text">5.发布到第三方平台</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-灵活的组合模块。"><span class="toc-text">6.灵活的组合模块。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-输出窗口。"><span class="toc-text">7.输出窗口。</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-记忆功能。"><span class="toc-text">8.记忆功能。</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、界面设计"><span class="toc-text">四、界面设计</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、扩展与源码"><span class="toc-text">五、扩展与源码</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

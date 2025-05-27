@@ -1,0 +1,334 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发CoreAnimation解读之六——CATransform3D变换的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发CoreAnimation解读之六——CATransform3D变换的应用">
+            
+	            iOS开发CoreAnimation解读之六——CATransform3D变换的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/12/06</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发CoreAnimation解读之五——CATransform3D变换的应用"><a href="#iOS开发CoreAnimation解读之五——CATransform3D变换的应用" class="headerlink" title="iOS开发CoreAnimation解读之五——CATransform3D变换的应用"></a>iOS开发CoreAnimation解读之五——CATransform3D变换的应用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>CATransform3D定义了一个变化矩阵，通过对矩阵参数的设置，我们可以改变layer的一些属性，这个属性的改变，可以产生动画的效果。首先，CATransform3D定义了一个4*4的矩阵，如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">struct CATransform3D</span><br><span class="line">&#123;</span><br><span class="line">  CGFloat m11, m12, m13, m14;</span><br><span class="line">  CGFloat m21, m22, m23, m24;</span><br><span class="line">  CGFloat m31, m32, m33, m34;</span><br><span class="line">  CGFloat m41, m42, m43, m44;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>从m11到m44定义的含义如下：</p>
+<p>m11：x轴方向进行缩放</p>
+<p>m12：和m21一起决定z轴的旋转</p>
+<p>m13:和m31一起决定y轴的旋转</p>
+<p>m14:</p>
+<p>m21:和m12一起决定z轴的旋转</p>
+<p>m22:y轴方向进行缩放</p>
+<p>m23:和m32一起决定x轴的旋转</p>
+<p>m24:</p>
+<p>m31:和m13一起决定y轴的旋转</p>
+<p>m32:和m23一起决定x轴的旋转</p>
+<p>m33:z轴方向进行缩放</p>
+<p>m34:透视效果m34= -1/D，D越小，透视效果越明显，必须在有旋转效果的前提下，才会看到透视效果</p>
+<p>m41:x轴方向进行平移</p>
+<p>m42:y轴方向进行平移</p>
+<p>m43:z轴方向进行平移</p>
+<p>m44:初始为1</p>
+<h3 id="二、CATransform3D中的属性和方法"><a href="#二、CATransform3D中的属性和方法" class="headerlink" title="二、CATransform3D中的属性和方法"></a>二、CATransform3D中的属性和方法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//初始化一个transform3D对象，不做任何变换</span><br><span class="line">const CATransform3D CATransform3DIdentity;</span><br><span class="line">//判断一个transform3D对象是否是初始化的对象</span><br><span class="line">bool CATransform3DIsIdentity (CATransform3D t);</span><br><span class="line">//比较两个transform3D对象是否相同</span><br><span class="line">bool CATransform3DEqualToTransform (CATransform3D a, CATransform3D b);</span><br><span class="line">//将两个 transform3D对象变换属性进行叠加，返回一个新的transform3D对象</span><br><span class="line">CATransform3D CATransform3DConcat (CATransform3D a, CATransform3D b);</span><br></pre></td></tr></table></figure>
+<h4 id="1、平移变换"><a href="#1、平移变换" class="headerlink" title="1、平移变换"></a>1、平移变换</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//返回一个平移变换的transform3D对象 tx，ty，tz对应x，y，z轴的平移</span><br><span class="line">CATransform3D CATransform3DMakeTranslation (CGFloat tx, CGFloat ty, CGFloat tz);</span><br><span class="line">//在某个transform3D变换的基础上进行平移变换，t是上一个transform3D，其他参数同上</span><br><span class="line">CATransform3D CATransform3DTranslate (CATransform3D t, CGFloat tx, CGFloat ty, CGFloat tz);</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">    UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    UIImageView * newImageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    newImageView.image=[UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    [self.view addSubview:newImageView];</span><br><span class="line">    CATransform3D trans = CATransform3DMakeTranslation(10, 200, 0);</span><br><span class="line">    newImageView.layer.transform =trans;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1206/152731_iQIU_2340880.png" alt></p>
+<h4 id="2、缩放变换"><a href="#2、缩放变换" class="headerlink" title="2、缩放变换"></a>2、缩放变换</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//x，y，z分别对应x轴，y轴，z轴的缩放比例</span><br><span class="line">CATransform3D CATransform3DMakeScale (CGFloat sx, CGFloat sy, CGFloat sz);</span><br><span class="line">//在一个transform3D变换的基础上进行缩放变换，其他参数同上</span><br><span class="line">CATransform3D CATransform3DScale (CATransform3D t, CGFloat sx, CGFloat sy, CGFloat sz);</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    UIImageView * newImageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 300, 100, 100)];</span><br><span class="line">    newImageView.image=[UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    [self.view addSubview:newImageView];</span><br><span class="line">    CATransform3D trans = CATransform3DMakeScale(2, 1, 1);</span><br><span class="line">    newImageView.layer.transform =trans;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1206/153159_APG9_2340880.png" alt></p>
+<h4 id="3、旋转变换"><a href="#3、旋转变换" class="headerlink" title="3、旋转变换"></a>3、旋转变换</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//angle参数是旋转的角度，为弧度制 0-2π</span><br><span class="line">//x，y，z决定了旋转围绕的中轴，取值为-1——1之间，例如（1，0，0）,则是绕x轴旋转（0.5，0.5，0），则是绕x轴与y轴中</span><br><span class="line">//间45度为轴旋转,依次进行计算</span><br><span class="line">CATransform3D CATransform3DMakeRotation (CGFloat angle, CGFloat x, CGFloat y, CGFloat z);</span><br><span class="line">//在一个transform3D的基础上进行旋转变换，其他参数如上</span><br><span class="line">CATransform3D CATransform3DRotate (CATransform3D t, CGFloat angle, CGFloat x, CGFloat y, CGFloat z);</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    UIImageView * newImageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 300, 100, 100)];</span><br><span class="line">    newImageView.image=[UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    [self.view addSubview:newImageView];</span><br><span class="line">    CATransform3D trans = CATransform3DMakeRotation(M_PI/2, 0, 0, 1);</span><br><span class="line">    newImageView.layer.transform =trans;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1206/153746_NIUC_2340880.png" alt></p>
+<p>另外，当我们有垂直于z轴的旋转分量时，设置m34的值可以增加透视效果，也可以理解为景深效果，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    imageView.layer.transform = CATransform3DMakeRotation(M_PI/4, 0, 1, 0);</span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    UIImageView * newImageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 300, 100, 100)];</span><br><span class="line">    newImageView.image=[UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    [self.view addSubview:newImageView];</span><br><span class="line">    CATransform3D trans = CATransform3DIdentity;</span><br><span class="line">    trans.m34 = -1/100.0;</span><br><span class="line">    trans = CATransform3DRotate(trans, M_PI/4, 0, 1, 0);  </span><br><span class="line">    newImageView.layer.transform =trans;</span><br></pre></td></tr></table></figure>
+<p>两个imageView都进行了y轴的旋转变换，第二个有透视效果，第一个没有，运行如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1206/154348_3kub_2340880.png" alt></p>
+<h4 id="4、旋转翻转变换"><a href="#4、旋转翻转变换" class="headerlink" title="4、旋转翻转变换"></a>4、旋转翻转变换</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//将一个旋转的效果进行翻转 </span><br><span class="line">CATransform3D CATransform3DInvert (CATransform3D t);</span><br></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">    UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 100, 100, 100)];</span><br><span class="line">    imageView.image = [UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    imageView.layer.transform = CATransform3DMakeRotation(M_PI/4, 0, 0, 1);</span><br><span class="line">    [self.view addSubview:imageView];</span><br><span class="line">    </span><br><span class="line">    UIImageView * newImageView = [[UIImageView alloc]initWithFrame:CGRectMake(100, 300, 100, 100)];</span><br><span class="line">    newImageView.image=[UIImage imageNamed:@&quot;屏幕快照 2015-12-06 下午3.27.15.png&quot;];</span><br><span class="line">    [self.view addSubview:newImageView];</span><br><span class="line">    CATransform3D trans = CATransform3DMakeRotation(M_PI/4, 0, 0, 1);</span><br><span class="line">    trans = CATransform3DInvert(trans);</span><br><span class="line">    </span><br><span class="line">    newImageView.layer.transform =trans;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/1206/155148_RdVk_2340880.png" alt></p>
+<h4 id="5、CATransform3D与CGAffineTransform的转换"><a href="#5、CATransform3D与CGAffineTransform的转换" class="headerlink" title="5、CATransform3D与CGAffineTransform的转换"></a>5、CATransform3D与CGAffineTransform的转换</h4><pre><code>CGAffineTransform是UIKit框架中一个用于变换的矩阵，其作用与CATransform类似，只是其可以直接作用于View，而不用作用于layer，这两个矩阵也可以进行转换，方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">//将一个CGAffinrTransform转化为CATransform3D</span><br><span class="line">CATransform3D CATransform3DMakeAffineTransform (CGAffineTransform m);</span><br><span class="line">//判断一个CATransform3D是否可以转换为CAAffineTransform</span><br><span class="line">bool CATransform3DIsAffine (CATransform3D t);</span><br><span class="line">//将CATransform3D转换为CGAffineTransform</span><br><span class="line">CGAffineTransform CATransform3DGetAffineTransform (CATransform3D t);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/12/10/162iOS传感器开发——为APP添加手机密码、指纹进行安全验证/" class="pre-post btn btn-default" title='iOS传感器开发——为APP添加手机密码、指纹进行安全验证'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS传感器开发——为APP添加手机密码、指纹进行安全验证</span>
+        </a>
+    
+    
+        <a href="/2015/12/06/160iOS开发CoreAnimation解读之五——高级动画技巧/" class="next-post btn btn-default" title='iOS开发CoreAnimation解读之五——高级动画技巧'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发CoreAnimation解读之五——高级动画技巧</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发CoreAnimation解读之五——CATransform3D变换的应用"><span class="toc-text">iOS开发CoreAnimation解读之五——CATransform3D变换的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、CATransform3D中的属性和方法"><span class="toc-text">二、CATransform3D中的属性和方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、平移变换"><span class="toc-text">1、平移变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、缩放变换"><span class="toc-text">2、缩放变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、旋转变换"><span class="toc-text">3、旋转变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4、旋转翻转变换"><span class="toc-text">4、旋转翻转变换</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5、CATransform3D与CGAffineTransform的转换"><span class="toc-text">5、CATransform3D与CGAffineTransform的转换</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

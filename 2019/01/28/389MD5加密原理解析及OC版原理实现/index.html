@@ -1,0 +1,309 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>MD5加密原理解析及OC版原理实现 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="MD5加密原理解析及OC版原理实现">
+            
+	            MD5加密原理解析及OC版原理实现
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/编程珠玑">
+            编程珠玑
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/01/28</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="MD5加密原理解析及OC版原理实现"><a href="#MD5加密原理解析及OC版原理实现" class="headerlink" title="MD5加密原理解析及OC版原理实现"></a>MD5加密原理解析及OC版原理实现</h2><h3 id="一、MD5算法基础概念"><a href="#一、MD5算法基础概念" class="headerlink" title="一、MD5算法基础概念"></a>一、MD5算法基础概念</h3><pre><code>MD5算法是Hash算法的一种，叫做讯息摘要演算法。所谓摘要，从字面意思理解，是指内容的大概。在MD5算法中，这个摘要是指将任意数据映射成一个128位长的摘要信息。并且其是不可逆的，即从摘要信息无法反向推演中原文，在演算过程中，原文的内容也是有丢失的。
+
+因为MD5算法最终生成的是一个128位长的数据，从原理上说，有2^128种可能，这是一个非常巨大的数据，约等于3.4乘10的38次方，虽然这个是个天文数字，但是世界上可以进行加密的数据原则上说是无限的，因此是可能存在不同的内容经过MD5加密后得到同样的摘要信息，但这个碰中的概率非常小。
+</code></pre><h3 id="二、MD5的使用场景"><a href="#二、MD5的使用场景" class="headerlink" title="二、MD5的使用场景"></a>二、MD5的使用场景</h3><pre><code>MD5常用在密码加密中，一般为了保证用户密码的安全，在数据库中存储的都是用户的密码经过MD5加密后的值，在客户端用户输入密码后，也会使用MD5进行加密，这样即使用户的网络被窃听，窃听者依然无法拿到用户的原始密码，并且即使用户数据库被盗，没有存储明文的密码对用户来说也多了一层安全保障。
+
+MD5签名技术还常用于防止信息的篡改。使用MD5可以对信息进行签名，接收者拿到信息后只要重新计算签名和原始签名进行对比，即可知道数据信息是否中途被篡改了。
+</code></pre><h3 id="三、MD5算法原理"><a href="#三、MD5算法原理" class="headerlink" title="三、MD5算法原理"></a>三、MD5算法原理</h3><pre><code>MD5算法大致分为4步完成：
+</code></pre><p>第1步：进行数据填充整理</p>
+<pre><code>这一步是对要加密的数据进行填充和整理，将要加密的二进制数据对512取模，得到的结果如果不够448位，则进行补足，补足的方式是第1位填充1，后面全部填充0。
+</code></pre><p>第2步：记录数据长度</p>
+<pre><code>经过第一步整理完成后的数据的位数可以表示为N\*512+448，再向其后追加64位用来存储数据的长度，比如数据的长度为16字节，则用10000来填充后64位。这一步做完后，数据的位数将变成(N+1)\*512。
+</code></pre><p>第3步：以标准的幻数作为输入</p>
+<pre><code>MD5的实现需要每512个字节进行一次处理，后一次处理的输入为前一次处理的输出，因此，在循环处理开始之前，需要拿4个标准数作为输入，它们分别是：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> A=<span class="number">0x67452301</span>,B=<span class="number">0xefcdab89</span>,C=<span class="number">0x98badcfe</span>,D=<span class="number">0x10325476</span>;</span><br></pre></td></tr></table></figure>
+<p>第4步：进行N轮循环处理，将最后的结果输出</p>
+<pre><code>这一步重要的是每一轮的处理算法，每一轮处理也要循环64次，这64次循环被分为4各组，每16次循环为一组，每组循环使用不同的逻辑处理函数，处理完成后，将输出作为输入进入下一轮循环。
+</code></pre><h3 id="四、MD5核心算法的实现"><a href="#四、MD5核心算法的实现" class="headerlink" title="四、MD5核心算法的实现"></a>四、MD5核心算法的实现</h3><p>   这里演示的是每轮循环的核心算法：</p>
+<p>首先进行3个函数的声明：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//将大端字节序转换为小端字节序</span></span><br><span class="line"><span class="keyword">void</span> convertToLittleEndian(<span class="keyword">unsigned</span> <span class="keyword">int</span> *data, <span class="keyword">int</span> len);</span><br><span class="line"><span class="comment">//进行循环左移函数</span></span><br><span class="line"><span class="keyword">void</span> ROL(<span class="keyword">unsigned</span> <span class="keyword">int</span> *s, <span class="keyword">unsigned</span> <span class="keyword">short</span> cx);</span><br><span class="line"><span class="comment">//MD5加密函数</span></span><br><span class="line"><span class="keyword">void</span> MD5(<span class="built_in">NSString</span> *str);</span><br></pre></td></tr></table></figure>
+<p>MD5算法中处理的数据都是小端字节序的，而使用Objective-C处理的NSData对象的字节序是大端字节序，因此我们需要做一下转换。函数实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> convertToLittleEndian(<span class="keyword">unsigned</span> <span class="keyword">int</span> *data, <span class="keyword">int</span> len)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> index = <span class="number">0</span>; index &lt; len; index ++) &#123;</span><br><span class="line">        </span><br><span class="line">        *data = ((*data &amp; <span class="number">0xff000000</span>) &gt;&gt; <span class="number">24</span>)</span><br><span class="line">        | ((*data &amp; <span class="number">0x00ff0000</span>) &gt;&gt;  <span class="number">8</span>)</span><br><span class="line">        | ((*data &amp; <span class="number">0x0000ff00</span>) &lt;&lt;  <span class="number">8</span>)</span><br><span class="line">        | ((*data &amp; <span class="number">0x000000ff</span>) &lt;&lt; <span class="number">24</span>);</span><br><span class="line">        </span><br><span class="line">        data ++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在MD5中有需要对字节数据进行循环左移的操作，循环左移函数实现如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> ROL(<span class="keyword">unsigned</span> <span class="keyword">int</span> *s, <span class="keyword">unsigned</span> <span class="keyword">short</span> cx)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (cx &gt; <span class="number">32</span>)cx %= <span class="number">32</span>;</span><br><span class="line">    *s = (*s &lt;&lt; cx) | (*s &gt;&gt; (<span class="number">32</span> - cx));</span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是MD5函数的核心实现：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> MD5(<span class="built_in">NSString</span> *str)&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">void</span> * bytes[str.length];</span><br><span class="line">    <span class="comment">//字符串转字节流</span></span><br><span class="line">    [str getBytes:bytes maxLength:str.length usedLength:<span class="literal">nil</span> encoding:<span class="built_in">NSUTF8StringEncoding</span> options:<span class="built_in">NSStringEncodingConversionExternalRepresentation</span> range:<span class="built_in">NSMakeRange</span>(<span class="number">0</span>, str.length) remainingRange:<span class="literal">nil</span>];</span><br><span class="line">    <span class="comment">//使用NSData存储</span></span><br><span class="line">    <span class="built_in">NSMutableData</span> * data = [[<span class="built_in">NSMutableData</span> alloc] initWithBytes:bytes length:str.length];</span><br><span class="line">    <span class="built_in">BOOL</span> first = <span class="literal">YES</span>;</span><br><span class="line">    <span class="comment">//进行数据填充</span></span><br><span class="line">    <span class="keyword">if</span> (data.length&lt;<span class="number">56</span>) &#123;</span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (first) &#123;</span><br><span class="line">                <span class="keyword">int</span> byte = <span class="number">0</span>b10000000;</span><br><span class="line">                [data appendBytes:&amp;byte length:<span class="number">1</span>];</span><br><span class="line">                first = <span class="literal">NO</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                <span class="keyword">int</span> byte = <span class="number">0</span>b00000000;</span><br><span class="line">                [data appendBytes:&amp;byte length:<span class="number">1</span>];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">while</span> (data.length&lt;<span class="number">56</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> length = (<span class="keyword">int</span>)str.length*<span class="number">8</span>%((<span class="keyword">int</span>)pow(<span class="number">2</span>, <span class="number">64</span>));</span><br><span class="line">    [data appendBytes:&amp;length length:<span class="number">8</span>];</span><br><span class="line">    <span class="keyword">void</span> * newBytes[<span class="number">64</span>];</span><br><span class="line">    memcpy(newBytes, [data bytes], <span class="number">64</span>);</span><br><span class="line">    <span class="comment">//大小端转换</span></span><br><span class="line">    convertToLittleEndian(newBytes, <span class="number">64</span>);</span><br><span class="line">    <span class="built_in">NSData</span> * newData = [<span class="built_in">NSData</span> dataWithBytes:newBytes length:data.length];</span><br><span class="line">    <span class="built_in">NSMutableArray</span> * subData = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line">    <span class="comment">//进行分组</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;<span class="number">16</span>; i++) &#123;</span><br><span class="line">        [subData addObject: [newData subdataWithRange:<span class="built_in">NSMakeRange</span>(i*<span class="number">4</span>, <span class="number">4</span>)]];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//初始输入</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> A=<span class="number">0x67452301</span>,B=<span class="number">0xefcdab89</span>,C=<span class="number">0x98badcfe</span>,D=<span class="number">0x10325476</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> a=A,b=B,c=C,d=D;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> s[<span class="number">64</span>] = &#123; <span class="number">7</span>, <span class="number">12</span>, <span class="number">17</span>, <span class="number">22</span>, <span class="number">7</span>, <span class="number">12</span>, <span class="number">17</span>, <span class="number">22</span>, <span class="number">7</span>, <span class="number">12</span>, <span class="number">17</span>, <span class="number">22</span>, <span class="number">7</span>, <span class="number">12</span>, <span class="number">17</span>, <span class="number">22</span>,<span class="number">5</span>, <span class="number">9</span>, <span class="number">14</span>, <span class="number">20</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">14</span>, <span class="number">20</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">14</span>, <span class="number">20</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">14</span>, <span class="number">20</span>, <span class="number">4</span>, <span class="number">11</span>,<span class="number">16</span>, <span class="number">23</span>, <span class="number">4</span>, <span class="number">11</span>, <span class="number">16</span>, <span class="number">23</span>, <span class="number">4</span>, <span class="number">11</span>, <span class="number">16</span>, <span class="number">23</span>, <span class="number">4</span>, <span class="number">11</span>, <span class="number">16</span>, <span class="number">23</span>, <span class="number">6</span>, <span class="number">10</span>, <span class="number">15</span>,<span class="number">21</span>, <span class="number">6</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">21</span>, <span class="number">6</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">21</span>, <span class="number">6</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">21</span> &#125;;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span>  k[<span class="number">64</span>] = &#123;</span><br><span class="line">        <span class="number">0xd76aa478</span>, <span class="number">0xe8c7b756</span>, <span class="number">0x242070db</span>, <span class="number">0xc1bdceee</span>,</span><br><span class="line">        <span class="number">0xf57c0faf</span>, <span class="number">0x4787c62a</span>, <span class="number">0xa8304613</span>, <span class="number">0xfd469501</span>,</span><br><span class="line">        <span class="number">0x698098d8</span>, <span class="number">0x8b44f7af</span>, <span class="number">0xffff5bb1</span>, <span class="number">0x895cd7be</span>,</span><br><span class="line">        <span class="number">0x6b901122</span>, <span class="number">0xfd987193</span>, <span class="number">0xa679438e</span>, <span class="number">0x49b40821</span>,</span><br><span class="line">        <span class="number">0xf61e2562</span>, <span class="number">0xc040b340</span>, <span class="number">0x265e5a51</span>, <span class="number">0xe9b6c7aa</span>,</span><br><span class="line">        <span class="number">0xd62f105d</span>, <span class="number">0x02441453</span>, <span class="number">0xd8a1e681</span>, <span class="number">0xe7d3fbc8</span>,</span><br><span class="line">        <span class="number">0x21e1cde6</span>, <span class="number">0xc33707d6</span>, <span class="number">0xf4d50d87</span>, <span class="number">0x455a14ed</span>,</span><br><span class="line">        <span class="number">0xa9e3e905</span>, <span class="number">0xfcefa3f8</span>, <span class="number">0x676f02d9</span>, <span class="number">0x8d2a4c8a</span>,</span><br><span class="line">        <span class="number">0xfffa3942</span>, <span class="number">0x8771f681</span>, <span class="number">0x6d9d6122</span>, <span class="number">0xfde5380c</span>,</span><br><span class="line">        <span class="number">0xa4beea44</span>, <span class="number">0x4bdecfa9</span>, <span class="number">0xf6bb4b60</span>, <span class="number">0xbebfbc70</span>,</span><br><span class="line">        <span class="number">0x289b7ec6</span>, <span class="number">0xeaa127fa</span>, <span class="number">0xd4ef3085</span>, <span class="number">0x04881d05</span>,</span><br><span class="line">        <span class="number">0xd9d4d039</span>,  <span class="number">0xe6db99e5</span>, <span class="number">0x1fa27cf8</span>, <span class="number">0xc4ac5665</span>,</span><br><span class="line">        <span class="number">0xf4292244</span>, <span class="number">0x432aff97</span>,  <span class="number">0xab9423a7</span>, <span class="number">0xfc93a039</span>,</span><br><span class="line">        <span class="number">0x655b59c3</span>, <span class="number">0x8f0ccc92</span>, <span class="number">0xffeff47d</span>,  <span class="number">0x85845dd1</span>,</span><br><span class="line">        <span class="number">0x6fa87e4f</span>, <span class="number">0xfe2ce6e0</span>, <span class="number">0xa3014314</span>, <span class="number">0x4e0811a1</span>,</span><br><span class="line">        <span class="number">0xf7537e82</span>, <span class="number">0xbd3af235</span>, <span class="number">0x2ad7d2bb</span>, <span class="number">0xeb86d391</span> &#125;;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//64次循环处理</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= <span class="number">64</span>; i++) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (i&lt;<span class="number">64</span>) &#123;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span> f;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span> g;</span><br><span class="line">            <span class="keyword">if</span> (i&lt;<span class="number">16</span>) &#123;   </span><br><span class="line">                f = (b&amp;c)|((~b)&amp;d);</span><br><span class="line">                g = i;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(i&lt;<span class="number">32</span>) &#123;</span><br><span class="line">                f = (b&amp;d)|((~d)&amp;c);</span><br><span class="line">                g = (<span class="number">5</span>*i+<span class="number">1</span>)%<span class="number">16</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span> <span class="keyword">if</span>(i&lt;<span class="number">48</span>)&#123;</span><br><span class="line">                f = b^c^d;</span><br><span class="line">                g = (<span class="number">3</span>*i+<span class="number">5</span>)%<span class="number">16</span>;</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                f = c^((~d)|b);</span><br><span class="line">                g = (<span class="number">7</span>*i)%<span class="number">16</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span> * temp = (<span class="keyword">unsigned</span> <span class="keyword">int</span> *) [subData[g] bytes];</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span>  *tem = malloc(<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span>));</span><br><span class="line">            memcpy(tem, temp, <span class="number">4</span>);</span><br><span class="line">            convertToLittleEndian(tem, <span class="number">4</span>);</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span> res = (a+f+*tem+k[i]);</span><br><span class="line">            ROL(&amp;res,s[i]);</span><br><span class="line">            <span class="keyword">unsigned</span> <span class="keyword">int</span> t = res+b;</span><br><span class="line">            a = d;</span><br><span class="line">            d = c;</span><br><span class="line">            c = b;</span><br><span class="line">            b = t;</span><br><span class="line">           </span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            A = a+A;</span><br><span class="line">            B = b+B;</span><br><span class="line">            C = c+C;</span><br><span class="line">            D = d+D;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//大小端转换</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> * newA = malloc(<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span>));</span><br><span class="line">    memcpy(newA, &amp;A, <span class="number">4</span>);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"%0x"</span>,*newA);</span><br><span class="line">    convertToLittleEndian(newA, <span class="number">4</span>);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> * newB = malloc(<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span>));</span><br><span class="line">    memcpy(newB, &amp;B, <span class="number">4</span>);</span><br><span class="line">    convertToLittleEndian(newB, <span class="number">4</span>);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> * newC = malloc(<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span>));</span><br><span class="line">    memcpy(newC, &amp;C, <span class="number">4</span>);</span><br><span class="line">    convertToLittleEndian(newC, <span class="number">4</span>);</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> * newD = malloc(<span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span>));</span><br><span class="line">    memcpy(newD, &amp;D, <span class="number">4</span>);</span><br><span class="line">    convertToLittleEndian(newD, <span class="number">4</span>);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"AAA:%0x %0x %0x %0x "</span>,*newA,*newB,*newC,*newD);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/25/390iOS开发之CoreSpotlight框架的应用/" class="pre-post btn btn-default" title='iOS开发之CoreSpotlight框架的应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发之CoreSpotlight框架的应用</span>
+        </a>
+    
+    
+        <a href="/2019/01/22/388iOS开发之CoreMotion框架的应用/" class="next-post btn btn-default" title='iOS开发之CoreMotion框架的应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发之CoreMotion框架的应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MD5加密原理解析及OC版原理实现"><span class="toc-text">MD5加密原理解析及OC版原理实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、MD5算法基础概念"><span class="toc-text">一、MD5算法基础概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、MD5的使用场景"><span class="toc-text">二、MD5的使用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、MD5算法原理"><span class="toc-text">三、MD5算法原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、MD5核心算法的实现"><span class="toc-text">四、MD5核心算法的实现</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

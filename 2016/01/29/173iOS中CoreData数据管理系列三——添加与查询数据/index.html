@@ -1,0 +1,312 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS中CoreData数据管理系列三——添加与查询数据 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS中CoreData数据管理系列三——添加与查询数据">
+            
+	            iOS中CoreData数据管理系列三——添加与查询数据
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/01/29</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS中CoreData数据管理系列三——添加与查询数据"><a href="#iOS中CoreData数据管理系列三——添加与查询数据" class="headerlink" title="iOS中CoreData数据管理系列三——添加与查询数据"></a>iOS中CoreData数据管理系列三——添加与查询数据</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在前两篇博客中，分别介绍了iOS中CoreData框架创建数据模型和CoreData框架中的三个核心类。博客地址如下：
+</code></pre><p>iOS中CoreData框架简介：<a href="http://my.oschina.net/u/2340880/blog/610488" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/610488</a>。</p>
+<p>CoreData框架中三个核心的类：<a href="http://my.oschina.net/u/2340880/blog/610948" target="_blank" rel="noopener">http://my.oschina.net/u/2340880/blog/610948</a>。</p>
+<p>本篇博客将综合使用三个核心的类，进行数据创建和查询的操作介绍。</p>
+<h3 id="二、建立数据对象类"><a href="#二、建立数据对象类" class="headerlink" title="二、建立数据对象类"></a>二、建立数据对象类</h3><pre><code>前面博客介绍的NSManagedObjectModel是数据管理模型，可以将其类比如数据库，NSManagedObjectModel中存放着数据库的结构信息。NSEntityDescription是实体描述对象，它可以类比如数据库中的表，NSEntityDescription存放的是表的结构信息。这些类都是一些抽象的结构类，并不存储实际每条数据的信息，具体的数据由NSManagedObject类来描述，我们一般会将实体类化继承于NSManagedObject。
+
+Xocde工具提供了快捷的实体类化功能，还拿我们一开始创建的班级与学生实体来演示，点击.xcdatamodeld文件，点击Xcode工具上方导航栏的Editor标签，选择Creat NSManagedObject Subclass选项，在弹出的窗口中勾选要类化的实体，如下图：
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2016/0129/151849_9YTv_2340880.png" alt><img src="http://static.oschina.net/uploads/space/2016/0129/152012_iWai_2340880.png" alt></p>
+<p>这时，Xcode会自动为我们创建一个文件，这些文件中有各个类中属性的声明。</p>
+<h3 id="三、创建一条数据"><a href="#三、创建一条数据" class="headerlink" title="三、创建一条数据"></a>三、创建一条数据</h3><pre><code>使用如下代码进行数据的创建：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">    //读取数据模型文件</span><br><span class="line">    NSURL *modelUrl = [[NSBundle mainBundle]URLForResource:@&quot;Model&quot; withExtension:@&quot;momd&quot;];</span><br><span class="line">    //创建数据模型</span><br><span class="line">    NSManagedObjectModel * mom = [[NSManagedObjectModel alloc]initWithContentsOfURL:modelUrl];</span><br><span class="line">    //创建持久化存储协调者</span><br><span class="line">    NSPersistentStoreCoordinator * psc = [[NSPersistentStoreCoordinator alloc]initWithManagedObjectModel:mom];</span><br><span class="line">    //数据库保存路径</span><br><span class="line">    NSURL * path =[NSURL fileURLWithPath:[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject] stringByAppendingPathComponent:@&quot;CoreDataExample.sqlite&quot;]];</span><br><span class="line">    //为持久化协调者添加一个数据接收栈</span><br><span class="line">    /*</span><br><span class="line">    可以支持的类型如下：</span><br><span class="line">     NSString * const NSSQLiteStoreType;//sqlite</span><br><span class="line">     NSString * const NSXMLStoreType;//XML</span><br><span class="line">     NSString * const NSBinaryStoreType;//二进制</span><br><span class="line">     NSString * const NSInMemoryStoreType;//内存</span><br><span class="line">    */</span><br><span class="line">    [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:path options:nil error:nil];</span><br><span class="line">    //创建数据管理上下文</span><br><span class="line">    NSManagedObjectContext * moc = [[NSManagedObjectContext alloc]initWithConcurrencyType:NSMainQueueConcurrencyType];</span><br><span class="line">    //关联持久化协调者</span><br><span class="line">    [moc setPersistentStoreCoordinator:psc];</span><br><span class="line">    //创建数据对象</span><br><span class="line">    /*</span><br><span class="line">    数据对象的创建是通过实体名获取到的</span><br><span class="line">    */</span><br><span class="line">    SchoolClass * modelS = [NSEntityDescription insertNewObjectForEntityForName:@&quot;SchoolClass&quot; inManagedObjectContext:moc];</span><br><span class="line">    //对数据进行设置</span><br><span class="line">    modelS.name = @&quot;第一班&quot;;</span><br><span class="line">    modelS.stuNum = @60;</span><br><span class="line">    //进行存储</span><br><span class="line">    if ([moc save:nil]) &#123;</span><br><span class="line">        NSLog(@&quot;新增成功&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    NSLog(@&quot;%@&quot;,[[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)lastObject] stringByAppendingPathComponent:@&quot;CoreDataExample.sqlite&quot;]);</span><br></pre></td></tr></table></figure>
+<p>找到在打印出的路径，会发现里面多了一个sqlite文件，其中有一张表中添加进了一条数据。</p>
+<h3 id="四、查询数据"><a href="#四、查询数据" class="headerlink" title="四、查询数据"></a>四、查询数据</h3><pre><code>CoreData中通过查询请求来对数据进行查询操作，查询请求由NSFetchRequest来进行管理和维护。
+
+NSFetchRequest主要提供两个方面的查询服务：
+
+1.提供范围查询的相关功能
+
+2.提供查询结果返回类型与排序的相关功能
+
+NSFetchRequest中常用方法如下：
+</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">//创建一个实体的查询请求 可以理解为在某个表中进行查询</span><br><span class="line">+ (instancetype)fetchRequestWithEntityName:(NSString*)entityName;</span><br><span class="line">//查询条件</span><br><span class="line">@property (nullable, nonatomic, strong) NSPredicate *predicate;</span><br><span class="line">//数据排序</span><br><span class="line">@property (nullable, nonatomic, strong) NSArray&lt;NSSortDescriptor *&gt; *sortDescriptors;</span><br><span class="line">//每次查询返回的数据条数</span><br><span class="line">@property (nonatomic) NSUInteger fetchLimit;</span><br><span class="line">//设置查询到数据的返回类型</span><br><span class="line">/*</span><br><span class="line">typedef NS_OPTIONS(NSUInteger, NSFetchRequestResultType) &#123;</span><br><span class="line">    NSManagedObjectResultType        = 0x00,</span><br><span class="line">    NSManagedObjectIDResultType        = 0x01,</span><br><span class="line">    NSDictionaryResultType          NS_ENUM_AVAILABLE(10_6,3_0) = 0x02,</span><br><span class="line">    NSCountResultType                NS_ENUM_AVAILABLE(10_6,3_0) = 0x04</span><br><span class="line">&#125;;</span><br><span class="line">*/</span><br><span class="line">@property (nonatomic) NSFetchRequestResultType resultType;</span><br><span class="line">//设置查询结果是否包含子实体</span><br><span class="line">@property (nonatomic) BOOL includesSubentities;</span><br><span class="line">//设置要查询的属性值</span><br><span class="line">@property (nullable, nonatomic, copy) NSArray *propertiesToFetch;</span><br></pre></td></tr></table></figure>
+<p>在SchoolClass实体中查询数据，使用如下的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">    //创建一条查询请求</span><br><span class="line">    NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:@&quot;SchoolClass&quot;];</span><br><span class="line">    //设置条件为 stuNum=60的数据</span><br><span class="line">    [request setPredicate:[NSPredicate predicateWithFormat:@&quot;stuNum == 60&quot;]];</span><br><span class="line">    //进行查询操作</span><br><span class="line">    NSArray * res = [moc executeFetchRequest:request error:nil];</span><br><span class="line">    NSLog(@&quot;%@&quot;,[res.firstObject stuNum]);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/02/01/174iOS中CoreData数据管理系列四——进行数据与页面的绑定/" class="pre-post btn btn-default" title='iOS中CoreData数据管理系列四——进行数据与页面的绑定'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS中CoreData数据管理系列四——进行数据与页面的绑定</span>
+        </a>
+    
+    
+        <a href="/2016/01/28/172iOS中CoreData数据管理系列二——CoreData框架中三个重要的类/" class="next-post btn btn-default" title='iOS中CoreData数据管理系列二——CoreData框架中三个重要的类'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中CoreData数据管理系列二——CoreData框架中三个重要的类</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS中CoreData数据管理系列三——添加与查询数据"><span class="toc-text">iOS中CoreData数据管理系列三——添加与查询数据</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、建立数据对象类"><span class="toc-text">二、建立数据对象类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、创建一条数据"><span class="toc-text">三、创建一条数据</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、查询数据"><span class="toc-text">四、查询数据</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

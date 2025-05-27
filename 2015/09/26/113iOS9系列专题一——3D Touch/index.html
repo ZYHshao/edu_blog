@@ -1,0 +1,377 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS9系列专题一——3D Touch | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS9系列专题一——3D Touch">
+            
+	            iOS9系列专题一——3D Touch
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS9专题">
+            iOS9专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2015/09/26</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="新的触摸体验——iOS9的3D-Touch"><a href="#新的触摸体验——iOS9的3D-Touch" class="headerlink" title="新的触摸体验——iOS9的3D Touch"></a>新的触摸体验——iOS9的3D Touch</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>在iphone6s问世之后，很多果粉都争先要体验3D Touch给用户带来的额外维度上的交互，这个设计之所以叫做3D Touch，其原理上是增加了一个压力的感触，通过区分轻按和重按来进行不同的用户交互。
+</code></pre><h3 id="二、在模拟器上学习和测试3D-Touch"><a href="#二、在模拟器上学习和测试3D-Touch" class="headerlink" title="二、在模拟器上学习和测试3D Touch"></a>二、在模拟器上学习和测试3D Touch</h3><pre><code>3D Touch是一个很新颖的设计，可是苹果文档有言：
+</code></pre><blockquote>
+<ul>
+<li>With Xcode 7.0 you must develop on a device that supports 3D Touch. Simulator in Xcode 7.0 does not support 3D Touch.</li>
+</ul>
+</blockquote>
+<p>看到这句话心是不是凉了一半，是的，xcode7是支持3D Touch开发的，可是模拟器并不支持这个手势，我们只能在真机上进行学习与测试，但是在IT的世界，从来都不缺拯救世界的人物，github上有人为我们提供了这样的一个插件，可以让我们在模拟器上进行3D Touch的效果测试：</p>
+<p>git地址：<a href="https://github.com/DeskConnect/SBShortcutMenuSimulator" target="_blank" rel="noopener">https://github.com/DeskConnect/SBShortcutMenuSimulator</a>。</p>
+<h4 id="附-SBShortcutMenuSimulator的安装和使用"><a href="#附-SBShortcutMenuSimulator的安装和使用" class="headerlink" title="附.SBShortcutMenuSimulator的安装和使用"></a>附.SBShortcutMenuSimulator的安装和使用</h4><pre><code>其实安装和使用并不需要怎么介绍，git主页里介绍的很清楚，这里在记录一遍，其中只有一点需要注意，如果你像我一样，电脑中装有Xcode6和Xcode7两个版本，那个Xcode的编译路径，需要做一下修改。
+</code></pre><p>安装：</p>
+<p>在终端中一次运行如下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/DeskConnect/SBShortcutMenuSimulator.git</span><br><span class="line">cd SBShortcutMenuSimulator</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<p>如果电脑中有多个Xcode版本，先做如下操作，如果只有Xcode7，则可以跳过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo xcode-select -switch /Applications/Xcode2.app/Contents/Developer/</span><br></pre></td></tr></table></figure>
+<p>注意：上面命令中，Xcode2.app是你电脑中Xcode的名字，这里如要特别注意，如果名字中有空格，需要修改一下，把空格去掉，否则会影响命令的执行。</p>
+<p>之后在SBShortcutMenuSimulator的目录中执行如下操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">xcrun simctl spawn booted launchctl debug system/com.apple.SpringBoard --environment DYLD_INSERT_LIBRARIES=$PWD/SBShortcutMenuSimulator.dylib</span><br><span class="line">xcrun simctl spawn booted launchctl stop com.apple.SpringBoard</span><br></pre></td></tr></table></figure>
+<p>如果没有报错，我们可以通过向指定端口发送消息的方法来在模拟器上模拟3D Touch的效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &apos;com.apple.mobilecal&apos; | nc 127.0.0.1 8000</span><br></pre></td></tr></table></figure>
+<p>其中，com.apple.mobilecal是应用的Bundle ID ，如果要测试我们的应用，将其改为我们应用的BundleID即可，上面的示例应用是系统日历，可以看到模拟器的效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0926/110201_r1gd_2340880.png" alt></p>
+<h3 id="三、3D-Touch的主要应用"><a href="#三、3D-Touch的主要应用" class="headerlink" title="三、3D Touch的主要应用"></a>三、3D Touch的主要应用</h3><pre><code>文档给出的应用介绍主要有两块：
+</code></pre><blockquote>
+<ul>
+<li><p>1.A user can now press your Home screen icon to immediately access functionality provided by your app.</p>
+</li>
+<li><p>2.Within your app, a user can now press views to see previews of additional content and gain accelerated access to features.</p>
+</li>
+</ul>
+</blockquote>
+<pre><code>第一部分的应用是我们可以通过3D手势，在主屏幕上的应用Icon处，直接进入应用的响应功能模块。这个功能就例如我们上面的日历示例，会在Icon旁边出现一个菜单，点击菜单我们可以进入相应的功能单元。
+
+我个人理解，这个功能，push消息功能加上iOS8推出的扩展today功能，这三个机制使iOS应用变得无比灵活方便，用户可以不需付出寻找的时间成本来快速使用自己需要的功能。
+
+第二部分是对app的一个优化，用户可以通过3D Touch手势在view上来预览一些预加载信息，这样的设计可以使app更加简洁大方，交互性也更强。
+</code></pre><h3 id="四、3D-Touch的三大模块"><a href="#四、3D-Touch的三大模块" class="headerlink" title="四、3D Touch的三大模块"></a>四、3D Touch的三大模块</h3><pre><code>在我们的app中使用3D Touch功能，主要分为以下三个模块：
+</code></pre><h4 id="1、Home-Screen-Quick-Actions"><a href="#1、Home-Screen-Quick-Actions" class="headerlink" title="1、Home Screen Quick Actions"></a>1、Home Screen Quick Actions</h4><pre><code>通过主屏幕的应用Icon，我们可以用3D Touch呼出一个菜单，进行快速定位应用功能模块相关功能的开发。如上面的日历。
+</code></pre><h4 id="2、peek-and-pop"><a href="#2、peek-and-pop" class="headerlink" title="2、peek and pop"></a>2、peek and pop</h4><pre><code>这个功能是一套全新的用户交互机制，在使用3D Touch时，ViewController中会有如下三个交互阶段：
+
+（1）提示用户这里有3D Touch的交互，会使交互控件周围模糊
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/0926/113409_5jmO_2340880.png" alt></p>
+<pre><code>（2）继续深按，会出现预览视图
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/0926/113531_icSc_2340880.png" alt></p>
+<pre><code>（3）通过视图上的交互控件进行进一步交互
+</code></pre><p><img src="http://static.oschina.net/uploads/space/2015/0926/113626_O35G_2340880.png" alt></p>
+<p>这个模块的设计可以在网址连接上进行网页的预览交互。</p>
+<h4 id="3-Force-Properties"><a href="#3-Force-Properties" class="headerlink" title="3.Force Properties"></a>3.Force Properties</h4><pre><code>iOS9为我们提供了一个新的交互参数:力度。我们可以检测某一交互的力度值，来做相应的交互处理。例如，我们可以通过力度来控制快进的快慢，音量增加的快慢等。
+</code></pre><h3 id="五、Home-Screen-Quick-Action使用与相关api详解"><a href="#五、Home-Screen-Quick-Action使用与相关api详解" class="headerlink" title="五、Home Screen Quick Action使用与相关api详解"></a>五、Home Screen Quick Action使用与相关api详解</h3><pre><code>iOS9为我们提供了两种屏幕标签，分别是静态标签和动态标签。
+</code></pre><h4 id="1、静态标签"><a href="#1、静态标签" class="headerlink" title="1、静态标签"></a>1、静态标签</h4><pre><code>静态标签是我们在项目的配置plist文件中配置的标签，在用户安装程序后就可以使用，并且排序会在动态标签的前面。
+</code></pre><p>我们先来看静态标签的配置：</p>
+<p>首先，在info.plist文件中添加如下键值（我在测试的时候，系统并没有提示，只能手打上去）：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0926/171313_aywB_2340880.png" alt></p>
+<p>先添加了一个UIApplicationShortcutItems的数组，这个数组中添加的元素就是对应的静态标签，在每个标签中我们需要添加一些设置的键值：</p>
+<p>必填项（下面两个键值是必须设置的）：</p>
+<p>UIApplicationShortcutItemType 这个键值设置一个快捷通道类型的字符串 </p>
+<p>UIApplicationShortcutItemTitle 这个键值设置标签的标题</p>
+<p>选填项（下面这些键值不是必须设置的）：</p>
+<p>UIApplicationShortcutItemSubtitle 设置标签的副标题</p>
+<p>UIApplicationShortcutItemIconType 设置标签Icon类型</p>
+<p>UIApplicationShortcutItemIconFile  设置标签的Icon文件</p>
+<p>UIApplicationShortcutItemUserInfo 设置信息字典(用于传值)</p>
+<p>我们如上截图设置后，运行程序，用我们前面的方法进行测试，效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0926/172431_lbhm_2340880.png" alt></p>
+<h4 id="2、动态标签"><a href="#2、动态标签" class="headerlink" title="2、动态标签"></a>2、动态标签</h4><p>动态标签是我们在程序中，通过代码添加的，与之相关的类，主要有三个：</p>
+<p>UIApplicationShortcutItem 创建3DTouch标签的类</p>
+<p>UIMutableApplicationShortcutItem 创建可变的3DTouch标签的类</p>
+<p>UIApplicationShortcutIcon 创建标签中图片Icon的类</p>
+<p>因为这些类是iOS9中新增加的类，所以其api的复杂程度并不大，下面我们来对其中方法与属性进行简要讲解：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@interface UIApplicationShortcutItem : NSObject &lt;NSCopying, NSMutableCopying&gt;</span><br><span class="line">//下面是两个初始化方法 通过设置type，title等属性来创建一个标签，这里的icon是UIApplicationShortcutIcon对象，我们后面再说</span><br><span class="line">- (instancetype)initWithType:(NSString *)type localizedTitle:(NSString *)localizedTitle localizedSubtitle:(nullable NSString *)localizedSubtitle icon:(nullable UIApplicationShortcutIcon *)icon userInfo:(nullable NSDictionary *)userInfo NS_DESIGNATED_INITIALIZER;</span><br><span class="line">- (instancetype)initWithType:(NSString *)type localizedTitle:(NSString *)localizedTitle;</span><br><span class="line">//下面这是一些只读的属性，获取相应的属性值</span><br><span class="line">@property (nonatomic, copy, readonly) NSString *type;</span><br><span class="line">@property (nonatomic, copy, readonly) NSString *localizedTitle;</span><br><span class="line">@property (nullable, nonatomic, copy, readonly) NSString *localizedSubtitle;</span><br><span class="line">@property (nullable, nonatomic, copy, readonly) UIApplicationShortcutIcon *icon;</span><br><span class="line">@property (nullable, nonatomic, copy, readonly) NSDictionary&lt;NSString *, id &lt;NSSecureCoding&gt;&gt; *userInfo;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">//这个类继承于 UIApplicationShortcutItem，创建的标签可变</span><br><span class="line">@interface UIMutableApplicationShortcutItem : UIApplicationShortcutItem</span><br><span class="line">@property (nonatomic, copy) NSString *type;</span><br><span class="line">@property (nonatomic, copy) NSString *localizedTitle;</span><br><span class="line">@property (nullable, nonatomic, copy) NSString *localizedSubtitle;</span><br><span class="line">@property (nullable, nonatomic, copy) UIApplicationShortcutIcon *icon;</span><br><span class="line">@property (nullable, nonatomic, copy) NSDictionary&lt;NSString *, id &lt;NSSecureCoding&gt;&gt; *userInfo;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//这个类创建标签中的icon</span><br><span class="line">@interface UIApplicationShortcutIcon : NSObject &lt;NSCopying&gt;</span><br><span class="line">//创建系统风格的icon</span><br><span class="line">+ (instancetype)iconWithType:(UIApplicationShortcutIconType)type;</span><br><span class="line">//创建自定义的图片icon</span><br><span class="line">+ (instancetype)iconWithTemplateImageName:(NSString *)templateImageName;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p>创建好标签后，将其添加如application的hortcutItems数组中即可，示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    // Do any additional setup after loading the view, typically from a nib.</span><br><span class="line">    //创建</span><br><span class="line">    UIApplicationShortcutItem * item = [[UIApplicationShortcutItem alloc]initWithType:@&quot;two&quot; localizedTitle:@&quot;第二个标签&quot; localizedSubtitle:@&quot;看我哦&quot; icon:[UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypePlay] userInfo:nil];</span><br><span class="line">    添加</span><br><span class="line">    [UIApplication sharedApplication].shortcutItems = @[item];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下：</p>
+<p><img src="http://static.oschina.net/uploads/space/2015/0926/174937_Ahnk_2340880.png" alt></p>
+<p>这里，将系统风格icon的枚举列举如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">typedef NS_ENUM(NSInteger, UIApplicationShortcutIconType) &#123;</span><br><span class="line">    UIApplicationShortcutIconTypeCompose,//编辑的图标</span><br><span class="line">    UIApplicationShortcutIconTypePlay,//播放图标</span><br><span class="line">    UIApplicationShortcutIconTypePause,//暂停图标</span><br><span class="line">    UIApplicationShortcutIconTypeAdd,//添加图标</span><br><span class="line">    UIApplicationShortcutIconTypeLocation,//定位图标</span><br><span class="line">    UIApplicationShortcutIconTypeSearch,//搜索图标</span><br><span class="line">    UIApplicationShortcutIconTypeShare//分享图标</span><br><span class="line">&#125; NS_ENUM_AVAILABLE_IOS(9_0);</span><br></pre></td></tr></table></figure>
+<h4 id="3、响应标签的行为"><a href="#3、响应标签的行为" class="headerlink" title="3、响应标签的行为"></a>3、响应标签的行为</h4><p>类似推送，当我们点击标签进入应用程序时，也可以进行一些操作，我们可以看到，在applocation中增加了这样一个方法：</p>
+<p>- (void)application:(UIApplication <em>)application performActionForShortcutItem:(UIApplicationShortcutItem </em>)shortcutItem completionHandler:(void(^)(BOOL succeeded))completionHandler NS_AVAILABLE_IOS(9_0);</p>
+<p>当我们通过标签进入app时，就会在appdelegate中调用这样一个回调，我们可以获取shortcutItem的信息进行相关逻辑操作。</p>
+<p>这里有一点需要注意：我们在app的入口函数：</p>
+<p>- (BOOL)application:(UIApplication <em>)application didFinishLaunchingWithOptions:(NSDictionary </em>)launchOptions;</p>
+<p>也需要进行一下判断，在launchOptions中有UIApplicationLaunchOptionsShortcutItemKey这样一个键，通过它，我们可以区别是否是从标签进入的app，如果是则处理结束逻辑后，返回NO，防止处理逻辑被反复回调。 </p>
+<p>几点注意：</p>
+<p>1、快捷标签最多可以创建四个，包括静态的和动态的。</p>
+<p>2、每个标签的题目和icon最多两行，多出的会用…省略</p>
+<h3 id="六、结语"><a href="#六、结语" class="headerlink" title="六、结语"></a>六、结语</h3><pre><code>关于3DTouch在UIView中的预览功能和UITouch中新增加的力度属性的应用，因为不好演示，这里就不再总结，大家可以通过头文件中相应的类和属性来了解他们，最后，如有疏漏和错误之处，欢迎指正。
+</code></pre><p>欢迎转载 请注明出处</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2015/09/27/115iOS9系列专题三——应用瘦身/" class="pre-post btn btn-default" title='iOS9系列专题三——应用瘦身'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS9系列专题三——应用瘦身</span>
+        </a>
+    
+    
+        <a href="/2015/09/22/112iOS中UISearchBar(搜索框)使用总结/" class="next-post btn btn-default" title='iOS中UISearchBar(搜索框)使用总结'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中UISearchBar(搜索框)使用总结</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#新的触摸体验——iOS9的3D-Touch"><span class="toc-text">新的触摸体验——iOS9的3D Touch</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、在模拟器上学习和测试3D-Touch"><span class="toc-text">二、在模拟器上学习和测试3D Touch</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#附-SBShortcutMenuSimulator的安装和使用"><span class="toc-text">附.SBShortcutMenuSimulator的安装和使用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、3D-Touch的主要应用"><span class="toc-text">三、3D Touch的主要应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、3D-Touch的三大模块"><span class="toc-text">四、3D Touch的三大模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、Home-Screen-Quick-Actions"><span class="toc-text">1、Home Screen Quick Actions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、peek-and-pop"><span class="toc-text">2、peek and pop</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Force-Properties"><span class="toc-text">3.Force Properties</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、Home-Screen-Quick-Action使用与相关api详解"><span class="toc-text">五、Home Screen Quick Action使用与相关api详解</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1、静态标签"><span class="toc-text">1、静态标签</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、动态标签"><span class="toc-text">2、动态标签</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3、响应标签的行为"><span class="toc-text">3、响应标签的行为</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、结语"><span class="toc-text">六、结语</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

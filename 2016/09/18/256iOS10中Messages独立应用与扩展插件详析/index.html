@@ -1,0 +1,376 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS10中Messages独立应用与扩展插件详析 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS10中Messages独立应用与扩展插件详析">
+            
+	            iOS10中Messages独立应用与扩展插件详析
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS10专题">
+            iOS10专题
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/09/18</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS10中Messages独立应用与扩展插件详析"><a href="#iOS10中Messages独立应用与扩展插件详析" class="headerlink" title="iOS10中Messages独立应用与扩展插件详析"></a>iOS10中Messages独立应用与扩展插件详析</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>Messages是iOS系统中原生的信息应用，其既可以通过运营商网络发送短信息，也可以通过互联网进行类似微信类社交软件的即时聊天。但是由于其封闭性与功能的单一，使用其进行即时聊天的用户并不多。随着iOS10系统的推出，或许可以改变这一现状。在iOS10中，Messages的功能被扩展的十分强大，通过Messages，用户可以分享图片，音乐，视频，可以随手涂鸦，使用自定义的表情包，可以进行Apple Pay支付，购物，甚至可以在Messages中玩游戏。并且，上面所提到的这些功能都全面开发出了接口供开发者进行开发与扩展。
+
+在iOS10中，开发者可以进行与Messages相关的开发有两类：独立的Messages应用与Messages应用扩展。其中，Messages应用扩展需要依附一个宿主App而存在。无论哪种类型的Messages应用，其都又分为两类，StickerPicks（表情包）与iMessage Apps(Messages应用)。
+</code></pre><h3 id="二、开发表情包StickerPicks"><a href="#二、开发表情包StickerPicks" class="headerlink" title="二、开发表情包StickerPicks"></a>二、开发表情包StickerPicks</h3><h4 id="1-开发独立的表情包"><a href="#1-开发独立的表情包" class="headerlink" title="1.开发独立的表情包"></a>1.开发独立的表情包</h4><pre><code>Sticker Picks可谓是iOS10中一个十分强大的新功能。在iOS10系统的iPhone上，Messages应用中会内嵌一个Message App Store，用户可以直接从里面下载针对于Messages的独立表情包和独立第三方应用。开发者也可以独立开发表情包发布到这个Message App Store中。
+
+开发Sticker Picks表情包十分简单，开发者可以不用写一句代码，将整理好的表情进行打包提交即可完成。使用Xcode8创建一个新的工程，选择Sticker Pack Application模板，如下图所示：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/0919/160153_pr19_2340880.png" alt></p>
+<p>创建出工程后，可以发现模板中没有任何代码文件，只有一个Stickers.xcstickers包。将准备好的表情包图片导入这个Stickers中，其中支持静态图片，也支持动态表情gif图片。关于导入的图片，有如下几条规则：</p>
+<p>1.图片文件的格式必须是PNG、APNG、GIF或者JPEG。</p>
+<p>2.单个文件的大小不能超过500KB。</p>
+<p>3.最优的效果是当图片尺寸在100*100到206*206之间。</p>
+<p>注意：在提供图片的时候，开发者只需要提供@3倍图即可，即最优尺寸在300*300到618*618之间的图片。系统会自动生成@2与@1倍图。</p>
+<pre><code>开发的表情包会显示在Messages应用的工具中，需要注意，在表情列表的排版中，每个表情缩略图只支持3种尺寸的排版，对应的尺寸分别如下：
+</code></pre><p>Small类型：100*100</p>
+<p>Medium类型：136*136</p>
+<p>Large类型：206*206</p>
+<p>在Xcode中，可以对要使用的模板进行选择，如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0919/162302_BW5T_2340880.png" alt></p>
+<p>在模拟器中运行工程，Messages中效果如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0919/162900_c8hi_2340880.png" alt>               <img src="https://static.oschina.net/uploads/space/2016/0919/162917_KS9Y_2340880.png" alt></p>
+<p>和普通iOS应用程序一样，将设备选择为Generic iOS Device后直接Archives即可将表情包提交到AppStore，审核通过后，即可在Message App Store中进行下载。</p>
+<p>小提示：其实StickerPicks翻译成表情包并不合适，其更有一层贴纸的概念。实际上其也确实有贴纸的功能，在Messages应用中，用户可以通过长按移动手势，来将某个Sticker添加在另一个Sticker上面。如下图：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0920/163007_G0dP_2340880.png" alt></p>
+<h4 id="2-开发寄宿于宿主App的表情包扩展"><a href="#2-开发寄宿于宿主App的表情包扩展" class="headerlink" title="2.开发寄宿于宿主App的表情包扩展"></a>2.开发寄宿于宿主App的表情包扩展</h4><pre><code>扩展表情包与独立表情包最大的不同在于扩展需要寄宿于某个宿主App中，创建扩展target，选择Sticker Pick Extension，如下图，之后和独立表情包开发过程一致。
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/0919/164112_DIJT_2340880.png" alt></p>
+<h4 id="3-关于表情包的icon图标"><a href="#3-关于表情包的icon图标" class="headerlink" title="3.关于表情包的icon图标"></a>3.关于表情包的icon图标</h4><pre><code>StickerPicks的图标和宿主App并不共用，其需要一套独特尺寸的icon，尺寸如下：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/0919/165649_ZhQv_2340880.png" alt></p>
+<p>效果如下图所示：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0919/165952_Vc54_2340880.png" alt></p>
+<h3 id="三、开发Messages-App应用"><a href="#三、开发Messages-App应用" class="headerlink" title="三、开发Messages App应用"></a>三、开发Messages App应用</h3><h4 id="1-认识Messages框架"><a href="#1-认识Messages框架" class="headerlink" title="1.认识Messages框架"></a>1.认识Messages框架</h4><pre><code>和StickerPicks表情包一样，Messages App也分为独立应用与扩展两种。其实它们的开发思路和方法完全一致，只是有无宿主App的区别。
+
+开发Messages App需要使用到iOS中引入的一个新的开发框架Messages。Messages比较简单，其中涉及到的类并不十分多，下图中概述了其中重要的类和之间的关系：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/0920/162435_4Jg0_2340880.png" alt></p>
+<p>MSMessageAppViewController：这个类Messages App的基础视图控制器类，其继承自UIViewController，但其中添加了许多Messages App相关的声明周期方法。</p>
+<p>MSConversation：描述一个会话实例。</p>
+<p>MSSticker：表情贴图实例。</p>
+<p>MSMessage：在Messages App之间进行传递的消息实体。</p>
+<p>MSMessageLayout：抽象类，其并没有实现任何方法，有子类实现。</p>
+<p>MSMessageTemplateLayout：用于对消息实体MSMessage进行布局排版。</p>
+<p>MSStickerBorwserViewController：用于创建表情包视图控制器。</p>
+<p>MSStickerBorwserView：表情包视图容器，类似CollectionView。</p>
+<p>MSStickerView：表情承载视图。</p>
+<h4 id="2-实现一个Messages-App的列表界面"><a href="#2-实现一个Messages-App的列表界面" class="headerlink" title="2.实现一个Messages App的列表界面"></a>2.实现一个Messages App的列表界面</h4><pre><code>使用Xcode新建一个Messages App工程如下：
+</code></pre><p><img src="https://static.oschina.net/uploads/space/2016/0920/163705_0aIf_2340880.png" alt></p>
+<p>其会自动生成一个MessagesViewController类，这个类就是此Messages App的主界面视图控制器。需要注意，Messages App的视图控制器都分为两种状态，分别为Compact(紧凑的)和Expanded(扩宽的)。并且在这两种状态进行切换时，视图的底部的工具栏和头部的导航栏也会交替出现，这导致了即使是使用自动布局，依然无法完美的解决Messages App布局的统一性，需要手动进行调整处理，后面会介绍到。</p>
+<pre><code>在MessagesViewController类中添加其他视图控件，大部分iOS App开发中可以使用的UI控件这里都可以使用，但是有一点需要注意，对于可以弹出键盘的UI控件，例如UITextView与UITextField，当Messages App界面处理Compact模式时，键盘是不能弹出的，只有当界面处于Expanded模式时，键盘才被允许弹出。
+
+为了使Messages App的界面在任何模式下都能保持统一，需要手动对其中视图约束进行修改，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view.</span></span><br><span class="line">    <span class="keyword">self</span>.dataArray = [<span class="built_in">NSMutableArray</span> array];</span><br><span class="line">    [<span class="keyword">self</span>.dataArray addObjectsFromArray:@[<span class="string">@"发送文本信息"</span>,<span class="string">@"插入表情"</span>,<span class="string">@"插入文件"</span>,<span class="string">@"插入消息实体"</span>,<span class="string">@"跳转第二个界面"</span>,<span class="string">@"贴图包"</span>]];</span><br><span class="line">    [<span class="keyword">self</span>.tableView registerClass:[<span class="built_in">UITableViewCell</span> <span class="keyword">class</span>] forCellReuseIdentifier:<span class="string">@"cellId"</span>];</span><br><span class="line">    <span class="keyword">self</span>.tableView.dataSource = <span class="keyword">self</span>;</span><br><span class="line">    <span class="keyword">self</span>.tableView.delegate = <span class="keyword">self</span>;</span><br><span class="line">    <span class="keyword">self</span>.session = [[MSSession alloc]init];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">-(<span class="built_in">NSInteger</span>)tableView:(<span class="built_in">UITableView</span> *)tableView numberOfRowsInSection:(<span class="built_in">NSInteger</span>)section&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>.dataArray.count;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="built_in">UITableViewCell</span> *)tableView:(<span class="built_in">UITableView</span> *)tableView cellForRowAtIndexPath:(<span class="built_in">NSIndexPath</span> *)indexPath&#123;</span><br><span class="line">    <span class="built_in">UITableViewCell</span> * cell = [tableView dequeueReusableCellWithIdentifier:<span class="string">@"cellId"</span>];</span><br><span class="line">    cell.textLabel.text = <span class="keyword">self</span>.dataArray[indexPath.row];</span><br><span class="line">    <span class="keyword">return</span> cell;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个方法在Messages App加载完成处于活跃状态时被调用 在其中根据模式设置布局参数</span></span><br><span class="line">-(<span class="keyword">void</span>)didBecomeActiveWithConversation:(MSConversation *)conversation &#123;</span><br><span class="line">    <span class="comment">// Called when the extension is about to move from the inactive to active state.</span></span><br><span class="line">    <span class="comment">// This will happen when the extension is about to present UI.</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.presentationStyle==MSMessagesAppPresentationStyleCompact) &#123;</span><br><span class="line">        _topMargan.constant = <span class="number">0</span>;</span><br><span class="line">        _leftMargan.constant = <span class="number">-15</span>;</span><br><span class="line">        _rightMargan.constant = <span class="number">-15</span>;</span><br><span class="line">        _bottomMargan.constant=<span class="number">-44</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        _topMargan.constant = <span class="number">-85</span>;</span><br><span class="line">        _leftMargan.constant = <span class="number">-15</span>;</span><br><span class="line">        _rightMargan.constant = <span class="number">-15</span>;</span><br><span class="line">        _bottomMargan.constant=<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">   [<span class="keyword">self</span>.view layoutIfNeeded]; </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//这个方法在视图控制器的模式发生了改变时调用 在其中根据模式修改布局参数</span></span><br><span class="line">-(<span class="keyword">void</span>)didTransitionToPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle &#123;</span><br><span class="line">    <span class="comment">// Called after the extension transitions to a new presentation style.</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// Use this method to finalize any behaviors associated with the change in presentation style.</span></span><br><span class="line">    <span class="keyword">if</span> (presentationStyle==MSMessagesAppPresentationStyleCompact) &#123;</span><br><span class="line">        _topMargan.constant = <span class="number">0</span>;</span><br><span class="line">        _leftMargan.constant = <span class="number">-15</span>;</span><br><span class="line">        _rightMargan.constant = <span class="number">-15</span>;</span><br><span class="line">        _bottomMargan.constant=<span class="number">-44</span>;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        _topMargan.constant = <span class="number">-85</span>;</span><br><span class="line">        _leftMargan.constant = <span class="number">-15</span>;</span><br><span class="line">        _rightMargan.constant = <span class="number">-15</span>;</span><br><span class="line">        _bottomMargan.constant=<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    [<span class="keyword">self</span>.view layoutIfNeeded];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://static.oschina.net/uploads/space/2016/0920/165414_rI7L_2340880.png" alt>                          <img src="https://static.oschina.net/uploads/space/2016/0920/165435_uA43_2340880.png" alt></p>
+<h4 id="3-解析MSMessagesAppViewController类"><a href="#3-解析MSMessagesAppViewController类" class="headerlink" title="3.解析MSMessagesAppViewController类"></a>3.解析MSMessagesAppViewController类</h4><pre><code>由于MSMessagesAppViewController类是继承于UIViewController类的，因此UIViewController中的视图控制器切换方法这里都可以直接使用，MSMessagesAppViewController中供开发者进行调用的属性和方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当前激活的会话实例 后面会介绍</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>, <span class="keyword">readonly</span>, <span class="keyword">nullable</span>) MSConversation *activeConversation;</span><br><span class="line"><span class="comment">//当前界面所在的状态</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSUInteger, MSMessagesAppPresentationStyle) &#123;</span></span><br><span class="line"><span class="comment">    //紧凑状态</span></span><br><span class="line"><span class="comment">    MSMessagesAppPresentationStyleCompact,</span></span><br><span class="line"><span class="comment">    //扩宽状态</span></span><br><span class="line"><span class="comment">    MSMessagesAppPresentationStyleExpanded</span></span><br><span class="line"><span class="comment">&#125; NS_ENUM_AVAILABLE_IOS(10_0);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>, <span class="keyword">readonly</span>) MSMessagesAppPresentationStyle presentationStyle;</span><br><span class="line"><span class="comment">//切换界面状态</span></span><br><span class="line">-(<span class="keyword">void</span>)requestPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;</span><br><span class="line"><span class="comment">//调用此方法后，MessagesApp被收回 弹出键盘</span></span><br><span class="line">-(<span class="keyword">void</span>)dismiss;</span><br></pre></td></tr></table></figure>
+<p>MSMessagesAppViewController中新增加的声明周期方法如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//当Messages App将要激活时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)willBecomeActiveWithConversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//当Messages App已经被激活后调用</span></span><br><span class="line">-(<span class="keyword">void</span>)didBecomeActiveWithConversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//当Messages App将要被注销时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)willResignActiveWithConversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//当MessageApp已经被注销时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)didResignActiveWithConversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//消息实体在会话中将要被选中时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)willSelectMessage:(MSMessage *)message conversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//消息实体在会话中已经被选中时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)didSelectMessage:(MSMessage *)message conversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//接收到同一Messages App发送的消息实体时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)didReceiveMessage:(MSMessage *)message conversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//开发发送消息时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)didStartSendingMessage:(MSMessage *)message conversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//取消发送时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)didCancelSendingMessage:(MSMessage *)message conversation:(MSConversation *)conversation;</span><br><span class="line"><span class="comment">//控制器界面模式将要改变时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)willTransitionToPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;</span><br><span class="line"><span class="comment">//控制器界面已经改变时调用</span></span><br><span class="line">-(<span class="keyword">void</span>)didTransitionToPresentationStyle:(MSMessagesAppPresentationStyle)presentationStyle;</span><br></pre></td></tr></table></figure>
+<h4 id="4-使用MSConversation会话类来进行消息的发送"><a href="#4-使用MSConversation会话类来进行消息的发送" class="headerlink" title="4.使用MSConversation会话类来进行消息的发送"></a>4.使用MSConversation会话类来进行消息的发送</h4><pre><code>MSConversation类用来描述会话，MSMessagesAppViewController中内置MSConversation对象，开发者可以用它来进行消息传递，示例代码如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">-(<span class="keyword">void</span>)tableView:(<span class="built_in">UITableView</span> *)tableView didSelectRowAtIndexPath:(<span class="built_in">NSIndexPath</span> *)indexPath&#123;</span><br><span class="line">    <span class="keyword">switch</span> (indexPath.row) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            [<span class="keyword">self</span>.activeConversation insertText:<span class="string">@"新的信息"</span> completionHandler:^(<span class="built_in">NSError</span> * error) &#123;</span><br><span class="line">                </span><br><span class="line">            &#125;];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            [<span class="keyword">self</span>.activeConversation insertSticker:[[MSSticker alloc] initWithContentsOfFileURL:[[<span class="built_in">NSURL</span> alloc] initFileURLWithPath:[[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"productImage"</span> ofType:<span class="string">@"png"</span>]] localizedDescription:<span class="string">@"image"</span> error:<span class="literal">nil</span>] completionHandler:<span class="literal">nil</span>];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            [<span class="keyword">self</span>.activeConversation insertAttachment:[[<span class="built_in">NSURL</span> alloc] initFileURLWithPath:[[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"file"</span> ofType:<span class="literal">nil</span>]] withAlternateFilename:<span class="string">@"文件"</span> completionHandler:<span class="literal">nil</span>];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            MSMessage * message = [[MSMessage alloc]initWithSession:_session];</span><br><span class="line">            message.URL = [<span class="built_in">NSURL</span> URLWithString:<span class="string">@"http://www.baidu.com"</span>];</span><br><span class="line">            message.accessibilityLabel = <span class="string">@"message"</span>;</span><br><span class="line">            message.summaryText = <span class="string">@"message"</span>;</span><br><span class="line">            MSMessageTemplateLayout * layout = [[MSMessageTemplateLayout alloc]init];</span><br><span class="line">            layout.caption = <span class="string">@"caption"</span>;</span><br><span class="line">            layout.subcaption = <span class="string">@"subcaption"</span>;</span><br><span class="line">            layout.trailingCaption = <span class="string">@"trailing"</span>;</span><br><span class="line">            layout.trailingSubcaption =<span class="string">@"subtrailing"</span>;</span><br><span class="line">            layout.image = [<span class="built_in">UIImage</span> imageNamed:<span class="string">@"productImage"</span>];</span><br><span class="line">            layout.mediaFileURL =[[<span class="built_in">NSURL</span> alloc] initFileURLWithPath:[[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@"productImage"</span> ofType:<span class="string">@"png"</span>]];</span><br><span class="line">            layout.imageTitle = <span class="string">@"杜康"</span>;</span><br><span class="line">            layout.imageSubtitle = <span class="string">@"酒水"</span>;</span><br><span class="line">            </span><br><span class="line">            message.layout = layout;</span><br><span class="line">            </span><br><span class="line">            [<span class="keyword">self</span>.activeConversation insertMessage:message completionHandler:<span class="literal">nil</span>];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            [<span class="keyword">self</span> presentViewController:[StackerViewController new] animated:<span class="literal">YES</span> completion:<span class="literal">nil</span></span><br><span class="line">             ];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">        &#123;</span><br><span class="line">            [<span class="keyword">self</span> presentViewController:[StackController new] animated:<span class="literal">YES</span> completion:<span class="literal">nil</span></span><br><span class="line">             ];</span><br><span class="line">        &#125;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>MSConversation支持发送的消息分为4中，分别为文本消息，表情贴图消息，文件消息和Message实体消息，上面代码都做了演示。MSConversation中重要属性和方法解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//本地的设备UUID</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSUUID</span> *localParticipantIdentifier;</span><br><span class="line"><span class="comment">//会话中远程设备的UUID 支持多人会话</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSArray</span>&lt;<span class="built_in">NSUUID</span> *&gt; *remoteParticipantIdentifiers;</span><br><span class="line"><span class="comment">//当前选中的消息实体</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>, <span class="keyword">nullable</span>) MSMessage *selectedMessage;</span><br><span class="line"><span class="comment">//插入文本消息</span></span><br><span class="line">- (<span class="keyword">void</span>)insertText:(<span class="built_in">NSString</span> *)text completionHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span> (^)(<span class="built_in">NSError</span> * _Nullable))completionHandler;</span><br><span class="line"><span class="comment">//插入表情贴图消息</span></span><br><span class="line">- (<span class="keyword">void</span>)insertSticker:(MSSticker *)sticker completionHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span> (^)(<span class="built_in">NSError</span> * _Nullable))completionHandler;</span><br><span class="line"><span class="comment">//插入文件附件消息</span></span><br><span class="line">- (<span class="keyword">void</span>)insertAttachment:(<span class="built_in">NSURL</span> *)URL withAlternateFilename:(<span class="keyword">nullable</span> <span class="built_in">NSString</span> *)filename completionHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span> (^)(<span class="built_in">NSError</span> * _Nullable))completionHandler;</span><br><span class="line"><span class="comment">//插入Message实体消息</span></span><br><span class="line">- (<span class="keyword">void</span>)insertMessage:(MSMessage *)message completionHandler:(<span class="keyword">nullable</span> <span class="keyword">void</span> (^)(<span class="built_in">NSError</span> * _Nullable))completionHandler;</span><br></pre></td></tr></table></figure>
+<p>效果图如下：</p>
+<p><img src="https://static.oschina.net/uploads/space/2016/0920/185552_zFnt_2340880.png" alt>        <img src="https://static.oschina.net/uploads/space/2016/0920/185634_NM8E_2340880.png" alt>      <img src="https://static.oschina.net/uploads/space/2016/0920/185648_AgAD_2340880.png" alt></p>
+<h4 id="5-消息实体MSMessage的应用"><a href="#5-消息实体MSMessage的应用" class="headerlink" title="5.消息实体MSMessage的应用"></a>5.消息实体MSMessage的应用</h4><pre><code>MSMessage是Messages App定义的一种消息实体，其可以用来在Messages App间传递信息，因为它的存在，通过Messages用用实现休闲对战游戏变得十分容易，开发者不需要在写即时通信链接，只需设计游戏逻辑即可。MSMessage不能够完全自定义UI，但是Messages框架中的MSMessageTemplateLayout类可以对其UI进行简单的配置。
+
+MSMessage类中常用的属性和方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化方法 可以绑定一个session，同一个session种的消息实体会被归为一类</span></span><br><span class="line">-(<span class="keyword">instancetype</span>)initWithSession:(MSSession *)session <span class="built_in">NS_DESIGNATED_INITIALIZER</span>;</span><br><span class="line"><span class="comment">//发送此消息的设备</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSUUID</span> *senderParticipantIdentifier;</span><br><span class="line"><span class="comment">//消息的UI布局信息</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) MSMessageLayout* layout;</span><br><span class="line"><span class="comment">//消息附带的URL 开发者可以通过这个URL来传值 </span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSURL</span> *URL;</span><br><span class="line"><span class="comment">//是否保留过期的消息</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>) <span class="built_in">BOOL</span> shouldExpire;</span><br><span class="line"></span><br><span class="line"><span class="comment">//盲人模式中对应的文案</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *accessibilityLabel;</span><br></pre></td></tr></table></figure>
+<h4 id="6-消息实体布局类MSMessageLayout"><a href="#6-消息实体布局类MSMessageLayout" class="headerlink" title="6.消息实体布局类MSMessageLayout"></a>6.消息实体布局类MSMessageLayout</h4><pre><code>前面介绍，MSMessage类中并没有定义UI，UI部分需要配合MSMessageLayout类来配置。需要注意，MSMessageLayout类是一个抽象类，apple设计的目的可能是为了以后便于扩展多个消息布局模板。目前，开发者只需要使用MSMessageTemplateLayout类来对消息实体进行布局。
+
+MSMessageTemplateLayout类中可以配置的属性如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置消息实体的标题</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *caption;</span><br><span class="line"><span class="comment">//设置消息实体的子标题</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *subcaption;</span><br><span class="line"><span class="comment">//设置消息实体的右侧标题</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *trailingCaption;</span><br><span class="line"><span class="comment">//设置消息实体的右侧子标题</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *trailingSubcaption;</span><br><span class="line"><span class="comment">//设置消息实体的图片</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>, <span class="keyword">nullable</span>) <span class="built_in">UIImage</span> *image;</span><br><span class="line"><span class="comment">//设置消息实体的媒体地址 需要注意 如果设置的image属性 这个属性将被忽略</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSURL</span> *mediaFileURL;</span><br><span class="line"><span class="comment">//设置消息实体的图标标题</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *imageTitle;</span><br><span class="line"><span class="comment">//设置消息实体的图片子标题</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>, <span class="keyword">nullable</span>) <span class="built_in">NSString</span> *imageSubtitle;</span><br></pre></td></tr></table></figure>
+<h4 id="7-表情贴图类MSSticker与MSStickerView"><a href="#7-表情贴图类MSSticker与MSStickerView" class="headerlink" title="7.表情贴图类MSSticker与MSStickerView"></a>7.表情贴图类MSSticker与MSStickerView</h4><pre><code>在制作表情包Sticker Picks的时候，开发者不需要编写一行代码，实际上如果要通过代码来开发表情包也是没有问题的，这里需要用到的一个类就是MSSticker类，简单理解，MSSticker类对象就是一个表情贴图，但是它不是一个View视图，若想在Messages App中看到这个表情贴图，还需要借助一个类MSStickerView，MSStickerView是用于承载表情贴图的视图类，用户选中它后，可以在Messages应用中进行发送。
+
+首先，MSSticker类创建方法如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化方法 通过文件URL 来创建实例</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="keyword">instancetype</span>)initWithContentsOfFileURL:(<span class="built_in">NSURL</span> *)fileURL localizedDescription:(<span class="built_in">NSString</span> *)localizedDescription error:(<span class="built_in">NSError</span> * _Nullable *)error <span class="built_in">NS_DESIGNATED_INITIALIZER</span>;</span><br></pre></td></tr></table></figure>
+<p>MSStickerView类解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//通过MSSticker来进行MSStickerView类的创建</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithFrame:(<span class="built_in">CGRect</span>)frame sticker:(<span class="keyword">nullable</span> MSSticker *)sticker;</span><br><span class="line"></span><br><span class="line"><span class="comment">//获取动画播放一遍的时间 如果是gif</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSTimeInterval</span> animationDuration;</span><br><span class="line"><span class="comment">//开始动画</span></span><br><span class="line">-(<span class="keyword">void</span>) startAnimating;</span><br><span class="line"><span class="comment">//结束动画</span></span><br><span class="line">-(<span class="keyword">void</span>) stopAnimating;</span><br><span class="line"><span class="comment">//获取动画状态</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)isAnimating;</span><br></pre></td></tr></table></figure>
+<p>需要注意，MSStickerView如果加载的是gif类型的表情贴图，默认不会播放动画，开发者可以调用开始动画的方法来进行gif动画的播放。</p>
+<h4 id="8-表情包视图控制器MSStickerBrowserViewController"><a href="#8-表情包视图控制器MSStickerBrowserViewController" class="headerlink" title="8.表情包视图控制器MSStickerBrowserViewController"></a>8.表情包视图控制器MSStickerBrowserViewController</h4><pre><code>其实通过前面的内容，已经可以自定义开发一个表情包Messages App了，但是还有一个视图控制器类MSStickerBrowserViewController，这个类可以更加简单方面的创建表情包视图控制器。要了解MSStickerBrowserViewController类，首先应该先了解MSStickerBrowserView类，这两个类的关系十分类似于UITableViewController与UITableView类的关系。MSStickerBrowserView是用于展示表情视图的容器，其继承自UIView，但却和UICollectionView十分类似，其中方法解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//初始化方法 设置frame 和其中表情视图的尺寸模式</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, MSStickerSize) &#123;</span></span><br><span class="line"><span class="comment">    //小尺寸</span></span><br><span class="line"><span class="comment">    MSStickerSizeSmall,</span></span><br><span class="line"><span class="comment">    //标准尺寸</span></span><br><span class="line"><span class="comment">    MSStickerSizeRegular,</span></span><br><span class="line"><span class="comment">    //大尺寸</span></span><br><span class="line"><span class="comment">    MSStickerSizeLarge</span></span><br><span class="line"><span class="comment">&#125; NS_ENUM_AVAILABLE_IOS(10_0);</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithFrame:(<span class="built_in">CGRect</span>)frame stickerSize:(MSStickerSize)stickerSize <span class="built_in">NS_DESIGNATED_INITIALIZER</span>;</span><br><span class="line"><span class="comment">//数据源代理</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>, <span class="keyword">nullable</span>) <span class="keyword">id</span> &lt;MSStickerBrowserViewDataSource&gt; dataSource;</span><br><span class="line"><span class="comment">//当前的滑动位置</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>, <span class="keyword">readwrite</span>) <span class="built_in">CGPoint</span> contentOffset;</span><br><span class="line"><span class="comment">//内容偏移尺寸</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">assign</span>, <span class="keyword">readwrite</span>) <span class="built_in">UIEdgeInsets</span> contentInset;</span><br><span class="line"><span class="comment">//设置当前的滑动位置</span></span><br><span class="line">- (<span class="keyword">void</span>)setContentOffset:(<span class="built_in">CGPoint</span>)contentOffset animated:(<span class="built_in">BOOL</span>)animated;</span><br><span class="line"><span class="comment">//刷新数据</span></span><br><span class="line">- (<span class="keyword">void</span>)reloadData;</span><br></pre></td></tr></table></figure>
+<p>MSStickerBrowserView的数据填充需要在代理方法中实现，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置表情贴图个数</span></span><br><span class="line">- (<span class="built_in">NSInteger</span>)numberOfStickersInStickerBrowserView:(MSStickerBrowserView *)stickerBrowserView;</span><br><span class="line"><span class="comment">//设置具体每个位置的表情贴图</span></span><br><span class="line">- (MSSticker *)stickerBrowserView:(MSStickerBrowserView *)stickerBrowserView stickerAtIndex:(<span class="built_in">NSInteger</span>)index;</span><br></pre></td></tr></table></figure>
+<p>再看MSStickerBrowserViewController就十分容易了，它只是将MSStickerBrowserView封装在了一个UIViewController中，并且这个UIViewController遵守了MSStickerBrowserViewDataSource协议，开发者直接实现协议方法即可。</p>
+<h3 id="四、开发Messages-App中的建议"><a href="#四、开发Messages-App中的建议" class="headerlink" title="四、开发Messages App中的建议"></a>四、开发Messages App中的建议</h3><pre><code>下面是Apple对Messages App的定位和一些建议，还有我的一些理解：
+</code></pre><p>1.确保应用是有用的并且易于理解。</p>
+<p>2.功能要聚焦单一，不要组合多种功能在一起。</p>
+<p>3.Messages通常用在双人非正式的交谈中，应从这里入手，让交流更加有趣。</p>
+<p>4.Messages的最大两点是分享，利用这一点出发开发Messages App。</p>
+<p>5.插图内容布局要注意，系统会自动将内容变为圆角，不要把重要的信息放在角落。</p>
+<p>6.注意，在紧凑模式下，Messages App的界面是不允许水平滚动的。</p>
+<p>7.同样，在紧凑模式下，Messages App不允许键盘输入。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：203317592</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/09/18/255iOS10通知框架UserNotification理解与应用/" class="pre-post btn btn-default" title='iOS10通知框架UserNotification理解与应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS10通知框架UserNotification理解与应用</span>
+        </a>
+    
+    
+        <a href="/2016/09/10/254iOS文本布局探讨之三——使用TextKit框架进行富文本布局/" class="next-post btn btn-default" title='iOS文本布局探讨之三——使用TextKit框架进行富文本布局'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS文本布局探讨之三——使用TextKit框架进行富文本布局</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS10中Messages独立应用与扩展插件详析"><span class="toc-text">iOS10中Messages独立应用与扩展插件详析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、开发表情包StickerPicks"><span class="toc-text">二、开发表情包StickerPicks</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-开发独立的表情包"><span class="toc-text">1.开发独立的表情包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-开发寄宿于宿主App的表情包扩展"><span class="toc-text">2.开发寄宿于宿主App的表情包扩展</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-关于表情包的icon图标"><span class="toc-text">3.关于表情包的icon图标</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、开发Messages-App应用"><span class="toc-text">三、开发Messages App应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-认识Messages框架"><span class="toc-text">1.认识Messages框架</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-实现一个Messages-App的列表界面"><span class="toc-text">2.实现一个Messages App的列表界面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-解析MSMessagesAppViewController类"><span class="toc-text">3.解析MSMessagesAppViewController类</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-使用MSConversation会话类来进行消息的发送"><span class="toc-text">4.使用MSConversation会话类来进行消息的发送</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-消息实体MSMessage的应用"><span class="toc-text">5.消息实体MSMessage的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-消息实体布局类MSMessageLayout"><span class="toc-text">6.消息实体布局类MSMessageLayout</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-表情贴图类MSSticker与MSStickerView"><span class="toc-text">7.表情贴图类MSSticker与MSStickerView</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-表情包视图控制器MSStickerBrowserViewController"><span class="toc-text">8.表情包视图控制器MSStickerBrowserViewController</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、开发Messages-App中的建议"><span class="toc-text">四、开发Messages App中的建议</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

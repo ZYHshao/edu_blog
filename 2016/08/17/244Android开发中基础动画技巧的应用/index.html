@@ -1,0 +1,378 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>Android开发中基础动画技巧的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Android开发中基础动画技巧的应用">
+            
+	            Android开发中基础动画技巧的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/Android小记">
+            Android小记
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2016/08/17</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="Android开发中基础动画技巧的应用"><a href="#Android开发中基础动画技巧的应用" class="headerlink" title="Android开发中基础动画技巧的应用"></a>Android开发中基础动画技巧的应用</h2><h3 id="一、引言"><a href="#一、引言" class="headerlink" title="一、引言"></a>一、引言</h3><pre><code>我是先入门iOS的移动开发者，提到动画开发，iOS开发者很容易联想到3种方式，UIImageView的帧动画，UIView层的属性动画和CoreAnimation动画。Android中也有3种方式创建基础动画效果，分别为View Animation，Property Animation和Drawable Animation。由于Android开发的固有特点，其在进行动画编程时也支持使用代码和xml配置文件两种方式。本篇博客，将主要向大家介绍这3种创建Android动画方式的使用方法与可以做到的效果。
+</code></pre><h3 id="二、View-Animation动画的应用"><a href="#二、View-Animation动画的应用" class="headerlink" title="二、View Animation动画的应用"></a>二、View Animation动画的应用</h3><pre><code>View Animation又被称为Tweened Animation，其应用于View视图变化的动画过渡效果。View Animation主要分为如下4类：
+</code></pre><p>①.AlphaAnimation：透明度动画</p>
+<p>②.RotateAnimation：旋转动画</p>
+<p>③.ScaleAnimation:缩放动画</p>
+<p>④.TranslateAnimation：位移动画</p>
+<h4 id="1-AlphaAnimation的应用"><a href="#1-AlphaAnimation的应用" class="headerlink" title="1.AlphaAnimation的应用"></a>1.AlphaAnimation的应用</h4><pre><code>AlphaAnimation用于当视图透明度发生变化时展示过渡动画，可以渐隐也可以渐现。使用AlphaAnimation创建动画的核心代码如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建AlphaAnimation动画对象 构造方法中需要传入两个float值 分别是视图动画起始的alpha值与最终的alpha值</span></span><br><span class="line">AlphaAnimation alphaAnimation = <span class="keyword">new</span> AlphaAnimation(<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line"><span class="comment">//设置动画执行时间 </span></span><br><span class="line">alphaAnimation.setDuration(<span class="number">3000</span>);</span><br><span class="line"><span class="comment">//调用视图的startAnimation方法来开启动画</span></span><br><span class="line">animationImageView.startAnimation(alphaAnimation);</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/133103_PrKC_2340880.gif" alt></p>
+<h4 id="2-RotateAnimation的应用"><a href="#2-RotateAnimation的应用" class="headerlink" title="2.RotateAnimation的应用"></a>2.RotateAnimation的应用</h4><pre><code>RotateAnimation用于创建视图的旋转动画。其相比AlphaAnimation要复杂一些，在使用时，除了需要设置其动画的起始角度和最终角度外，还可以设置视图旋转时的参照位置，示例代码如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建旋转动画对象</span></span><br><span class="line">RotateAnimation rotateAnimation = <span class="keyword">new</span> RotateAnimation(<span class="number">0</span>,<span class="number">360</span>, Animation.RELATIVE_TO_SELF,<span class="number">0.5f</span>,Animation.RELATIVE_TO_SELF,<span class="number">0.5f</span>);</span><br><span class="line"><span class="comment">//设置动画时间</span></span><br><span class="line">rotateAnimation.setDuration(<span class="number">3000</span>);</span><br><span class="line"><span class="comment">//开始动画</span></span><br><span class="line">animationImageView.startAnimation(rotateAnimation);</span><br></pre></td></tr></table></figure>
+<p>这里使用了RotateAnimation类中最复杂的一个构造方法，其中需要传入6个参数，前两个参数分别为旋转动画的起始角度与终止角度，第3个参数为旋转参照点的x轴相对位置类型，第4个参数为参照点x轴位置，第5个和第6个参数分别为旋转参照点的y轴相对位置类型与y轴相对位置。</p>
+<pre><code>关于参照点的相对位置类型，Animation类中定义了几个常量供开发者选择使用，意义如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//绝对定位 以当前窗口做参照</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ABSOLUTE = <span class="number">0</span>;</span><br><span class="line"><span class="comment">//以其父视图做为位置参照</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RELATIVE_TO_PARENT = <span class="number">2</span>;</span><br><span class="line"><span class="comment">//以本身作为位置参照</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> RELATIVE_TO_SELF = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p>还有一点需要注意，如果选择的参照类型是RELATIVE_TO_SELF，则参照点的位置参数取值范围为0-1之间，代表的是相对于自身的位置比例，如果参照类型是RELATIVE_TO_PARENT，则参照点的位置参数取值范围为0-1之间，代表的是相对于父视图的位置比例，如果参照类型是ABSOLUTE，则参照点的位置参数取值为绝对坐标值，例如100，150，其代表了相对窗口视图的坐标位置。例如上面示例代码中，以视图本身为参照物，x、y轴位置都设置为0.5，则旋转动画以视图本身中心为旋转点，如果需要以视图右下角为旋转点，修改代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RotateAnimation rotateAnimation = <span class="keyword">new</span> RotateAnimation(<span class="number">0</span>,<span class="number">360</span>, Animation.RELATIVE_TO_SELF,<span class="number">1f</span>,Animation.RELATIVE_TO_SELF,<span class="number">1f</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/144612_kHnQ_2340880.gif" alt></p>
+<h4 id="3-ScaleAnimation的应用"><a href="#3-ScaleAnimation的应用" class="headerlink" title="3.ScaleAnimation的应用"></a>3.ScaleAnimation的应用</h4><pre><code>ScaleAnimation用于创建放大或者缩小的形变动画，示例代码如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建缩放动画对象</span></span><br><span class="line">ScaleAnimation scaleAnimation = <span class="keyword">new</span> ScaleAnimation(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,Animation.RELATIVE_TO_SELF,<span class="number">0.5f</span>,Animation.RELATIVE_TO_SELF,<span class="number">0.5f</span>);</span><br><span class="line"><span class="comment">//设置动画时间</span></span><br><span class="line">scaleAnimation.setDuration(<span class="number">3000</span>);</span><br><span class="line"><span class="comment">//执行动画</span></span><br><span class="line">animationImageView.startAnimation(scaleAnimation);</span><br></pre></td></tr></table></figure>
+<p>上面示例代码中前4个参数分别设置缩放动画x轴方向的起始值、最终值和y轴方向的起始值、终止值。需要注意，这里的单位都是比例，1表示原视图尺寸，2表示原视图尺寸的2倍。这个方法后4个参数的意义是确定缩放参照点的位置，和RotateAniamtion构造方法中的参数意义一致。</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/145733_M8TL_2340880.gif" alt></p>
+<h4 id="4-TranslateAnimation的应用"><a href="#4-TranslateAnimation的应用" class="headerlink" title="4.TranslateAnimation的应用"></a>4.TranslateAnimation的应用</h4><pre><code>TranslateAnimation用于创建位移动画，示例代码如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建位移动画对象</span></span><br><span class="line">TranslateAnimation translateAnimation = <span class="keyword">new</span> TranslateAnimation(Animation.ABSOLUTE,<span class="number">0</span>,Animation.ABSOLUTE,<span class="number">100</span>,Animation.RELATIVE_TO_SELF,<span class="number">0</span>,Animation.RELATIVE_TO_SELF,<span class="number">1</span>);</span><br><span class="line"><span class="comment">//设置动画时间</span></span><br><span class="line">translateAnimation.setDuration(<span class="number">3000</span>);</span><br><span class="line"><span class="comment">//执行动画</span></span><br><span class="line">animationImageView.startAnimation(translateAnimation);</span><br></pre></td></tr></table></figure>
+<p>上面示例代码中使用的TranslateAnimation构造方法中的8个参数分别代表，起始位置的x轴参照点类型与起始位置的x轴值、终止位置的x轴参照点类型与终止位置的x轴值、起始位置的y轴参照点类型与起始位置的y轴值、终止位置的y轴参照点类型与终止位置的y轴值。</p>
+<h4 id="5-Animation类中的通用方法"><a href="#5-Animation类中的通用方法" class="headerlink" title="5.Animation类中的通用方法"></a>5.Animation类中的通用方法</h4><pre><code>上面介绍的4种动画实际上都是Animation类的子类，Animation类中封装了许多动画通用的方法，例如前面使用的设置动画执行时间的方法setDuration就是Animation类的方法，其中更多常用方法列举如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//取消正在执行的动画</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//设置动画的执行函数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setInterpolator</span><span class="params">(Interpolator i)</span></span>;</span><br><span class="line"><span class="comment">//这只方法设置开始动画的延时值 单位为毫秒</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartOffset</span><span class="params">(<span class="keyword">long</span> startOffset)</span></span>;</span><br><span class="line"><span class="comment">//设置动画的执行时间</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDuration</span><span class="params">(<span class="keyword">long</span> durationMillis)</span></span>;</span><br><span class="line"><span class="comment">//设置动画特效的最长运行时间</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">restrictDuration</span><span class="params">(<span class="keyword">long</span> durationMillis)</span></span>;</span><br><span class="line"><span class="comment">//设置动画的执行强度比例 例如放大两倍的动画 这个值如果设置为2 将被放大4倍</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">scaleCurrentDuration</span><span class="params">(<span class="keyword">float</span> scale)</span></span>;</span><br><span class="line"><span class="comment">//为动画设置一个开始的时间</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartTime</span><span class="params">(<span class="keyword">long</span> startTimeMillis)</span></span>;</span><br><span class="line"><span class="comment">//设置动画循环模式</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">只有当动画的循环次数大于1时这个值才有效果，其可以设置为如下常量：</span></span><br><span class="line"><span class="comment">RESTART 每次循环都从头执行</span></span><br><span class="line"><span class="comment">REVERSE 正逆交替执行</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRepeatMode</span><span class="params">(<span class="keyword">int</span> repeatMode)</span></span>;</span><br><span class="line"><span class="comment">//设置循环次数 设置为INFINITE则为无限循环</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRepeatCount</span><span class="params">(<span class="keyword">int</span> repeatCount)</span></span>;</span><br><span class="line"><span class="comment">//设置是否允许填充动画 这个方法设置为true后setFillBefore()与setFillAfter()方法才会生效</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFillEnabled</span><span class="params">(<span class="keyword">boolean</span> fillEnabled)</span></span>;</span><br><span class="line"><span class="comment">//动画结束后 是否以起始位置填充视图</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFillBefore</span><span class="params">(<span class="keyword">boolean</span> fillBefore)</span></span>;</span><br><span class="line"><span class="comment">//动画结束后 是否以结束位置填充视图</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFillAfter</span><span class="params">(<span class="keyword">boolean</span> fillAfter)</span></span></span><br><span class="line"><span class="function"><span class="comment">//设置动画执行时在Z轴上的位置</span></span></span><br><span class="line"><span class="function"><span class="comment">/*</span></span></span><br><span class="line"><span class="function"><span class="comment">可以设置为如下3中常量</span></span></span><br><span class="line"><span class="function"><span class="comment">    public static final int ZORDER_BOTTOM = -1; //将动画放在Z轴最下边</span></span></span><br><span class="line"><span class="function"><span class="comment">    public static final int ZORDER_NORMAL = 0;  //将动画放在Z轴原位置</span></span></span><br><span class="line"><span class="function"><span class="comment">    public static final int ZORDER_TOP = 1;     //将动画放在Z轴最上边</span></span></span><br><span class="line"><span class="function"><span class="comment">*/</span></span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setZAdjustment</span><span class="params">(<span class="keyword">int</span> zAdjustment)</span></span>;</span><br><span class="line"><span class="comment">//设置动画的执行是否影响到壁纸</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDetachWallpaper</span><span class="params">(<span class="keyword">boolean</span> detachWallpaper)</span></span>;</span><br><span class="line"><span class="comment">//获取动画是否开始执行了</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasStarted</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//获取动画是否结束执行了</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">hasEnded</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>上面列举的方法中，setInterpolator()方法很有意思，其可以设置动画执行的时间函数，例如是先快后慢还是先慢后快等等，这个方法需要传入一个Interpolator类型的参数，实际上使用时是通过Interpolator的子类来实现的，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ranslateAnimation.setInterpolator(<span class="keyword">new</span> AccelerateDecelerateInterpolator());</span><br></pre></td></tr></table></figure>
+<p>对于Interpolator参数开发者可以设置的子类及意义列举如下：</p>
+<p>AccelerateDecelerateInterpolator：先加速后减速执行</p>
+<p>AccelerateInterpolator：加速执行</p>
+<p>AnticipateInterpolator：先后退执行一步后正向加速执行(类似弹簧效果)</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/190457_bwZh_2340880.gif" alt></p>
+<p> AnticipateOvershootInterpolator：先后退执行一步后加速执行到达极限后再前进一步后再回到极限(弹簧)</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/182915_U1XI_2340880.gif" alt></p>
+<p>BounceInterpolator：动画执行到结尾后进行阻尼效果</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/191145_5dtQ_2340880.gif" alt></p>
+<p>CycleInterpolator：以正弦规则循环执行数次动画，这个类来构造时需要传入循环次数，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> CycleInterpolator(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>DecelerateInterpolator：减速执行动画</p>
+<p> FastOutLinearInInterpolator：基于贝塞尔曲线的速率变化</p>
+<p> FastOutSlowInInterpolator：基于贝塞尔曲线的速率变化</p>
+<p> LinearInterpolator：线性匀速执行</p>
+<p>LinearOutSlowInInterpolator：基于贝塞尔曲线的速率变化</p>
+<p>OvershootInterpolator：执行超出极限后在回退</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/192211_5GhI_2340880.gif" alt></p>
+<p>PathInterpolator：自定义运动路径</p>
+<h4 id="6-实现对Animation动画状态的监听"><a href="#6-实现对Animation动画状态的监听" class="headerlink" title="6.实现对Animation动画状态的监听"></a>6.实现对Animation动画状态的监听</h4><pre><code>Animation类中也定义了一个监听器协议，其中提供了对动画状态进行监听的方法，如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AnimationListener</span> </span>&#123;</span><br><span class="line">    <span class="comment">//当动画开始执行时触发的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animation var1)</span></span>;</span><br><span class="line">    <span class="comment">//动画执行结束后触发的方法</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animation var1)</span></span>;</span><br><span class="line">    <span class="comment">//动画重复执行的时候会触发</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onAnimationRepeat</span><span class="params">(Animation var1)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="7-使用xml文件配置View-Animation"><a href="#7-使用xml文件配置View-Animation" class="headerlink" title="7.使用xml文件配置View Animation"></a>7.使用xml文件配置View Animation</h4><pre><code>上面介绍的全部是通过代码来创建View Animation动画，Android也支持使用xml文件来配置View Animation动画。
+</code></pre><p>首先在Android Studio的res目录中创建一个动画文件目录，将其类型选择为anim，如下图所示：</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/223215_tS6Z_2340880.png" alt></p>
+<p>在创建的目录中创建一个新的xml文件，在其中编写动画代码如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">set</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">alpha</span> <span class="attr">android:fromAlpha</span>=<span class="string">"1"</span> <span class="attr">android:toAlpha</span>=<span class="string">"0"</span> <span class="attr">android:duration</span> = <span class="string">"3000"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在代码中，使用如下代码来加载xml配置的动画：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//加载动画文件</span></span><br><span class="line">Animation animation = AnimationUtils.loadAnimation(<span class="keyword">this</span>,R.anim.my_anmi);</span><br><span class="line"><span class="comment">//执行动画</span></span><br><span class="line">animationImageView.startAnimation(animation);</span><br></pre></td></tr></table></figure>
+<h4 id="8-复合的View-Animation"><a href="#8-复合的View-Animation" class="headerlink" title="8.复合的View Animation"></a>8.复合的View Animation</h4><pre><code>View Animation也支持进行复合动画的操作，如果使用xml配置复合动画，十分简单，只需要将要要复合的动画都配置进xml文件的set标签中即可，如下：
+</code></pre><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">set</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">alpha</span> <span class="attr">android:fromAlpha</span>=<span class="string">"1"</span> <span class="attr">android:toAlpha</span>=<span class="string">"0"</span> <span class="attr">android:duration</span> = <span class="string">"3000"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scale</span> <span class="attr">android:fromXScale</span>=<span class="string">"1"</span> <span class="attr">android:toXScale</span>=<span class="string">"2"</span> <span class="attr">android:fromYScale</span>=<span class="string">"1"</span> <span class="attr">android:toYScale</span>=<span class="string">"2"</span> <span class="attr">android:duration</span>=<span class="string">"3000"</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">set</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/224522_H4v6_2340880.gif" alt></p>
+<p>如果要用代码创建复合动画，需要使用到AnimationSet类进行复合，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建动画集合容器 参数决定容器中所有动画是否共用Interpolator时序函数</span></span><br><span class="line">AnimationSet set = <span class="keyword">new</span> AnimationSet(<span class="keyword">true</span>);</span><br><span class="line"><span class="comment">//创建动画</span></span><br><span class="line">RotateAnimation rotateAnimation = <span class="keyword">new</span> RotateAnimation(<span class="number">0</span>,<span class="number">360</span>, Animation.RELATIVE_TO_SELF,<span class="number">1f</span>,Animation.RELATIVE_TO_SELF,<span class="number">1f</span>);</span><br><span class="line">ScaleAnimation scaleAnimation = <span class="keyword">new</span> ScaleAnimation(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">2</span>,Animation.RELATIVE_TO_SELF,<span class="number">0.5f</span>,Animation.RELATIVE_TO_SELF,<span class="number">0.5f</span>);</span><br><span class="line">scaleAnimation.setDuration(<span class="number">3000</span>);</span><br><span class="line">rotateAnimation.setDuration(<span class="number">3000</span>);</span><br><span class="line"><span class="comment">//将动画添加进集合中</span></span><br><span class="line">set.addAnimation(rotateAnimation);</span><br><span class="line">set.addAnimation(scaleAnimation);</span><br><span class="line"><span class="comment">//执行动画</span></span><br><span class="line">animationImageView.startAnimation(set);</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2016/0816/230119_e9ow_2340880.gif" alt></p>
+<h3 id="三、Property-Animation动画的应用"><a href="#三、Property-Animation动画的应用" class="headerlink" title="三、Property Animation动画的应用"></a>三、Property Animation动画的应用</h3><pre><code>在前面介绍的View Animation动画体系中，虽然使用起来十分方便，但也有十分多的局限性，例如只能支持透明度，位置，缩放和旋转动画，并且在动画执行时，视图实际上并没有移动，如果需要做动画的是可以用户交互的按钮控件则会带来很多的不便。在Android3.0之后，系统推出了Property Animation动画，这种机制可以将对象任意属性的修改实现过渡动画效果。
+</code></pre><h4 id="1-ObjectAnimator动画的应用"><a href="#1-ObjectAnimator动画的应用" class="headerlink" title="1.ObjectAnimator动画的应用"></a>1.ObjectAnimator动画的应用</h4><pre><code>ObjectAnimator是Property Animation动画体系中最简单易用的一种方式，开发者只需要设置要改变的属性值和一些动画参数即可使用，例如若要实现视图以y方向为轴进行旋转操作，使用 如下代码实现：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建属性动画对象</span></span><br><span class="line">ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(animationImageView,<span class="string">"rotationY"</span>,<span class="number">0</span>,<span class="number">360</span>,<span class="number">0</span>);</span><br><span class="line"><span class="comment">//设置动画时间</span></span><br><span class="line">objectAnimator.setDuration(<span class="number">3000</span>);</span><br><span class="line"><span class="comment">//开始动画</span></span><br><span class="line">objectAnimator.start();</span><br></pre></td></tr></table></figure>
+<p>ObjectAnimator类的静态方法ofFloat()用于创建属性动画实例本身，与其类似的方法还有ofInt()与ofObject()。需要注意，这些方法第1个参数为要执行动画的视图，第2个参数为要发生动画改变的属性名，从第3个参数开始后面可以添加任意多个值，这些值代表了属性值改变的路径，例如上面示例代码表示将视图以y方向为轴从0°开始旋转到360°后再旋转回0°。</p>
+<p><img src="http://static.oschina.net/uploads/space/2016/0817/111354_Wur6_2340880.gif" alt></p>
+<pre><code>ObjectAnimator类继承自ValueAnimator，ValueAnimator类则更加灵活自由，其可以为自定义类的自定义属性做动画处理，后面会介绍，ValueAnimator类中提供了许多动画配置的方法，常用如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//设置动画执行时间</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ValueAnimator <span class="title">setDuration</span><span class="params">(<span class="keyword">long</span> duration)</span></span>;</span><br><span class="line"><span class="comment">//设置延时执行</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setStartDelay</span><span class="params">(<span class="keyword">long</span> startDelay)</span></span>;</span><br><span class="line"><span class="comment">//设置动画循环次数</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRepeatCount</span><span class="params">(<span class="keyword">int</span> value)</span></span>;</span><br><span class="line"><span class="comment">//设置动画循环模式</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setRepeatMode</span><span class="params">(<span class="keyword">int</span> value)</span></span>;</span><br><span class="line"><span class="comment">//设置动画执行时序模式</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setInterpolator</span><span class="params">(TimeInterpolator value)</span></span>;</span><br><span class="line"><span class="comment">//开始执行动画</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//结束动画</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">end</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//取消动画</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">cancel</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//恢复动画</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resume</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">//暂停动画</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">pause</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+<p>需要注意，使用ObjectAnimator创建动画的属性必须实现set和get方法。</p>
+<h4 id="2-ValueAnimator实现更加灵活的自定义动画"><a href="#2-ValueAnimator实现更加灵活的自定义动画" class="headerlink" title="2.ValueAnimator实现更加灵活的自定义动画"></a>2.ValueAnimator实现更加灵活的自定义动画</h4><pre><code>ObjectAnimator是ValueAnimator的子类，可以理解，ValueAnimator要比ObjectAnimator更加灵活自由，其可以实现任意自定义属性的动画行为。示例代码如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建ValueAnimator实例</span></span><br><span class="line">ValueAnimator valueAnimator = <span class="keyword">new</span> ValueAnimator();</span><br><span class="line"><span class="comment">//设置动画的路径值</span></span><br><span class="line">valueAnimator.setFloatValues(<span class="number">0</span>,<span class="number">200</span>,<span class="number">100</span>,<span class="number">300</span>,<span class="number">0</span>);</span><br><span class="line"><span class="comment">//设置动画的执行时间</span></span><br><span class="line">valueAnimator.setDuration(<span class="number">6000</span>);</span><br><span class="line"><span class="comment">//添加动画执行监听</span></span><br><span class="line">valueAnimator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</span><br><span class="line">   <span class="comment">//这个方法会在每次动画值改变时调用</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator valueAnimator)</span> </span>&#123;</span><br><span class="line">       <span class="comment">//设置视图的横坐标 </span></span><br><span class="line">       animationImageView.setX((Float) valueAnimator.getAnimatedValue());</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//执行动画</span></span><br><span class="line">valueAnimator.start();</span><br></pre></td></tr></table></figure>
+<p>如果运行上面代码，可以看到视图在6s内从x坐标点为0的地方平移到200后再次回到100后再次移动到300最终回到原点0。</p>
+<pre><code>上面的示例代码只是演示了ValueAnimator的工作原理，开发者可以在onAnimationUpdate()方法中进行任意属性的修改。仅从上面演示代码并不能体现出ValueAnimator的强大之处，可以通过实现类似抛物线的动画来理解ValueAnimator的灵活之处，示例代码如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建ValueAnimator实例</span></span><br><span class="line"><span class="keyword">final</span> ValueAnimator animator = <span class="keyword">new</span> ValueAnimator();</span><br><span class="line"><span class="comment">//示例进行抛物线动画 让控件从(0,0)点位置移动到x轴为400的位置，y轴方向做自由落体</span></span><br><span class="line">animator.setObjectValues(<span class="keyword">new</span> Point(<span class="number">0</span>,<span class="number">0</span>),<span class="keyword">new</span> Point(<span class="number">400</span>,<span class="number">0</span>));</span><br><span class="line"><span class="comment">//设置动画时间</span></span><br><span class="line">animator.setDuration(<span class="number">4000</span>);</span><br><span class="line"><span class="comment">//设置时序为线性函数</span></span><br><span class="line">animator.setInterpolator(<span class="keyword">new</span> LinearInterpolator());</span><br><span class="line"><span class="comment">//由于抛物线运动在x轴和y轴上的速度变化并不相同 需要自定义枚举器</span></span><br><span class="line">animator.setEvaluator(<span class="keyword">new</span> TypeEvaluator&lt;Point&gt;() &#123;</span><br><span class="line">   <span class="comment">//这个枚举方法中传入的v值为动画执行的比例 0为初始状态 1为动画执行完成 开发者根据这个值模拟抛物线坐标</span></span><br><span class="line">   <span class="meta">@Override</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> Point <span class="title">evaluate</span><span class="params">(<span class="keyword">float</span> v, Point o,Point t1)</span> </span>&#123;</span><br><span class="line">       <span class="comment">//创建Point对象 模拟抛物运动</span></span><br><span class="line">       Point point = <span class="keyword">new</span> Point();</span><br><span class="line">       point.x = (<span class="keyword">int</span>)((v*<span class="number">8</span>)*<span class="number">100</span>);</span><br><span class="line">       point.y = (<span class="keyword">int</span>)((v*<span class="number">60</span>)*(v*<span class="number">60</span>)/<span class="number">4</span>); </span><br><span class="line">       <span class="keyword">return</span> point;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//监听动画执行</span></span><br><span class="line">animator.addUpdateListener(<span class="keyword">new</span> ValueAnimator.AnimatorUpdateListener() &#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onAnimationUpdate</span><span class="params">(ValueAnimator valueAnimator)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//设置视图位置</span></span><br><span class="line">        animationImageView.setX(((Point)valueAnimator.getAnimatedValue()).x);</span><br><span class="line">        animationImageView.setY(((Point)valueAnimator.getAnimatedValue()).y);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//执行动画</span></span><br><span class="line">animator.start();</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2016/0817/131414_Pmyy_2340880.gif" alt></p>
+<p>需要注意，Property Animation与View Animation最大的不同在于View Animation只是展示视图的界面动画，它并没有真正改变视图的属性，而Property Animation是实实在在的改变了发生动画控件的属性。</p>
+<h4 id="3-Property-Animation动画的监听"><a href="#3-Property-Animation动画的监听" class="headerlink" title="3.Property Animation动画的监听"></a>3.Property Animation动画的监听</h4><pre><code>ValueAnimator对象可以使用addListener()方法来添加监听者，接口方法如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//动画监听接口</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">AnimatorListener</span> </span>&#123;</span><br><span class="line">    <span class="comment">//动画开始</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onAnimationStart</span><span class="params">(Animator var1)</span></span>;</span><br><span class="line">    <span class="comment">//动画结束</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onAnimationEnd</span><span class="params">(Animator var1)</span></span>;</span><br><span class="line">    <span class="comment">//动画取消</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onAnimationCancel</span><span class="params">(Animator var1)</span></span>;</span><br><span class="line">    <span class="comment">//动画重复</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">onAnimationRepeat</span><span class="params">(Animator var1)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-使用PropertyValuesHolder进行动画复合"><a href="#4-使用PropertyValuesHolder进行动画复合" class="headerlink" title="4.使用PropertyValuesHolder进行动画复合"></a>4.使用PropertyValuesHolder进行动画复合</h4><pre><code>对于Property Animation，开发者可以通过ValueAnimator实现自定义的复合动画，也可以使用PropertyValuesHolder进行属性动画的复合操作，示例如下：
+</code></pre><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建子属性动画  翻转</span></span><br><span class="line">PropertyValuesHolder holder = PropertyValuesHolder.ofFloat(<span class="string">"rotationY"</span>,<span class="number">0</span>,<span class="number">360</span>,<span class="number">90</span>);</span><br><span class="line"><span class="comment">//创建子属性动画  透明</span></span><br><span class="line">PropertyValuesHolder holder2 = PropertyValuesHolder.ofFloat(<span class="string">"alpha"</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>);</span><br><span class="line"><span class="comment">//进行动画复合</span></span><br><span class="line">ObjectAnimator objectAnimation = ObjectAnimator.ofPropertyValuesHolder(animationImageView,holder,holder2);</span><br><span class="line"><span class="comment">//执行动画</span></span><br><span class="line">objectAnimation.setDuration(<span class="number">3000</span>);</span><br><span class="line">objectAnimation.start();</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2016/0817/133234_li88_2340880.gif" alt></p>
+<h3 id="三、Drawable-Animation动画的应用"><a href="#三、Drawable-Animation动画的应用" class="headerlink" title="三、Drawable Animation动画的应用"></a>三、Drawable Animation动画的应用</h3><pre><code>相比前两种动画模式，Drawable Animation动画要容易的多，其使用一组图像快速切换的原理来实现动画效果。
+</code></pre><p>在Android Studio的drawable文件夹中添加一个animation文件，xml代码如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">animation-list</span> <span class="attr">xmlns:android</span>=<span class="string">"http://schemas.android.com/apk/res/android"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/bird1"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/bird2"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/bird3"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/bird4"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/bird5"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/bird6"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/bird7"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">item</span> <span class="attr">android:drawable</span>=<span class="string">"@drawable/bird8"</span> <span class="attr">android:duration</span>=<span class="string">"200"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">animation-list</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>将需要展示动画的视图背景设置为这个drawable文件，示例如下：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">ImageView</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_width</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:layout_height</span>=<span class="string">"wrap_content"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:background</span>=<span class="string">"@drawable/anmi_draw_list"</span></span></span><br><span class="line"><span class="tag">       <span class="attr">android:id</span>=<span class="string">"@+id/animatedImageView"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在需要开始动画时，调用如下代码即可：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取到drawable背景 调用start()方法开始动画</span></span><br><span class="line">((AnimationDrawable)animationImageView.getBackground()).start();</span><br></pre></td></tr></table></figure>
+<p><img src="http://static.oschina.net/uploads/space/2016/0817/135417_BSQr_2340880.gif" alt></p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ群：435043639</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2016/08/20/245Android Studio2.x版本无法自动关联源码的解决方法/" class="pre-post btn btn-default" title='Android Studio2.x版本无法自动关联源码的解决方法'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Android Studio2.x版本无法自动关联源码的解决方法</span>
+        </a>
+    
+    
+        <a href="/2016/08/10/243iOS开发中UITableViewCell点击时子视图背景透明的解决方法/" class="next-post btn btn-default" title='iOS开发中UITableViewCell点击时子视图背景透明的解决方法'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发中UITableViewCell点击时子视图背景透明的解决方法</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Android开发中基础动画技巧的应用"><span class="toc-text">Android开发中基础动画技巧的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、引言"><span class="toc-text">一、引言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、View-Animation动画的应用"><span class="toc-text">二、View Animation动画的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-AlphaAnimation的应用"><span class="toc-text">1.AlphaAnimation的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-RotateAnimation的应用"><span class="toc-text">2.RotateAnimation的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-ScaleAnimation的应用"><span class="toc-text">3.ScaleAnimation的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-TranslateAnimation的应用"><span class="toc-text">4.TranslateAnimation的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-Animation类中的通用方法"><span class="toc-text">5.Animation类中的通用方法</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-实现对Animation动画状态的监听"><span class="toc-text">6.实现对Animation动画状态的监听</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#7-使用xml文件配置View-Animation"><span class="toc-text">7.使用xml文件配置View Animation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#8-复合的View-Animation"><span class="toc-text">8.复合的View Animation</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、Property-Animation动画的应用"><span class="toc-text">三、Property Animation动画的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-ObjectAnimator动画的应用"><span class="toc-text">1.ObjectAnimator动画的应用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-ValueAnimator实现更加灵活的自定义动画"><span class="toc-text">2.ValueAnimator实现更加灵活的自定义动画</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-Property-Animation动画的监听"><span class="toc-text">3.Property Animation动画的监听</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-使用PropertyValuesHolder进行动画复合"><span class="toc-text">4.使用PropertyValuesHolder进行动画复合</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、Drawable-Animation动画的应用"><span class="toc-text">三、Drawable Animation动画的应用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

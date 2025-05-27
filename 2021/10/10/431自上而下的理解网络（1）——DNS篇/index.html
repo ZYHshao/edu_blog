@@ -1,0 +1,485 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>自上而下的理解网络（1）——DNS篇 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="自上而下的理解网络（1）——DNS篇">
+            
+	            自上而下的理解网络（1）——DNS篇
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/计算机网络">
+            计算机网络
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2021/10/10</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h1 id="自上而下的理解网络（1）——DNS篇"><a href="#自上而下的理解网络（1）——DNS篇" class="headerlink" title="自上而下的理解网络（1）——DNS篇"></a>自上而下的理解网络（1）——DNS篇</h1><h2 id="一-引言"><a href="#一-引言" class="headerlink" title="一.引言"></a>一.引言</h2><p>现代生活中，网络可谓是无处不在，购物需要网络，付款需要网络，各种生活缴费需要网络，在各行各业的工作中，更是离不开网络。说到底，网络的作用无非是支持计算机间进行数据交换。世界各地有着不计其数的网络设备，这些网络设备是如何有序正常的进行数据交流的呢？网络以及各种协议的工作原理又是怎样的呢？本系列博客，我们将尝试自上而下的对网路的工作原理进行介绍，从应用层开始，逐层向下，详细的帮助你理解网络的核心工作原理。当然，网络协议多如牛毛，在网络分层中每一层的知识也是非常浩渺，希望这些博客可以起到抛砖引玉的作用，能够使你对于天天使用的互联网网络在宏观上有认识，在微观上也有了解。</p>
+<h2 id="二-访问网站的第一步是什么？"><a href="#二-访问网站的第一步是什么？" class="headerlink" title="二.访问网站的第一步是什么？"></a>二.访问网站的第一步是什么？</h2><p>说到网络，对于普通用户来说，使用最多的可能就是浏览各种网站了，虽然现在移动设备上的App基本代替了传统的PC应用和网站，但是这些App里提供的数据本质上网站中提供的数据并无不同，使用的网络技术并无不同。</p>
+<p>我们知道，不论是访问网站还是App内进行接口请求，这些数据都是存储在“服务器”这种特殊的远程设备上的，要向服务器获取数据，首先我们需要找到服务器的位置，这很好理解，只有找到它，我们才能和它产生数据交流。互联网无论多大，本质上依然是通过电缆、光纤或各种无线设备这类连接介质连接在一起的，如果一台设备没有硬件上连接入互联网，那么说破天我们也无法和它产生数据交互。要找到一台互联网设备，实际上是通过其物理Mac地址来找到的，这就像现实中的门牌号一样，每家的门牌号都不同，说到这，我们要再老生常谈一下，抛出网络分层模型给你看：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-98d783218936466cf3afbdb53090b5b69ae.png" alt></p>
+<p>关于这个网络分层模型，它在我们后面博客中的出境还少不了，现在你可以先不用管它，你只需要先知道物理层是负责设备物理媒介相关的协议，数据链路层通过硬件的Mac地址找到具体要网络设备，网络层通过IP协议来封装真实的Mac地址，传输层是对网络层的一种封装，TCP，UDP等传输协议在这一层工作，而最上层的应用层就是我们常说的网络应用协议，如DNS，HTTP，HTTPS和FPT协议工作在这一层。</p>
+<p>关于网络分层模型，我们先把多说了，我们的宗旨是自上而下的理解网络，那么还是回到第一步来。我们在访问网站时，都会现在浏览器输入网站的地址，这通常是一个域名，例如我要访问自己的技术博客网站，我会在浏览器输入如下的地址：</p>
+<p><a href="https://huishao.cc/">https://huishao.cc/</a></p>
+<p>huishao.cc就是一个域名，首先只通过域名我们是找不到要访问的对方服务器的，这就好像现实中我要去小王家，可以我只知道小王的名字“王某某”是无法找到他的家的，我需要有一个住址簿，告诉我小王究竟住在哪了，这样我才能找到他。当然，此住址可能也不是真正的物理位置，可能是一个社区，比如小王住在“光明社区”，具体光明社区在哪，我们可以再通过查看地图获取。对应到互联网中，域名就是一个名字，它方便我们对网站进行记忆，IP地址则是要访问的对方在逻辑上的地址，这方便互联网的网络管理，最终的硬件地址则是真正的对方位置。IP地址到硬件地址的映射，等我们讨论到了再细聊，本篇博客我们就说域名到IP地址映射这一过程。</p>
+<h2 id="三-DNS服务器"><a href="#三-DNS服务器" class="headerlink" title="三. DNS服务器"></a>三. DNS服务器</h2><p>现在你应该已经明确，要通过域名找到某个设备，第一步是先得到此域名对应的IP地址，那么此IP地址是怎么得到的呢？首先，一定有一个地方维护了域名与IP地址的映射关系，如果你有过建站的经历，那么你一定进行过域名绑定操作，一个网站建成后，理论上就已经可以使用IP的方式来进行访问，但是为了易记和动态变动IP，通常会对其进行域名绑定。由域名获取到IP的这一过程，我们称之为域名解析。</p>
+<p>域名解析是一种服务，提供域名解析服务的服务器即是DNS服务器，下图可以很形象的表示域名服务器的工作方式：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d7e90dc29e18cc612cfd1845f8f2fcb1d37.png" alt></p>
+<p>可以发现，映射表中记录了域名与IP间的映射关系，在实际的应用中，上图中描述的场景看似可行，实际却并非如此，世界上的域名与IP总数是一个非常庞大的数字，由一台服务器来维护所有域名IP信息几乎不可能，而且对于域名解析服务，请求量是巨大的，会有大量的用户频繁的进行域名解析请求，单服务器明显是不能满足需求的。因此，实际生产环境中的DNS解析是采用层层递进，多级缓存，递归查询的方式进行的。再看下图：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-7692bb964df2341a503e60bee9d587998ac.png" alt></p>
+<p>上图看似复杂，实际上只是描述了三个关键词：层层递进，多级缓存，递归查询。</p>
+<h2 id="四-DNS解析过程"><a href="#四-DNS解析过程" class="headerlink" title="四.DNS解析过程"></a>四.DNS解析过程</h2><p>下面我们来解释域名要解析成正确的IP地址，要经过的几个重要过程。</p>
+<p><strong>1. 本机hosts文件</strong></p>
+<p>本机hosts文件是优先级最高的域名IP映射表，对于Mac操作系统，这个文件在根目录的etc文件夹下，我们可以直接将域名与对应的IP写在这个文件中，在进行域名解析时，首先会从这个文件中找。广播IP和本机IP对应的域名实际上就定义在这里，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1       localhost</span><br><span class="line">255.255.255.255 broadcasthost</span><br></pre></td></tr></table></figure>
+<p>你也可以在其中新增任意映射，例如将huishao.cc的域名映射到127.0.0.1的本机IP，保存后，<a href="http://xn--huishao-ri9kslj82bl4bmy4jmm6dj7q.cc" target="_blank" rel="noopener">在浏览器再输入huishao.cc</a>，你将无法再访问到珲少的博客网站，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-263eeb071be85cab0b740a9f4133c31a19c.png" alt></p>
+<p>更多时候，hosts的正确用法是开发应用程序时，测试环境和正式环境可以将域名配置到不同的IP，这样无需应用程序代码中做逻辑，只需要切换hosts文件即可实现环境的切换。</p>
+<p><strong>2. 本机应用缓存</strong></p>
+<p>本机应用缓存是多级缓存中的第一级，例如当我们在浏览器中访问过某个域名后，其解析的结果会被浏览器缓存下来，当我们再次访问这个域名时，其首先会检查浏览器缓存，如果缓存能够命中此域名，则直接使用，缓存的有效时间会受TTL配置影响（我们后面会介绍）。</p>
+<p><strong>3. 本机系统缓存</strong></p>
+<p>与本机应用缓存类似，操作系统中也会有一份域名解析的缓存，如果本机应用缓存中没有命中，会从操作系统缓存中检查是否之前有过此域名的解析记录。如果能够命中则会直接使用。</p>
+<p><strong>4. 路由器域名解析缓存</strong></p>
+<p>如果本机系统缓存依然没有命中，而你的设备又是通过路由器接入的公网，此时你的域名解析服务很大可能是路由器提供的，可以打开网络设置的DNS一栏，观察DNS服务器的地址，如果是192.168.x.x类型内网地址，则说明是由路由器来完成DNS解析了。如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e035ae8c619c54d7186c692db3ef4228e4f.png" alt></p>
+<p>路由器内，实际上也会缓存一张DNS解析表，会从其中寻找是否有可以命中的缓存，如果存在并且未过期，则直接使用。有时候，你会发现电脑可以直接使用IP访问网站但是无法使用域名进行访问，很大可能是路由器的DNS服务出问题了，最简单的解决方式就是将配置的DNS服务器IP地址改成公共的。</p>
+<p><strong>5. 访问本地域名服务器</strong></p>
+<p>如果以上的缓存都没有命中，那么逻辑上我们就需要通过外网的DNS服务来进行解析了，首先本地服务器（LDNS）来解析域名，这里的本地服务器是指城市或区域的DNS服务器，一般就有运营商部署在当地，距离近，性能好，并且也有缓存机制，几乎可以覆盖大多数的域名解析请求。</p>
+<p><strong>6. 转发与递归</strong></p>
+<p>如果你访问的域名比较冷门，本地服务器依然无法解析，则会进行转发，将此请求转发到更高级的运营商DNS服务器或者根DNS服务器，根DNS服务器会根据域名来返回顶级的域名服务器地址，本地服务器可以继续向顶级域名服务器请求解析。如此递归进行，直到解析成功，再将IP地址依次返回到我们的设备，并逐层做缓存，以便我们下次访问时可以快速得到响应。</p>
+<p>上面过程中，我们有提到根域名服务器，其是最高级别的域名服务器，它负责返回顶级域名服务器，目前全球有13个根域名服务器站。顶级域名服务器用来针对某个顶级域名进行解析，例如.com顶级域名，.edu顶级域名，.cc顶级域名和.cn顶级域名等。顶级域名服务器在解析时会将查询到的主域名服务器返回。主域名服务器负责某个区域的域名解析，同样，主域名服务器会配套辅助域名服务器进行备份与分担负载。</p>
+<h2 id="五-DNS协议"><a href="#五-DNS协议" class="headerlink" title="五.DNS协议"></a>五.DNS协议</h2><p>前面说了这么多，都是宏观上的认识。现在，我们要讨论一些更深入的东西了。虽然对于DNS是干什么的，解析的过程是怎样的我们有了一些了解。但是DNS协议究竟是怎么操作的呢？IP数据是怎么得到的？我们可以手动来进行DNS解析么？要了解这些问题，首先需要对DNS协议本身做个了解。</p>
+<p>DNS协议是工作在应用层的一种协议，全称Domain Name System。DNS协议是基于UDP之上实现的，前面说过UDP是工作在传输层的一种网络协议，等我们说到它的时候再深入探讨。现在你只需要知道，基于UDP任何人都可以实现一个DNS解析服务。DNS解析分为两步，首先需要客户端向服务器发送一个DNS请求报文，服务器收到报文，解析完成后再返回一个DNS报文给客户端，此报文中就包含解析的数据。</p>
+<p>DNS协议规定其请求报文与响应报文的结构是一致的，都包含Header，Question，Answer，Authority，Additional这5个部分。</p>
+<h3 id="1-Header部分"><a href="#1-Header部分" class="headerlink" title="1. Header部分"></a>1. Header部分</h3><p>Header部分的长度是一定的，固定为12个字节。DNS协议文档中有一张图，很好的描述了Header的数据结构：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-e319281f3aa8717ee5c91198d093e99493e.png" alt></p>
+<p><strong>ID</strong>：ID占了两个字节，它是一个标识符，由客户端请求的时候填充，DNS服务器解析后，会将此ID返回，用来让客户端将响应与请求对应起来。</p>
+<p><strong>配置字段</strong>：上图中第2行的都是配置字段，其占了两个字节。</p>
+<p>QR占1为，设置为0表示当前是DNS请求报文，设置为1表示当前为DNS响应报文。</p>
+<p>Opcode占4位，此值由请求报文设置，并且被复制到响应报文返回。其用来设置查询的类型，设置为0表示标准查询，即由域名解析出IP，设置为1表示反向查询，即由IP反查出域名，设置为2用来查询服务器的状态，3-15为保留字段，以待后续使用。</p>
+<p>AA字段占1位，只在返回的响应报文中有，0表示返回数据的服务器不是权威服务器，1表示返回数据的服务器是权威服务器。需要注意，返回的响应报文中可能有多个应答，此字段表明的是第一个应答的服务器类型。</p>
+<p>TC字段占1位，表示此报文是否由于数据的传输大小而被截断，当此字段的为1时，数据不可信。</p>
+<p>RD字段占1位，该值需要在请求报文中设置，响应报文会直接复制该值。此值表示是否希望服务器进行递归查询。</p>
+<p>RA字段占1位，其在响应报文中设置，表示服务端是否支持递归查询。</p>
+<p>Z字段占3位，是保留字段。</p>
+<p>rcode字段占4位，是响应报文的响应码，0表示没有错误；1表示请求格式有误，服务端无法解析；2表示服务器出错；3表示请求的域名不存在；4表示服务器不支持这类请求；5表示服务器拒绝此次请求；6-15是保留参数。</p>
+<p><strong>QDCOUNT</strong>：占16位，表明Question部分包含的实例个数，是无符号数。</p>
+<p><strong>ANCOUNT</strong>：占16位，表明Answer部分包含的回答个数，是无符号数。</p>
+<p><strong>NSCOUNT</strong>：占16位，表明Authority部分包含的授权服务器数量，是无符号整数。</p>
+<p><strong>ARCOUNT</strong>：占16位，表明Additional部分中包含的资源记录数量，是无符号整数。</p>
+<h3 id="2-Question部分"><a href="#2-Question部分" class="headerlink" title="2. Question部分"></a>2. Question部分</h3><p>这个部分用来定义查询的问题，问题的个数在QDCOUNT指明，通常只会携带一个问题。每个问题的格式定义如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-d2ff64c83b50f0396e65b9971ae8165fd3b.png" alt></p>
+<p><strong>QNAME</strong>：此部分字节数不定，描述要查询的域名。在解析的时候，这部分以0x00结尾。需要注意，域名通常由符号“.”进行分割，每段的长度不定，QNAME每段的开头会先指明此段的长度，以huishao.cc域名为例，其构造出的QNAME部分如下：</p>
+<p>0x07 0x68 0x75 0x69 0x73 0x68 0x61 0x6f 0x02 0x63 0x63 0x00</p>
+<p>其中最后一个字节0x00标记了QNAME部分的结束，0x07表示第一段的长度为7个字节，即0x68 0x75 0x69 0x73 0x68 0x61 0x6f是第一段，通过查询ascii码对照表可知，这段数据就是huishao，同理，之后的一个字节为0x02，表示第二段的长度为2个字节，0x63对应ascii表中的字母c，<a href="http://xn--huishao-e73kt3ct40a974cpobyx0njr6a.cc" target="_blank" rel="noopener">最终可以解析为huishao.cc</a>。</p>
+<p><strong>QTYPE</strong>：占两个字节，对应查询的类型，定义如下：</p>
+<table>
+<thead>
+<tr>
+<th>Type：意义</th>
+<th>对应的值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A：iPv4主机地址</td>
+<td>1</td>
+</tr>
+<tr>
+<td>NS：权威域名服务器</td>
+<td>2</td>
+</tr>
+<tr>
+<td>MD：邮箱地址（弃用，使用MX）</td>
+<td>3</td>
+</tr>
+<tr>
+<td>MF：转发邮箱（弃用，使用MX）</td>
+<td>4</td>
+</tr>
+<tr>
+<td>CNAME：规范的别名</td>
+<td>5</td>
+</tr>
+<tr>
+<td>SOA：标记权威区域开始</td>
+<td>6</td>
+</tr>
+<tr>
+<td>MB：邮箱域名</td>
+<td>7</td>
+</tr>
+<tr>
+<td>MG：邮箱成员</td>
+<td>8</td>
+</tr>
+<tr>
+<td>MR：邮箱重命名域名</td>
+<td>9</td>
+</tr>
+<tr>
+<td>NULL：空的类型</td>
+<td>10</td>
+</tr>
+<tr>
+<td>WKS：服务描述</td>
+<td>11</td>
+</tr>
+<tr>
+<td>PTR：域名指针</td>
+<td>12</td>
+</tr>
+<tr>
+<td>HINFO：主机信息</td>
+<td>13</td>
+</tr>
+<tr>
+<td>MINFO：邮箱或者邮件列表信息</td>
+<td>14</td>
+</tr>
+<tr>
+<td>MX：邮件交换</td>
+<td>15</td>
+</tr>
+<tr>
+<td>TXT：字符串</td>
+<td>16</td>
+</tr>
+<tr>
+<td>AAAA: IPv6域名</td>
+<td>28</td>
+</tr>
+</tbody>
+</table>
+<p>上面列举的查询类型中，有两个我们需要额外关注，A和CNAME，A类型即是我们查询域名IP所要使用的，CNAME别名技术也很常用，后面会介绍。</p>
+<p><strong>QCLASS</strong>：占两个字节，表明查询的类别，定义如下：</p>
+<table>
+<thead>
+<tr>
+<th>CLASS：意义</th>
+<th>对应的值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IN：Internet查询</td>
+<td>1</td>
+</tr>
+<tr>
+<td>CS：弃用，RFC查询</td>
+<td>2</td>
+</tr>
+<tr>
+<td>CH：the CHOAS class</td>
+<td>3</td>
+</tr>
+<tr>
+<td>HS：Hesiod</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>进行DNS解析时，只需要设置成IN类即可。</p>
+<h3 id="3-Answer部分"><a href="#3-Answer部分" class="headerlink" title="3. Answer部分"></a>3. Answer部分</h3><p>这部分是响应的返回数据，可能包含多条资源记录，其格式如下：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-9267f54ffe2f7ab3d7e766830ffbf3d1bff.png" alt></p>
+<p><strong>NAME</strong>：此记录所属的域名，长度不定，需要注意，这一部分存放的可能是真正的域名（格式和QNAME一致），也可能是指针，指向真正存放域名的字节位置，甚至可以是一部分是域名，一部分是指针。这样做的好处是可以节省响应报文的数据空间，当检查到某个字节的高两位为11时，则此字节及之后一个字节就是一个指针。例如对于huishao.cc域名的解析，其响应的完整的DNS报文如下（16进制）：</p>
+<p>b3 a4 81 80 00 01 00 01 00 00 00 00 07 68 75 69<br>73 68 61 6f 02 63 63 00 00 01 00 01 c0 0c 00 01<br>00 01 00 00 02 58 00 04 b9 c7 6d 99</p>
+<p>其中开头的12个字节为Header部，随后的16个字节为Question部，后面的即为Answer部，Answer部分开头的c0字节高两位为11，表明其是一个指针，占两个字节，c0，0c两个字节将前两位的1去掉后为十进制数12，表明NAME的真实值在第12个字节处开始，即复用了QNAME的数据。</p>
+<p><strong>TYPE</strong>：占两个字节，与QTYPE定义一致。</p>
+<p><strong>CLASS</strong>：占两个字节，与QCLASS定义一致。</p>
+<p><strong>TTL</strong>：占4个字节，此字段非常重要，标记了缓存的有效时长，单位是秒。顺便分析一下上面的数据，此DNS解析数据的缓存有效期为0x0258，即600秒，10分钟。</p>
+<p><strong>RDLENGTH</strong>：占两个字节，表明RDATA字段的字节数。</p>
+<p><strong>RDATA</strong>：真正的解析数据，与TYPE有关，如果是IPv4域名解析，此处为解析的结果。</p>
+<h3 id="4-Authority，Additional"><a href="#4-Authority，Additional" class="headerlink" title="4. Authority，Additional"></a>4. Authority，Additional</h3><p>这两部分的数据结构与Answer部分完全一致，解析方式也完全一致。</p>
+<h2 id="六-纸上得来终觉浅，绝知此事要躬行"><a href="#六-纸上得来终觉浅，绝知此事要躬行" class="headerlink" title="六.纸上得来终觉浅，绝知此事要躬行"></a>六.纸上得来终觉浅，绝知此事要躬行</h2><p>通过前面的介绍，DNS协议的工作原理应该是明了了，如果需要更深入的了解细节，可以阅读其官方的文档：</p>
+<p><a href="https://datatracker.ietf.org/doc/html/rfc1035" target="_blank" rel="noopener">https://datatracker.ietf.org/doc/html/rfc1035</a></p>
+<p>当然，如果你还是感觉云里雾里也没有关系，我们通过实践来验证理论。</p>
+<h3 id="1-抓个活物来看看"><a href="#1-抓个活物来看看" class="headerlink" title="1.抓个活物来看看"></a>1.抓个活物来看看</h3><p>Wireshark是一个网络封包分析软件，能够截取网络封包，对于网络传输的数据包进行分析十分方便。我们打开此软件后，找一个域名进行访问，即可抓取到对应的DNS数据包，以huishao.cc为例，如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-9bb8b787bc98da789aa139ce8947f8629b5.png" alt></p>
+<p>可以看到，Wireshark可以分析出此次网络交互的时间，发起方IP，目标方IP，协议类型，数据长度和相信信息。在上面的示例中，第一条记录是DNS请求报文，第二条记录是DNS响应报文。我们先看看DNS请求报文的数据：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-0fb3e9c1284d2899398b99d609629219426.png" alt></p>
+<p>可以看到，Wireshark将每一层网络协议都分析了出来，我们先只关注最上层的Domian Name System部分，这部分的十六进制数据是上图中选中的部分。可以发现其和我们上面介绍的协议格式是一一对应的。在看响应报文：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/up-438e9dd9ffc6cb79bd1538511729193ef03.png" alt></p>
+<p>数据的格式也是完全对应的，理论诚不欺我啊。</p>
+<h3 id="2-手动实现DNS解析"><a href="#2-手动实现DNS解析" class="headerlink" title="2. 手动实现DNS解析"></a>2. 手动实现DNS解析</h3><p>下面，我们可以以huishao.cc域名为例，手动使用UDP协议来试一试发送DNS请求以及对请求到的数据进行解析。首先先看完整的测试代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义NDS服务器的地址</span></span><br><span class="line"><span class="keyword">char</span> *DNSServer = <span class="string">"192.168.1.1"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DNS报文中查询区域的查询类型</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> A 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CNAME 5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">**DNS报文首部</span></span><br><span class="line"><span class="comment">**这里使用了位域</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">DNS_HEADER</span> &#123;</span></span><br><span class="line">    <span class="comment">// 2字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> ID;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 需要注意，对于结构体中的位域 数据是从低字节开始填充的</span></span><br><span class="line">    <span class="comment">// 1字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> RD :<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> TC :<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> AA :<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> Opcode :<span class="number">4</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> QR :<span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 1字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> RCODE :<span class="number">4</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> Z :<span class="number">3</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> RA :<span class="number">1</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 2字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> QCOUNT;</span><br><span class="line">    <span class="comment">// 2字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> ANCOUNT;</span><br><span class="line">    <span class="comment">// 2字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> NSCOUNT;</span><br><span class="line">    <span class="comment">// 2字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> ARCOUNT;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">**DNS报文中查询问题区域  4个字节</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">QUESTION</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> QTYPE;<span class="comment">//查询类型</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> QCLASS;<span class="comment">//查询类</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 请求部分的结构</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *QNAME;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">QUESTION</span> *<span class="title">question</span>;</span></span><br><span class="line">&#125; QUERY;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">**DNS报文中回答区域的常量字段  10个字节</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="comment">// 需要注意，因为此结构体中有short和int类型，我们需要将其设置为1字节对齐</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack(1)</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">R_DATA</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> TYPE; <span class="comment">//表示资源记录的类型</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> CLASS; <span class="comment">//类</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> TTL; <span class="comment">//表示资源记录可以缓存的时间</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">short</span> RDLENGTH; <span class="comment">//数据长度</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> pack()</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">**DNS报文中回答区域的资源数据字段</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">RES_RECORD</span> &#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *NAME;<span class="comment">//资源记录包含的域名</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">R_DATA</span> *<span class="title">resource</span>;</span><span class="comment">//资源数据</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *rdata;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// DNS解析方法</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DNS</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>*)</span></span>;</span><br><span class="line"><span class="comment">// 域名转换方法</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ChangetoDnsNameFormat</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>*, <span class="keyword">unsigned</span> <span class="keyword">char</span>*)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">**实现DNS查询功能</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DNS</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *host)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// UDP目标地址</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sockaddr_in</span> <span class="title">dest</span>;</span></span><br><span class="line">    <span class="comment">// DNS请求的数据结构</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">DNS_HEADER</span> <span class="title">dns</span> = &#123;</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n所需解析域名：%s\n"</span>, host);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//建立分配UDP套结字</span></span><br><span class="line">    <span class="keyword">int</span> s = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);</span><br><span class="line">    <span class="comment">//IPv4</span></span><br><span class="line">    dest.sin_family = AF_INET;</span><br><span class="line">    <span class="comment">//53号端口 DNS服务器用的是53号端口</span></span><br><span class="line">    dest.sin_port = htons(<span class="number">53</span>);</span><br><span class="line">    <span class="comment">// 设置IP</span></span><br><span class="line">    dest.sin_addr.s_addr = inet_addr(DNSServer);<span class="comment">//DNS服务器IP</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/*设置DNS报文首部*/</span></span><br><span class="line">    dns.ID = (<span class="keyword">unsigned</span> <span class="keyword">short</span>) htons(getpid());<span class="comment">//id设为进程标识符</span></span><br><span class="line">    dns.QR = <span class="number">0</span>; <span class="comment">//查询</span></span><br><span class="line">    dns.Opcode = <span class="number">0</span>; <span class="comment">//标准查询</span></span><br><span class="line">    dns.AA = <span class="number">0</span>; <span class="comment">//不授权回答</span></span><br><span class="line">    dns.TC = <span class="number">0</span>; <span class="comment">//不可截断</span></span><br><span class="line">    dns.RD = <span class="number">1</span>; <span class="comment">//期望递归</span></span><br><span class="line">    dns.QCOUNT = htons(<span class="number">1</span>); <span class="comment">//1个问题</span></span><br><span class="line">    <span class="comment">// 不需要的字段置为0</span></span><br><span class="line">    dns.RA = <span class="number">0</span>;</span><br><span class="line">    dns.Z = <span class="number">0</span>;</span><br><span class="line">    dns.RCODE = <span class="number">0</span>;</span><br><span class="line">    dns.ANCOUNT = <span class="number">0</span>;</span><br><span class="line">    dns.NSCOUNT = <span class="number">0</span>;</span><br><span class="line">    dns.ARCOUNT = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 进行查询的域名处理 先给100个字节大小</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *qname = <span class="built_in">malloc</span>(<span class="number">100</span>);</span><br><span class="line">    <span class="comment">// 转换后会将长度返回</span></span><br><span class="line">    <span class="keyword">int</span> nameLength = ChangetoDnsNameFormat(qname, host);<span class="comment">//修改域名格式</span></span><br><span class="line">    <span class="comment">// 请求结构</span></span><br><span class="line">    QUERY question = &#123;&#125;;</span><br><span class="line">    question.QNAME = qname;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">QUESTION</span> <span class="title">qinfo</span> = &#123;</span>&#125;;</span><br><span class="line">    qinfo.QTYPE = htons(A); <span class="comment">//查询类型为A</span></span><br><span class="line">    qinfo.QCLASS = htons(<span class="number">1</span>); <span class="comment">//查询类为1</span></span><br><span class="line">    question.question = &amp;qinfo;</span><br><span class="line">    <span class="comment">// 定义要发送的UDP数据 先给65536个字节</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> buf[<span class="number">65536</span>];</span><br><span class="line">    <span class="comment">// 复制DNS头部数据到buf</span></span><br><span class="line">    <span class="built_in">memcpy</span>(buf, &amp;dns, <span class="keyword">sizeof</span>(dns));</span><br><span class="line">    <span class="comment">// 移动复制的指针</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *point = buf + <span class="keyword">sizeof</span>(dns);</span><br><span class="line">    <span class="comment">// 复制请求的域名到buf</span></span><br><span class="line">    <span class="built_in">memcpy</span>(point, question.QNAME, nameLength);</span><br><span class="line">    <span class="comment">// 移动复制的指针</span></span><br><span class="line">    point = point + nameLength;</span><br><span class="line">    <span class="comment">// 复制要解析的域名到buf</span></span><br><span class="line">    <span class="built_in">memcpy</span>(point, question.question, <span class="keyword">sizeof</span>(*question.question));</span><br><span class="line">    <span class="comment">// buf的总长度</span></span><br><span class="line">    <span class="keyword">int</span> length = <span class="keyword">sizeof</span>(dns) + nameLength + <span class="keyword">sizeof</span>(*question.question);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//向DNS服务器发送DNS请求报文</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n\n发送报文中..."</span>);</span><br><span class="line">    <span class="keyword">if</span> (sendto(s, (<span class="keyword">char</span>*) buf, length, <span class="number">0</span>, (struct sockaddr*) &amp;dest,<span class="keyword">sizeof</span>(dest)) &lt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        perror(<span class="string">"发送失败！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"发送成功！\n"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 从DNS服务器接受DNS响应报文</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> recvBuf[<span class="number">65536</span>];</span><br><span class="line">    <span class="keyword">int</span> i = <span class="keyword">sizeof</span> dest;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"接收报文中...\n"</span>);</span><br><span class="line">    recvfrom(s, (<span class="keyword">char</span>*) recvBuf, <span class="number">65536</span>, <span class="number">0</span>, (struct sockaddr*) &amp;dest,(<span class="keyword">socklen_t</span>*) &amp;i);</span><br><span class="line">    <span class="keyword">if</span> (length &lt; <span class="number">0</span>) &#123;</span><br><span class="line">        perror(<span class="string">"接收失败！"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"接收成功！\n"</span>);</span><br><span class="line">    <span class="comment">// 将接收到的DNS数据头部解析到结构体</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">DNS_HEADER</span> <span class="title">recvDNS</span> = *((<span class="title">struct</span> <span class="title">DNS_HEADER</span> *)<span class="title">recvBuf</span>);</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n\n响应报文包含: "</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n %d个问题"</span>, ntohs(recvDNS.QCOUNT));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n %d个回答"</span>, ntohs(recvDNS.ANCOUNT));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n %d个授权服务"</span>, ntohs(recvDNS.NSCOUNT));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"\n %d个附加记录\n\n"</span>, ntohs(recvDNS.ARCOUNT));</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 头部，域名部分和问题的静态部分长度</span></span><br><span class="line">    <span class="keyword">size_t</span> headLength = <span class="keyword">sizeof</span>(struct DNS_HEADER);</span><br><span class="line">    <span class="keyword">size_t</span> hostLength = <span class="built_in">strlen</span>((<span class="keyword">const</span> <span class="keyword">char</span>*) qname) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">size_t</span> qusetionLength = <span class="keyword">sizeof</span>(struct QUESTION);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 定义指针，将位置移动到报文的Answer部</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *reader = &amp;recvBuf[headLength + hostLength + qusetionLength];</span><br><span class="line"></span><br><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">    **解析接收报文</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">    <span class="comment">// 加2个字节，是因为解析的数据中，域名采用的是指针方式，占两个字节(实际情况这里需要判断是否是指针还是真的域名)</span></span><br><span class="line">    reader = reader + <span class="number">2</span>;</span><br><span class="line">    <span class="comment">// 将Answer部分的静态数据解析到结构体</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">R_DATA</span> <span class="title">answer</span> = *((<span class="title">struct</span> <span class="title">R_DATA</span>*) (<span class="title">reader</span>));</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"回答类型：%x\n"</span>, ntohs(answer.TYPE));</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"缓存时间：%d秒\n"</span>,ntohl(answer.TTL));</span><br><span class="line">    <span class="comment">//指向回答问题区域的资源数据字段</span></span><br><span class="line">    reader = reader + <span class="keyword">sizeof</span>(struct R_DATA);</span><br><span class="line">    <span class="comment">//判断资源类型是否为IPv4地址</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> *ip = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">if</span> (ntohs(answer.TYPE) == A) &#123;</span><br><span class="line">        <span class="comment">//解析到的IP数据 指针</span></span><br><span class="line">        ip = (<span class="keyword">unsigned</span> <span class="keyword">char</span>*) <span class="built_in">malloc</span>(ntohs(answer.RDLENGTH)+<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; ntohs(answer.RDLENGTH); j++) &#123;</span><br><span class="line">            ip[j] = reader[j];</span><br><span class="line">        &#125;</span><br><span class="line">        ip[ntohs(answer.RDLENGTH)] = <span class="string">'\0'</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//显示查询结果</span></span><br><span class="line">    <span class="keyword">if</span> (ip) &#123;</span><br><span class="line">        <span class="keyword">long</span> *p;</span><br><span class="line">        p = (<span class="keyword">long</span>*) ip;</span><br><span class="line">        <span class="comment">// inet_ntoa用来进行IP转换</span></span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">"IPv4地址:%s\n"</span>, inet_ntoa(*(struct in_addr*)ip));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">**从www.baidu.com转换到3www5baidu3com</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">ChangetoDnsNameFormat</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span>* dns, <span class="keyword">unsigned</span> <span class="keyword">char</span>* host)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lock = <span class="number">0</span>, i, length = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">strcat</span>((<span class="keyword">char</span>*) host, <span class="string">"."</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="built_in">strlen</span>((<span class="keyword">char</span>*) host); i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (host[i] == <span class="string">'.'</span>) &#123;</span><br><span class="line">            *dns++ = i - lock;</span><br><span class="line">            length ++;</span><br><span class="line">            <span class="keyword">for</span> (; lock &lt; i; lock++) &#123;</span><br><span class="line">                *dns++ = host[lock];</span><br><span class="line">                length ++;</span><br><span class="line">            &#125;</span><br><span class="line">            lock++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    *dns++ = <span class="string">'\0'</span>;</span><br><span class="line">    length ++;</span><br><span class="line">    <span class="keyword">return</span> length;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> hostname[<span class="number">100</span>] = <span class="string">"huishao.cc"</span>;</span><br><span class="line">    <span class="comment">//由域名获得IPv4地址，A是查询类型</span></span><br><span class="line">    DNS(hostname);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的代码有详细的注释，你可以尝试运行下进行域名解析，需要注意，上面填写的192.168.1.1是本地路由器的域名服务器地址，你需要将其替换成自己的，当然你也可以使用通用的域名解析服务器，如114.114.114.144。上面的代码采用C语言编写，因此在处理数据的时候会有一些复杂，有些点需要注意。</p>
+<h4 id="1-关于结构体位域"><a href="#1-关于结构体位域" class="headerlink" title="1. 关于结构体位域"></a>1. 关于结构体位域</h4><p>简单理解，位域可以让结构体中的数据以Byte为单位已经存储，例如上面定义的DNS_HEADER结构体，我们按照DNS协议的结构对其内数据所占的位进行了定义，有一点需要额外注意，在定义结构体时，位域字段的顺序与实际填充的顺序是相反的，位域的填充是从低字节开始的，如上代码所示，对于1个字节的位域来说，我们定义的时候，先定义的RD字段，最后定义的QR字段，实际在存储数据时，这一个字节的最高位会存储QR，最低位会存储RD。</p>
+<h4 id="2-关于字节对齐"><a href="#2-关于字节对齐" class="headerlink" title="2. 关于字节对齐"></a>2. 关于字节对齐</h4><p>在定义结构体时，还有一个细节需要注意，如果结构体中的数据字节数不是一致的，则其创建的内存大小可能和实际所需要的并不一致，例如R_DATA结构体，其中有int和short类型的数据，则其会以4字节为标准进行对齐，我们需要手动设置其对齐位数，不然后续数据填充时会出现偏差。</p>
+<h4 id="3-网络字节序与主机字节序"><a href="#3-网络字节序与主机字节序" class="headerlink" title="3.网络字节序与主机字节序"></a>3.网络字节序与主机字节序</h4><p>网络字节序是TCP/IP协议中定义的一种数据格式，其采用的是大端（big-endian）的排序方式，即对于一个字（两个字节）的数据，低字节在前，高字节在后。这与我们可读的主机字节序刚好是相反的，在C语言中，使用htons可以把short类型的数据进行网络和主机字节序的转换，htonl把long类型的数据进行网络和主机字节序的转换。</p>
+<p>可以在如下地址下载到完整的上述代码：</p>
+<p><a href="https://gitee.com/jaki/dns_c" target="_blank" rel="noopener">https://gitee.com/jaki/dns_c</a></p>
+<p>温馨提示，上面代码中解析的域名只返回了一个A类型的解析应答，如果你解析其他域名，可能会有很多CNAME类型的应答，应答个数也可能不止一个，你可以尝试下优化下代码，完整的实现DNS的解析逻辑。</p>
+<h2 id="七-结尾"><a href="#七-结尾" class="headerlink" title="七. 结尾"></a>七. 结尾</h2><p>本篇博客到此就结束了，我相信你对从域名获取到IP的过程有了更多的认识，如果遇到了域名解析的问题，你应该明白如何查看响应结果来定位问题了，但是，这只是我们日常使用的网络中的第一步，目前我们连应用层的核心都还没有接触到，不积跬步，无以至千里，与君共勉。</p>
+<blockquote>
+<p>专注技术，热爱生活，交流技术，也做朋友。</p>
+<p>——珲少 QQ：316045346</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2021/10/25/432一起玩转树莓派（18）——MPU6050螺旋仪加速度传感器模块应用/" class="pre-post btn btn-default" title='一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（18）——MPU6050陀螺仪加速度传感器模块应用</span>
+        </a>
+    
+    
+        <a href="/2021/09/25/430一起玩转树莓派（17）——BMP180数字压力传感器应用/" class="next-post btn btn-default" title='一起玩转树莓派（17）——BMP180数字压力传感器应用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">一起玩转树莓派（17）——BMP180数字压力传感器应用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#自上而下的理解网络（1）——DNS篇"><span class="toc-text">自上而下的理解网络（1）——DNS篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#一-引言"><span class="toc-text">一.引言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二-访问网站的第一步是什么？"><span class="toc-text">二.访问网站的第一步是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三-DNS服务器"><span class="toc-text">三. DNS服务器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四-DNS解析过程"><span class="toc-text">四.DNS解析过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五-DNS协议"><span class="toc-text">五.DNS协议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Header部分"><span class="toc-text">1. Header部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Question部分"><span class="toc-text">2. Question部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Answer部分"><span class="toc-text">3. Answer部分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Authority，Additional"><span class="toc-text">4. Authority，Additional</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#六-纸上得来终觉浅，绝知此事要躬行"><span class="toc-text">六.纸上得来终觉浅，绝知此事要躬行</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-抓个活物来看看"><span class="toc-text">1.抓个活物来看看</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-手动实现DNS解析"><span class="toc-text">2. 手动实现DNS解析</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-关于结构体位域"><span class="toc-text">1. 关于结构体位域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-关于字节对齐"><span class="toc-text">2. 关于字节对齐</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-网络字节序与主机字节序"><span class="toc-text">3.网络字节序与主机字节序</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#七-结尾"><span class="toc-text">七. 结尾</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

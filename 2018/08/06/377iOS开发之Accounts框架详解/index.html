@@ -1,0 +1,316 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发之Accounts框架详解 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发之Accounts框架详解">
+            
+	            iOS开发之Accounts框架详解
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/08/06</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发之Accounts框架详解"><a href="#iOS开发之Accounts框架详解" class="headerlink" title="iOS开发之Accounts框架详解"></a>iOS开发之Accounts框架详解</h2><pre><code>Accounts框架是iOS原生提供的一套账户管理框架，其支持Facebook，新浪微博，腾讯微博，Twitter和领英账户管理的功能。需要注意，在iOS 11及以上系统中，将此功能已经删除，因此Accounts.framework实际上已经没有太大的意义，其只在iOS 11之前的系统上可用。
+</code></pre><h3 id="一、Accounts框架概览"><a href="#一、Accounts框架概览" class="headerlink" title="一、Accounts框架概览"></a>一、Accounts框架概览</h3><p><img src="https://oscimg.oschina.net/oscnet/0dfea13c8f268130bdaee34d6aa7ce16e9f.jpg" alt></p>
+<p>从上图可以看出，Accounts框架中最重要的3个类是ACAccountCredential类、ACAccount类和ACAccountStore类。后面我们着重介绍这3个类。</p>
+<pre><code>首先先来看ACAccountType类，这个类用来定义账户类型，如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ACAccountType</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//类型描述</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSString</span> *accountTypeDescription;</span><br><span class="line"><span class="comment">//标识符</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSString</span> *identifier;</span><br><span class="line"><span class="comment">//此类账户是否已经授权</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span>     accessGranted;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>需要注意，这个类中的属性都是只读的，这也就是说，开发者不能够直接使用这个类进行对象的构建，需要借助ACAccountStore类来创建ACAccountType实例，后面会介绍。</p>
+<pre><code>ACErrorCode定义了错误码的意义，如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> ACErrorCode &#123;</span><br><span class="line">    ACErrorUnknown = <span class="number">1</span>,<span class="comment">//未知错误</span></span><br><span class="line">    ACErrorAccountMissingRequiredProperty,  <span class="comment">// 缺少必选属性错误</span></span><br><span class="line">    ACErrorAccountAuthenticationFailed,     <span class="comment">// 授权失败</span></span><br><span class="line">    ACErrorAccountTypeInvalid,              <span class="comment">// 授权无效</span></span><br><span class="line">    ACErrorAccountAlreadyExists,            <span class="comment">// 账户已经存在</span></span><br><span class="line">    ACErrorAccountNotFound,                 <span class="comment">// 账户未找到</span></span><br><span class="line">    ACErrorPermissionDenied,                <span class="comment">// 没有权限</span></span><br><span class="line">    ACErrorAccessInfoInvalid,               <span class="comment">// 信息失效</span></span><br><span class="line">    ACErrorClientPermissionDenied,          <span class="comment">// 客户端没有权限</span></span><br><span class="line">    ACErrorAccessDeniedByProtectionPolicy,  <span class="comment">// 无法取得证书</span></span><br><span class="line">    ACErrorCredentialNotFound,              <span class="comment">// 证书未找到</span></span><br><span class="line">    ACErrorFetchCredentialFailed,           <span class="comment">// 请求证书失败</span></span><br><span class="line">    ACErrorStoreCredentialFailed,           <span class="comment">// 存储证书失败</span></span><br><span class="line">    ACErrorRemoveCredentialFailed,          <span class="comment">// 删除证书失败</span></span><br><span class="line">    ACErrorUpdatingNonexistentAccount,      <span class="comment">// 更新失败</span></span><br><span class="line">    ACErrorInvalidClientBundleID,           <span class="comment">// 无效的BundleID</span></span><br><span class="line">    ACErrorDeniedByPlugin,                  <span class="comment">// 权限被阻止</span></span><br><span class="line">    ACErrorCoreDataSaveFailed,              <span class="comment">// 数据库存储失败</span></span><br><span class="line">    ACErrorFailedSerializingAccountInfo,    <span class="comment">//序列化数据失败</span></span><br><span class="line">    ACErrorInvalidCommand,                  <span class="comment">//无效的命令</span></span><br><span class="line">    ACErrorMissingTransportMessageID,       <span class="comment">//缺少安全信息</span></span><br><span class="line">    ACErrorCredentialItemNotFound,          <span class="comment">// 证书缺少字段</span></span><br><span class="line">    ACErrorCredentialItemNotExpired,        <span class="comment">// 证书字段失效</span></span><br><span class="line">&#125; ACErrorCode;</span><br></pre></td></tr></table></figure>
+<h3 id="二、进行账户操作"><a href="#二、进行账户操作" class="headerlink" title="二、进行账户操作"></a>二、进行账户操作</h3><pre><code>在iOS 11以下的系统中，在设置中可以找到账户管理选项，如下图：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/95234bea81c13c4205dfef3af400f38a630.jpg" alt></p>
+<p>点击相应的社交平台，通过账号密码可以进行登录。这里一旦设置登录，那么在第三方应用程序中便可以通过Accounts框架来获取授权信息。</p>
+<pre><code>首先，要使用Accounts框架，需要导入相应头文件，如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Accounts/Accounts.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+<p>但应用程序首次使用用户社交平台的账户时，需要获取用户的授权，示例代码如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建操作对象</span></span><br><span class="line">ACAccountStore *accountStore = [[ACAccountStore alloc] init];</span><br><span class="line"><span class="comment">//通过操作对象 构建社交平台类型示例  这里采用的新浪微博</span></span><br><span class="line">ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierSinaWeibo];</span><br><span class="line"><span class="comment">//进行用户授权请求</span></span><br><span class="line">[accountStore requestAccessToAccountsWithType: accountType options:<span class="literal">nil</span> completion:^(<span class="built_in">BOOL</span> granted, <span class="built_in">NSError</span> *error) &#123;</span><br><span class="line">   <span class="keyword">if</span> (error) &#123;</span><br><span class="line">        <span class="built_in">NSLog</span>(<span class="string">@"error = %@"</span>, [error localizedDescription]);</span><br><span class="line">   &#125;      </span><br><span class="line">   <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">      <span class="keyword">if</span>(granted)&#123;</span><br><span class="line">         <span class="built_in">NSLog</span>(<span class="string">@"授权通过了"</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<p>获取用户授权界面如下图所示：</p>
+<p><img src="https://oscimg.oschina.net/oscnet/79f558158776e92d11b3976b0343fdf31d6.jpg" alt></p>
+<p>一旦用户授权通过，可以使用如下方法获取到用户的社交平台账户信息：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ACAccountStore *accountStore = [[ACAccountStore alloc] init];</span><br><span class="line">ACAccountType *accountType = [accountStore accountTypeWithAccountTypeIdentifier:ACAccountTypeIdentifierSinaWeibo];</span><br><span class="line"><span class="built_in">NSArray</span> *twitterAccounts = [accountStore accountsWithAccountType:accountType];</span><br></pre></td></tr></table></figure>
+<p>Accounts框架支持的社交平台类型ID如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACAccountTypeIdentifierTwitter;<span class="comment">//Twitter</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACAccountTypeIdentifierFacebook;<span class="comment">//Facebook</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACAccountTypeIdentifierSinaWeibo;<span class="comment">//新浪微博</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACAccountTypeIdentifierTencentWeibo;<span class="comment">//腾讯微博</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACAccountTypeIdentifierLinkedIn;<span class="comment">//领英</span></span><br></pre></td></tr></table></figure>
+<p>在调用requestAccessToAccountsWithType方法时，可以传入一个字典参数，某些社交平台的授权需要配置一些额外参数，例如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//facebook相关</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACFacebookAppIdKey;<span class="comment">//设置appid</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACFacebookPermissionsKey;<span class="comment">//设置权限key</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACFacebookAudienceKey; <span class="comment">//权限key</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACFacebookAudienceEveryone;<span class="comment">//公开权限</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACFacebookAudienceFriends;<span class="comment">//好友权限</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACFacebookAudienceOnlyMe;<span class="comment">//私人权限</span></span><br><span class="line"><span class="comment">//领英相关</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACLinkedInAppIdKey;<span class="comment">//领英appid</span></span><br><span class="line"><span class="built_in">NSString</span> * <span class="keyword">const</span> ACLinkedInPermissionsKey; <span class="comment">//设置权限key</span></span><br><span class="line"><span class="comment">//腾讯微博</span></span><br><span class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> ACTencentWeiboAppIdKey; <span class="comment">//设置appid</span></span><br></pre></td></tr></table></figure>
+<h3 id="三、用户信息相关类解析"><a href="#三、用户信息相关类解析" class="headerlink" title="三、用户信息相关类解析"></a>三、用户信息相关类解析</h3><p>ACAccount类解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ACAccount</span> : <span class="title">NSObject</span></span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithAccountType:(ACAccountType *)type;<span class="comment">//构造方法</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">weak</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">NSString</span>      *identifier;<span class="comment">//标识符</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>)   ACAccountType       *accountType;<span class="comment">//账户类型</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>)     <span class="built_in">NSString</span>            *accountDescription;<span class="comment">//账户描述</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>)     <span class="built_in">NSString</span>            *username;<span class="comment">//用户名</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>)  <span class="built_in">NSString</span>           *userFullName;<span class="comment">//完整名称</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">strong</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>)   ACAccountCredential *credential;<span class="comment">//授权凭证</span></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>ACAccountCredential类解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ACAccountCredential</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//构造方法</span></span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithOAuthToken:(<span class="built_in">NSString</span> *)token tokenSecret:(<span class="built_in">NSString</span> *)secret;</span><br><span class="line">- (<span class="keyword">instancetype</span>)initWithOAuth2Token:(<span class="built_in">NSString</span> *)token </span><br><span class="line">                       refreshToken:(<span class="built_in">NSString</span> *)refreshToken</span><br><span class="line">                         expiryDate:(<span class="built_in">NSDate</span> *)expiryDate;</span><br><span class="line"><span class="comment">//token</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSString</span> *oauthToken;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="四、ACAccountStore类解析"><a href="#四、ACAccountStore类解析" class="headerlink" title="四、ACAccountStore类解析"></a>四、ACAccountStore类解析</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">ACAccountStore</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//所有账户列表</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">weak</span>, <span class="built_in">NS_NONATOMIC_IOSONLY</span>) <span class="built_in">NSArray</span> *accounts;</span><br><span class="line"><span class="comment">//根据id获取账户</span></span><br><span class="line">- (ACAccount *)accountWithIdentifier:(<span class="built_in">NSString</span> *)identifier;</span><br><span class="line"><span class="comment">//根据id获取账户类型对象</span></span><br><span class="line">- (ACAccountType *)accountTypeWithAccountTypeIdentifier:(<span class="built_in">NSString</span> *)typeIdentifier;</span><br><span class="line"><span class="comment">//获取指定类型的所有账户</span></span><br><span class="line">- (<span class="built_in">NSArray</span> *)accountsWithAccountType:(ACAccountType *)accountType;</span><br><span class="line"><span class="comment">//进行账户存储</span></span><br><span class="line">- (<span class="keyword">void</span>)saveAccount:(ACAccount *)account withCompletionHandler:(ACAccountStoreSaveCompletionHandler)completionHandler;</span><br><span class="line"><span class="comment">//进行账户使用权限申请</span></span><br><span class="line">- (<span class="keyword">void</span>)requestAccessToAccountsWithType:(ACAccountType *)accountType</span><br><span class="line">                  withCompletionHandler:(ACAccountStoreRequestAccessCompletionHandler)handler <span class="built_in">NS_DEPRECATED</span>(NA, NA, <span class="number">5</span>_0, <span class="number">6</span>_0);</span><br><span class="line">- (<span class="keyword">void</span>)requestAccessToAccountsWithType:(ACAccountType *)accountType</span><br><span class="line">                                options:(<span class="built_in">NSDictionary</span> *)options</span><br><span class="line">                             completion:(ACAccountStoreRequestAccessCompletionHandler)completion;</span><br><span class="line"><span class="comment">//如果账户权限已经过期 调用此方法进行刷新</span></span><br><span class="line">- (<span class="keyword">void</span>)renewCredentialsForAccount:(ACAccount *)account completion:(ACAccountStoreCredentialRenewalHandler)completionHandler;</span><br><span class="line"><span class="comment">//删除账户</span></span><br><span class="line">- (<span class="keyword">void</span>)removeAccount:(ACAccount *)account withCompletionHandler:(ACAccountStoreRemoveCompletionHandler)completionHandler;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>千里之遥始于足下，冰冻三尺非一日之寒</p>
+<p>——共勉</p>
+</blockquote>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/08/19/378iOS开发之AddressBook框架详解/" class="pre-post btn btn-default" title='iOS开发之AddressBook框架详解'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">iOS开发之AddressBook框架详解</span>
+        </a>
+    
+    
+        <a href="/2018/07/05/376iOS中的CADisplayLink定时器/" class="next-post btn btn-default" title='iOS中的CADisplayLink定时器'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS中的CADisplayLink定时器</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发之Accounts框架详解"><span class="toc-text">iOS开发之Accounts框架详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、Accounts框架概览"><span class="toc-text">一、Accounts框架概览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、进行账户操作"><span class="toc-text">二、进行账户操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、用户信息相关类解析"><span class="toc-text">三、用户信息相关类解析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、ACAccountStore类解析"><span class="toc-text">四、ACAccountStore类解析</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>

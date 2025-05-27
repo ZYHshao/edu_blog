@@ -1,0 +1,333 @@
+<script src="https://eqcn.ajz.miesnfu.com/wp-content/plugins/wp-3d-pony/live2dw/lib/L2Dwidget.min.js"></script> 
+<script>
+　　let models = [
+    "https://unpkg.com/live2d-widget-model-chitose@1.0.5/assets/chitose.model.json",
+    "https://unpkg.com/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json",
+    "https://unpkg.com/live2d-widget-model-koharu@1.0.5/assets/koharu.model.json",
+    "https://unpkg.com/live2d-widget-model-haruto@1.0.5/assets/haruto.model.json",
+    "https://unpkg.com/live2d-widget-model-miku@1.0.5/assets/miku.model.json",
+    "https://unpkg.com/live2d-widget-model-z16@1.0.5/assets/z16.model.json"
+];
+let m = models[Math.round(Math.random()*5)];
+　　L2Dwidget.init({ 
+　　"model": {jsonPath:m,"scale": 1 }, 
+　　"display": { "position": "left", "width": 200, "height": 300,"hOffset": 0, "vOffset": -20 }, 
+　　"mobile": { "show": true, "scale": 0.5 }, 
+　　"react": { "opacityDefault": 0.7, "opacityOnHover": 0.2 } });
+</script> 
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="珲少的技术博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <link rel="dns-prefetch" href="http://huishao.cc">
+    <meta name="referrer" content="no-referrer">
+    <!--SEO-->
+
+<meta name="description" content="珲少的技术博客">
+
+
+
+<meta name="keywords" content="珲少">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+    <!--Title-->
+
+
+<title>iOS开发之CoreMotion框架的应用 | 珲少的技术博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="珲少的技术博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+
+
+
+
+
+    
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header"  style="background-image:url(http://7xpw2b.com1.z0.glb.clouddn.com/hexo-sinppet/img/banner.png)"  >
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title='珲少'>
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 学如逆水行舟 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://huishao.cc">珲少的技术博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>主页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>归档</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="iOS开发之CoreMotion框架的应用">
+            
+	            iOS开发之CoreMotion框架的应用
+            
+        </h1>
+        <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <a href="/categories/iOS逻辑初窥">
+            iOS逻辑初窥
+        </a>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+                
+            
+        </span>
+    </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/01/22</span>
+        </span>
+    
+</div>
+
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="iOS开发之CoreMotion框架的应用"><a href="#iOS开发之CoreMotion框架的应用" class="headerlink" title="iOS开发之CoreMotion框架的应用"></a>iOS开发之CoreMotion框架的应用</h2><pre><code>我们知道，现在智能手机手机的功能已经越来越强大。小小的手机中集成了众多的传感器配件。通过这些传感器可以获取到手机甚至用户的状态信息。
+
+在iOS5之前，加速度传感器的相关信息封装在UIAccelerometer这个类中，其主要用来获取设备在三维空间中的状态信息，之后，加速度传感器以及螺旋仪传感器的相关信息都封装在了CoreMotion这个框架中，这个框架对加速度，磁力以及螺旋仪传感器信息进行统一管理，并封装了许多强大的计算方法帮助开发者获取设备的空间状态。
+
+之前有写过一篇关于UIAccelerometer与CoreMotion简单使用的博客，比较偏用法介绍，并不系统，本篇博客是针对CoreMotion的完善与补充。
+</code></pre><p><a href="https://my.oschina.net/u/2340880/blog/543434" target="_blank" rel="noopener">https://my.oschina.net/u/2340880/blog/543434</a></p>
+<h3 id="一、CoreMotion框架整体结构"><a href="#一、CoreMotion框架整体结构" class="headerlink" title="一、CoreMotion框架整体结构"></a>一、CoreMotion框架整体结构</h3><pre><code>在学习这个框架之前，首先需要对框架中类的关系与作用有个整体的了解。下图展示了CoreMotion框架的整体结构：
+</code></pre><p><img src="https://oscimg.oschina.net/oscnet/e778c6022c890fe98765be064810b084bfb.jpg" alt></p>
+<p>从上图中可以看出，CoreMotion框架中主要分为3大块，一部分是用来获取设备的运动状态，如速度，加速度，海拔，三维方向等。一部分是用来配合iWatch进行用户的运动状态获取、另一部分为用户步数相关接口。</p>
+<h3 id="二、CMMotionManager"><a href="#二、CMMotionManager" class="headerlink" title="二、CMMotionManager"></a>二、CMMotionManager</h3><pre><code>CMMotionManager类是CoreMotion框架中非常核心的一个类，其用来进行设备运动信息的整体管理。主要包括开启更新信息，停止更新信息，获取更新信息等。解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取加速计是否可用</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isAccelerometerAvailable) <span class="built_in">BOOL</span> accelerometerAvailable;</span><br><span class="line"><span class="comment">//加速计更新间隔</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSTimeInterval</span> accelerometerUpdateInterval;</span><br><span class="line"><span class="comment">//加速计是否在持续进行更新</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isAccelerometerActive) <span class="built_in">BOOL</span> accelerometerActive;</span><br><span class="line"><span class="comment">//最后一次更新的加速计信息  CMAccelerometerData后面会介绍</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nullable</span>) <span class="built_in">CMAccelerometerData</span> *accelerometerData;</span><br><span class="line"><span class="comment">//开始进行加速计数据更新</span></span><br><span class="line">- (<span class="keyword">void</span>)startAccelerometerUpdates;</span><br><span class="line"><span class="comment">//开始进行加速计数据更新 并且指定回调函数以及回调函数执行的线程</span></span><br><span class="line">- (<span class="keyword">void</span>)startAccelerometerUpdatesToQueue:(<span class="built_in">NSOperationQueue</span> *)queue withHandler:(<span class="built_in">CMAccelerometerHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止加速计数据的更新</span></span><br><span class="line">- (<span class="keyword">void</span>)stopAccelerometerUpdates;</span><br><span class="line"><span class="comment">//陀螺仪是否可用</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isGyroAvailable) <span class="built_in">BOOL</span> gyroAvailable;</span><br><span class="line"><span class="comment">//陀螺仪数据的更新间隔</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSTimeInterval</span> gyroUpdateInterval;</span><br><span class="line"><span class="comment">//陀螺仪是否在持续进行更新</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isGyroActive) <span class="built_in">BOOL</span> gyroActive;</span><br><span class="line"><span class="comment">//陀螺仪数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nullable</span>) <span class="built_in">CMGyroData</span> *gyroData;</span><br><span class="line"><span class="comment">//开启陀螺仪的更新</span></span><br><span class="line">- (<span class="keyword">void</span>)startGyroUpdates;</span><br><span class="line"><span class="comment">//开始进行陀螺仪的更新 并且指定回调函数以及回调函数执行的线程</span></span><br><span class="line">- (<span class="keyword">void</span>)startGyroUpdatesToQueue:(<span class="built_in">NSOperationQueue</span> *)queue withHandler:(<span class="built_in">CMGyroHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止进行陀螺仪数据的更新</span></span><br><span class="line">- (<span class="keyword">void</span>)stopGyroUpdates;</span><br><span class="line"><span class="comment">//磁力计是否可用</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isMagnetometerAvailable) <span class="built_in">BOOL</span> magnetometerAvailable;</span><br><span class="line"><span class="comment">//磁力计数据更新间隔</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSTimeInterval</span> magnetometerUpdateInterval;</span><br><span class="line"><span class="comment">//磁力计数据是否在持续更新</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isMagnetometerActive) <span class="built_in">BOOL</span> magnetometerActive;</span><br><span class="line"><span class="comment">//磁力计数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nullable</span>) <span class="built_in">CMMagnetometerData</span> *magnetometerData;</span><br><span class="line"><span class="comment">//开始更新磁力计数据</span></span><br><span class="line">- (<span class="keyword">void</span>)startMagnetometerUpdates;</span><br><span class="line"><span class="comment">//开始更新磁力计数据 并且指定回调函数以及回调函数执行的线程</span></span><br><span class="line">- (<span class="keyword">void</span>)startMagnetometerUpdatesToQueue:(<span class="built_in">NSOperationQueue</span> *)queue withHandler:(<span class="built_in">CMMagnetometerHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止磁力计的更新</span></span><br><span class="line">- (<span class="keyword">void</span>)stopMagnetometerUpdates;</span><br><span class="line"></span><br><span class="line"><span class="comment">//设备运动数据并非某个传感器的数据 而是上面3种传感器数据的组合与运算</span></span><br><span class="line"><span class="comment">//设备运动数据是否可用</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isDeviceMotionAvailable) <span class="built_in">BOOL</span> deviceMotionAvailable;</span><br><span class="line"><span class="comment">//设备运动数据更新间隔</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">assign</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSTimeInterval</span> deviceMotionUpdateInterval;</span><br><span class="line"><span class="comment">//是否在持续更新设备运动数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">getter</span>=isDeviceMotionActive) <span class="built_in">BOOL</span> deviceMotionActive;</span><br><span class="line"><span class="comment">//最后一次更新的设备运动信息数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nullable</span>) <span class="built_in">CMDeviceMotion</span> *deviceMotion;</span><br><span class="line"><span class="comment">//开始更新设备运动数据</span></span><br><span class="line">- (<span class="keyword">void</span>)startDeviceMotionUpdates;</span><br><span class="line"><span class="comment">//开始更新设备运动数据 并指定回调函数以及回调函数执行的线程</span></span><br><span class="line">- (<span class="keyword">void</span>)startDeviceMotionUpdatesToQueue:(<span class="built_in">NSOperationQueue</span> *)queue withHandler:(<span class="built_in">CMDeviceMotionHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止更新设备运动信息</span></span><br><span class="line">- (<span class="keyword">void</span>)stopDeviceMotionUpdates;</span><br></pre></td></tr></table></figure>
+<p>上面的方法看上去非常繁多，其实很有规律，总的来说就是对是否开启传感器数据进行管理，并且进行传感器数据的获取。下面我们来看几种具体的传感器数据类的定义。</p>
+<h3 id="三、数据模型类"><a href="#三、数据模型类" class="headerlink" title="三、数据模型类"></a>三、数据模型类</h3><pre><code>首先，CoreMotion框架中的数据模型类都继承自CMLogItem类，这个类里面只有一个属性：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMLogItem</span> : <span class="title">NSObject</span> &lt;<span class="title">NSSecureCoding</span>, <span class="title">NSCopying</span>&gt;</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSTimeInterval</span> timestamp;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>CMLogItem类的timestamp属性用来标记数据记录的时间戳。</p>
+<h4 id="1-加速计数据"><a href="#1-加速计数据" class="headerlink" title="1.加速计数据"></a>1.加速计数据</h4><pre><code>CMAccelerometerData是加速计数据的数据模型类：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMAccelerometerData</span> : <span class="title">CMLogItem</span></span></span><br><span class="line"><span class="comment">//加速计数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMAcceleration</span> acceleration;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="comment">//加速计数据结构体</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="keyword">double</span> x;   <span class="comment">//x方向加速度</span></span><br><span class="line">    <span class="keyword">double</span> y;   <span class="comment">//y方向加速度</span></span><br><span class="line">    <span class="keyword">double</span> z;   <span class="comment">//z方向加速度</span></span><br><span class="line">&#125; <span class="built_in">CMAcceleration</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="2、陀螺仪数据"><a href="#2、陀螺仪数据" class="headerlink" title="2、陀螺仪数据"></a>2、陀螺仪数据</h4><pre><code>CMGyroData是陀螺仪数据的数据模型类：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMGyroData</span> : <span class="title">CMLogItem</span></span></span><br><span class="line"><span class="comment">//角速度数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMRotationRate</span> rotationRate;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//角速度结构体</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="keyword">double</span> x;  <span class="comment">//x方向的角速度</span></span><br><span class="line">    <span class="keyword">double</span> y;  <span class="comment">//y方向的角速度 </span></span><br><span class="line">    <span class="keyword">double</span> z;  <span class="comment">//z方向的角速度</span></span><br><span class="line">&#125; <span class="built_in">CMRotationRate</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="3-磁强计数据"><a href="#3-磁强计数据" class="headerlink" title="3.磁强计数据"></a>3.磁强计数据</h4><pre><code>CMMagnetometerData是磁强计数据模型类：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMMagnetometerData</span> : <span class="title">CMLogItem</span></span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//磁强数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMMagneticField</span> magneticField;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="keyword">double</span> x;   <span class="comment">//x轴磁场</span></span><br><span class="line">    <span class="keyword">double</span> y;   <span class="comment">//y轴磁场</span></span><br><span class="line">    <span class="keyword">double</span> z;   <span class="comment">//z轴磁场</span></span><br><span class="line">&#125; <span class="built_in">CMMagneticField</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="4-设备运动信息"><a href="#4-设备运动信息" class="headerlink" title="4.设备运动信息"></a>4.设备运动信息</h4><pre><code>CMDeviceMotion类包含了设备的空间状态信息：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMDeviceMotion</span> : <span class="title">CMLogItem</span></span></span><br><span class="line"><span class="comment">//设备的空间状态  CMAttitude后面会介绍</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMAttitude</span> *attitude;</span><br><span class="line"><span class="comment">//设备的 陀螺仪数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMRotationRate</span> rotationRate;</span><br><span class="line"><span class="comment">//设备的 加速计数据</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMAcceleration</span> gravity;</span><br><span class="line"><span class="comment">//获取用户给设备带来的加速度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMAcceleration</span> userAcceleration;</span><br><span class="line"><span class="comment">//设备附近磁场相关信息</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMCalibratedMagneticField</span> magneticField;</span><br><span class="line"><span class="comment">//返回航向角度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="keyword">double</span> heading;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>CMCalibratedMagneticField是一个结构体，如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="built_in">CMMagneticField</span> field;  <span class="comment">//磁场</span></span><br><span class="line">    <span class="built_in">CMMagneticFieldCalibrationAccuracy</span> accuracy; <span class="comment">//磁场强度</span></span><br><span class="line">&#125; <span class="built_in">CMCalibratedMagneticField</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">NS_ENUM</span>(<span class="keyword">int</span>, <span class="built_in">CMMagneticFieldCalibrationAccuracy</span>) &#123;</span><br><span class="line">    <span class="built_in">CMMagneticFieldCalibrationAccuracyUncalibrated</span> = <span class="number">-1</span>,</span><br><span class="line">    <span class="built_in">CMMagneticFieldCalibrationAccuracyLow</span>, <span class="comment">//低</span></span><br><span class="line">    <span class="built_in">CMMagneticFieldCalibrationAccuracyMedium</span>,<span class="comment">//中</span></span><br><span class="line">    <span class="built_in">CMMagneticFieldCalibrationAccuracyHigh</span><span class="comment">//高</span></span><br><span class="line">&#125; ;</span><br></pre></td></tr></table></figure>
+<p>CMAttitude类中封装的信息如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMAttitude</span> : <span class="title">NSObject</span> &lt;<span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span>&gt;</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">//设备翻滚弧度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="keyword">double</span> roll;</span><br><span class="line"><span class="comment">//旋转弧度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="keyword">double</span> pitch;</span><br><span class="line"><span class="comment">//航偏</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="keyword">double</span> yaw;</span><br><span class="line"><span class="comment">//描述设备状态的旋转矩阵</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMRotationMatrix</span> rotationMatrix;</span><br><span class="line"><span class="comment">//描述设备姿态的四元数</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMQuaternion</span> quaternion;</span><br><span class="line"><span class="comment">//进行转换</span></span><br><span class="line">- (<span class="keyword">void</span>)multiplyByInverseOfAttitude:(<span class="built_in">CMAttitude</span> *)attitude;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="comment">//四元数</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">double</span> x, y, z, w;</span><br><span class="line">&#125; <span class="built_in">CMQuaternion</span>;</span><br><span class="line"><span class="comment">//矩阵</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> </span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">double</span> m11, m12, m13;</span><br><span class="line">    <span class="keyword">double</span> m21, m22, m23;</span><br><span class="line">    <span class="keyword">double</span> m31, m32, m33;</span><br><span class="line">&#125; <span class="built_in">CMRotationMatrix</span>;</span><br></pre></td></tr></table></figure>
+<h3 id="四、高度信息"><a href="#四、高度信息" class="headerlink" title="四、高度信息"></a>四、高度信息</h3><pre><code>CoreMotion框架中的CMAltimeter类提供对设备高度相关信息的数据支持，这个类是iOS 8后新加入的，CMAltimeter类解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMAltimeter</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//是否支持相对高度变化</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isRelativeAltitudeAvailable;</span><br><span class="line"><span class="comment">//进行用户权限的申请</span></span><br><span class="line">+ (<span class="built_in">CMAuthorizationStatus</span>)authorizationStatus;</span><br><span class="line"><span class="comment">//开始更新高度变化信息数据</span></span><br><span class="line">- (<span class="keyword">void</span>)startRelativeAltitudeUpdatesToQueue:(<span class="built_in">NSOperationQueue</span> *)queue withHandler:(<span class="built_in">CMAltitudeHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止更新高度变化信息数据</span></span><br><span class="line">- (<span class="keyword">void</span>)stopRelativeAltitudeUpdates;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>CMAltitudeData是高度信息数据：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMAltitudeData</span> : <span class="title">CMLogItem</span></span></span><br><span class="line"><span class="comment">//相对高度 单位为米</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSNumber</span> *relativeAltitude;</span><br><span class="line"><span class="comment">//压力 单位为千帕</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSNumber</span> *pressure;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="五、用户活动信息"><a href="#五、用户活动信息" class="headerlink" title="五、用户活动信息"></a>五、用户活动信息</h3><pre><code>CMMotionActivityManager类是iOS 7之后新引入到CoreMotion框架中的，这个类用来对用户的活动信息进行管理，解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMMotionActivityManager</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//活动数据是否可用</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isActivityAvailable;</span><br><span class="line"><span class="comment">//进行用户权限的申请</span></span><br><span class="line">+ (<span class="built_in">CMAuthorizationStatus</span>)authorizationStatus;</span><br><span class="line"><span class="comment">//请求某一段时间内的用户活动信息</span></span><br><span class="line">- (<span class="keyword">void</span>)queryActivityStartingFromDate:(<span class="built_in">NSDate</span> *)start</span><br><span class="line">                               toDate:(<span class="built_in">NSDate</span> *)end</span><br><span class="line">                              toQueue:(<span class="built_in">NSOperationQueue</span> *)queue</span><br><span class="line">                          withHandler:(<span class="built_in">CMMotionActivityQueryHandler</span>)handler;</span><br><span class="line"><span class="comment">//开始进行用户活动信息的更新</span></span><br><span class="line">- (<span class="keyword">void</span>)startActivityUpdatesToQueue:(<span class="built_in">NSOperationQueue</span> *)queue</span><br><span class="line">                        withHandler:(<span class="built_in">CMMotionActivityHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止用户活动信息的更新</span></span><br><span class="line">- (<span class="keyword">void</span>)stopActivityUpdates;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>CMMotionActivity是用户活动信息的具体记录:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMMotionActivity</span> : <span class="title">CMLogItem</span></span></span><br><span class="line"><span class="comment">//数据的可信度</span></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, CMMotionActivityConfidence) &#123;</span></span><br><span class="line"><span class="comment">    CMMotionActivityConfidenceLow = 0,  //可信度低</span></span><br><span class="line"><span class="comment">    CMMotionActivityConfidenceMedium,   //可信度中</span></span><br><span class="line"><span class="comment">    CMMotionActivityConfidenceHigh      //可信度高</span></span><br><span class="line"><span class="comment">&#125;;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMMotionActivityConfidence</span> confidence;</span><br><span class="line"><span class="comment">//记录开始时间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSDate</span> *startDate;</span><br><span class="line"><span class="comment">//是否是位置状态 如果是 可能关机状态</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> unknown;</span><br><span class="line"><span class="comment">//设备是否没有移动</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> stationary;</span><br><span class="line"><span class="comment">//设备持有者是否在步行</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> walking;</span><br><span class="line"><span class="comment">//设备持有者是否在跑步</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> running;</span><br><span class="line"><span class="comment">//设备持有者是否在乘车</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> automotive;</span><br><span class="line"><span class="comment">//设备持有者是否在骑自行车</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">BOOL</span> cycling;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="六、用户手臂动作分析"><a href="#六、用户手臂动作分析" class="headerlink" title="六、用户手臂动作分析"></a>六、用户手臂动作分析</h3><pre><code>在iOS 12系统后，CoreMotion框架中又引入了一些列配合iWatch进行用户手臂动作分析的类，可以分析出用户是否发生了运动障碍等。其主要由CMMovementDisorderManager类进行管理，如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMMovementDisorderManager</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//运动障碍管理类是否可用</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isAvailable;</span><br><span class="line"><span class="comment">//进行用户权限的请求</span></span><br><span class="line">+ (<span class="built_in">CMAuthorizationStatus</span>)authorizationStatus;</span><br><span class="line"><span class="comment">//记录和计算一段时间内的震颤和运动异常结果</span></span><br><span class="line">- (<span class="keyword">void</span>)monitorKinesiasForDuration:(<span class="built_in">NSTimeInterval</span>)duration;</span><br><span class="line"><span class="comment">//获取一段时间内的运动障碍记录数据</span></span><br><span class="line">- (<span class="keyword">void</span>)queryDyskineticSymptomFromDate:(<span class="built_in">NSDate</span> *)fromDate toDate:(<span class="built_in">NSDate</span> *)toDate withHandler:(<span class="built_in">CMDyskineticSymptomResultHandler</span>)handler;</span><br><span class="line"><span class="comment">//获取一段时间内的震颤记录数据</span></span><br><span class="line">- (<span class="keyword">void</span>)queryTremorFromDate:(<span class="built_in">NSDate</span> *)fromDate toDate:(<span class="built_in">NSDate</span> *)toDate withHandler:(<span class="built_in">CMTremorResultHandler</span>)handler;</span><br><span class="line"><span class="comment">//最后一次更新数据的时间</span></span><br><span class="line">- (<span class="built_in">NSDate</span> * _Nullable)lastProcessedDate;</span><br><span class="line"><span class="comment">//最后一次计算数据的过期时间</span></span><br><span class="line">- (<span class="built_in">NSDate</span> * _Nullable)monitorKinesiasExpirationDate;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>CMDyskineticSymptomResult运动障碍数据模型：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMDyskineticSymptomResult</span> : <span class="title">NSObject</span> &lt;<span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span>&gt;</span></span><br><span class="line"><span class="comment">//记录数据的开始时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSDate</span> *startDate;</span><br><span class="line"><span class="comment">//记录数据的结束时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSDate</span> *endDate;</span><br><span class="line"><span class="comment">//运动异常可能出现的百分比 </span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> percentUnlikely;</span><br><span class="line"><span class="comment">//正常的百分比</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> percentLikely;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>CMTremorResult记录用户震颤数据：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMTremorResult</span> : <span class="title">NSObject</span> &lt;<span class="title">NSCopying</span>, <span class="title">NSSecureCoding</span>&gt;</span></span><br><span class="line"><span class="comment">//数据记录开始时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSDate</span> *startDate;</span><br><span class="line"><span class="comment">//数据记录结束时间</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">copy</span>, <span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="built_in">NSDate</span> *endDate;</span><br><span class="line"><span class="comment">//无法确定的时间百分比</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> percentUnknown;</span><br><span class="line"><span class="comment">//未检测到震颤的时间百分比</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> percentNone;</span><br><span class="line"><span class="comment">//可能发生震颤的百分比低 微震颤</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> percentSlight;</span><br><span class="line"><span class="comment">//可能发生震颤的百分比高 微震颤</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> percentMild;</span><br><span class="line"><span class="comment">//可能发生震颤的百分比高 中等震颤</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> percentModerate;</span><br><span class="line"><span class="comment">//可能发生震颤的百分比高 高震颤</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">readonly</span>) <span class="keyword">float</span> percentStrong;</span><br></pre></td></tr></table></figure>
+<h3 id="七、计步器应用"><a href="#七、计步器应用" class="headerlink" title="七、计步器应用"></a>七、计步器应用</h3><pre><code>在iOS 8之后，CoreMotion中引入了CMPedometer相关计步器类，这些类封装的更加应用层，开发者可以直接获取用户步数相关数据，CMPedometer是管理类，解析如下：
+</code></pre><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMPedometer</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//计步器是否可用</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isStepCountingAvailable;</span><br><span class="line"><span class="comment">//距离检测是否可用</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isDistanceAvailable;</span><br><span class="line"><span class="comment">//楼层检测是否可用</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isFloorCountingAvailable;</span><br><span class="line"><span class="comment">//速度估算是否支持</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isPaceAvailable;</span><br><span class="line"><span class="comment">//频率估算是否支持</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isCadenceAvailable;</span><br><span class="line"><span class="comment">//计步器功能是否支持</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isPedometerEventTrackingAvailable;</span><br><span class="line"><span class="comment">//进行用户权限申请</span></span><br><span class="line">+ (<span class="built_in">CMAuthorizationStatus</span>)authorizationStatus;</span><br><span class="line"><span class="comment">//请求一段时间的计步器数据</span></span><br><span class="line">- (<span class="keyword">void</span>)queryPedometerDataFromDate:(<span class="built_in">NSDate</span> *)start</span><br><span class="line">                            toDate:(<span class="built_in">NSDate</span> *)end</span><br><span class="line">                       withHandler:(<span class="built_in">CMPedometerHandler</span>)handler;</span><br><span class="line"><span class="comment">//请求从某个时间至今的计步器数据</span></span><br><span class="line">- (<span class="keyword">void</span>)startPedometerUpdatesFromDate:(<span class="built_in">NSDate</span> *)start</span><br><span class="line">                          withHandler:(<span class="built_in">CMPedometerHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止计步器数据更新</span></span><br><span class="line">- (<span class="keyword">void</span>)stopPedometerUpdates;</span><br><span class="line"><span class="comment">//开始更新计步器事件</span></span><br><span class="line">- (<span class="keyword">void</span>)startPedometerEventUpdatesWithHandler:(<span class="built_in">CMPedometerEventHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止更新计数器事件</span></span><br><span class="line">- (<span class="keyword">void</span>)stopPedometerEventUpdates;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>CMPedometerEvent类记录计步器的事件变化：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMPedometerEvent</span> : <span class="title">NSObject</span> &lt;<span class="title">NSSecureCoding</span>, <span class="title">NSCopying</span>&gt;</span></span><br><span class="line"><span class="comment">//记录数据的时间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSDate</span> *date;</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">typedef NS_ENUM(NSInteger, CMPedometerEventType) &#123;</span></span><br><span class="line"><span class="comment">    CMPedometerEventTypePause,   //计步器暂停</span></span><br><span class="line"><span class="comment">    CMPedometerEventTypeResume   //计步器恢复</span></span><br><span class="line"><span class="comment">&#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">CMPedometerEventType</span> type;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>CMPedometerData计步器数据类：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMPedometerData</span></span></span><br><span class="line"><span class="comment">//记录开始时间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSDate</span> *startDate;</span><br><span class="line"><span class="comment">//记录结束时间</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSDate</span> *endDate;</span><br><span class="line"><span class="comment">//步数</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>) <span class="built_in">NSNumber</span> *numberOfSteps;</span><br><span class="line"><span class="comment">//距离</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSNumber</span> *distance;</span><br><span class="line"><span class="comment">//通过楼梯上升的楼层数</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSNumber</span> *floorsAscended;</span><br><span class="line"><span class="comment">//通过楼梯下降的楼层数</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSNumber</span> *floorsDescended;</span><br><span class="line"><span class="comment">//估算速度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSNumber</span> *currentPace;</span><br><span class="line"><span class="comment">//步数频率</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSNumber</span> *currentCadence;</span><br><span class="line"><span class="comment">//平均速度</span></span><br><span class="line"><span class="keyword">@property</span>(<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">nullable</span>) <span class="built_in">NSNumber</span> *averageActivePace;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>在CoreMotion中，CMStepCounter也是一个记录器类，其比较简易，只在iOS8之前进行使用，解析如下：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CMStepCounter</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="comment">//计步器是否可用</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)isStepCountingAvailable;</span><br><span class="line"><span class="comment">//请求一段时间内的步数信息</span></span><br><span class="line">- (<span class="keyword">void</span>)queryStepCountStartingFrom:(<span class="built_in">NSDate</span> *)start</span><br><span class="line">                                to:(<span class="built_in">NSDate</span> *)end</span><br><span class="line">                           toQueue:(<span class="built_in">NSOperationQueue</span> *)queue</span><br><span class="line">                       withHandler:(<span class="built_in">CMStepQueryHandler</span>)handler;</span><br><span class="line"><span class="comment">//进行不是更新</span></span><br><span class="line">- (<span class="keyword">void</span>)startStepCountingUpdatesToQueue:(<span class="built_in">NSOperationQueue</span> *)queue</span><br><span class="line">                               updateOn:(<span class="built_in">NSInteger</span>)stepCounts</span><br><span class="line">                            withHandler:(<span class="built_in">CMStepUpdateHandler</span>)handler;</span><br><span class="line"><span class="comment">//停止计步器更新</span></span><br><span class="line">- (<span class="keyword">void</span>)stopStepCountingUpdates;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © 微信：15137348047
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/01/28/389MD5加密原理解析及OC版原理实现/" class="pre-post btn btn-default" title='MD5加密原理解析及OC版原理实现'>
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">MD5加密原理解析及OC版原理实现</span>
+        </a>
+    
+    
+        <a href="/2018/12/26/387iOS开发之CoreLocation框架使用/" class="next-post btn btn-default" title='iOS开发之CoreLocation框架使用'>
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">iOS开发之CoreLocation框架使用</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zNzY0Ny8xNDE3OA==">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#iOS开发之CoreMotion框架的应用"><span class="toc-text">iOS开发之CoreMotion框架的应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#一、CoreMotion框架整体结构"><span class="toc-text">一、CoreMotion框架整体结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#二、CMMotionManager"><span class="toc-text">二、CMMotionManager</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#三、数据模型类"><span class="toc-text">三、数据模型类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-加速计数据"><span class="toc-text">1.加速计数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2、陀螺仪数据"><span class="toc-text">2、陀螺仪数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-磁强计数据"><span class="toc-text">3.磁强计数据</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-设备运动信息"><span class="toc-text">4.设备运动信息</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#四、高度信息"><span class="toc-text">四、高度信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#五、用户活动信息"><span class="toc-text">五、用户活动信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#六、用户手臂动作分析"><span class="toc-text">六、用户手臂动作分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#七、计步器应用"><span class="toc-text">七、计步器应用</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 2018
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+
+</body>
+</html>
